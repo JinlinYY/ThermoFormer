@@ -46,4 +46,7 @@ separate in y, kPa, K, gamma, and kPa Psat units. Dense simplex paths cover ever
 test system and report smoothness, final equation residuals, convergence failures,
 and nonphysical rate. Nonmonotonicity is not itself a violation. A gross
 equilibrium residual of 0.1 kPa and normalized near-pure VLE error of 0.05 were
-fixed before formal results were viewed.
+fixed before formal results were viewed. Near-pure P/T references are independently
+fit from the training partition's pure-endpoint measurements (log P against 1/T);
+the direct-VLE head is never used as its own reference. Catalog-backed Antoine or
+DIPPR parameters are threaded through the same evaluator whenever configured.

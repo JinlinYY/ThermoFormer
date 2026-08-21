@@ -10,9 +10,11 @@ from src.ablation_outputs import (
     _select_summary,
     architecture_and_physics_tables,
     manybody_system_effects,
+    physical_consistency_table,
 )
-from src.ablation_protocols import ABLATION_SEEDS
+from src.ablation_protocols import ABLATION_SEEDS, ABLATION_VARIANTS
 from scripts.run_ablation_suite import validate_seeds
+from scripts.evaluate_reference_consistency import _reference_training_commit
 
 
 class AblationOutputTests(unittest.TestCase):
@@ -32,6 +34,12 @@ class AblationOutputTests(unittest.TestCase):
             validate_seeds([0, 0])
         with self.assertRaisesRegex(ValueError, "0--4"):
             validate_seeds([5])
+
+    def test_reference_commits_are_frozen_per_protocol(self) -> None:
+        self.assertNotEqual(
+            _reference_training_commit("overall_binary_ternary"),
+            _reference_training_commit("unseen_component"),
+        )
 
     def test_summary_selection_keeps_direction_and_cardinality_identity(self) -> None:
         frame = pd.DataFrame(
@@ -84,6 +92,31 @@ class AblationOutputTests(unittest.TestCase):
         self.assertGreater(deltas["sys-a"], 0.0)
         self.assertLess(deltas["sys-b"], 0.0)
         self.assertEqual(set(table["seeds"]), {5})
+
+    def test_physical_table_keeps_every_registered_generalization_benchmark(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for variant_id, variant in ABLATION_VARIANTS.items():
+                for benchmark in variant.benchmarks:
+                    directory = root / f"{variant_id}.{benchmark}"
+                    for seed in ABLATION_SEEDS:
+                        seed_dir = directory / f"seed_{seed}"
+                        seed_dir.mkdir(parents=True, exist_ok=True)
+                        (seed_dir / "physical_consistency.json").write_text(
+                            '{"nonphysical_prediction_rate": 0.1}', encoding="utf-8"
+                        )
+
+            def result_dir(_root, variant_id, benchmark):
+                return root / f"{variant_id}.{benchmark}"
+
+            with patch("src.ablation_outputs._result_dir", side_effect=result_dir):
+                table = physical_consistency_table(root)
+
+        a6 = table.loc[table["variant_id"].eq("a6_direct_vle")]
+        self.assertEqual(
+            set(a6["benchmark"]),
+            {"unseen_mixture", "unseen_component", "binary_to_ternary"},
+        )
 
     @staticmethod
     def _prediction(sample_id, system, y_true_1, y_pred_1, coverage):

@@ -5,6 +5,9 @@ import torch
 
 from src.data import VLESample
 from src.evaluation.thermodynamic_consistency import (
+    _batch,
+    _pure_limit_errors,
+    _pure_reference_correlations,
     combined_nonphysical_rate,
     composition_closure_metrics,
     evaluate_thermodynamic_consistency,
@@ -23,6 +26,35 @@ class IdealActivityModel(torch.nn.Module):
 
 
 class ThermodynamicConsistencyTests(unittest.TestCase):
+    @staticmethod
+    def _sample(temperature, pressure, x=(1.0, 0.0)) -> VLESample:
+        return VLESample(
+            smiles=("A", "B"), names=("A", "B"), temperature_k=temperature,
+            pressure_kpa=pressure, liquid_composition=x, vapor_composition=x,
+            quality_weight=1.0, quality_status="passed", source="synthetic.xlsx",
+            doi="test", experiment_mode="full_state", experiment_mode_confidence=1.0,
+        )
+
+    def test_direct_pure_limit_uses_independent_endpoint_reference(self) -> None:
+        anchors = [self._sample(300.0, 50.0), self._sample(400.0, 200.0)]
+        representative = self._sample(350.0, 100.0, (0.5, 0.5))
+        features = {"A": np.zeros(4, dtype=np.float32), "B": np.ones(4, dtype=np.float32)}
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=4, hidden_dim=16, layers=1, heads=4,
+                decoder_mode="direct_vle",
+            )
+        ).eval()
+        batch = _batch([representative], features, torch.device("cpu"))
+
+        errors = _pure_limit_errors(
+            model, batch, True, 2, [representative],
+            _pure_reference_correlations(anchors),
+        )
+
+        self.assertTrue(np.isfinite(errors["pressure_relative"][0]))
+        self.assertGreater(errors["pressure_relative"][0], 0.0)
+
     def test_ternary_gibbs_duhem_uses_only_simplex_tangent_directions(self) -> None:
         directions = simplex_tangent_directions(3)
 

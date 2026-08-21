@@ -200,38 +200,42 @@ def architecture_and_physics_tables(project_root: Path) -> tuple[pd.DataFrame, p
 def physical_consistency_table(project_root: Path) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
     for variant_id, variant in ABLATION_VARIANTS.items():
-        if "overall_binary_ternary" not in variant.benchmarks:
-            continue
-        result_dir = _result_dir(project_root, variant_id, "overall_binary_ternary")
-        payloads = []
-        for seed in ABLATION_SEEDS:
-            path = result_dir / f"seed_{seed}" / "physical_consistency.json"
-            if not path.is_file():
-                raise FileNotFoundError(f"Missing physical-consistency artifact: {path}")
-            payloads.append(json.loads(path.read_text(encoding="utf-8")))
-        row: dict[str, Any] = {
-            "variant_id": variant_id,
-            "variant": variant.label,
-            "benchmark": "unseen_mixture",
-            "seeds": len(payloads),
-        }
-        keys = sorted(
-            {
-                key
-                for payload in payloads
-                for key, value in payload.items()
-                if isinstance(value, (int, float)) and not isinstance(value, bool)
+        for protocol in variant.benchmarks:
+            result_dir = _result_dir(project_root, variant_id, protocol)
+            payloads = []
+            for seed in ABLATION_SEEDS:
+                path = result_dir / f"seed_{seed}" / "physical_consistency.json"
+                if not path.is_file():
+                    raise FileNotFoundError(f"Missing physical-consistency artifact: {path}")
+                payloads.append(json.loads(path.read_text(encoding="utf-8")))
+            benchmark = {
+                "overall_binary_ternary": "unseen_mixture",
+                "unseen_component": "unseen_component",
+                "binary_to_ternary_zero_shot": "binary_to_ternary",
+            }[protocol]
+            row: dict[str, Any] = {
+                "variant_id": variant_id,
+                "variant": variant.label,
+                "benchmark": benchmark,
+                "seeds": len(payloads),
             }
-        )
-        for key in keys:
-            values = np.asarray(
-                [float(payload[key]) for payload in payloads if payload.get(key) is not None],
-                dtype=float,
+            keys = sorted(
+                {
+                    key
+                    for payload in payloads
+                    for key, value in payload.items()
+                    if isinstance(value, (int, float)) and not isinstance(value, bool)
+                }
             )
-            row[f"{key}_mean"] = float(values.mean()) if values.size else None
-            row[f"{key}_std"] = float(values.std(ddof=1)) if values.size > 1 else 0.0 if values.size else None
-            row[f"{key}_available_seeds"] = int(values.size)
-        rows.append(row)
+            for key in keys:
+                values = np.asarray(
+                    [float(payload[key]) for payload in payloads if payload.get(key) is not None],
+                    dtype=float,
+                )
+                row[f"{key}_mean"] = float(values.mean()) if values.size else None
+                row[f"{key}_std"] = float(values.std(ddof=1)) if values.size > 1 else 0.0 if values.size else None
+                row[f"{key}_available_seeds"] = int(values.size)
+            rows.append(row)
     return pd.DataFrame(rows)
 
 
@@ -375,7 +379,9 @@ def build_figures(
     axes[0].set_xticks(np.arange(len(ids)), ["P0", "P3", "P4", "P6"])
     axes[0].set_ylabel("System-wise y MAE")
     axes[0].set_title("Predictive accuracy")
-    physical_indexed = physical.set_index("variant_id")
+    physical_indexed = physical.loc[
+        physical["benchmark"].eq("unseen_mixture")
+    ].set_index("variant_id")
     inconsistency = [physical_indexed.loc[item, "nonphysical_prediction_rate_mean"] for item in ids]
     axes[1].bar(np.arange(len(ids)), inconsistency, color=[COLORS["full"], "#56B4E9", "#CC79A7", COLORS["other"]])
     axes[1].set_xticks(np.arange(len(ids)), ["P0", "P3", "P4", "P6"])
@@ -391,7 +397,9 @@ def build_figures(
         architecture["benchmark"].eq("unseen_mixture")
         & architecture["direction"].eq("isothermal")
         & architecture["observable"].eq("y")
-    ][["variant_id", "system_macro_mae_mean"]].merge(physical, on="variant_id")
+    ][["variant_id", "system_macro_mae_mean"]].merge(
+        physical.loc[physical["benchmark"].eq("unseen_mixture")], on="variant_id"
+    )
     consistency_metrics = (
         "gibbs_duhem_mean_abs_mean",
         "permutation_y_max_abs_mean",
@@ -448,7 +456,9 @@ def write_report(
     direct_gamma_ternary_y = value("a5_direct_activity", "ternary", "isothermal", "y")
     delta = manybody["delta_y_mae_pairwise_minus_full"].to_numpy()
     wilcoxon = stats.wilcoxon(delta).pvalue if np.any(delta != 0.0) else 1.0
-    physical_indexed = physical.set_index("variant_id")
+    physical_indexed = physical.loc[
+        physical["benchmark"].eq("unseen_mixture")
+    ].set_index("variant_id")
     physics_complete = physics.loc[physics["status"].eq("completed")]
     full_unseen_y = value("a0_full", "unseen_mixture", "isothermal", "y")
     accuracy_changes = {}

@@ -13,6 +13,7 @@ import time
 from pathlib import Path
 
 import torch
+import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
@@ -24,6 +25,7 @@ from src.data import load_vle_dataset, retain_pure_anchored_systems
 from src.evaluation import predict_vle
 from src.evaluation.thermodynamic_consistency import evaluate_thermodynamic_consistency
 from src.model import ThermoFormer, ThermoFormerConfig
+from src.pure_properties import empty_pure_property_catalog, load_pure_property_catalog
 from src.representation import UniMolV2Encoder
 from src.splits import dataset_digest, load_split_assignment
 
@@ -39,13 +41,13 @@ def _digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _reference_training_commit() -> str:
+def _reference_training_commit(protocol: str) -> str:
     snapshot = PROJECT_ROOT / "configs" / "ablation" / "full_model_reference.yaml"
-    prefix = "reference_training_commit:"
-    for line in snapshot.read_text(encoding="utf-8").splitlines():
-        if line.startswith(prefix):
-            return line.split(":", 1)[1].strip()
-    raise ValueError(f"Missing {prefix} in {snapshot}")
+    payload = yaml.safe_load(snapshot.read_text(encoding="utf-8"))
+    commits = payload.get("reference_training_commits", {})
+    if protocol not in commits:
+        raise ValueError(f"Missing frozen training commit for {protocol} in {snapshot}")
+    return str(commits[protocol])
 
 
 def _validate_reference_provenance(
@@ -57,7 +59,7 @@ def _validate_reference_provenance(
     protocol: str,
     seed: int,
 ) -> None:
-    expected_commit = _reference_training_commit()
+    expected_commit = _reference_training_commit(protocol)
     invariants = {
         "status": (manifest.get("status"), "completed"),
         "protocol": (manifest.get("protocol"), protocol),
@@ -136,6 +138,16 @@ def main() -> None:
         raise RuntimeError("Reference consistency evaluation requires a clean Git worktree")
     for protocol in args.protocol or ["overall_binary_ternary"]:
         experiment = load_experiment_config(PROJECT_ROOT / REFERENCE_CONFIGS[protocol])
+        catalog_path = (
+            PROJECT_ROOT / experiment.data.pure_property_catalog
+            if experiment.data.pure_property_catalog
+            else None
+        )
+        catalog = (
+            load_pure_property_catalog(catalog_path)
+            if catalog_path is not None
+            else empty_pure_property_catalog()
+        )
         loaded = load_vle_dataset(
             PROJECT_ROOT / experiment.data.root,
             source_filter=experiment.data.source_filter,
@@ -180,6 +192,7 @@ def main() -> None:
                 batch_size=experiment.training.batch_size,
                 device=device,
                 solver_iterations=experiment.training.solver_iterations_eval,
+                pure_property_catalog=catalog,
             )
             inference_seconds = time.perf_counter() - started
             metrics = evaluate_thermodynamic_consistency(
@@ -189,6 +202,8 @@ def main() -> None:
                 device,
                 prediction_records=predictions,
                 solver_iterations=experiment.training.solver_iterations_eval,
+                pure_reference_samples=split.train,
+                pure_property_catalog=catalog,
             )
             metrics.update(
                 {

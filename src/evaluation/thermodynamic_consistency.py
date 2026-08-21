@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import itertools
+import math
 from collections import OrderedDict
 from typing import Any, Sequence
 
@@ -11,6 +12,7 @@ import torch
 from torch import Tensor, nn
 
 from ..data import VLESample, VLETensorDataset, collate_vle
+from ..pure_properties import PurePropertyCatalog
 from ..splits import system_id
 from ..thermo import equilibrium_at_tp, solve_isobaric, solve_isothermal
 
@@ -224,8 +226,11 @@ def _batch(
     samples: Sequence[VLESample],
     feature_map: dict[str, np.ndarray],
     device: torch.device,
+    pure_property_catalog: PurePropertyCatalog | None = None,
 ):
-    dataset = VLETensorDataset(samples, feature_map)
+    dataset = VLETensorDataset(
+        samples, feature_map, pure_property_catalog=pure_property_catalog
+    )
     return collate_vle([dataset[index] for index in range(len(dataset))]).to(device)
 
 
@@ -373,6 +378,8 @@ def _pure_limit_errors(
     batch,
     direct: bool,
     solver_iterations: int,
+    samples: Sequence[VLESample],
+    pure_references: dict[str, tuple[float, float]],
 ) -> dict[str, list[float]]:
     errors = {
         "log_gamma": [],
@@ -445,22 +452,76 @@ def _pure_limit_errors(
             (1.0 - near_isothermal.y.gather(1, targets[:, None]).squeeze(1)).abs(),
             (1.0 - near_isobaric.y.gather(1, targets[:, None]).squeeze(1)).abs(),
         )
+        reference_pressure = []
+        reference_temperature = []
+        for target in target_indices:
+            correlation = pure_references.get(samples[sample_index].smiles[target])
+            if correlation is None:
+                reference_pressure.append(math.nan)
+                reference_temperature.append(math.nan)
+                continue
+            intercept, slope = correlation
+            temperature_value = float(temperature[0].item())
+            pressure_value = float(pressure[0].item())
+            reference_pressure.append(math.exp(intercept + slope / temperature_value))
+            inverse_temperature = (math.log(max(pressure_value, 1e-12)) - intercept) / slope
+            reference_temperature.append(1.0 / inverse_temperature if inverse_temperature > 0.0 else math.nan)
+        reference_pressure_tensor = torch.tensor(reference_pressure, device=x.device)
+        reference_temperature_tensor = torch.tensor(reference_temperature, device=x.device)
+        if not direct:
+            reference_pressure_tensor = torch.where(
+                torch.isfinite(reference_pressure_tensor),
+                reference_pressure_tensor,
+                pure_isothermal.pressure_kpa.squeeze(1),
+            )
+            reference_temperature_tensor = torch.where(
+                torch.isfinite(reference_temperature_tensor),
+                reference_temperature_tensor,
+                pure_isobaric.temperature_k.squeeze(1),
+            )
         pressure_error = torch.log(
-            near_isothermal.pressure_kpa.clamp_min(1e-12)
-            / pure_isothermal.pressure_kpa.clamp_min(1e-12)
-        ).abs().squeeze(1)
+            near_isothermal.pressure_kpa.squeeze(1).clamp_min(1e-12)
+            / reference_pressure_tensor.clamp_min(1e-12)
+        ).abs()
         temperature_error = (
-            near_isobaric.temperature_k - pure_isobaric.temperature_k
-        ).abs().squeeze(1)
-        combined = torch.maximum(
-            y_error,
-            torch.maximum(pressure_error, temperature_error / 100.0),
+            near_isobaric.temperature_k.squeeze(1) - reference_temperature_tensor
+        ).abs()
+        combined = y_error
+        combined = torch.where(
+            torch.isfinite(pressure_error), torch.maximum(combined, pressure_error), combined
+        )
+        combined = torch.where(
+            torch.isfinite(temperature_error),
+            torch.maximum(combined, temperature_error / 100.0),
+            combined,
         )
         errors["y"].extend(y_error.tolist())
         errors["pressure_relative"].extend(pressure_error.tolist())
         errors["temperature_k"].extend(temperature_error.tolist())
         errors["combined_normalized"].extend(combined.tolist())
     return errors
+
+
+def _pure_reference_correlations(
+    samples: Sequence[VLESample],
+) -> dict[str, tuple[float, float]]:
+    anchors: dict[str, list[tuple[float, float]]] = {}
+    for sample in samples:
+        for index, fraction in enumerate(sample.liquid_composition):
+            if fraction >= 0.999 and sample.temperature_k > 0.0 and sample.pressure_kpa > 0.0:
+                anchors.setdefault(sample.smiles[index], []).append(
+                    (sample.temperature_k, sample.pressure_kpa)
+                )
+    correlations: dict[str, tuple[float, float]] = {}
+    for smiles, values in anchors.items():
+        temperatures = np.asarray([row[0] for row in values], dtype=float)
+        pressures = np.asarray([row[1] for row in values], dtype=float)
+        if np.unique(temperatures).size < 2:
+            continue
+        slope, intercept = np.polyfit(1.0 / temperatures, np.log(pressures), 1)
+        if np.isfinite(intercept) and np.isfinite(slope) and abs(slope) > 1e-12:
+            correlations[smiles] = (float(intercept), float(slope))
+    return correlations
 
 
 def _phase_paths(count: int, grid_points: int, device: torch.device) -> list[tuple[Tensor, Tensor]]:
@@ -484,20 +545,22 @@ def _phase_metrics(
     direct: bool,
     grid_points: int,
     solver_iterations: int,
+    pure_property_catalog: PurePropertyCatalog | None,
 ) -> list[dict[str, float]]:
     metrics: list[dict[str, float]] = []
     for sample in samples:
         count = sample.component_count
-        molecule_features = torch.zeros(1, 3, len(next(iter(feature_map.values()))), device=device)
-        for index, smiles in enumerate(sample.smiles):
-            molecule_features[0, index] = torch.as_tensor(feature_map[smiles], device=device)
-        mask = torch.zeros(1, 3, device=device)
-        mask[:, :count] = 1.0
+        sample_batch = _batch([sample], feature_map, device, pure_property_catalog)
+        molecule_features = sample_batch.molecules
+        mask = sample_batch.mask
         for coordinate, path in _phase_paths(count, grid_points, device):
             padded_x = torch.zeros(grid_points, 3, device=device)
             padded_x[:, :count] = path
             molecules = molecule_features.expand(grid_points, -1, -1)
             masks = mask.expand(grid_points, -1)
+            pure_parameters = sample_batch.pure_property_parameters.expand(
+                grid_points, -1, -1
+            )
             temperature = torch.full((grid_points, 1), sample.temperature_k, device=device)
             pressure = torch.full((grid_points, 1), sample.pressure_kpa, device=device)
             if direct:
@@ -522,6 +585,7 @@ def _phase_metrics(
                     masks,
                     iterations=solver_iterations,
                     strict=False,
+                    pure_property_parameters=pure_parameters,
                 )
                 isobaric = solve_isobaric(
                     model,
@@ -531,6 +595,7 @@ def _phase_metrics(
                     masks,
                     iterations=solver_iterations,
                     strict=False,
+                    pure_property_parameters=pure_parameters,
                 )
                 curves = (
                     torch.cat([torch.log(isothermal.pressure_kpa), isothermal.y[:, :count]], dim=-1),
@@ -556,6 +621,8 @@ def evaluate_thermodynamic_consistency(
     solver_iterations: int = 24,
     grid_points: int = 21,
     max_systems: int | None = None,
+    pure_reference_samples: Sequence[VLESample] | None = None,
+    pure_property_catalog: PurePropertyCatalog | None = None,
 ) -> dict[str, Any]:
     """Evaluate physical validity independently of target prediction errors."""
     if not samples:
@@ -567,7 +634,7 @@ def evaluate_thermodynamic_consistency(
     model.to(device).eval()
     direct = getattr(getattr(model, "config", None), "decoder_mode", None) == "direct_vle"
     representatives = _representative_samples(samples, max_systems)
-    batch = _batch(representatives, feature_map, device)
+    batch = _batch(representatives, feature_map, device, pure_property_catalog)
     grid_molecules, grid_temperature, grid_pressure, grid_x, grid_mask = (
         _composition_grid_tensors(batch, grid_points)
     )
@@ -593,12 +660,24 @@ def evaluate_thermodynamic_consistency(
             grid_mask[:validation_rows],
         )
     permutation_samples = representatives if max_systems is not None else samples
-    permutation_batch = _batch(permutation_samples, feature_map, device)
+    permutation_batch = _batch(
+        permutation_samples, feature_map, device, pure_property_catalog
+    )
+    pure_references = _pure_reference_correlations(
+        pure_reference_samples if pure_reference_samples is not None else samples
+    )
     with torch.no_grad():
         permutation = _permutation_errors(
             model, permutation_batch, direct, solver_iterations
         )
-        pure = _pure_limit_errors(model, batch, direct, solver_iterations)
+        pure = _pure_limit_errors(
+            model,
+            batch,
+            direct,
+            solver_iterations,
+            representatives,
+            pure_references,
+        )
         phase = _phase_metrics(
             model,
             representatives,
@@ -607,6 +686,7 @@ def evaluate_thermodynamic_consistency(
             direct,
             grid_points,
             solver_iterations,
+            pure_property_catalog,
         )
     records = list(prediction_records) if prediction_records is not None else predict_vle(
         model,
