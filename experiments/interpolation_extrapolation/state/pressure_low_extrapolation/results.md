@@ -3,11 +3,37 @@
 Status: **completed formal five-seed experiment**.
 
 - Seeds: `0,1,2,3,4`
-- Point-wise pressure: MAE 4.591 ± 1.299 (n=5) kPa; RMSE 9.379 ± 1.352 (n=5) kPa; R² 0.9301 ± 0.0206 (n=5).
-- Point-wise temperature: MAE 5.332 ± 3.114 (n=5) K; RMSE 6.833 ± 3.845 (n=5) K; R² 0.8534 ± 0.1423 (n=5).
-- Point-wise vapor composition: MAE 0.0676 ± 0.0278 (n=5); RMSE 0.0965 ± 0.0377 (n=5); R² 0.8962 ± 0.0730 (n=5).
-- Valid coverage: 1.00000 ± 0.00000
-- Solver failure rate: 0.00000 ± 0.00000
+
+## Task-resolved predictive performance
+
+### state_pressure_low_extrapolation — Isothermal P–x–y
+
+- Known inputs: **Molecules, T, x**.
+- Joint prediction: **Bubble pressure P and vapor composition y**.
+
+| Predicted quantity | MAE | RMSE | R² |
+|---|---:|---:|---:|
+| Bubble pressure P (kPa) | 4.59 ± 1.30 (n=5) | 9.38 ± 1.35 (n=5) | 0.930 ± 0.021 (n=5) |
+| Vapor composition y | 0.0673 ± 0.0289 (n=5) | 0.1011 ± 0.0407 (n=5) | 0.890 ± 0.080 (n=5) |
+
+Valid coverage: 1.0000 ± 0.0000.
+
+### state_pressure_low_extrapolation — Isobaric T–x–y
+
+- Known inputs: **Molecules, P, x**.
+- Joint prediction: **Bubble temperature T and vapor composition y**.
+
+| Predicted quantity | MAE | RMSE | R² |
+|---|---:|---:|---:|
+| Bubble temperature T (K) | 5.33 ± 3.11 (n=5) | 6.83 ± 3.84 (n=5) | 0.853 ± 0.142 (n=5) |
+| Vapor composition y | 0.0681 ± 0.0260 (n=5) | 0.0879 ± 0.0322 (n=5) | 0.906 ± 0.062 (n=5) |
+
+Valid coverage: 1.0000 ± 0.0000.
+
+## Provenance and pooled diagnostics
+
+- Pooled solver failure rate: 0.00000 ± 0.00000
+- Pooled nonphysical rate: 0.00000 ± 0.00000
 - Training commit: `704458163ee2afd9e2c0a681ea4a670a287b6778`
 - Aggregation commit: `704458163ee2afd9e2c0a681ea4a670a287b6778`
 - Formal summary: `results/state_pressure_low_extrapolation/metrics_summary.csv`

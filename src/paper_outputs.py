@@ -136,6 +136,36 @@ METRIC_SECTIONS = (
         4,
     ),
 )
+PRESSURE_METRICS, TEMPERATURE_METRICS, VAPOR_COMPOSITION_METRICS = METRIC_SECTIONS
+
+
+class PredictionTask(NamedTuple):
+    direction: str
+    title: str
+    known_inputs: str
+    joint_outputs: str
+    state_quantity: str
+    state_metrics: MetricSection
+
+
+PREDICTION_TASKS = (
+    PredictionTask(
+        "isothermal",
+        "Isothermal P–x–y",
+        "Molecules, T, x",
+        "Bubble pressure P and vapor composition y",
+        "Bubble pressure P",
+        PRESSURE_METRICS,
+    ),
+    PredictionTask(
+        "isobaric",
+        "Isobaric T–x–y",
+        "Molecules, P, x",
+        "Bubble temperature T and vapor composition y",
+        "Bubble temperature T",
+        TEMPERATURE_METRICS,
+    ),
+)
 
 
 def _set_plot_style() -> None:
@@ -661,6 +691,145 @@ def metric_markdown_tables(records: pd.DataFrame) -> str:
     return "\n\n".join(blocks)
 
 
+def task_metric_markdown(records: pd.DataFrame) -> str:
+    """Render VLE performance by inference task and its coupled outputs."""
+    blocks: list[str] = []
+    task_by_direction = {task.direction: task for task in PREDICTION_TASKS}
+    for _, row in records.iterrows():
+        direction = str(row["direction"])
+        if direction not in task_by_direction:
+            raise ValueError(f"Unsupported prediction direction: {direction}")
+        task = task_by_direction[direction]
+        state = task.state_metrics
+        vapor = VAPOR_COMPOSITION_METRICS
+        blocks.append(
+            "\n".join(
+                [
+                    f"### {row['test_subset']} — {task.title}",
+                    "",
+                    f"- Known inputs: **{task.known_inputs}**.",
+                    f"- Joint prediction: **{task.joint_outputs}**.",
+                    "",
+                    "| Predicted quantity | MAE | RMSE | R² |",
+                    "|---|---:|---:|---:|",
+                    f"| {task.state_quantity} ({state.unit}) | "
+                    f"{_format_metric(row, state.mae, state.table_error_digits)} | "
+                    f"{_format_metric(row, state.rmse, state.table_error_digits)} | "
+                    f"{_format_metric(row, state.r2, state.table_r2_digits)} |",
+                    "| Vapor composition y | "
+                    f"{_format_metric(row, vapor.mae, vapor.table_error_digits)} | "
+                    f"{_format_metric(row, vapor.rmse, vapor.table_error_digits)} | "
+                    f"{_format_metric(row, vapor.r2, vapor.table_r2_digits)} |",
+                    "",
+                    "Valid coverage: "
+                    f"{_format(row['valid_coverage_mean'], row['valid_coverage_std'], 4)}.",
+                ]
+            )
+        )
+    return "\n\n".join(blocks)
+
+
+def task_metric_records(
+    results_root: Path,
+    protocol: str,
+    label: str,
+    *,
+    component_count: int | None = None,
+) -> list[dict[str, Any]]:
+    """Read both task directions for one protocol/test subset."""
+    scope = "direction_cardinality" if component_count is not None else "direction"
+    return [
+        metric_record(
+            results_root,
+            protocol,
+            label,
+            scope=scope,
+            component_count=component_count,
+            direction=task.direction,
+        )
+        for task in PREDICTION_TASKS
+    ]
+
+
+def experiment_task_records(results_root: Path, protocol: str) -> list[dict[str, Any]]:
+    """Return the task rows shown on one formal experiment result page."""
+    if protocol == "overall_binary_ternary":
+        return task_metric_records(
+            results_root,
+            protocol,
+            "Joint model: binary test",
+            component_count=2,
+        ) + task_metric_records(
+            results_root,
+            protocol,
+            "Joint model: ternary test",
+            component_count=3,
+        )
+    return task_metric_records(results_root, protocol, protocol)
+
+
+def task_metric_tables(results_root: Path) -> dict[str, pd.DataFrame]:
+    """Assemble every machine-readable task table from direction-resolved metrics."""
+    binary = pd.DataFrame(
+        task_metric_records(
+            results_root,
+            "overall_binary",
+            "Binary-only model: binary test",
+        )
+        + task_metric_records(
+            results_root,
+            "overall_binary_ternary",
+            "Joint model: binary test",
+            component_count=2,
+        )
+    )
+    ternary = pd.DataFrame(
+        task_metric_records(
+            results_root,
+            "overall_binary_ternary",
+            "Joint model: ternary test",
+            component_count=3,
+        )
+    )
+    state = pd.DataFrame(
+        [
+            record
+            for protocol, label in STATE_PROTOCOLS
+            for record in task_metric_records(results_root, protocol, label)
+        ]
+    )
+    difficulty = pd.DataFrame(
+        task_metric_records(
+            results_root,
+            "state_composition_interpolation",
+            "State interpolation",
+        )
+        + task_metric_records(
+            results_root,
+            "overall_binary_ternary",
+            "Unseen mixture",
+        )
+        + task_metric_records(
+            results_root,
+            "unseen_component",
+            "Unseen component",
+        )
+    )
+    scaling_records: list[dict[str, Any]] = []
+    for protocol, fraction, label in SCALING_PROTOCOLS:
+        for record in task_metric_records(results_root, protocol, label):
+            record["ternary_training_fraction"] = fraction
+            record["fraction_label"] = label
+            scaling_records.append(record)
+    return {
+        "binary": binary,
+        "ternary": ternary,
+        "state": state,
+        "difficulty": difficulty,
+        "scaling": pd.DataFrame(scaling_records),
+    }
+
+
 def _eligible_system_range(project_root: Path, protocol: str) -> str:
     values = []
     for seed in range(5):
@@ -677,32 +846,37 @@ def _eligible_system_range(project_root: Path, protocol: str) -> str:
 
 def write_predictive_report(
     project_root: Path,
-    performance: pd.DataFrame,
-    state: pd.DataFrame,
-    difficulty: pd.DataFrame,
-    scaling: pd.DataFrame,
+    performance_tasks: pd.DataFrame,
+    state_tasks: pd.DataFrame,
+    difficulty_tasks: pd.DataFrame,
+    scaling_tasks: pd.DataFrame,
 ) -> Path:
     path = project_root / "reports" / "predictive_performance_report.md"
-    binary = performance.loc[
-        performance["test_subset"].str.contains("binary", case=False, na=False)
-    ]
-    ternary = performance.loc[
-        performance["test_subset"].str.contains("ternary", case=False, na=False)
-    ]
     lines = [
         "# ThermoFormer Predictive Performance and Generalization",
         "",
         "Date: 2026-08-21. All confirmatory experiments use seeds 0–4, validation-only model selection, fixed committed splits, Uni-Mol v2 84M representations, and the differentiable mode-appropriate bubble solver. Values are mean ± sample standard deviation across seeds. Pressure, temperature, and composition errors are never combined into one scalar.",
         "",
+        "## Prediction tasks and outputs",
+        "",
+        "ThermoFormer is evaluated as two coupled bubble-point tasks. A row does not predict only one scalar: each task jointly returns the unknown bubble-point state variable and the full vapor-composition vector.",
+        "",
+        "| Task | Known inputs | Joint prediction |",
+        "|---|---|---|",
+        "| Isothermal P–x–y | Molecules, T, liquid composition x | Bubble pressure P and vapor composition y |",
+        "| Isobaric T–x–y | Molecules, P, liquid composition x | Bubble temperature T and vapor composition y |",
+        "",
+        "Full-state TP–x–y records are evaluated in both directions. Pressure metrics therefore use only isothermal solves, temperature metrics use only isobaric solves, and vapor-composition metrics are reported separately for each direction. The number in `(n=...)` is the actual number of contributing seeds.",
+        "",
         "## Overall predictive performance",
         "",
-        metric_markdown_tables(pd.concat([binary, ternary], ignore_index=True)),
+        task_metric_markdown(performance_tasks),
         "",
-        "The joint binary/ternary model is reported by cardinality rather than as one pooled headline. Independent activity-coefficient error is not reported because the workbooks do not provide a complete trusted pure-property reference needed to invert experimental gamma without reusing the model's learned Psat branch.",
+        "The joint binary/ternary model is reported by cardinality and task direction rather than as one pooled headline. Independent activity-coefficient error is not reported because the workbooks do not provide a complete trusted pure-property reference needed to invert experimental gamma without reusing the model's learned Psat branch.",
         "",
         "## Thermodynamic-state interpolation and extrapolation",
         "",
-        metric_markdown_tables(state),
+        task_metric_markdown(state_tasks),
         "",
         "Eligible test-system counts are: "
         + "; ".join(
@@ -713,13 +887,13 @@ def write_predictive_report(
         "",
         "## Unseen mixtures and components",
         "",
-        metric_markdown_tables(difficulty),
+        task_metric_markdown(difficulty_tasks),
         "",
         "The sharp degradation for held-out components is the clearest present limitation. System-disjoint unseen mixtures remain substantially easier when their constituent molecules have appeared elsewhere.",
         "",
         "## Binary-to-ternary transfer",
         "",
-        metric_markdown_tables(scaling),
+        task_metric_markdown(scaling_tasks),
         "",
         "The fixed-test scaling curve is non-monotonic. With only 18 candidate ternary training systems, subset identity and seed variability dominate several nominal fractions; added ternary labels do not consistently improve vapor-composition MAE over binary-only zero-shot transfer. This negative result is retained rather than smoothed or selectively reported.",
         "",
@@ -844,7 +1018,8 @@ def _write_experiment_result_pages(
     results_root: Path,
 ) -> None:
     for protocol, config in PROTOCOL_CONFIGS.items():
-        row = metric_record(results_root, protocol, protocol)
+        pooled = metric_record(results_root, protocol, protocol)
+        task_rows = pd.DataFrame(experiment_task_records(results_root, protocol))
         manifest = json.loads(
             (results_root / protocol / "aggregate_manifest.json").read_text(encoding="utf-8")
         )
@@ -854,19 +1029,18 @@ def _write_experiment_result_pages(
             "Status: **completed formal five-seed experiment**.",
             "",
             f"- Seeds: `{','.join(str(value) for value in manifest['seeds'])}`",
+            "",
+            "## Task-resolved predictive performance",
+            "",
+            task_metric_markdown(task_rows),
+            "",
         ]
-        for section in METRIC_SECTIONS:
-            unit = f" {section.unit}" if section.unit else ""
-            content.append(
-                f"- Point-wise {section.page_label}: "
-                f"MAE {_format_metric(row, section.mae, section.page_error_digits)}{unit}; "
-                f"RMSE {_format_metric(row, section.rmse, section.page_error_digits)}{unit}; "
-                f"R² {_format_metric(row, section.r2, section.page_r2_digits)}."
-            )
         content.extend(
             [
-                f"- Valid coverage: {_format(row['valid_coverage_mean'], row['valid_coverage_std'], 5)}",
-                f"- Solver failure rate: {_format(row['solver_failure_rate_mean'], row['solver_failure_rate_std'], 5)}",
+                "## Provenance and pooled diagnostics",
+                "",
+                f"- Pooled solver failure rate: {_format(pooled['solver_failure_rate_mean'], pooled['solver_failure_rate_std'], 5)}",
+                f"- Pooled nonphysical rate: {_format(pooled['nonphysical_rate_mean'], pooled['nonphysical_rate_std'], 5)}",
                 f"- Training commit: `{manifest['training_git_commit']}`",
                 f"- Aggregation commit: `{manifest['aggregation_git_commit']}`",
                 f"- Formal summary: `results/{protocol}/metrics_summary.csv`",
@@ -916,6 +1090,12 @@ def build_paper_outputs(project_root: Path = PROJECT_ROOT) -> dict[str, list[str
     binary_rows.to_csv(performance_dir / "binary_overall.csv", index=False)
     ternary_rows.to_csv(performance_dir / "ternary_overall.csv", index=False)
 
+    task_tables = task_metric_tables(results_root)
+    binary_tasks = task_tables["binary"]
+    ternary_tasks = task_tables["ternary"]
+    binary_tasks.to_csv(performance_dir / "binary_by_task.csv", index=False)
+    ternary_tasks.to_csv(performance_dir / "ternary_by_task.csv", index=False)
+
     seed_frames = []
     for protocol in ("overall_binary", "overall_binary_ternary"):
         frame = pd.read_csv(results_root / protocol / "metrics_by_seed.csv")
@@ -939,6 +1119,8 @@ def build_paper_outputs(project_root: Path = PROJECT_ROOT) -> dict[str, list[str
     state.iloc[[1]].to_csv(generalization_dir / "composition_extrapolation.csv", index=False)
     state.iloc[[2, 3]].to_csv(generalization_dir / "temperature_extrapolation.csv", index=False)
     state.iloc[[4, 5]].to_csv(generalization_dir / "pressure_extrapolation.csv", index=False)
+    state_tasks = task_tables["state"]
+    state_tasks.to_csv(generalization_dir / "state_by_task.csv", index=False)
 
     difficulty = pd.DataFrame(
         [
@@ -948,6 +1130,10 @@ def build_paper_outputs(project_root: Path = PROJECT_ROOT) -> dict[str, list[str
         ]
     )
     difficulty.to_csv(generalization_dir / "unseen_mixture_component.csv", index=False)
+    difficulty_tasks = task_tables["difficulty"]
+    difficulty_tasks.to_csv(
+        generalization_dir / "unseen_mixture_component_by_task.csv", index=False
+    )
 
     scaling_records = []
     for protocol, fraction, label in SCALING_PROTOCOLS:
@@ -957,6 +1143,10 @@ def build_paper_outputs(project_root: Path = PROJECT_ROOT) -> dict[str, list[str
         scaling_records.append(record)
     scaling = pd.DataFrame(scaling_records)
     scaling.to_csv(generalization_dir / "binary_to_ternary_scaling.csv", index=False)
+    scaling_tasks = task_tables["scaling"]
+    scaling_tasks.to_csv(
+        generalization_dir / "binary_to_ternary_scaling_by_task.csv", index=False
+    )
 
     coverage_rows = []
     for protocol in ("binary_to_ternary_zero_shot", "binary_to_ternary_scale_1"):
@@ -1022,8 +1212,15 @@ def build_paper_outputs(project_root: Path = PROJECT_ROOT) -> dict[str, list[str
     )
 
     performance = pd.concat([binary_rows, ternary_rows], ignore_index=True)
+    performance_tasks = pd.concat([binary_tasks, ternary_tasks], ignore_index=True)
     report_paths = [
-        write_predictive_report(project_root, performance, state, difficulty, scaling),
+        write_predictive_report(
+            project_root,
+            performance_tasks,
+            state_tasks,
+            difficulty_tasks,
+            scaling_tasks,
+        ),
         write_training_diagnosis(
             project_root,
             results_root,
@@ -1036,14 +1233,19 @@ def build_paper_outputs(project_root: Path = PROJECT_ROOT) -> dict[str, list[str
     table_paths = [
         performance_dir / "binary_overall.csv",
         performance_dir / "ternary_overall.csv",
+        performance_dir / "binary_by_task.csv",
+        performance_dir / "ternary_by_task.csv",
         performance_dir / "seed_summary.csv",
         performance_dir / "system_extremes.csv",
         generalization_dir / "state_interpolation.csv",
         generalization_dir / "composition_extrapolation.csv",
         generalization_dir / "temperature_extrapolation.csv",
         generalization_dir / "pressure_extrapolation.csv",
+        generalization_dir / "state_by_task.csv",
         generalization_dir / "unseen_mixture_component.csv",
+        generalization_dir / "unseen_mixture_component_by_task.csv",
         generalization_dir / "binary_to_ternary_scaling.csv",
+        generalization_dir / "binary_to_ternary_scaling_by_task.csv",
         generalization_dir / "binary_subsystem_controlled.csv",
         generalization_dir / "extrapolation_distance.csv",
     ]

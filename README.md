@@ -148,7 +148,7 @@ conda activate ggnn39
 python scripts/build_paper_outputs.py
 ```
 
-主要入口为 `reports/predictive_performance_report.md` 与 `reports/first_training_diagnosis.md`；论文表位于 `results/performance/` 和 `results/generalization/`，PDF/SVG/600-dpi PNG 位于 `figures/performance/` 与 `figures/generalization/`。P、T 和 y 均分别报告 point-wise MAE、RMSE、R²，以及可用 seed 数；CSV 另外保留 system-macro 和 component-macro 指标。正式结果保留了三元数据规模曲线非单调、未见组分性能明显下降和极少量求解失败等负面结果；当前不包含任何四元实验或四元性能声称。
+主要入口为 `reports/predictive_performance_report.md` 与 `reports/first_training_diagnosis.md`；论文表位于 `results/performance/` 和 `results/generalization/`，PDF/SVG/600-dpi PNG 位于 `figures/performance/` 与 `figures/generalization/`。正式性能报告按推理任务拆分：等温 P–x–y 同时报告泡点 P 与 y，等压 T–x–y 同时报告泡点 T 与 y；每个输出均给出 point-wise MAE、RMSE、R² 和可用 seed 数。`*_by_task.csv` 保存同样的方向化结果，原 CSV 继续保留跨方向、system-macro 和 component-macro 汇总。正式结果保留了三元数据规模曲线非单调、未见组分性能明显下降和极少量求解失败等负面结果；当前不包含任何四元实验或四元性能声称。
 
 单次训练/验证/测试划分可通过覆盖参数运行：
 
