@@ -1,0 +1,74 @@
+{
+  "analysis": "ThermoFormer interpretability",
+  "analysis_code": {
+    "scripts/run_interpretability.py": "e8e89795641849d34c4dab510a3b8fb1d666da0426587547960be8e6c0102125",
+    "src/interpretability/__init__.py": "da9b0327c3954fc82ca9a44ac8ea355d80bc37ca0b93331a68c6d256bd864ad7",
+    "src/interpretability/analysis.py": "190d24d0f6932c7f8e4c6ab517e5ba0ab70d60adb30df9f1ffcc2a5b32bab85b",
+    "src/interpretability/core.py": "7fc038fa035ebc45a37e20d2aa657eb1ac332b17ecaa62562f7e926a3e159985",
+    "src/interpretability/plotting.py": "480c6ea6a27f0cb3dd75c16b645887637dde537c84e8ca3702087bb11f6ba1d7",
+    "src/interpretability/reporting.py": "127bf3ff4ef13f6179f319b9fb5e8aefbc78623daa2db3d5ef20e01d214477d0",
+    "src/interpretability/runner.py": "c0ed111d2d1a0a3d62b5b20493da5eccbaa1aec1fe43817a4b3e7ae0e52aa3a2",
+    "src/interpretability/selection.py": "48d26883efb35feda5a0849729c688cc69b033d35248976c38570751eb5c369e"
+  },
+  "artifacts": {
+    "analysis/interpretability/figures/Figure_interpretability.pdf": "b3d81efe6bb7607ad26c8b401b6c0a27ad5f0ea2ab722965936c1dd1ae0d0f92",
+    "analysis/interpretability/figures/Figure_interpretability.png": "97d54666dd8d73f37d71b7820f92ac0645993f03443cfd67b298a3705b949355",
+    "analysis/interpretability/figures/Figure_interpretability.svg": "c41adca5500f247c633e716d669a80a94cd5f825f0ffdfd04b275423539cc11e",
+    "analysis/interpretability/reports/interpretability_report.md": "166ec2b550860baa9eedf084f72278839bf26b81ffd63978c1d55e6780174ec0",
+    "analysis/interpretability/results/composition_nonideality.csv": "9ef623c8b1c9f62a98d8fe5595970af37fbb19f7685487677409933fd20bb52f",
+    "analysis/interpretability/results/interaction_attribution.csv": "754ce2a5bb0de7219234afb8eb686f2c223490b0670d03daeaff186caf1e3044",
+    "analysis/interpretability/results/manybody_effects.csv": "2b828a86c59ab86c312850934a431844326f5073f5f11d325d3db720f0d2c4cd",
+    "analysis/interpretability/results/thermodynamic_sensitivity.csv": "95d1dc16555e1fac3ec6ee14ccdea6fe42308e60acbe319e4e4e4ed49a9f0146"
+  },
+  "device": "cuda",
+  "full_checkpoint": "D:\\VLE\\VLE\\checkpoints\\overall_binary_ternary\\seed_1\\best_model.pt",
+  "full_protocol": "overall_binary_ternary",
+  "inputs": {
+    "cache/unimolv2_84m.npz": "b535a370dd661eb51a48615c4992ae33c43a7fd9b244753d46713b8fc526ba11",
+    "checkpoints/ablation/a3_pairwise_only.on.overall_binary_ternary/seed_1/best_model.pt": "619bf3f45a5a3d866170078b35d8a3694b8e4bce7cab19b50eb1b085ba65bae9",
+    "checkpoints/overall_binary_ternary/seed_1/best_model.pt": "5987f641a83e3541b8e902d36aa668b47d409900ef606c9461f1bea4a61198e8",
+    "dataset/binary_vle_english.xlsx": "d122177fe42b5b41ca2e782cc77b3e6a7a0ebf922bb0e589f18edde622bf3efc",
+    "dataset/ternary_vle_english.xlsx": "52fe356da44cc5e78f32b881a614ac95ea98e55002aaba464cfcf35069764c67",
+    "splits/overall_binary_ternary/seed_1.json": "9cb5b723af1c7792684ac42520551638575348504fb37fb2f9ccd238992c829d"
+  },
+  "pairwise_checkpoint": "D:\\VLE\\VLE\\checkpoints\\ablation\\a3_pairwise_only.on.overall_binary_ternary\\seed_1\\best_model.pt",
+  "pairwise_protocol": "a3_pairwise_only.on.overall_binary_ternary",
+  "representative_systems": {
+    "experimental azeotrope proxy": [
+      "CC(C)O",
+      "O"
+    ],
+    "lowest-|gE| hydrocarbon candidate": [
+      "C1CCCCC1",
+      "CCCCCCCCC"
+    ],
+    "model-inferred negative deviation": [
+      "C(C(C(F)F)(F)F)O",
+      "CN(C)C=O"
+    ],
+    "model-inferred positive deviation": [
+      "CCCC",
+      "CCO"
+    ],
+    "water/alcohol hydrogen bonding": [
+      "CC(C)O",
+      "O"
+    ]
+  },
+  "row_counts": {
+    "composition_nonideality": 792,
+    "interaction_attribution": 10272,
+    "manybody_effects": 408,
+    "thermodynamic_sensitivity": 34
+  },
+  "runtime": {
+    "cuda": "12.6",
+    "device": "cuda",
+    "numpy": "1.26.4",
+    "pandas": "1.5.3",
+    "python": "3.9.25",
+    "torch": "2.6.0+cu126"
+  },
+  "status": "completed",
+  "validation_selected_seed": 1
+}
