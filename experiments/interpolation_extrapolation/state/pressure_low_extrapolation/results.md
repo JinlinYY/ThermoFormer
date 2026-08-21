@@ -3,9 +3,9 @@
 Status: **completed formal five-seed experiment**.
 
 - Seeds: `0,1,2,3,4`
-- Pressure MAE: 4.591 ± 1.299 kPa
-- Temperature MAE: 5.332 ± 3.114 K
-- Vapor-composition MAE: 0.0676 ± 0.0278
+- Point-wise pressure: MAE 4.591 ± 1.299 (n=5) kPa; RMSE 9.379 ± 1.352 (n=5) kPa; R² 0.9301 ± 0.0206 (n=5).
+- Point-wise temperature: MAE 5.332 ± 3.114 (n=5) K; RMSE 6.833 ± 3.845 (n=5) K; R² 0.8534 ± 0.1423 (n=5).
+- Point-wise vapor composition: MAE 0.0676 ± 0.0278 (n=5); RMSE 0.0965 ± 0.0377 (n=5); R² 0.8962 ± 0.0730 (n=5).
 - Valid coverage: 1.00000 ± 0.00000
 - Solver failure rate: 0.00000 ± 0.00000
 - Training commit: `704458163ee2afd9e2c0a681ea4a670a287b6778`

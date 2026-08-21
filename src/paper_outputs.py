@@ -565,22 +565,73 @@ def _format(mean: Any, std: Any, digits: int = 3) -> str:
     return f"{float(mean):.{digits}f} ± {float(std):.{digits}f}"
 
 
-def _markdown_table(records: pd.DataFrame) -> str:
-    lines = [
-        "| Test subset | P MAE (kPa) | T MAE (K) | y MAE | Coverage |",
-        "|---|---:|---:|---:|---:|",
+def _format_metric(row: pd.Series, metric: str, digits: int) -> str:
+    rendered = _format(row[f"{metric}_mean"], row[f"{metric}_std"], digits)
+    available = int(row.get(f"{metric}_available_seeds", 0))
+    return f"{rendered} (n={available})"
+
+
+def metric_markdown_tables(records: pd.DataFrame) -> str:
+    """Render publication metrics without pooling unlike physical observables."""
+    sections = (
+        (
+            "Pressure metrics",
+            "kPa",
+            "pressure_mae_kpa",
+            "pressure_rmse_kpa",
+            "pressure_r2",
+            2,
+        ),
+        (
+            "Temperature metrics",
+            "K",
+            "temperature_mae_k",
+            "temperature_rmse_k",
+            "temperature_r2",
+            2,
+        ),
+        (
+            "Vapor-composition metrics",
+            "mole fraction",
+            "y_mae",
+            "y_rmse",
+            "y_r2",
+            4,
+        ),
+    )
+    blocks: list[str] = []
+    for title, unit, mae, rmse, r2, digits in sections:
+        unit_suffix = f" ({unit})" if unit != "mole fraction" else ""
+        lines = [
+            f"**{title}**",
+            "",
+            f"| Test subset | MAE{unit_suffix} | RMSE{unit_suffix} | R² |",
+            "|---|---:|---:|---:|",
+        ]
+        for _, row in records.iterrows():
+            lines.append(
+                "| {label} | {mae} | {rmse} | {r2} |".format(
+                    label=row["test_subset"],
+                    mae=_format_metric(row, mae, digits),
+                    rmse=_format_metric(row, rmse, digits),
+                    r2=_format_metric(row, r2, 3),
+                )
+            )
+        blocks.append("\n".join(lines))
+
+    coverage = [
+        "**Prediction validity**",
+        "",
+        "| Test subset | Valid coverage |",
+        "|---|---:|",
     ]
     for _, row in records.iterrows():
-        lines.append(
-            "| {label} | {p} | {t} | {y} | {coverage} |".format(
-                label=row["test_subset"],
-                p=_format(row["pressure_mae_kpa_mean"], row["pressure_mae_kpa_std"], 2),
-                t=_format(row["temperature_mae_k_mean"], row["temperature_mae_k_std"], 2),
-                y=_format(row["y_mae_mean"], row["y_mae_std"], 4),
-                coverage=_format(row["valid_coverage_mean"], row["valid_coverage_std"], 4),
-            )
+        coverage.append(
+            f"| {row['test_subset']} | "
+            f"{_format(row['valid_coverage_mean'], row['valid_coverage_std'], 4)} |"
         )
-    return "\n".join(lines)
+    blocks.append("\n".join(coverage))
+    return "\n\n".join(blocks)
 
 
 def _eligible_system_range(project_root: Path, protocol: str) -> str:
@@ -618,13 +669,13 @@ def write_predictive_report(
         "",
         "## Overall predictive performance",
         "",
-        _markdown_table(pd.concat([binary, ternary], ignore_index=True)),
+        metric_markdown_tables(pd.concat([binary, ternary], ignore_index=True)),
         "",
         "The joint binary/ternary model is reported by cardinality rather than as one pooled headline. Independent activity-coefficient error is not reported because the workbooks do not provide a complete trusted pure-property reference needed to invert experimental gamma without reusing the model's learned Psat branch.",
         "",
         "## Thermodynamic-state interpolation and extrapolation",
         "",
-        _markdown_table(state),
+        metric_markdown_tables(state),
         "",
         "Eligible test-system counts are: "
         + "; ".join(
@@ -635,13 +686,13 @@ def write_predictive_report(
         "",
         "## Unseen mixtures and components",
         "",
-        _markdown_table(difficulty),
+        metric_markdown_tables(difficulty),
         "",
         "The sharp degradation for held-out components is the clearest present limitation. System-disjoint unseen mixtures remain substantially easier when their constituent molecules have appeared elsewhere.",
         "",
         "## Binary-to-ternary transfer",
         "",
-        _markdown_table(scaling),
+        metric_markdown_tables(scaling),
         "",
         "The fixed-test scaling curve is non-monotonic. With only 18 candidate ternary training systems, subset identity and seed variability dominate several nominal fractions; added ternary labels do not consistently improve vapor-composition MAE over binary-only zero-shot transfer. This negative result is retained rather than smoothed or selectively reported.",
         "",
@@ -727,9 +778,9 @@ def write_training_diagnosis(
         "",
         "## Error gaps and capability boundaries",
         "",
-        _markdown_table(performance),
+        metric_markdown_tables(performance),
         "",
-        _markdown_table(difficulty),
+        metric_markdown_tables(difficulty),
         "",
         "The joint-model ternary subset is not uniformly harder than its binary subset, but the unseen-component protocol is dramatically harder than both state interpolation and system-disjoint unseen mixtures. Binary-to-ternary zero-shot transfer is viable on the fixed four-system test sets, whereas adding small ternary subsets gives a non-monotonic response.",
         "",
@@ -776,9 +827,18 @@ def _write_experiment_result_pages(
             "Status: **completed formal five-seed experiment**.",
             "",
             f"- Seeds: `{','.join(str(value) for value in manifest['seeds'])}`",
-            f"- Pressure MAE: {_format(row['pressure_mae_kpa_mean'], row['pressure_mae_kpa_std'], 3)} kPa",
-            f"- Temperature MAE: {_format(row['temperature_mae_k_mean'], row['temperature_mae_k_std'], 3)} K",
-            f"- Vapor-composition MAE: {_format(row['y_mae_mean'], row['y_mae_std'], 4)}",
+            "- Point-wise pressure: "
+            f"MAE {_format_metric(row, 'pressure_mae_kpa', 3)} kPa; "
+            f"RMSE {_format_metric(row, 'pressure_rmse_kpa', 3)} kPa; "
+            f"R² {_format_metric(row, 'pressure_r2', 4)}.",
+            "- Point-wise temperature: "
+            f"MAE {_format_metric(row, 'temperature_mae_k', 3)} K; "
+            f"RMSE {_format_metric(row, 'temperature_rmse_k', 3)} K; "
+            f"R² {_format_metric(row, 'temperature_r2', 4)}.",
+            "- Point-wise vapor composition: "
+            f"MAE {_format_metric(row, 'y_mae', 4)}; "
+            f"RMSE {_format_metric(row, 'y_rmse', 4)}; "
+            f"R² {_format_metric(row, 'y_r2', 4)}.",
             f"- Valid coverage: {_format(row['valid_coverage_mean'], row['valid_coverage_std'], 5)}",
             f"- Solver failure rate: {_format(row['solver_failure_rate_mean'], row['solver_failure_rate_std'], 5)}",
             f"- Training commit: `{manifest['training_git_commit']}`",

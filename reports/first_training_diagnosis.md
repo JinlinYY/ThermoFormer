@@ -18,17 +18,69 @@ The recorded total pre-clipping gradient-norm mean was **36.5** in supervised ep
 
 ## Error gaps and capability boundaries
 
-| Test subset | P MAE (kPa) | T MAE (K) | y MAE | Coverage |
-|---|---:|---:|---:|---:|
-| Binary-only model: binary test | 17.26 ± 8.42 | 5.75 ± 1.61 | 0.0657 ± 0.0176 | 1.0000 ± 0.0000 |
-| Joint model: binary test | 18.57 ± 6.40 | 5.72 ± 1.56 | 0.0697 ± 0.0160 | 1.0000 ± 0.0000 |
-| Joint model: ternary test | 4.43 ± 3.39 | 2.67 ± 0.46 | 0.0530 ± 0.0133 | 1.0000 ± 0.0000 |
+**Pressure metrics**
 
-| Test subset | P MAE (kPa) | T MAE (K) | y MAE | Coverage |
-|---|---:|---:|---:|---:|
-| State interpolation | 4.45 ± 1.03 | 1.83 ± 0.45 | 0.0324 ± 0.0071 | 1.0000 ± 0.0000 |
-| Unseen mixture | 16.99 ± 5.88 | 5.46 ± 1.48 | 0.0671 ± 0.0144 | 1.0000 ± 0.0000 |
-| Unseen component | 27.40 ± 0.87 | 37.87 ± 3.63 | 0.0931 ± 0.0180 | 0.9983 ± 0.0021 |
+| Test subset | MAE (kPa) | RMSE (kPa) | R² |
+|---|---:|---:|---:|
+| Binary-only model: binary test | 17.26 ± 8.42 (n=5) | 35.13 ± 14.93 (n=5) | 0.911 ± 0.051 (n=5) |
+| Joint model: binary test | 18.57 ± 6.40 (n=5) | 40.45 ± 14.09 (n=5) | 0.882 ± 0.052 (n=5) |
+| Joint model: ternary test | 4.43 ± 3.39 (n=4) | 5.68 ± 4.07 (n=4) | 0.888 ± 0.130 (n=4) |
+
+**Temperature metrics**
+
+| Test subset | MAE (K) | RMSE (K) | R² |
+|---|---:|---:|---:|
+| Binary-only model: binary test | 5.75 ± 1.61 (n=5) | 8.09 ± 2.50 (n=5) | 0.920 ± 0.052 (n=5) |
+| Joint model: binary test | 5.72 ± 1.56 (n=5) | 8.16 ± 2.02 (n=5) | 0.925 ± 0.025 (n=5) |
+| Joint model: ternary test | 2.67 ± 0.46 (n=4) | 3.60 ± 0.80 (n=4) | 0.949 ± 0.040 (n=4) |
+
+**Vapor-composition metrics**
+
+| Test subset | MAE | RMSE | R² |
+|---|---:|---:|---:|
+| Binary-only model: binary test | 0.0657 ± 0.0176 (n=5) | 0.0970 ± 0.0238 (n=5) | 0.903 ± 0.052 (n=5) |
+| Joint model: binary test | 0.0697 ± 0.0160 (n=5) | 0.1031 ± 0.0192 (n=5) | 0.893 ± 0.042 (n=5) |
+| Joint model: ternary test | 0.0530 ± 0.0133 (n=5) | 0.0742 ± 0.0193 (n=5) | 0.900 ± 0.049 (n=5) |
+
+**Prediction validity**
+
+| Test subset | Valid coverage |
+|---|---:|
+| Binary-only model: binary test | 1.0000 ± 0.0000 |
+| Joint model: binary test | 1.0000 ± 0.0000 |
+| Joint model: ternary test | 1.0000 ± 0.0000 |
+
+**Pressure metrics**
+
+| Test subset | MAE (kPa) | RMSE (kPa) | R² |
+|---|---:|---:|---:|
+| State interpolation | 4.45 ± 1.03 (n=5) | 10.05 ± 2.37 (n=5) | 0.983 ± 0.008 (n=5) |
+| Unseen mixture | 16.99 ± 5.88 (n=5) | 38.24 ± 13.89 (n=5) | 0.884 ± 0.052 (n=5) |
+| Unseen component | 27.40 ± 0.87 (n=5) | 71.92 ± 5.21 (n=5) | 0.460 ± 0.076 (n=5) |
+
+**Temperature metrics**
+
+| Test subset | MAE (K) | RMSE (K) | R² |
+|---|---:|---:|---:|
+| State interpolation | 1.83 ± 0.45 (n=5) | 2.49 ± 0.58 (n=5) | 0.990 ± 0.005 (n=5) |
+| Unseen mixture | 5.46 ± 1.48 (n=5) | 7.88 ± 2.01 (n=5) | 0.928 ± 0.025 (n=5) |
+| Unseen component | 37.87 ± 3.63 (n=5) | 48.63 ± 4.10 (n=5) | 0.415 ± 0.098 (n=5) |
+
+**Vapor-composition metrics**
+
+| Test subset | MAE | RMSE | R² |
+|---|---:|---:|---:|
+| State interpolation | 0.0324 ± 0.0071 (n=5) | 0.0473 ± 0.0083 (n=5) | 0.969 ± 0.012 (n=5) |
+| Unseen mixture | 0.0671 ± 0.0144 (n=5) | 0.0996 ± 0.0173 (n=5) | 0.898 ± 0.037 (n=5) |
+| Unseen component | 0.0931 ± 0.0180 (n=5) | 0.1390 ± 0.0235 (n=5) | 0.846 ± 0.055 (n=5) |
+
+**Prediction validity**
+
+| Test subset | Valid coverage |
+|---|---:|
+| State interpolation | 1.0000 ± 0.0000 |
+| Unseen mixture | 1.0000 ± 0.0000 |
+| Unseen component | 0.9983 ± 0.0021 |
 
 The joint-model ternary subset is not uniformly harder than its binary subset, but the unseen-component protocol is dramatically harder than both state interpolation and system-disjoint unseen mixtures. Binary-to-ternary zero-shot transfer is viable on the fixed four-system test sets, whereas adding small ternary subsets gives a non-monotonic response.
 
