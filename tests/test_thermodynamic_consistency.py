@@ -55,6 +55,25 @@ class ThermodynamicConsistencyTests(unittest.TestCase):
         self.assertTrue(np.isfinite(errors["pressure_relative"][0]))
         self.assertGreater(errors["pressure_relative"][0], 0.0)
 
+    def test_direct_physical_rate_is_unavailable_without_pure_references(self) -> None:
+        sample = self._sample(350.0, 100.0, (0.5, 0.5))
+        features = {"A": np.zeros(4, dtype=np.float32), "B": np.ones(4, dtype=np.float32)}
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=4, hidden_dim=16, layers=1, heads=4,
+                decoder_mode="direct_vle",
+            )
+        ).eval()
+
+        metrics = evaluate_thermodynamic_consistency(
+            model, [sample], features, torch.device("cpu"), solver_iterations=2,
+            grid_points=5, max_systems=1, pure_reference_samples=[],
+        )
+
+        self.assertEqual(metrics["pure_limit_reference_coverage"], 0.0)
+        self.assertIsNone(metrics["pure_limit_failure_rate"])
+        self.assertIsNone(metrics["nonphysical_prediction_rate"])
+
     def test_ternary_gibbs_duhem_uses_only_simplex_tangent_directions(self) -> None:
         directions = simplex_tangent_directions(3)
 

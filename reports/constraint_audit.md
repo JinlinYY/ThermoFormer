@@ -50,3 +50,7 @@ fixed before formal results were viewed. Near-pure P/T references are independen
 fit from the training partition's pure-endpoint measurements (log P against 1/T);
 the direct-VLE head is never used as its own reference. Catalog-backed Antoine or
 DIPPR parameters are threaded through the same evaluator whenever configured.
+Pure-reference coverage is reported explicitly. For Direct-VLE, incomplete
+independent reference coverage makes the aggregate pure-limit failure rate and
+combined nonphysical rate unavailable; available-component P/T residuals and the
+independent y-limit metric remain visible instead of silently changing criterion.

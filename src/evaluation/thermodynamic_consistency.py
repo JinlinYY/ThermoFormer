@@ -387,6 +387,7 @@ def _pure_limit_errors(
         "pressure_relative": [],
         "temperature_k": [],
         "combined_normalized": [],
+        "reference_available": [],
     }
     for sample_index in range(batch.x.shape[0]):
         count = int(batch.mask[sample_index].sum().item())
@@ -468,6 +469,9 @@ def _pure_limit_errors(
             reference_temperature.append(1.0 / inverse_temperature if inverse_temperature > 0.0 else math.nan)
         reference_pressure_tensor = torch.tensor(reference_pressure, device=x.device)
         reference_temperature_tensor = torch.tensor(reference_temperature, device=x.device)
+        reference_available = torch.isfinite(reference_pressure_tensor) & torch.isfinite(
+            reference_temperature_tensor
+        )
         if not direct:
             reference_pressure_tensor = torch.where(
                 torch.isfinite(reference_pressure_tensor),
@@ -495,10 +499,15 @@ def _pure_limit_errors(
             torch.maximum(combined, temperature_error / 100.0),
             combined,
         )
+        if direct:
+            combined = torch.where(
+                reference_available, combined, torch.full_like(combined, math.nan)
+            )
         errors["y"].extend(y_error.tolist())
         errors["pressure_relative"].extend(pressure_error.tolist())
         errors["temperature_k"].extend(temperature_error.tolist())
         errors["combined_normalized"].extend(combined.tolist())
+        errors["reference_available"].extend(reference_available.float().tolist())
     return errors
 
 
@@ -718,6 +727,8 @@ def evaluate_thermodynamic_consistency(
     )
     equilibrium = summarize_absolute(residuals, "equilibrium_residual")
     pure_vle = pure["combined_normalized"]
+    pure_reference_coverage = float(np.mean(pure["reference_available"]))
+    direct_reference_complete = not direct or pure_reference_coverage >= 1.0 - 1e-12
     result: dict[str, Any] = {
         "evaluated_systems": len(representatives),
         "evaluated_predictions": len(records),
@@ -736,23 +747,28 @@ def evaluate_thermodynamic_consistency(
         **summarize_absolute(pure["pressure_relative"], "pure_limit_pressure_relative"),
         **summarize_absolute(pure["temperature_k"], "pure_limit_temperature_k"),
         **summarize_absolute(pure_vle, "pure_limit_vle"),
+        "pure_limit_reference_coverage": pure_reference_coverage,
         "equilibrium_residual_mean_abs_kpa": equilibrium["equilibrium_residual_mean_abs"],
         "equilibrium_residual_p95_abs_kpa": equilibrium["equilibrium_residual_p95_abs"],
         "equilibrium_residual_max_abs_kpa": equilibrium["equilibrium_residual_max_abs"],
         "solver_convergence_failure_rate": float(
             np.mean([not bool(record.get("converged")) for record in records])
         ),
-        "pure_limit_failure_rate": float(
-            np.mean(np.asarray(pure_vle) > pure_failure_threshold)
-        ) if pure_vle else None,
+        "pure_limit_failure_rate": (
+            float(np.mean(np.asarray(pure_vle) > pure_failure_threshold))
+            if pure_vle and direct_reference_complete else None
+        ),
         "ordinary_nonphysical_prediction_rate": (
             nonphysical / len(records) if records else None
         ),
-        "nonphysical_prediction_rate": combined_nonphysical_rate(
-            nonphysical,
-            len(records),
-            pure_vle,
-            pure_failure_threshold,
+        "nonphysical_prediction_rate": (
+            combined_nonphysical_rate(
+                nonphysical,
+                len(records),
+                pure_vle,
+                pure_failure_threshold,
+            )
+            if direct_reference_complete else None
         ),
         "physical_criteria": {
             "gross_equilibrium_residual_kpa": 0.1,
