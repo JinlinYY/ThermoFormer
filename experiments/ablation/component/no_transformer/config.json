@@ -1,0 +1,12 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "thermoformer_no_transformer",
+  "model": {
+    "layers": 0,
+    "use_transformer": false
+  },
+  "runtime": {
+    "output_dir": "runs/experiments/ablation/component/no_transformer",
+    "results_file": "experiments/ablation/component/no_transformer/results.md"
+  }
+}

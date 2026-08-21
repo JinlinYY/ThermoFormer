@@ -1,0 +1,234 @@
+"""Data and physics objectives for thermodynamic-state training."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, replace
+from typing import TYPE_CHECKING
+
+import torch
+from torch import Tensor, nn
+
+from .thermo import EquilibriumState, equilibrium_at_tp, solve_batch_modes
+
+if TYPE_CHECKING:
+    from .data import VLEBatch
+
+
+@dataclass
+class Objective:
+    total: Tensor
+    vapor_composition: Tensor
+    pressure: Tensor
+    pure_vapor_pressure: Tensor
+    continuity: Tensor
+    boundary: Tensor
+    solver: Tensor
+
+    def detached(self) -> dict[str, float]:
+        return {
+            "total": float(self.total.detach().cpu()),
+            "vapor_composition": float(self.vapor_composition.detach().cpu()),
+            "pressure": float(self.pressure.detach().cpu()),
+            "pure_vapor_pressure": float(self.pure_vapor_pressure.detach().cpu()),
+            "continuity": float(self.continuity.detach().cpu()),
+            "boundary": float(self.boundary.detach().cpu()),
+            "solver": float(self.solver.detach().cpu()),
+        }
+
+
+def _weighted_mean(values: Tensor, weights: Tensor) -> Tensor:
+    flattened_weights = weights.reshape(-1).to(values)
+    return torch.sum(values.reshape(-1) * flattened_weights) / flattened_weights.sum().clamp_min(1e-12)
+
+
+def experimental_objective(
+    state: EquilibriumState,
+    observed_y: Tensor,
+    observed_pressure_kpa: Tensor,
+    quality_weight: Tensor,
+    mask: Tensor,
+    vapor_weight: float = 1.0,
+    pressure_weight: float = 1.0,
+    pure_weight: float = 0.5,
+) -> Objective:
+    """Supervise y, the bubble equation, and pure-component Psat anchors."""
+    component_count = mask.sum(-1).clamp_min(1.0)
+    vapor_per_sample = (((state.y - observed_y) ** 2) * mask).sum(-1) / component_count
+    vapor_loss = _weighted_mean(vapor_per_sample, quality_weight)
+
+    log_pressure_error = (
+        torch.log(state.calculated_pressure_kpa.clamp_min(1e-12))
+        - torch.log(observed_pressure_kpa.clamp_min(1e-12))
+    ).squeeze(-1) ** 2
+    pressure_loss = _weighted_mean(log_pressure_error, quality_weight)
+
+    dominant_fraction, dominant_index = state.x.max(-1)
+    endpoint = (dominant_fraction >= 0.999).to(state.x)
+    predicted_pure = state.psat_kpa.gather(1, dominant_index.unsqueeze(-1)).squeeze(-1)
+    pure_error = (
+        torch.log(predicted_pure.clamp_min(1e-12))
+        - torch.log(observed_pressure_kpa.squeeze(-1).clamp_min(1e-12))
+    ) ** 2
+    endpoint_weights = quality_weight.reshape(-1).to(state.x) * endpoint
+    pure_loss = torch.sum(pure_error * endpoint_weights) / endpoint_weights.sum().clamp_min(1.0)
+
+    zero = state.y.sum() * 0.0
+    total = vapor_weight * vapor_loss + pressure_weight * pressure_loss + pure_weight * pure_loss
+    return Objective(
+        total=total,
+        vapor_composition=vapor_loss,
+        pressure=pressure_loss,
+        pure_vapor_pressure=pure_loss,
+        continuity=zero,
+        boundary=zero,
+        solver=zero,
+    )
+
+
+def with_local_continuity(
+    objective: Objective,
+    state: EquilibriumState,
+    model: nn.Module,
+    batch: "VLEBatch",
+    weight: float,
+    perturbation: float = 0.01,
+) -> Objective:
+    """Add local phase-diagram smoothness around observed compositions."""
+    if weight <= 0.0:
+        return objective
+    if model.training:
+        direction = torch.randn_like(batch.x) * batch.mask
+    else:
+        direction = (
+            torch.arange(
+                batch.x.shape[1], dtype=batch.x.dtype, device=batch.x.device
+            ).expand_as(batch.x)
+            * batch.mask
+        )
+    direction = (
+        direction
+        - direction.sum(-1, keepdim=True)
+        / batch.mask.sum(-1, keepdim=True).clamp_min(1.0)
+        * batch.mask
+    )
+    direction = direction / torch.sqrt((direction**2).sum(-1, keepdim=True)).clamp_min(1e-6)
+    upper_x = (batch.x + perturbation * direction).clamp_min(1e-6) * batch.mask
+    upper_x = upper_x / upper_x.sum(-1, keepdim=True).clamp_min(1e-12)
+    lower_x = (batch.x - perturbation * direction).clamp_min(1e-6) * batch.mask
+    lower_x = lower_x / lower_x.sum(-1, keepdim=True).clamp_min(1e-12)
+    upper = equilibrium_at_tp(
+        model,
+        batch.molecules,
+        batch.temperature_k,
+        batch.pressure_kpa,
+        upper_x,
+        batch.mask,
+        batch.pure_property_parameters,
+    )
+    lower = equilibrium_at_tp(
+        model,
+        batch.molecules,
+        batch.temperature_k,
+        batch.pressure_kpa,
+        lower_x,
+        batch.mask,
+        batch.pure_property_parameters,
+    )
+    local_curvature = (upper.y - 2.0 * state.y + lower.y) / (perturbation**2)
+    continuity = ((local_curvature**2) * batch.mask).sum() / batch.mask.sum().clamp_min(1.0)
+    return replace(
+        objective,
+        total=objective.total + weight * continuity,
+        continuity=continuity,
+    )
+
+
+def with_pure_boundary(
+    objective: Objective,
+    model: nn.Module,
+    batch: "VLEBatch",
+    weight: float,
+    epsilon: float = 1e-3,
+) -> Objective:
+    """Penalize non-unit activity of each component near its pure limit."""
+    if weight <= 0.0:
+        return objective
+    component_count = batch.mask.shape[1]
+    identity = torch.eye(
+        component_count, dtype=batch.mask.dtype, device=batch.mask.device
+    )
+    targets = identity.unsqueeze(0).expand(batch.mask.shape[0], -1, -1)
+    other = batch.mask.unsqueeze(1) * (1.0 - targets)
+    other = other / other.sum(-1, keepdim=True).clamp_min(1.0)
+    boundary_x = (1.0 - epsilon) * targets + epsilon * other
+    boundary_x = boundary_x * batch.mask.unsqueeze(1)
+    flat_x = boundary_x.reshape(-1, component_count)
+    repeated_mask = batch.mask.repeat_interleave(component_count, dim=0)
+    outputs = model(
+        batch.molecules.repeat_interleave(component_count, dim=0),
+        batch.temperature_k.repeat_interleave(component_count, dim=0),
+        batch.pressure_kpa.repeat_interleave(component_count, dim=0),
+        flat_x,
+        repeated_mask,
+    )
+    target_log_gamma = (outputs.log_gamma * targets.reshape(-1, component_count)).sum(-1)
+    valid_targets = batch.mask.reshape(-1)
+    boundary = torch.sum(target_log_gamma.square() * valid_targets) / valid_targets.sum().clamp_min(1.0)
+    return replace(
+        objective,
+        total=objective.total + weight * boundary,
+        boundary=boundary,
+    )
+
+
+def with_solver_supervision(
+    objective: Objective,
+    model: nn.Module,
+    batch: "VLEBatch",
+    weight: float,
+    iterations: int,
+) -> Objective:
+    """Backpropagate through mode-appropriate bubble solves on selected batches."""
+    if weight <= 0.0:
+        return objective
+    terms: list[Tensor] = []
+    solutions = solve_batch_modes(model, batch, iterations=iterations, strict=False)
+    isothermal_rows = solutions.isothermal_rows
+    if solutions.isothermal is not None:
+        solved = solutions.isothermal
+        pressure_error = (
+            torch.log(solved.pressure_kpa.clamp_min(1e-12))
+            - torch.log(batch.pressure_kpa[isothermal_rows].clamp_min(1e-12))
+        ).squeeze(-1).square()
+        vapor_error = (
+            (solved.y - batch.y[isothermal_rows]).square()
+            * batch.mask[isothermal_rows]
+        ).sum(-1) / batch.mask[isothermal_rows].sum(-1).clamp_min(1.0)
+        terms.append(
+            _weighted_mean(
+                pressure_error + vapor_error,
+                batch.quality_weight[isothermal_rows],
+            )
+        )
+    isobaric_rows = solutions.isobaric_rows
+    if solutions.isobaric is not None:
+        solved = solutions.isobaric
+        temperature_error = (
+            (solved.temperature_k - batch.temperature_k[isobaric_rows]) / 100.0
+        ).squeeze(-1).square()
+        vapor_error = (
+            (solved.y - batch.y[isobaric_rows]).square()
+            * batch.mask[isobaric_rows]
+        ).sum(-1) / batch.mask[isobaric_rows].sum(-1).clamp_min(1.0)
+        terms.append(
+            _weighted_mean(
+                temperature_error + vapor_error,
+                batch.quality_weight[isobaric_rows],
+            )
+        )
+    solver = torch.stack(terms).mean() if terms else objective.total * 0.0
+    return replace(
+        objective,
+        total=objective.total + weight * solver,
+        solver=solver,
+    )

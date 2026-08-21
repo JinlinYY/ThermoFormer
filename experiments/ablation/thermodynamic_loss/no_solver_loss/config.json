@@ -1,0 +1,11 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "thermoformer_no_solver_loss",
+  "training": {
+    "solver_weight": 0.0
+  },
+  "runtime": {
+    "output_dir": "runs/experiments/ablation/thermodynamic_loss/no_solver_loss",
+    "results_file": "experiments/ablation/thermodynamic_loss/no_solver_loss/results.md"
+  }
+}

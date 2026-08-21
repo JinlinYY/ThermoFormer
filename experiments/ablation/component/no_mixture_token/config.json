@@ -1,0 +1,11 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "thermoformer_no_mixture_token",
+  "model": {
+    "use_mixture_token": false
+  },
+  "runtime": {
+    "output_dir": "runs/experiments/ablation/component/no_mixture_token",
+    "results_file": "experiments/ablation/component/no_mixture_token/results.md"
+  }
+}

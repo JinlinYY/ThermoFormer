@@ -1,0 +1,58 @@
+{
+  "name": "thermoformer_base",
+  "seed": 42,
+  "model": {
+    "hidden_dim": 192,
+    "layers": 3,
+    "heads": 6,
+    "feedforward_multiplier": 4,
+    "dropout": 0.0,
+    "pair_hidden_dim": 192,
+    "pure_hidden_dim": 192,
+    "film_scale": 0.1,
+    "use_transformer": true,
+    "use_mixture_token": true,
+    "use_film": true,
+    "use_composition_context": true,
+    "activity_mode": "excess_gibbs"
+  },
+  "encoder": {
+    "model_size": "84m",
+    "batch_size": 16
+  },
+  "data": {
+    "root": "dataset",
+    "pure_property_catalog": "",
+    "source_filter": "",
+    "failed_weight": 0.0,
+    "max_pressure_kpa": 500.0,
+    "minimum_pure_anchor_temperatures": 2
+  },
+  "evaluation": {
+    "mode": "kfold",
+    "folds": 5,
+    "test_fraction": 0.15,
+    "validation_fraction": 0.15
+  },
+  "training": {
+    "batch_size": 128,
+    "learning_rate": 0.0002,
+    "weight_decay": 0.0001,
+    "epochs_supervised": 80,
+    "epochs_physics": 5,
+    "pressure_weight": 1.0,
+    "pure_weight": 0.5,
+    "continuity_weight": 0.001,
+    "boundary_weight": 0.001,
+    "solver_weight": 0.1,
+    "solver_batches_per_epoch": 2,
+    "solver_iterations_train": 16,
+    "solver_iterations_eval": 24,
+    "gradient_clip": 5.0
+  },
+  "runtime": {
+    "output_dir": "runs/experiments/baseline/thermoformer_base",
+    "device": "auto",
+    "results_file": "experiments/baseline/thermoformer_base/results.md"
+  }
+}

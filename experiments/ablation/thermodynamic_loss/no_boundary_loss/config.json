@@ -1,0 +1,11 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "thermoformer_no_boundary_loss",
+  "training": {
+    "boundary_weight": 0.0
+  },
+  "runtime": {
+    "output_dir": "runs/experiments/ablation/thermodynamic_loss/no_boundary_loss",
+    "results_file": "experiments/ablation/thermodynamic_loss/no_boundary_loss/results.md"
+  }
+}

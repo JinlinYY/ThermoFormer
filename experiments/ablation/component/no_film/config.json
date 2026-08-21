@@ -1,0 +1,11 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "thermoformer_no_film",
+  "model": {
+    "use_film": false
+  },
+  "runtime": {
+    "output_dir": "runs/experiments/ablation/component/no_film",
+    "results_file": "experiments/ablation/component/no_film/results.md"
+  }
+}

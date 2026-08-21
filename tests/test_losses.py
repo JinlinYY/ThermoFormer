@@ -1,0 +1,56 @@
+import unittest
+
+import torch
+
+from src.losses import experimental_objective
+from src.model import ModelOutputs
+from src.thermo import equilibrium_at_tp
+
+
+class ConstantIdealModel(torch.nn.Module):
+    def forward(self, molecules, temperature_k, pressure_kpa, x, mask):
+        psat = torch.tensor([100.0, 50.0], device=x.device).expand_as(x)
+        return ModelOutputs(log_gamma=torch.zeros_like(x), log_psat=torch.log(psat))
+
+
+class ExperimentalObjectiveTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.model = ConstantIdealModel()
+        self.molecules = torch.zeros(1, 2, 1)
+        self.temperature = torch.tensor([[350.0]])
+        self.x = torch.tensor([[0.4, 0.6]])
+        self.mask = torch.ones_like(self.x)
+
+    def test_exact_equilibrium_has_zero_data_loss(self) -> None:
+        pressure = torch.tensor([[70.0]])
+        state = equilibrium_at_tp(
+            self.model, self.molecules, self.temperature, pressure, self.x, self.mask
+        )
+        objective = experimental_objective(
+            state,
+            observed_y=torch.tensor([[4.0 / 7.0, 3.0 / 7.0]]),
+            observed_pressure_kpa=pressure,
+            quality_weight=torch.ones(1, 1),
+            mask=self.mask,
+        )
+
+        self.assertAlmostEqual(objective.total.item(), 0.0, places=6)
+
+    def test_pressure_mismatch_is_penalized(self) -> None:
+        observed_pressure = torch.tensor([[140.0]])
+        state = equilibrium_at_tp(
+            self.model, self.molecules, self.temperature, observed_pressure, self.x, self.mask
+        )
+        objective = experimental_objective(
+            state,
+            observed_y=state.y,
+            observed_pressure_kpa=observed_pressure,
+            quality_weight=torch.ones(1, 1),
+            mask=self.mask,
+        )
+
+        self.assertGreater(objective.pressure.item(), 0.1)
+
+
+if __name__ == "__main__":
+    unittest.main()

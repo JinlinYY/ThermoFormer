@@ -1,0 +1,35 @@
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Editors and operating-system metadata
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Generated training products and logs
+runs/
+logs/
+*.log
+*.pt
+*.pth
+*.ckpt
+*.npy
+*.npz
+
+# Temporary files
+*.tmp
+*.temp
+~$*
