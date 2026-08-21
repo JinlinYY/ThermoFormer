@@ -1,0 +1,3 @@
+# Binary-to-ternary generalization
+
+The zero-shot experiment trains on binary systems only and uses binary validation only. It shares the exact coverage-stratified held-out ternary test systems with the 5%, 10%, 25%, 50% and 100% experiments, so the scaling curve has a directly comparable 0% endpoint without using ternary labels for model selection. Because the training pool contains 18 systems, every split records both requested and realized fraction (the nominal 5% point is 1/18 = 5.56%). Coverage strata are calculated only from binary systems actually present in that seed's training partition.

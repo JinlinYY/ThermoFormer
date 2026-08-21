@@ -1,11 +1,11 @@
 # Interpolation and extrapolation experiments
 
-This category is reserved for controlled generalization studies, including:
+This category implements controlled generalization studies, including:
 
 - composition and temperature interpolation within observed system domains;
 - temperature, pressure and composition extrapolation beyond training ranges;
 - unseen binary/ternary system or molecule holdouts.
 
-Each implemented study should use its own subdirectory containing `config.json`,
-`run.md` and `results.md`. No result is claimed until the corresponding experiment
-has been defined and run.
+Every study has its own subdirectory containing `config.json`, `run.md` and
+`results.md`. Its exact row assignment is committed under `splits/`; no result is
+claimed until all requested seeds complete and are aggregated.

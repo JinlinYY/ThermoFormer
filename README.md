@@ -8,6 +8,12 @@ ThermoFormer 使用 Uni-Mol v2 分子表征、可配置多组分交互与可微�
 src/                                  # 模型、数据、训练及热力学求解器
 scripts/
   train_thermoformer.py               # 统一实验运行源码
+  audit_dataset.py                    # 数据审计与三元子体系覆盖
+  generate_splits.py                  # 生成固定、带数据摘要的协议划分
+  validate_splits.py                  # 回读并审计全部划分
+  run_paper_experiment.py             # 单协议/单种子论文运行器
+  run_paper_suite.py                  # 五种子实验套件
+  aggregate_results.py                # mean ± std 聚合
 experiments/
   README.md                           # 实验总索引
   baseline/thermoformer_base/         # 完整模型基线
@@ -17,6 +23,11 @@ experiments/
   comparison/                         # 对比实验
   interpolation_extrapolation/        # 内插/外推实验设计与后续结果
   explainability/                     # 可解释性实验设计与后续结果
+splits/                               # 75 个固定划分 JSON（15 协议 × 5 seeds）
+reports/                              # 实现、数据、划分和训练诊断审计
+results/                              # 逐种子预测 CSV 与指标 JSON/CSV
+figures/                              # 由结果脚本生成的 PDF/PNG 图
+checkpoints/                          # 正式最佳模型（*.pt 默认不入 Git）
 dataset/
   binary_vle_english.xlsx             # 二元 VLE 数据
   ternary_vle_english.xlsx            # 三元 VLE 数据
@@ -109,6 +120,24 @@ python scripts/train_thermoformer.py --config experiments/baseline/thermoformer_
 默认先按无序化学物系隔离独立测试集，再在其余数据上进行 5 折分组交叉验证，最后用全部 CV 数据重训并仅评价一次测试集。A–B 与 B–A 始终在同一分区，二元和三元体系分别分层，纯端点参考体系仅进入训练侧。
 
 每次拟合分为两阶段：默认先进行 80 个 epoch 的实验数据监督，再从最佳监督模型继续进行 5 个 epoch 的物理微调。物理阶段加入相图连续性、近纯边界，以及每个 epoch 少量批次上的可微泡点求解监督。组分置换等变性由模型结构硬约束并由测试验证，不再用数值近零、无有效梯度的辅助 loss。求解器监督批次数和迭代次数均可通过配置调整，以兼顾物理性与训练速度。
+
+论文实验将 80/5 视为阶段上限：监督阶段采用验证 patience 12（至少 10 epoch），物理阶段以监督最佳 checkpoint 作为 epoch 0 候选，只有共同实验验证目标改善时才接受微调结果。监督/物理学习率分别为 `2e-4`/`2e-5`，连续性权重为 `1e-5`；这些设置来自 `reports/first_training_diagnosis.md` 中明确标为非正式结果的单种子 pilot。训练历史记录预裁剪梯度均值/最大值，正式求解评估使用 48 次迭代并始终报告收敛覆盖率。
+
+固定协议划分先运行：
+
+```powershell
+python scripts/audit_dataset.py
+python scripts/generate_splits.py
+python scripts/validate_splits.py
+```
+
+随后可按协议执行 seeds 0–4，例如：
+
+```powershell
+python scripts/run_paper_suite.py --protocol overall_binary_ternary --device cuda
+```
+
+每个正式运行保存完整 split 引用、数据 SHA-256、Git commit、解析后的配置、最佳 checkpoint、训练曲线、逐样本预测和点/物系等权指标。代码、配置或划分未提交时，正式运行会拒绝启动；`--smoke` 产物隔离在 `runs/suite_smoke/` 且不会被五种子聚合器当作正式结果。
 
 单次训练/验证/测试划分可通过覆盖参数运行：
 

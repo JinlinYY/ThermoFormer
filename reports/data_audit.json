@@ -1,0 +1,237 @@
+{
+  "loading": {
+    "combined": {
+      "raw_rows": 28290,
+      "accepted_before_deduplication": 16246,
+      "duplicates_removed": 7,
+      "loaded_samples": 16239,
+      "rejected": {
+        "failed_quality": 1254,
+        "missing_smiles": 4318,
+        "pressure_above_limit": 6472
+      }
+    },
+    "by_workbook": {
+      "binary_vle_english.xlsx": {
+        "raw_rows": 23061,
+        "loaded_samples": 14704,
+        "duplicates_removed": 7,
+        "rejected": {
+          "failed_quality": 1216,
+          "missing_smiles": 787,
+          "pressure_above_limit": 6347
+        }
+      },
+      "ternary_vle_english.xlsx": {
+        "raw_rows": 5229,
+        "loaded_samples": 1535,
+        "duplicates_removed": 0,
+        "rejected": {
+          "failed_quality": 38,
+          "missing_smiles": 3531,
+          "pressure_above_limit": 125
+        }
+      }
+    }
+  },
+  "loaded": {
+    "dataset_sha256": "f8a6f4a46c92603f2497621fc2a645261a694f1fac78339dc9adcbe275ed2bce",
+    "rows": 16239,
+    "systems": 592,
+    "components_raw": 285,
+    "components_canonical": 285,
+    "invalid_smiles": [],
+    "canonical_collisions": {},
+    "rows_by_component_count": {
+      "2": 14704,
+      "3": 1535
+    },
+    "systems_by_component_count": {
+      "2": 560,
+      "3": 32
+    },
+    "rows_by_source": {
+      "binary_vle_english.xlsx": 14704,
+      "ternary_vle_english.xlsx": 1535
+    },
+    "rows_by_quality": {
+      "passed": 3550,
+      "unverified": 12689
+    },
+    "rows_by_mode": {
+      "full_state": 341,
+      "isobaric": 9282,
+      "isothermal": 6616
+    },
+    "mode_confidence": {
+      "minimum": 0.0,
+      "q25": 0.9285714285714286,
+      "median": 0.9444444444444444,
+      "q75": 0.9565217391304348,
+      "maximum": 0.992,
+      "mean": 0.9173049941107839
+    },
+    "unique_nonempty_doi": 313,
+    "rows_with_missing_doi": 0,
+    "temperature_k": {
+      "minimum": 193.19,
+      "q25": 328.15,
+      "median": 350.15,
+      "q75": 373.5,
+      "maximum": 1550.0,
+      "mean": 354.37854430691544
+    },
+    "pressure_kpa": {
+      "minimum": 0.009999177599999999,
+      "q25": 33.600036505728,
+      "median": 100.979961391616,
+      "q75": 101.299935074816,
+      "maximum": 499.999943289344,
+      "mean": 91.77326110938023
+    },
+    "liquid_mole_fraction": {
+      "minimum": 0.0,
+      "q25": 0.18100000000000005,
+      "median": 0.462,
+      "q75": 0.7693,
+      "maximum": 1.0,
+      "mean": 0.47743509834475056
+    },
+    "vapor_mole_fraction": {
+      "minimum": 0.0,
+      "q25": 0.16649999999999998,
+      "median": 0.459,
+      "q75": 0.7846,
+      "maximum": 1.0,
+      "mean": 0.47743509834475056
+    },
+    "points_per_system": {
+      "minimum": 1.0,
+      "q25": 15.0,
+      "median": 21.0,
+      "q75": 35.0,
+      "maximum": 149.0,
+      "mean": 27.430743243243242
+    },
+    "systems_per_component": {
+      "minimum": 1.0,
+      "q25": 1.0,
+      "median": 2.0,
+      "q75": 5.0,
+      "maximum": 44.0,
+      "mean": 4.266666666666667
+    },
+    "pure_anchor_temperatures_per_component": {
+      "minimum": 0.0,
+      "q25": 0.0,
+      "median": 2.0,
+      "q75": 4.0,
+      "maximum": 26.0,
+      "mean": 2.9789473684210526
+    },
+    "components_with_at_least_two_pure_anchor_temperatures": 148
+  },
+  "modeling": {
+    "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+    "rows": 11014,
+    "systems": 347,
+    "components_raw": 138,
+    "components_canonical": 138,
+    "invalid_smiles": [],
+    "canonical_collisions": {},
+    "rows_by_component_count": {
+      "2": 9905,
+      "3": 1109
+    },
+    "systems_by_component_count": {
+      "2": 321,
+      "3": 26
+    },
+    "rows_by_source": {
+      "binary_vle_english.xlsx": 9905,
+      "ternary_vle_english.xlsx": 1109
+    },
+    "rows_by_quality": {
+      "passed": 2098,
+      "unverified": 8916
+    },
+    "rows_by_mode": {
+      "full_state": 138,
+      "isobaric": 6034,
+      "isothermal": 4842
+    },
+    "mode_confidence": {
+      "minimum": 0.0,
+      "q25": 0.9285714285714286,
+      "median": 0.9444444444444444,
+      "q75": 0.9545454545454546,
+      "maximum": 0.9830508474576272,
+      "mean": 0.9268719799240025
+    },
+    "unique_nonempty_doi": 209,
+    "rows_with_missing_doi": 0,
+    "temperature_k": {
+      "minimum": 253.14999999999998,
+      "q25": 330.0,
+      "median": 348.31499999999994,
+      "q75": 372.25,
+      "maximum": 559.01,
+      "mean": 352.8275061739604
+    },
+    "pressure_kpa": {
+      "minimum": 0.099991776,
+      "q25": 34.122493535328,
+      "median": 94.000002137344,
+      "q75": 101.299935074816,
+      "maximum": 498.90003375334396,
+      "mean": 86.96031413537816
+    },
+    "liquid_mole_fraction": {
+      "minimum": 0.0,
+      "q25": 0.17620000000000002,
+      "median": 0.4575,
+      "q75": 0.772,
+      "maximum": 1.0,
+      "mean": 0.47603405800233395
+    },
+    "vapor_mole_fraction": {
+      "minimum": 0.0,
+      "q25": 0.1791,
+      "median": 0.46,
+      "q75": 0.7666,
+      "maximum": 1.0,
+      "mean": 0.47603405800233395
+    },
+    "points_per_system": {
+      "minimum": 3.0,
+      "q25": 17.0,
+      "median": 26.0,
+      "q75": 42.0,
+      "maximum": 149.0,
+      "mean": 31.740634005763688
+    },
+    "systems_per_component": {
+      "minimum": 1.0,
+      "q25": 2.0,
+      "median": 3.0,
+      "q75": 7.0,
+      "maximum": 28.0,
+      "mean": 5.217391304347826
+    },
+    "pure_anchor_temperatures_per_component": {
+      "minimum": 2.0,
+      "q25": 2.0,
+      "median": 3.0,
+      "q75": 6.0,
+      "maximum": 24.0,
+      "mean": 5.130434782608695
+    },
+    "components_with_at_least_two_pure_anchor_temperatures": 138
+  },
+  "ternary_binary_subsystem_coverage": {
+    "0/3": 2,
+    "1/3": 2,
+    "2/3": 7,
+    "3/3": 15
+  }
+}

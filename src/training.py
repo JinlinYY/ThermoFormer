@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import os
 import random
 from dataclasses import asdict, dataclass
 from typing import Sequence
@@ -29,17 +30,22 @@ from .thermo import equilibrium_at_tp, solve_batch_modes
 class TrainingConfig:
     batch_size: int = 128
     learning_rate: float = 2e-4
+    physics_learning_rate: float = 2e-5
     weight_decay: float = 1e-4
     epochs_supervised: int = 80
     epochs_physics: int = 5
+    early_stopping_patience: int = 12
+    minimum_supervised_epochs: int = 10
+    minimum_physics_epochs: int = 3
+    validation_min_delta: float = 0.0
     pressure_weight: float = 1.0
     pure_weight: float = 0.5
-    continuity_weight: float = 1e-3
+    continuity_weight: float = 1e-5
     boundary_weight: float = 1e-3
     solver_weight: float = 0.1
     solver_batches_per_epoch: int = 2
     solver_iterations_train: int = 16
-    solver_iterations_eval: int = 24
+    solver_iterations_eval: int = 48
     gradient_clip: float = 5.0
     seed: int = 42
 
@@ -48,6 +54,9 @@ class TrainingConfig:
             "batch_size": self.batch_size,
             "epochs_supervised": self.epochs_supervised,
             "epochs_physics": self.epochs_physics,
+            "early_stopping_patience": self.early_stopping_patience,
+            "minimum_supervised_epochs": self.minimum_supervised_epochs,
+            "minimum_physics_epochs": self.minimum_physics_epochs,
             "solver_batches_per_epoch": self.solver_batches_per_epoch,
             "solver_iterations_train": self.solver_iterations_train,
             "solver_iterations_eval": self.solver_iterations_eval,
@@ -57,6 +66,7 @@ class TrainingConfig:
             raise ValueError("batch_size, epoch counts, and seed must be integers")
         numeric_values = {
             "learning_rate": self.learning_rate,
+            "physics_learning_rate": self.physics_learning_rate,
             "weight_decay": self.weight_decay,
             "pressure_weight": self.pressure_weight,
             "pure_weight": self.pure_weight,
@@ -64,6 +74,7 @@ class TrainingConfig:
             "boundary_weight": self.boundary_weight,
             "solver_weight": self.solver_weight,
             "gradient_clip": self.gradient_clip,
+            "validation_min_delta": self.validation_min_delta,
         }
         if any(
             not isinstance(value, (int, float))
@@ -76,6 +87,8 @@ class TrainingConfig:
             raise ValueError("batch_size must be positive")
         if self.learning_rate <= 0.0:
             raise ValueError("learning_rate must be positive")
+        if self.physics_learning_rate <= 0.0:
+            raise ValueError("physics_learning_rate must be positive")
         if self.weight_decay < 0.0:
             raise ValueError("weight_decay cannot be negative")
         if any(
@@ -84,6 +97,9 @@ class TrainingConfig:
                 self.epochs_supervised,
                 self.epochs_physics,
                 self.solver_batches_per_epoch,
+                self.early_stopping_patience,
+                self.minimum_supervised_epochs,
+                self.minimum_physics_epochs,
             )
         ):
             raise ValueError("epoch and solver-batch counts cannot be negative")
@@ -97,6 +113,7 @@ class TrainingConfig:
                 self.continuity_weight,
                 self.boundary_weight,
                 self.solver_weight,
+                self.validation_min_delta,
             )
         ):
             raise ValueError("loss weights cannot be negative")
@@ -112,6 +129,9 @@ class FitResult:
 
 
 def seed_everything(seed: int) -> None:
+    # PyTorch deterministic CUDA GEMMs require this setting to exist before
+    # the first cuBLAS-backed Uni-Mol/model operation in the process.
+    os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -202,6 +222,8 @@ def _run_epoch(
     model.train(training)
     totals: dict[str, float] = {}
     sample_count = 0
+    gradient_norm_total = 0.0
+    gradient_norm_max = 0.0
     for batch_index, host_batch in enumerate(loader):
         batch = host_batch.to(device)
         solver_enabled = batch_index < config.solver_batches_per_epoch
@@ -220,6 +242,9 @@ def _run_epoch(
                 raise FloatingPointError(
                     f"Training produced non-finite gradients in batch {batch_index + 1}"
                 )
+            gradient_value = float(gradient_norm.detach().cpu())
+            gradient_norm_total += gradient_value * batch.x.shape[0]
+            gradient_norm_max = max(gradient_norm_max, gradient_value)
             optimizer.step()
         else:
             with torch.no_grad():
@@ -234,7 +259,11 @@ def _run_epoch(
             totals[name] = totals.get(name, 0.0) + value * size
     if sample_count == 0:
         raise ValueError("Training loader is empty")
-    return {name: value / sample_count for name, value in totals.items()}
+    metrics = {name: value / sample_count for name, value in totals.items()}
+    if training:
+        metrics["gradient_norm_mean"] = gradient_norm_total / sample_count
+        metrics["gradient_norm_max"] = gradient_norm_max
+    return metrics
 
 
 def _cpu_state(model: nn.Module) -> dict[str, torch.Tensor]:
@@ -275,17 +304,27 @@ def fit_model(
     best_state = _cpu_state(model)
     best_validation = math.inf
 
-    def train_stage(name: str, epochs: int, physics: bool) -> None:
+    def train_stage(
+        name: str,
+        epochs: int,
+        physics: bool,
+        minimum_epochs: int,
+    ) -> None:
         nonlocal best_state, best_validation
         if epochs == 0:
             return
         optimizer = torch.optim.AdamW(
             model.parameters(),
-            lr=config.learning_rate,
+            lr=(config.physics_learning_rate if physics else config.learning_rate),
             weight_decay=config.weight_decay,
         )
         stage_best_state = _cpu_state(model)
-        stage_best_validation = math.inf
+        # Both stages are selected against the same experimental validation
+        # objective.  This makes the supervised checkpoint a valid "epoch 0"
+        # candidate for physics fine-tuning and prevents a degrading physics
+        # stage from replacing it merely because its loss has different terms.
+        stage_best_validation = best_validation
+        epochs_without_improvement = 0
         for epoch in range(1, epochs + 1):
             train_metrics = _run_epoch(
                 model, train_loader, device, config, optimizer, physics
@@ -297,7 +336,7 @@ def fit_model(
                     device,
                     config,
                     None,
-                    physics,
+                    False,
                 )
                 if validation_loader is not None
                 else None
@@ -312,15 +351,39 @@ def fit_model(
             )
             if validation_metrics is None:
                 stage_best_state = _cpu_state(model)
-            elif validation_metrics["total"] < stage_best_validation:
+            elif (
+                validation_metrics["total"]
+                < stage_best_validation - config.validation_min_delta
+            ):
                 stage_best_validation = validation_metrics["total"]
                 stage_best_state = _cpu_state(model)
+                epochs_without_improvement = 0
+            else:
+                epochs_without_improvement += 1
+            if (
+                validation_metrics is not None
+                and config.early_stopping_patience > 0
+                and epoch >= minimum_epochs
+                and epochs_without_improvement >= config.early_stopping_patience
+            ):
+                history[-1]["early_stopped"] = True
+                break
         model.load_state_dict(stage_best_state)
         best_state = stage_best_state
         best_validation = stage_best_validation
 
-    train_stage("experimental", config.epochs_supervised, False)
-    train_stage("physics", config.epochs_physics, True)
+    train_stage(
+        "experimental",
+        config.epochs_supervised,
+        False,
+        config.minimum_supervised_epochs,
+    )
+    train_stage(
+        "physics",
+        config.epochs_physics,
+        True,
+        config.minimum_physics_epochs,
+    )
     model.load_state_dict(best_state)
     return FitResult(
         state_dict=best_state,
@@ -335,7 +398,7 @@ def evaluate_model(
     feature_map: dict[str, np.ndarray],
     batch_size: int,
     device: torch.device,
-    solver_iterations: int = 24,
+    solver_iterations: int = 48,
     pure_property_catalog: PurePropertyCatalog | None = None,
 ) -> dict[str, float]:
     config = TrainingConfig(batch_size=batch_size)

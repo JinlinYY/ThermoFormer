@@ -263,6 +263,16 @@ def infer_experiment_modes(
     return inferred
 
 
+def discover_vle_workbooks(root: Path, source_filter: str = "") -> tuple[Path, ...]:
+    """Return the exact recursive workbook set consumed by the VLE loader."""
+    filter_text = source_filter.casefold()
+    return tuple(
+        path
+        for path in sorted(root.rglob("*.xlsx"))
+        if not filter_text or filter_text in str(path).casefold()
+    )
+
+
 def load_vle_dataset(
     root: Path,
     source_filter: str = "",
@@ -276,10 +286,7 @@ def load_vle_dataset(
     samples: list[VLESample] = []
     rejected: Counter[str] = Counter()
     raw_rows = 0
-    filter_text = source_filter.casefold()
-    for path in sorted(root.rglob("*.xlsx")):
-        if filter_text and filter_text not in str(path).casefold():
-            continue
+    for path in discover_vle_workbooks(root, source_filter):
         workbook = openpyxl.load_workbook(path, read_only=True, data_only=True)
         try:
             for worksheet in workbook.worksheets:
