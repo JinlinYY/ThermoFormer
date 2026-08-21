@@ -97,32 +97,95 @@ class ResultAggregationTests(unittest.TestCase):
                 (seed_dir / "manifest.json").write_text(
                     json.dumps(self.manifest(seed, seed_dir)), encoding="utf-8"
                 )
+                rows = [
+                    {
+                        "scope": "all",
+                        "direction": None,
+                        "component_count": None,
+                        "subgroup": None,
+                        "y_mae": 0.1 + seed,
+                    },
+                    {
+                        "scope": "cardinality",
+                        "direction": None,
+                        "component_count": 3,
+                        "subgroup": None,
+                        "y_mae": 0.2 + seed,
+                    },
+                ]
+                if seed in (0, 2, 4):
+                    rows.append(
+                        {
+                            "scope": "direction_cardinality",
+                            "direction": "isothermal",
+                            "component_count": 3,
+                            "subgroup": None,
+                            "y_mae": 0.3 + seed,
+                        }
+                    )
                 (seed_dir / "metrics.json").write_text(
-                    json.dumps(
-                        [
-                            {
-                                "scope": "all",
-                                "direction": None,
-                                "component_count": None,
-                                "subgroup": None,
-                                "y_mae": 0.1 + seed,
-                            }
-                        ]
-                    ),
+                    json.dumps(rows),
                     encoding="utf-8",
                 )
 
             with patch(
                 "src.results._git_aggregate_state",
-                return_value=("commit-a", False, []),
+                return_value=("aggregate-commit", False, []),
             ):
-                aggregate_protocol_results(root)
+                summary = aggregate_protocol_results(root)
 
             manifest = json.loads(
                 (root / "aggregate_manifest.json").read_text(encoding="utf-8")
             )
             self.assertEqual(manifest["status"], "completed")
             self.assertEqual(manifest["seeds"], [0, 1, 2, 3, 4])
+            self.assertEqual(manifest["training_git_commit"], "commit-a")
+            self.assertEqual(manifest["aggregation_git_commit"], "aggregate-commit")
+            sparse = next(
+                row for row in summary if row["scope"] == "direction_cardinality"
+            )
+            self.assertEqual(sparse["scope_available_seeds"], 3)
+            self.assertEqual(sparse["scope_seed_ids"], "0;2;4")
+            self.assertEqual(sparse["seeds"], 5)
+
+    def test_formal_aggregate_rejects_incomplete_headline_scope(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for seed in range(5):
+                seed_dir = root / f"seed_{seed}"
+                seed_dir.mkdir()
+                (seed_dir / "manifest.json").write_text(
+                    json.dumps(self.manifest(seed, seed_dir)), encoding="utf-8"
+                )
+                rows = [
+                    {
+                        "scope": "all",
+                        "direction": None,
+                        "component_count": None,
+                        "subgroup": None,
+                        "y_mae": 0.1,
+                    }
+                ]
+                if seed != 4:
+                    rows.append(
+                        {
+                            "scope": "cardinality",
+                            "direction": None,
+                            "component_count": 3,
+                            "subgroup": None,
+                            "y_mae": 0.2,
+                        }
+                    )
+                (seed_dir / "metrics.json").write_text(
+                    json.dumps(rows), encoding="utf-8"
+                )
+
+            with patch(
+                "src.results._git_aggregate_state",
+                return_value=("aggregate-commit", False, []),
+            ):
+                with self.assertRaisesRegex(ValueError, "Headline metric scope.*all seeds"):
+                    aggregate_protocol_results(root)
 
     def test_refuses_partial_seed_sets_or_mismatched_scopes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

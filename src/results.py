@@ -155,7 +155,12 @@ def aggregate_protocol_results(
     expected_seeds: Sequence[int] = (0, 1, 2, 3, 4),
     aggregate_kind: Literal["formal", "diagnostic"] = "formal",
 ) -> list[dict[str, Any]]:
-    """Aggregate only a complete, scope-consistent set of successful seeds."""
+    """Aggregate completed seeds without inventing unavailable subgroup metrics.
+
+    Formal headline scopes (global and component cardinality) must exist for every
+    seed.  Finer subgroups may be absent when a held-out split contains no samples
+    in that stratum; their summaries explicitly record the contributing seed IDs.
+    """
     expected = tuple(expected_seeds)
     if not expected:
         raise ValueError("Expected seeds must be non-empty")
@@ -209,29 +214,43 @@ def aggregate_protocol_results(
                 "Formal aggregation requires committed code; dirty paths: "
                 + ", ".join(dirty_code_paths[:10])
             )
-        if current_commit != reference_provenance["git_commit"]:
-            raise RuntimeError("Formal aggregation Git commit differs from seed manifests")
 
     for seed, rows in by_seed.items():
         identities = [key(row) for row in rows]
         if len(identities) != len(set(identities)):
             raise ValueError(f"Duplicate metric identity for seed {seed}")
-    expected_keys = {key(row) for row in by_seed[expected[0]]}
-    for seed, rows in by_seed.items():
-        if {key(row) for row in rows} != expected_keys:
-            raise ValueError(f"Metric scopes differ for seed {seed}")
     flattened: list[dict[str, Any]] = []
     indexed: dict[int, dict[tuple[Any, ...], dict[str, Any]]] = {}
     for seed, rows in by_seed.items():
         indexed[seed] = {key(row): row for row in rows}
         for row in rows:
             flattened.append({"seed": seed, **row})
+    metric_keys = set().union(*(set(seed_rows) for seed_rows in indexed.values()))
+    scope_availability: list[dict[str, Any]] = []
     summary: list[dict[str, Any]] = []
-    for identity in sorted(expected_keys, key=lambda value: tuple(str(item) for item in value)):
-        rows = [indexed[seed][identity] for seed in expected]
+    for identity in sorted(metric_keys, key=lambda value: tuple(str(item) for item in value)):
+        available_seeds = [seed for seed in expected if identity in indexed[seed]]
+        if (
+            aggregate_kind == "formal"
+            and identity[0] in {"all", "cardinality"}
+            and len(available_seeds) != len(expected)
+        ):
+            raise ValueError(
+                f"Headline metric scope {identity} must be available for all seeds; "
+                f"found {available_seeds}"
+            )
+        rows = [indexed[seed][identity] for seed in available_seeds]
         fields = sorted(set().union(*(set(row) for row in rows)) - set(IDENTITY_FIELDS))
         result: dict[str, Any] = dict(zip(IDENTITY_FIELDS, identity))
         result["seeds"] = len(expected)
+        result["scope_available_seeds"] = len(available_seeds)
+        result["scope_seed_ids"] = ";".join(str(seed) for seed in available_seeds)
+        scope_availability.append(
+            {
+                **dict(zip(IDENTITY_FIELDS, identity)),
+                "available_seeds": available_seeds,
+            }
+        )
         for field in fields:
             values = [row.get(field) for row in rows]
             numeric = [
@@ -276,7 +295,8 @@ def aggregate_protocol_results(
             "aggregate_kind": aggregate_kind,
             "protocol": reference_provenance["protocol"],
             "seeds": list(expected),
-            "git_commit": current_commit,
+            "training_git_commit": reference_provenance["git_commit"],
+            "aggregation_git_commit": current_commit,
         },
     )
     _write_csv_pair(
@@ -290,10 +310,14 @@ def aggregate_protocol_results(
         "aggregate_kind": aggregate_kind,
         "protocol": reference_provenance["protocol"],
         "seeds": list(expected),
+        "training_git_commit": reference_provenance["git_commit"],
+        "aggregation_git_commit": current_commit,
+        # Backward-compatible alias for the code that produced this aggregate.
         "git_commit": current_commit,
         "git_dirty": code_dirty,
         "dirty_code_paths": dirty_code_paths,
         "input_provenance": reference_provenance,
+        "scope_availability": scope_availability,
         "input_manifest_sha256": {
             str(seed): _file_digest(protocol_result_dir / f"seed_{seed}" / "manifest.json")
             for seed in expected
