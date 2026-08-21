@@ -6,14 +6,33 @@ from unittest.mock import patch
 import pandas as pd
 
 from src.ablation_outputs import (
+    _atomic_write_text,
     _select_summary,
     architecture_and_physics_tables,
     manybody_system_effects,
 )
 from src.ablation_protocols import ABLATION_SEEDS
+from scripts.run_ablation_suite import validate_seeds
 
 
 class AblationOutputTests(unittest.TestCase):
+    def test_atomic_report_write_preserves_previous_file_on_replace_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "report.md"
+            path.write_text("old", encoding="utf-8")
+            with patch("src.ablation_outputs.os.replace", side_effect=OSError("injected")):
+                with self.assertRaisesRegex(OSError, "injected"):
+                    _atomic_write_text(path, "new")
+            self.assertEqual(path.read_text(encoding="utf-8"), "old")
+            self.assertEqual(list(path.parent.glob("*.tmp")), [])
+
+    def test_ablation_runner_rejects_duplicate_or_off_protocol_seeds(self) -> None:
+        self.assertEqual(validate_seeds([4, 0]), (4, 0))
+        with self.assertRaisesRegex(ValueError, "unique"):
+            validate_seeds([0, 0])
+        with self.assertRaisesRegex(ValueError, "0--4"):
+            validate_seeds([5])
+
     def test_summary_selection_keeps_direction_and_cardinality_identity(self) -> None:
         frame = pd.DataFrame(
             [
@@ -35,6 +54,7 @@ class AblationOutputTests(unittest.TestCase):
             _, physics = architecture_and_physics_tables(Path("."))
 
         status = physics.set_index("variant_id")["status"].to_dict()
+        self.assertEqual(status["p1_gibbs_duhem"], "not_applicable_hard_constraint")
         self.assertEqual(status["p2_composition_conservation"], "not_applicable_hard_constraint")
         self.assertEqual(status["p5_permutation_consistency"], "not_applicable_hard_constraint")
 

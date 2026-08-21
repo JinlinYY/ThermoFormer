@@ -92,6 +92,7 @@ class ThermoFormerTests(unittest.TestCase):
 
         self.assertFalse(torch.equal(first.log_gamma, second.log_gamma))
         self.assertFalse(torch.equal(first.log_psat, second.log_psat))
+        self.assertIsNone(model.film)
 
     def test_pairwise_mode_does_not_condition_a_pair_on_the_third_component(self) -> None:
         model = ThermoFormer(
@@ -157,6 +158,7 @@ class ThermoFormerTests(unittest.TestCase):
         )
 
         self.assertIsNone(output.excess_gibbs_rt)
+        self.assertIsNone(model.pair_potential)
         self.assertAlmostEqual(output.log_gamma[0, 0].item(), 0.0, places=6)
 
     def test_direct_vle_head_is_bounded_and_permutation_equivariant(self) -> None:

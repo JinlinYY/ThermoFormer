@@ -2,7 +2,8 @@
 
 Mixture-aware tokens directly decode log-gamma. The Psat branch and VLE solver are
 retained, but the scalar excess-Gibbs bottleneck and its hard Gibbs-Duhem construction
-are removed. This same controlled run is also P1 in the constraint table.
+are removed. Because this changes the latent decoder as well as the hard
+Gibbs--Duhem construction, it is not interpreted as an isolated P1 estimate.
 Config: `experiments/ablation/architecture/a5_direct_activity/config.json`.
 
 ```powershell

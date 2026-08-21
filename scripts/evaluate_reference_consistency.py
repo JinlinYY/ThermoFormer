@@ -5,8 +5,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -17,12 +19,13 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.config import load_experiment_config
+from src.ablation_protocols import ABLATION_SEEDS
 from src.data import load_vle_dataset, retain_pure_anchored_systems
 from src.evaluation import predict_vle
 from src.evaluation.thermodynamic_consistency import evaluate_thermodynamic_consistency
 from src.model import ThermoFormer, ThermoFormerConfig
 from src.representation import UniMolV2Encoder
-from src.splits import load_split_assignment
+from src.splits import dataset_digest, load_split_assignment
 
 
 REFERENCE_CONFIGS = {
@@ -36,13 +39,82 @@ def _digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _reference_training_commit() -> str:
+    snapshot = PROJECT_ROOT / "configs" / "ablation" / "full_model_reference.yaml"
+    prefix = "reference_training_commit:"
+    for line in snapshot.read_text(encoding="utf-8").splitlines():
+        if line.startswith(prefix):
+            return line.split(":", 1)[1].strip()
+    raise ValueError(f"Missing {prefix} in {snapshot}")
+
+
+def _validate_reference_provenance(
+    manifest: dict,
+    checkpoint: dict,
+    checkpoint_path: Path,
+    split_path: Path,
+    samples,
+    protocol: str,
+    seed: int,
+) -> None:
+    expected_commit = _reference_training_commit()
+    invariants = {
+        "status": (manifest.get("status"), "completed"),
+        "protocol": (manifest.get("protocol"), protocol),
+        "seed": (manifest.get("seed"), seed),
+        "git_commit": (manifest.get("git_commit"), expected_commit),
+        "checkpoint_git_commit": (checkpoint.get("git_commit"), expected_commit),
+        "dataset_sha256": (manifest.get("dataset_sha256"), dataset_digest(samples)),
+        "checkpoint_dataset_sha256": (
+            checkpoint.get("dataset_sha256"), manifest.get("dataset_sha256")
+        ),
+        "split_sha256": (manifest.get("split_sha256"), _digest(split_path)),
+        "checkpoint_split_sha256": (
+            checkpoint.get("split_sha256"), manifest.get("split_sha256")
+        ),
+        "checkpoint_request_sha256": (
+            checkpoint.get("request_sha256"), manifest.get("request_sha256")
+        ),
+        "checkpoint_artifact_sha256": (
+            _digest(checkpoint_path),
+            manifest.get("artifacts", {}).get("checkpoint", {}).get("sha256"),
+        ),
+    }
+    mismatches = [name for name, (actual, expected) in invariants.items() if actual != expected]
+    if mismatches:
+        raise RuntimeError(f"Invalid immutable Full provenance: {', '.join(mismatches)}")
+
+
+def _atomic_write_json(path: Path, payload: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", newline="\n", prefix=f".{path.name}.",
+            suffix=".tmp", dir=path.parent, delete=False,
+        ) as handle:
+            temporary = Path(handle.name)
+            json.dump(payload, handle, ensure_ascii=False, indent=2, sort_keys=True)
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+        temporary = None
+    finally:
+        if temporary is not None and temporary.exists():
+            temporary.unlink()
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--protocol", action="append", choices=sorted(REFERENCE_CONFIGS))
     parser.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2, 3, 4])
     parser.add_argument("--artifact-root", type=Path, default=PROJECT_ROOT)
     parser.add_argument("--device", choices=("cpu", "cuda"), default="cuda")
+    parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()
+    if len(args.seeds) != len(set(args.seeds)) or not set(args.seeds).issubset(ABLATION_SEEDS):
+        raise ValueError("Reference evaluation seeds must be a unique subset of 0--4")
     artifact_root = args.artifact_root.resolve()
     device = torch.device(args.device)
     cache = artifact_root / "cache" / "unimolv2_84m.npz"
@@ -53,6 +125,15 @@ def main() -> None:
         capture_output=True,
         text=True,
     ).stdout.strip()
+    worktree_status = subprocess.run(
+        ["git", "status", "--porcelain"],
+        cwd=PROJECT_ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+    if worktree_status.strip():
+        raise RuntimeError("Reference consistency evaluation requires a clean Git worktree")
     for protocol in args.protocol or ["overall_binary_ternary"]:
         experiment = load_experiment_config(PROJECT_ROOT / REFERENCE_CONFIGS[protocol])
         loaded = load_vle_dataset(
@@ -73,12 +154,21 @@ def main() -> None:
             use_cuda=device.type == "cuda",
         ).encode(unique)
         for seed in args.seeds:
+            split_path = PROJECT_ROOT / "splits" / protocol / f"seed_{seed}.json"
             split = load_split_assignment(
-                PROJECT_ROOT / "splits" / protocol / f"seed_{seed}.json",
+                split_path,
                 samples,
             )
             checkpoint_path = artifact_root / "checkpoints" / protocol / f"seed_{seed}" / "best_model.pt"
             checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+            manifest_path = artifact_root / "results" / protocol / f"seed_{seed}" / "manifest.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            _validate_reference_provenance(
+                manifest, checkpoint, checkpoint_path, split_path, samples, protocol, seed
+            )
+            output = artifact_root / "results" / protocol / f"seed_{seed}" / "physical_consistency.json"
+            if output.exists() and not args.overwrite:
+                raise FileExistsError(f"Refusing to replace {output}; pass --overwrite")
             model = ThermoFormer(ThermoFormerConfig(**checkpoint["model_config"]))
             model.load_state_dict(checkpoint["model"])
             model.to(device).eval()
@@ -111,11 +201,7 @@ def main() -> None:
                     "inference_ms_per_attempt": 1000.0 * inference_seconds / len(predictions),
                 }
             )
-            output = artifact_root / "results" / protocol / f"seed_{seed}" / "physical_consistency.json"
-            output.write_text(
-                json.dumps(metrics, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                encoding="utf-8",
-            )
+            _atomic_write_json(output, metrics)
             print(json.dumps({"protocol": protocol, "seed": seed, "output": str(output)}))
 
 

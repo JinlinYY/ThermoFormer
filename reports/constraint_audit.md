@@ -7,7 +7,7 @@ of learned weights. A zero-weight training term is a *soft* ablation.
 
 | Constraint | Type | Implementation location | Mathematical quantity | Training term | Can be ablated alone? |
 |---|---|---|---|---|---|
-| Gibbs–Duhem consistency | Hard thermodynamic construction | `src/model.py`, scalar `gE/RT` differentiation | `sum_i x_i d ln(gamma_i)=0` along simplex tangents | None | Not as a soft loss. A5/P1 replaces only the activity decoder by direct `ln(gamma)` and is reported as an architectural hard-constraint removal. |
+| Gibbs–Duhem consistency | Hard thermodynamic construction | `src/model.py`, scalar `gE/RT` differentiation | `sum_i x_i d ln(gamma_i)=0` along simplex tangents | None | Not as a one-factor soft loss. A5 changes the activity architecture and cannot be interpreted as an isolated P1 estimate. |
 | Liquid composition closure | Data and collation guarantee | `src/data.py` | `sum_i x_i=1` | None | No. Removing it would change the problem definition. |
 | Vapor composition closure | Hard decoder/solver guarantee | `src/thermo.py`; masked softmax in direct-VLE head | `sum_i y_i=1` | None | No scientifically valid soft ablation. P2 is therefore marked not applicable rather than fabricated. |
 | Positive activity and vapor pressure | Hard parameterization | `src/thermo.py` exponentiation and clamping; `src/model.py` Psat branch | `gamma_i>0`, `Psat_i>0` | None | No. |
@@ -22,9 +22,10 @@ of learned weights. A zero-weight training term is a *soft* ablation.
 
 - **P0:** Full ThermoFormer, using the immutable snapshot in
   `configs/ablation/full_model_reference.yaml`.
-- **P1:** The A5 direct-activity run. It is the only controlled way to remove the
-  hard Gibbs–Duhem construction while retaining the molecular interaction, Psat
-  branch, modified Raoult equation, solver, training budget, and other losses.
+- **P1:** Not applicable as an isolated loss ablation. A5 retains the molecular
+  interaction, Psat branch, Raoult equation, solver, budget, and other losses, but
+  replacing the excess-Gibbs decoder also changes the latent nonideality path; it
+  is reported only under architectural ablation.
 - **P2:** Not applicable. Vapor closure is a hard output parameterization in both
   thermodynamic and direct heads.
 - **P3:** Remove only the near-pure boundary loss.
@@ -37,10 +38,12 @@ of learned weights. A zero-weight training term is a *soft* ablation.
 ## Independent physical criteria
 
 The evaluator in `src/evaluation/thermodynamic_consistency.py` reports autograd
-and finite-difference Gibbs–Duhem residuals, x/y closure and bound violations,
-near-pure `ln(gamma)` and VLE errors at 0.99/0.995/0.999, all binary or ternary
-component permutations, dense simplex-path smoothness, final bubble-equation
-residuals, convergence failures, and a nonphysical rate. Nonmonotonicity is not
-itself a violation; continuity metrics use total variation and first/second
-derivatives. A gross equilibrium residual is fixed at 0.1 kPa and a near-pure VLE
-error at 0.05 before experiments are viewed.
+Gibbs–Duhem residuals over dense grids for every test system and a fixed finite-
+difference validation subset; x/y closure and bounds; near-pure `ln(gamma)`, y,
+bubble-pressure-relative, and bubble-temperature errors at 0.99/0.995/0.999; and
+all permutations of every binary/ternary test state. Permutation errors remain
+separate in y, kPa, K, gamma, and kPa Psat units. Dense simplex paths cover every
+test system and report smoothness, final equation residuals, convergence failures,
+and nonphysical rate. Nonmonotonicity is not itself a violation. A gross
+equilibrium residual of 0.1 kPa and normalized near-pure VLE error of 0.05 were
+fixed before formal results were viewed.

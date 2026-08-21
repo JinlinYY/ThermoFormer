@@ -211,12 +211,13 @@ def combined_nonphysical_rate(
 
 
 def _representative_samples(
-    samples: Sequence[VLESample], max_systems: int
+    samples: Sequence[VLESample], max_systems: int | None
 ) -> list[VLESample]:
     by_system: "OrderedDict[str, VLESample]" = OrderedDict()
     for sample in sorted(samples, key=lambda row: (system_id(row), row.temperature_k, row.pressure_kpa)):
         by_system.setdefault(system_id(sample), sample)
-    return list(by_system.values())[:max_systems]
+    representatives = list(by_system.values())
+    return representatives if max_systems is None else representatives[:max_systems]
 
 
 def _batch(
@@ -228,15 +229,51 @@ def _batch(
     return collate_vle([dataset[index] for index in range(len(dataset))]).to(device)
 
 
-def _permutation_errors(model: nn.Module, batch, direct: bool) -> list[float]:
-    errors: list[float] = []
+def _composition_grid_tensors(batch, grid_points: int) -> tuple[Tensor, ...]:
+    molecules: list[Tensor] = []
+    temperatures: list[Tensor] = []
+    pressures: list[Tensor] = []
+    compositions: list[Tensor] = []
+    masks: list[Tensor] = []
     for index in range(batch.x.shape[0]):
         count = int(batch.mask[index].sum().item())
-        molecules = batch.molecules[index : index + 1]
-        temperature = batch.temperature_k[index : index + 1]
-        pressure = batch.pressure_kpa[index : index + 1]
-        x = batch.x[index : index + 1]
-        mask = batch.mask[index : index + 1]
+        for _, path in _phase_paths(count, grid_points, batch.x.device):
+            padded = torch.zeros(grid_points, batch.x.shape[1], device=batch.x.device)
+            padded[:, :count] = path
+            molecules.append(batch.molecules[index : index + 1].expand(grid_points, -1, -1))
+            temperatures.append(batch.temperature_k[index : index + 1].expand(grid_points, -1))
+            pressures.append(batch.pressure_kpa[index : index + 1].expand(grid_points, -1))
+            compositions.append(padded)
+            masks.append(batch.mask[index : index + 1].expand(grid_points, -1))
+    return tuple(
+        torch.cat(values, dim=0)
+        for values in (molecules, temperatures, pressures, compositions, masks)
+    )
+
+
+def _permutation_errors(
+    model: nn.Module,
+    batch,
+    direct: bool,
+    solver_iterations: int,
+) -> dict[str, list[float]]:
+    errors = {
+        "y": [],
+        "pressure_kpa": [],
+        "temperature_k": [],
+        "gamma": [],
+        "psat_kpa": [],
+    }
+    for count in (2, 3):
+        rows = batch.mask.sum(-1).eq(count)
+        if not bool(rows.any()):
+            continue
+        molecules = batch.molecules[rows]
+        temperature = batch.temperature_k[rows]
+        pressure = batch.pressure_kpa[rows]
+        x = batch.x[rows]
+        mask = batch.mask[rows]
+        pure_parameters = batch.pure_property_parameters[rows]
         if direct:
             originals = {
                 direction: model.predict_direct(
@@ -250,7 +287,19 @@ def _permutation_errors(model: nn.Module, batch, direct: bool) -> list[float]:
                 for direction in ("isothermal", "isobaric")
             }
         else:
-            original = equilibrium_at_tp(model, molecules, temperature, pressure, x, mask)
+            original = equilibrium_at_tp(
+                model, molecules, temperature, pressure, x, mask, pure_parameters
+            )
+            original_isothermal = solve_isothermal(
+                model, molecules, temperature, x, mask,
+                iterations=solver_iterations, strict=False,
+                pure_property_parameters=pure_parameters,
+            )
+            original_isobaric = solve_isobaric(
+                model, molecules, pressure, x, mask,
+                iterations=solver_iterations, strict=False,
+                pure_property_parameters=pure_parameters,
+            )
         for permutation in itertools.permutations(range(count)):
             if permutation == tuple(range(count)):
                 continue
@@ -268,15 +317,17 @@ def _permutation_errors(model: nn.Module, batch, direct: bool) -> list[float]:
                         mask[:, padded_order],
                         direction=direction,
                     )
-                    errors.extend(
+                    errors["y"].extend(
                         (permuted.y[:, :count] - baseline.y[:, order]).abs().flatten().tolist()
                     )
-                    state_error = (
-                        (permuted.pressure_kpa - baseline.pressure_kpa).abs()
-                        if direction == "isothermal"
-                        else (permuted.temperature_k - baseline.temperature_k).abs() / 100.0
+                    key = "pressure_kpa" if direction == "isothermal" else "temperature_k"
+                    permuted_state = (
+                        permuted.pressure_kpa if direction == "isothermal" else permuted.temperature_k
                     )
-                    errors.extend(state_error.flatten().tolist())
+                    baseline_state = (
+                        baseline.pressure_kpa if direction == "isothermal" else baseline.temperature_k
+                    )
+                    errors[key].extend((permuted_state - baseline_state).abs().flatten().tolist())
             else:
                 permuted = equilibrium_at_tp(
                     model,
@@ -285,20 +336,51 @@ def _permutation_errors(model: nn.Module, batch, direct: bool) -> list[float]:
                     pressure,
                     x[:, padded_order],
                     mask[:, padded_order],
+                    pure_parameters[:, padded_order],
                 )
-                for permuted_value, baseline_value in (
-                    (permuted.y[:, :count], original.y[:, order]),
-                    (permuted.gamma[:, :count], original.gamma[:, order]),
-                    (permuted.psat_kpa[:, :count], original.psat_kpa[:, order]),
+                for key, permuted_value, baseline_value in (
+                    ("gamma", permuted.gamma[:, :count], original.gamma[:, order]),
+                    ("psat_kpa", permuted.psat_kpa[:, :count], original.psat_kpa[:, order]),
                 ):
-                    scale = baseline_value.abs().clamp_min(1.0)
-                    errors.extend(((permuted_value - baseline_value).abs() / scale).flatten().tolist())
+                    errors[key].extend((permuted_value - baseline_value).abs().flatten().tolist())
+                permuted_isothermal = solve_isothermal(
+                    model, molecules[:, padded_order], temperature, x[:, padded_order],
+                    mask[:, padded_order], iterations=solver_iterations, strict=False,
+                    pure_property_parameters=pure_parameters[:, padded_order],
+                )
+                permuted_isobaric = solve_isobaric(
+                    model, molecules[:, padded_order], pressure, x[:, padded_order],
+                    mask[:, padded_order], iterations=solver_iterations, strict=False,
+                    pure_property_parameters=pure_parameters[:, padded_order],
+                )
+                errors["y"].extend(
+                    (permuted_isothermal.y[:, :count] - original_isothermal.y[:, order]).abs().flatten().tolist()
+                )
+                errors["y"].extend(
+                    (permuted_isobaric.y[:, :count] - original_isobaric.y[:, order]).abs().flatten().tolist()
+                )
+                errors["pressure_kpa"].extend(
+                    (permuted_isothermal.pressure_kpa - original_isothermal.pressure_kpa).abs().flatten().tolist()
+                )
+                errors["temperature_k"].extend(
+                    (permuted_isobaric.temperature_k - original_isobaric.temperature_k).abs().flatten().tolist()
+                )
     return errors
 
 
-def _pure_limit_errors(model: nn.Module, batch, direct: bool) -> tuple[list[float], list[float]]:
-    activity_errors: list[float] = []
-    vle_errors: list[float] = []
+def _pure_limit_errors(
+    model: nn.Module,
+    batch,
+    direct: bool,
+    solver_iterations: int,
+) -> dict[str, list[float]]:
+    errors = {
+        "log_gamma": [],
+        "y": [],
+        "pressure_relative": [],
+        "temperature_k": [],
+        "combined_normalized": [],
+    }
     for sample_index in range(batch.x.shape[0]):
         count = int(batch.mask[sample_index].sum().item())
         compositions = []
@@ -316,22 +398,69 @@ def _pure_limit_errors(model: nn.Module, batch, direct: bool) -> tuple[list[floa
         temperature = batch.temperature_k[sample_index : sample_index + 1].expand(repeats, -1)
         pressure = batch.pressure_kpa[sample_index : sample_index + 1].expand(repeats, -1)
         mask = batch.mask[sample_index : sample_index + 1].expand(repeats, -1)
+        pure_parameters = batch.pure_property_parameters[
+            sample_index : sample_index + 1
+        ].expand(repeats, -1, -1)
         targets = torch.tensor(target_indices, device=x.device)
+        pure_x = torch.zeros_like(x)
+        pure_x.scatter_(1, targets[:, None], 1.0)
         if direct:
-            for direction in ("isothermal", "isobaric"):
-                predicted = model.predict_direct(
-                    molecules, temperature, pressure, x, mask, direction=direction
-                )
-                target_y = predicted.y.gather(1, targets[:, None]).squeeze(1)
-                vle_errors.extend((1.0 - target_y).abs().tolist())
+            near_isothermal = model.predict_direct(
+                molecules, temperature, pressure, x, mask, direction="isothermal"
+            )
+            pure_isothermal = model.predict_direct(
+                molecules, temperature, pressure, pure_x, mask, direction="isothermal"
+            )
+            near_isobaric = model.predict_direct(
+                molecules, temperature, pressure, x, mask, direction="isobaric"
+            )
+            pure_isobaric = model.predict_direct(
+                molecules, temperature, pressure, pure_x, mask, direction="isobaric"
+            )
         else:
             output = model(molecules, temperature, pressure, x, mask)
             target_log_gamma = output.log_gamma.gather(1, targets[:, None]).squeeze(1)
-            activity_errors.extend(target_log_gamma.abs().tolist())
-            state = equilibrium_at_tp(model, molecules, temperature, pressure, x, mask)
-            target_y = state.y.gather(1, targets[:, None]).squeeze(1)
-            vle_errors.extend((1.0 - target_y).abs().tolist())
-    return activity_errors, vle_errors
+            errors["log_gamma"].extend(target_log_gamma.abs().tolist())
+            near_isothermal = solve_isothermal(
+                model, molecules, temperature, x, mask,
+                iterations=solver_iterations, strict=False,
+                pure_property_parameters=pure_parameters,
+            )
+            pure_isothermal = solve_isothermal(
+                model, molecules, temperature, pure_x, mask,
+                iterations=solver_iterations, strict=False,
+                pure_property_parameters=pure_parameters,
+            )
+            near_isobaric = solve_isobaric(
+                model, molecules, pressure, x, mask,
+                iterations=solver_iterations, strict=False,
+                pure_property_parameters=pure_parameters,
+            )
+            pure_isobaric = solve_isobaric(
+                model, molecules, pressure, pure_x, mask,
+                iterations=solver_iterations, strict=False,
+                pure_property_parameters=pure_parameters,
+            )
+        y_error = torch.maximum(
+            (1.0 - near_isothermal.y.gather(1, targets[:, None]).squeeze(1)).abs(),
+            (1.0 - near_isobaric.y.gather(1, targets[:, None]).squeeze(1)).abs(),
+        )
+        pressure_error = torch.log(
+            near_isothermal.pressure_kpa.clamp_min(1e-12)
+            / pure_isothermal.pressure_kpa.clamp_min(1e-12)
+        ).abs().squeeze(1)
+        temperature_error = (
+            near_isobaric.temperature_k - pure_isobaric.temperature_k
+        ).abs().squeeze(1)
+        combined = torch.maximum(
+            y_error,
+            torch.maximum(pressure_error, temperature_error / 100.0),
+        )
+        errors["y"].extend(y_error.tolist())
+        errors["pressure_relative"].extend(pressure_error.tolist())
+        errors["temperature_k"].extend(temperature_error.tolist())
+        errors["combined_normalized"].extend(combined.tolist())
+    return errors
 
 
 def _phase_paths(count: int, grid_points: int, device: torch.device) -> list[tuple[Tensor, Tensor]]:
@@ -426,44 +555,50 @@ def evaluate_thermodynamic_consistency(
     prediction_records: Sequence[dict[str, Any]] | None = None,
     solver_iterations: int = 24,
     grid_points: int = 21,
-    max_systems: int = 32,
+    max_systems: int | None = None,
 ) -> dict[str, Any]:
     """Evaluate physical validity independently of target prediction errors."""
     if not samples:
         raise ValueError("Thermodynamic consistency evaluation needs test samples")
-    if grid_points < 5 or max_systems < 1:
-        raise ValueError("grid_points must be at least five and max_systems positive")
+    if grid_points < 5 or (max_systems is not None and max_systems < 1):
+        raise ValueError("grid_points must be at least five and max_systems positive when set")
     from . import predict_vle
 
     model.to(device).eval()
     direct = getattr(getattr(model, "config", None), "decoder_mode", None) == "direct_vle"
     representatives = _representative_samples(samples, max_systems)
     batch = _batch(representatives, feature_map, device)
-    interior_x = batch.x.clamp_min(1e-3) * batch.mask
-    interior_x = interior_x / interior_x.sum(-1, keepdim=True)
+    grid_molecules, grid_temperature, grid_pressure, grid_x, grid_mask = (
+        _composition_grid_tensors(batch, grid_points)
+    )
     if direct:
         gd = torch.empty(0)
         gd_fd = torch.empty(0)
     else:
         gd = gibbs_duhem_residuals(
             model,
-            batch.molecules,
-            batch.temperature_k,
-            batch.pressure_kpa,
-            interior_x,
-            batch.mask,
+            grid_molecules,
+            grid_temperature,
+            grid_pressure,
+            grid_x,
+            grid_mask,
         )
+        validation_rows = min(32, grid_x.shape[0])
         gd_fd = gibbs_duhem_residuals_finite_difference(
             model,
-            batch.molecules[: min(8, len(representatives))],
-            batch.temperature_k[: min(8, len(representatives))],
-            batch.pressure_kpa[: min(8, len(representatives))],
-            interior_x[: min(8, len(representatives))],
-            batch.mask[: min(8, len(representatives))],
+            grid_molecules[:validation_rows],
+            grid_temperature[:validation_rows],
+            grid_pressure[:validation_rows],
+            grid_x[:validation_rows],
+            grid_mask[:validation_rows],
         )
+    permutation_samples = representatives if max_systems is not None else samples
+    permutation_batch = _batch(permutation_samples, feature_map, device)
     with torch.no_grad():
-        permutation = _permutation_errors(model, batch, direct)
-        pure_activity, pure_vle = _pure_limit_errors(model, batch, direct)
+        permutation = _permutation_errors(
+            model, permutation_batch, direct, solver_iterations
+        )
+        pure = _pure_limit_errors(model, batch, direct, solver_iterations)
         phase = _phase_metrics(
             model,
             representatives,
@@ -502,14 +637,24 @@ def evaluate_thermodynamic_consistency(
         torch.tensor(x_rows), torch.tensor(y_rows), torch.tensor(masks)
     )
     equilibrium = summarize_absolute(residuals, "equilibrium_residual")
+    pure_vle = pure["combined_normalized"]
     result: dict[str, Any] = {
         "evaluated_systems": len(representatives),
         "evaluated_predictions": len(records),
+        "gibbs_duhem_grid_states": int(grid_x.shape[0]) if not direct else 0,
+        "permutation_states": len(permutation_samples),
         **summarize_absolute(gd, "gibbs_duhem"),
         **summarize_absolute(gd_fd, "gibbs_duhem_finite_difference"),
         **closure,
-        **summarize_absolute(permutation, "permutation"),
-        **summarize_absolute(pure_activity, "pure_limit_log_gamma"),
+        **summarize_absolute(permutation["y"], "permutation_y"),
+        **summarize_absolute(permutation["pressure_kpa"], "permutation_pressure_kpa"),
+        **summarize_absolute(permutation["temperature_k"], "permutation_temperature_k"),
+        **summarize_absolute(permutation["gamma"], "permutation_gamma"),
+        **summarize_absolute(permutation["psat_kpa"], "permutation_psat_kpa"),
+        **summarize_absolute(pure["log_gamma"], "pure_limit_log_gamma"),
+        **summarize_absolute(pure["y"], "pure_limit_y"),
+        **summarize_absolute(pure["pressure_relative"], "pure_limit_pressure_relative"),
+        **summarize_absolute(pure["temperature_k"], "pure_limit_temperature_k"),
         **summarize_absolute(pure_vle, "pure_limit_vle"),
         "equilibrium_residual_mean_abs_kpa": equilibrium["equilibrium_residual_mean_abs"],
         "equilibrium_residual_p95_abs_kpa": equilibrium["equilibrium_residual_p95_abs"],

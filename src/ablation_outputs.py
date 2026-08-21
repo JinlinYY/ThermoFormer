@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 import math
+import os
+import tempfile
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -26,6 +28,44 @@ COLORS = {
     "direct": "#D55E00",
     "other": "#999999",
 }
+
+
+def _atomic_write_text(path: Path, content: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", newline="\n", prefix=f".{path.name}.",
+            suffix=".tmp", dir=path.parent, delete=False,
+        ) as handle:
+            temporary = Path(handle.name)
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+        temporary = None
+    finally:
+        if temporary is not None and temporary.exists():
+            temporary.unlink()
+
+
+def _atomic_to_csv(frame: pd.DataFrame, path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", newline="", prefix=f".{path.name}.",
+            suffix=".tmp", dir=path.parent, delete=False,
+        ) as handle:
+            temporary = Path(handle.name)
+            frame.to_csv(handle, index=False)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+        temporary = None
+    finally:
+        if temporary is not None and temporary.exists():
+            temporary.unlink()
 
 
 def _result_dir(project_root: Path, variant_id: str, benchmark: str) -> Path:
@@ -139,15 +179,15 @@ def architecture_and_physics_tables(project_root: Path) -> tuple[pd.DataFrame, p
         for row in _metric_rows(project_root, variant_id, variant)
     ]
     architecture = pd.DataFrame([row for row in all_rows if row["family"] == "architecture"])
-    physics_ids = {"a0_full", "a5_direct_activity", "p3_no_pure_boundary", "p4_no_phase_continuity", "p6_no_soft_physics"}
+    physics_ids = {"a0_full", "p3_no_pure_boundary", "p4_no_phase_continuity", "p6_no_soft_physics"}
     physics = pd.DataFrame([row for row in all_rows if row["variant_id"] in physics_ids])
     physics.loc[physics["variant_id"].eq("a0_full"), "physics_variant"] = "P0 Full physics"
-    physics.loc[physics["variant_id"].eq("a5_direct_activity"), "physics_variant"] = "P1 w/o hard Gibbs-Duhem construction"
     physics.loc[physics["variant_id"].eq("p3_no_pure_boundary"), "physics_variant"] = "P3 w/o near-pure boundary loss"
     physics.loc[physics["variant_id"].eq("p4_no_phase_continuity"), "physics_variant"] = "P4 w/o phase-continuity loss"
     physics.loc[physics["variant_id"].eq("p6_no_soft_physics"), "physics_variant"] = "P6 w/o all soft physics losses"
     not_applicable = pd.DataFrame(
         [
+            {"variant_id": "p1_gibbs_duhem", "physics_variant": "P1 w/o Gibbs-Duhem only", "status": "not_applicable_hard_constraint"},
             {"variant_id": "p2_composition_conservation", "physics_variant": "P2 w/o composition conservation", "status": "not_applicable_hard_constraint"},
             {"variant_id": "p5_permutation_consistency", "physics_variant": "P5 w/o permutation consistency", "status": "not_applicable_hard_constraint"},
         ]
@@ -277,7 +317,13 @@ def _save(figure: mpl.figure.Figure, stem: Path) -> list[Path]:
     outputs = []
     for suffix, options in (("pdf", {}), ("svg", {}), ("png", {"dpi": 300})):
         path = stem.with_suffix(f".{suffix}")
-        figure.savefig(path, bbox_inches="tight", pad_inches=0.04, **options)
+        temporary = path.parent / f".{path.stem}.{os.getpid()}.tmp.{suffix}"
+        try:
+            figure.savefig(temporary, bbox_inches="tight", pad_inches=0.04, **options)
+            os.replace(temporary, path)
+        finally:
+            if temporary.exists():
+                temporary.unlink()
         outputs.append(path)
     plt.close(figure)
     return outputs
@@ -322,17 +368,17 @@ def build_figures(
     outputs += _save(figure, output_dir / "architecture_ablation")
 
     physics_completed = physics.loc[physics["status"].eq("completed")]
-    ids = ["a0_full", "a5_direct_activity", "p3_no_pure_boundary", "p4_no_phase_continuity", "p6_no_soft_physics"]
+    ids = ["a0_full", "p3_no_pure_boundary", "p4_no_phase_continuity", "p6_no_soft_physics"]
     figure, axes = plt.subplots(1, 2, figsize=(6.75, 2.5))
     predictive = [_mean_value(physics_completed, item, "unseen_mixture", "isothermal", "y") for item in ids]
-    axes[0].bar(np.arange(len(ids)), predictive, color=[COLORS["full"], COLORS["direct"], "#56B4E9", "#CC79A7", COLORS["other"]])
-    axes[0].set_xticks(np.arange(len(ids)), ["P0", "P1", "P3", "P4", "P6"])
+    axes[0].bar(np.arange(len(ids)), predictive, color=[COLORS["full"], "#56B4E9", "#CC79A7", COLORS["other"]])
+    axes[0].set_xticks(np.arange(len(ids)), ["P0", "P3", "P4", "P6"])
     axes[0].set_ylabel("System-wise y MAE")
     axes[0].set_title("Predictive accuracy")
     physical_indexed = physical.set_index("variant_id")
     inconsistency = [physical_indexed.loc[item, "nonphysical_prediction_rate_mean"] for item in ids]
-    axes[1].bar(np.arange(len(ids)), inconsistency, color=[COLORS["full"], COLORS["direct"], "#56B4E9", "#CC79A7", COLORS["other"]])
-    axes[1].set_xticks(np.arange(len(ids)), ["P0", "P1", "P3", "P4", "P6"])
+    axes[1].bar(np.arange(len(ids)), inconsistency, color=[COLORS["full"], "#56B4E9", "#CC79A7", COLORS["other"]])
+    axes[1].set_xticks(np.arange(len(ids)), ["P0", "P3", "P4", "P6"])
     axes[1].set_ylabel("Nonphysical prediction rate")
     axes[1].set_title("Physical consistency")
     for axis in axes:
@@ -348,7 +394,7 @@ def build_figures(
     ][["variant_id", "system_macro_mae_mean"]].merge(physical, on="variant_id")
     consistency_metrics = (
         "gibbs_duhem_mean_abs_mean",
-        "permutation_max_abs_mean",
+        "permutation_y_max_abs_mean",
         "nonphysical_prediction_rate_mean",
     )
     titles = ("Gibbs-Duhem", "Permutation", "Nonphysical rate")
@@ -406,7 +452,7 @@ def write_report(
     physics_complete = physics.loc[physics["status"].eq("completed")]
     full_unseen_y = value("a0_full", "unseen_mixture", "isothermal", "y")
     accuracy_changes = {}
-    for variant in ("a5_direct_activity", "p3_no_pure_boundary", "p4_no_phase_continuity", "p6_no_soft_physics"):
+    for variant in ("p3_no_pure_boundary", "p4_no_phase_continuity", "p6_no_soft_physics"):
         accuracy_changes[variant] = value(variant, "unseen_mixture", "isothermal", "y") - full_unseen_y
     largest_accuracy = max(accuracy_changes, key=lambda item: abs(accuracy_changes[item]))
     nonphysical_changes = {
@@ -418,7 +464,7 @@ def write_report(
     lines = [
         "# ThermoFormer Ablation and Thermodynamic Consistency",
         "",
-        "All comparisons use the committed main-experiment splits, preprocessing, seeds 0–4, training budget, and validation-only model-selection rule. No test set or hyperparameter was selected after viewing ablation results. P2 and P5 are not run because composition closure and permutation consistency are hard guarantees; fabricating zero-signal losses would not be a scientific ablation.",
+        "All comparisons use the committed main-experiment splits, preprocessing, seeds 0–4, training budget, and validation-only model-selection rule. No test set or hyperparameter was selected after viewing ablation results. P1, P2, and P5 are not independently run because Gibbs–Duhem consistency, composition closure, and permutation consistency are hard constructions; fabricating zero-signal losses would not be a scientific ablation.",
         "",
         "## Architectural ablation",
         "",
@@ -436,7 +482,7 @@ def write_report(
         "",
         "## Thermodynamic-constraint ablation",
         "",
-        "P1 is the same controlled run as A5 because the excess-Gibbs bottleneck is the hard Gibbs–Duhem construction. P3/P4 remove one soft loss; P6 removes all removable soft losses while retaining every hard equation and output constraint.",
+        "P1 is marked not applicable as a one-factor loss ablation because Gibbs–Duhem consistency is the hard excess-Gibbs construction. A5 changes that decoder and is reported only as an architectural intervention, not as an isolated P1 causal estimate. P3/P4 remove one soft loss; P6 removes all removable soft losses while retaining every hard equation and output constraint.",
         "",
         f"The largest absolute predictive change among removable/controlled physics variants is **{largest_accuracy}** (Δ system-wise isothermal y MAE {_fmt(accuracy_changes[largest_accuracy])}). The largest change in nonphysical prediction rate is **{largest_physical}** (Δ {_fmt(nonphysical_changes[largest_physical])}).",
         "",
@@ -459,13 +505,13 @@ def write_report(
         f"7. **Largest physical-validity effect:** {largest_physical} under the predeclared nonphysical-rate criterion.",
         "8. **Trade-off:** inspect `accuracy_consistency_tradeoff.*`; any accuracy gain accompanied by larger residual/rate is retained as a trade-off, not relabeled as an improvement.",
         f"9. **Many-body claim:** supported only to the degree quantified by the full paired distribution (mean Δ={_fmt(float(delta.mean()))}, p={wilcoxon:.3g}); no favorable-only systems were selected.",
-        "10. **Placement:** Full/Pairwise/No-interaction/Direct-VLE and P6 belong in the main text; RDKit, condition concatenation, direct-gamma/P1, individual soft-loss removals, full physical metric definitions, and all per-system rows belong in SI.",
+        "10. **Placement:** Full/Pairwise/No-interaction/Direct-VLE and P6 belong in the main text; RDKit, condition concatenation, direct-gamma/A5, individual soft-loss removals, hard-constraint non-applicability, full physical metric definitions, and all per-system rows belong in SI.",
         "",
         "## Scope and negative results",
         "",
         "Conclusions remain limited to binary/ternary low-pressure VLE below 500 kPa. Missing observables, failed solves, negative deltas, and non-monotonic outcomes are preserved. The absent `reports/model_comparison_report.md` was not used as evidence.",
     ]
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    _atomic_write_text(path, "\n".join(lines) + "\n")
 
 
 def _write_variant_pages(project_root: Path, architecture: pd.DataFrame) -> None:
@@ -486,7 +532,7 @@ def _write_variant_pages(project_root: Path, architecture: pd.DataFrame) -> None
                 f"{row['system_macro_mae_mean']:.5g} ± {row['system_macro_mae_std']:.3g} | {int(row['available_seeds'])} |"
             )
         lines += ["", "Full machine-readable results: `results/ablation/architecture.csv` and `results/ablation/physical_consistency.csv`."]
-        page.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        _atomic_write_text(page, "\n".join(lines) + "\n")
 
 
 def build_ablation_outputs(project_root: Path = PROJECT_ROOT) -> dict[str, list[str]]:
@@ -497,10 +543,10 @@ def build_ablation_outputs(project_root: Path = PROJECT_ROOT) -> dict[str, list[
     architecture, physics = architecture_and_physics_tables(project_root)
     physical = physical_consistency_table(project_root)
     manybody = manybody_system_effects(project_root)
-    architecture.to_csv(result_dir / "architecture.csv", index=False)
-    physics.to_csv(result_dir / "physics.csv", index=False)
-    physical.to_csv(result_dir / "physical_consistency.csv", index=False)
-    manybody.to_csv(result_dir / "manybody_system_effects.csv", index=False)
+    _atomic_to_csv(architecture, result_dir / "architecture.csv")
+    _atomic_to_csv(physics, result_dir / "physics.csv")
+    _atomic_to_csv(physical, result_dir / "physical_consistency.csv")
+    _atomic_to_csv(manybody, result_dir / "manybody_system_effects.csv")
     figures = build_figures(figure_dir, architecture, physics, physical, manybody)
     report_path = project_root / "reports" / "ablation_report.md"
     write_report(report_path, architecture, physics, physical, manybody)

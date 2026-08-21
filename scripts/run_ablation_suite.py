@@ -32,8 +32,18 @@ def parser() -> argparse.ArgumentParser:
     return value
 
 
+def validate_seeds(seeds: list[int]) -> tuple[int, ...]:
+    if len(seeds) != len(set(seeds)):
+        raise ValueError("Ablation seeds must be unique")
+    invalid = sorted(set(seeds) - set(ABLATION_SEEDS))
+    if invalid:
+        raise ValueError(f"Formal ablation seeds are locked to 0--4; invalid: {invalid}")
+    return tuple(seeds)
+
+
 def main(argv: list[str] | None = None) -> None:
     args = parser().parse_args(argv)
+    seeds = validate_seeds(args.seeds)
     variants = args.variant or [name for name, item in ABLATION_VARIANTS.items() if not item.reference]
     artifact_root = args.artifact_root.resolve()
     suffix = "ablation_smoke" if args.smoke else "ablation"
@@ -61,7 +71,7 @@ def main(argv: list[str] | None = None) -> None:
         for benchmark in variant.benchmarks:
             result_protocol = result_protocol_name(experiment.name, benchmark)
             split_root = PROJECT_ROOT / "splits" / benchmark
-            for seed in args.seeds:
+            for seed in seeds:
                 split_path = split_root / f"seed_{seed}.json"
                 manifest_path = results_root / result_protocol / f"seed_{seed}" / "manifest.json"
                 if manifest_path.is_file() and not args.overwrite:
@@ -107,10 +117,10 @@ def main(argv: list[str] | None = None) -> None:
                         }
                     )
                 )
-            if not args.smoke and set(args.seeds) == set(ABLATION_SEEDS):
+            if not args.smoke and set(seeds) == set(ABLATION_SEEDS):
                 aggregate_protocol_results(
                     results_root / result_protocol,
-                    expected_seeds=args.seeds,
+                    expected_seeds=seeds,
                 )
 
 

@@ -111,7 +111,11 @@ class ThermodynamicConsistencyTests(unittest.TestCase):
 
         self.assertEqual(metrics["evaluated_systems"], 1)
         self.assertAlmostEqual(metrics["gibbs_duhem_mean_abs"], 0.0, places=6)
-        self.assertIn("permutation_max_abs", metrics)
+        self.assertIn("permutation_y_max_abs", metrics)
+        self.assertIn("permutation_pressure_kpa_max_abs", metrics)
+        self.assertIn("permutation_temperature_k_max_abs", metrics)
+        self.assertIn("pure_limit_pressure_relative_mean_abs", metrics)
+        self.assertIn("pure_limit_temperature_k_mean_abs", metrics)
         self.assertIn("equilibrium_residual_p95_abs_kpa", metrics)
         self.assertIn("nonphysical_prediction_rate", metrics)
 

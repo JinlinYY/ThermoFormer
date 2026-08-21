@@ -171,13 +171,15 @@ class ThermoFormer(nn.Module):
             )
         else:
             self.interaction = None
-        self.film = nn.Sequential(
-            nn.Linear(hidden_dim + 3, hidden_dim),
-            nn.GELU(),
-            nn.Linear(hidden_dim, 2 * hidden_dim),
-        )
+        self.film: nn.Module | None = None
         self.condition_projection: nn.Module | None = None
-        if not config.use_film:
+        if config.use_film:
+            self.film = nn.Sequential(
+                nn.Linear(hidden_dim + 3, hidden_dim),
+                nn.GELU(),
+                nn.Linear(hidden_dim, 2 * hidden_dim),
+            )
+        else:
             self.condition_projection = nn.Sequential(
                 nn.Linear(hidden_dim + 3, hidden_dim),
                 nn.GELU(),
@@ -198,7 +200,7 @@ class ThermoFormer(nn.Module):
                     nn.GELU(),
                     nn.Linear(pair_hidden_dim, 1),
                 )
-            else:
+            elif config.activity_mode != "direct_gamma":
                 self.pair_potential = nn.Sequential(
                     nn.Linear(3 * hidden_dim, pair_hidden_dim),
                     nn.GELU(),
@@ -280,6 +282,8 @@ class ThermoFormer(nn.Module):
         pressure = torch.log(pressure_kpa.clamp_min(1e-6) / 101.325).expand_as(x).unsqueeze(-1)
         condition = torch.cat([context, temperature, pressure, x.unsqueeze(-1)], dim=-1)
         if self.config.use_film:
+            if self.film is None:
+                raise RuntimeError("FiLM condition projection is unavailable")
             scale, shift = self.film(condition).chunk(2, dim=-1)
             tokens = components * (
                 1.0 + self.config.film_scale * torch.tanh(scale)

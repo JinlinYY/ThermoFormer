@@ -488,7 +488,7 @@ def run_paper_experiment(
         prediction_records=predictions,
         solver_iterations=training.solver_iterations_eval,
         grid_points=5 if run_kind == "smoke" else 21,
-        max_systems=2 if run_kind == "smoke" else 32,
+        max_systems=2 if run_kind == "smoke" else None,
     )
     checkpoint_payload = {
         "model_name": "ThermoFormer",

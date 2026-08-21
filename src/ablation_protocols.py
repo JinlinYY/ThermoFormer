@@ -52,7 +52,7 @@ ABLATION_VARIANTS = {
         ("overall_binary_ternary",),
     ),
     "a5_direct_activity": AblationVariant(
-        "A5/P1 Direct activity decoding",
+        "A5 Direct activity decoding",
         "architecture",
         "experiments/ablation/architecture/a5_direct_activity/config.json",
         ("overall_binary_ternary",),
