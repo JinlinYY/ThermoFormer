@@ -253,17 +253,34 @@ def aggregate_protocol_results(
         )
         for field in fields:
             values = [row.get(field) for row in rows]
-            numeric = [
-                float(value)
+            invalid_values = [
+                value
                 for value in values
-                if isinstance(value, (int, float))
-                and not isinstance(value, bool)
-                and value is not None
+                if value is not None
+                and (
+                    not isinstance(value, (int, float))
+                    or isinstance(value, bool)
+                )
             ]
+            if invalid_values:
+                raise ValueError(
+                    f"Non-numeric metric '{field}' in scope {identity}: "
+                    f"{invalid_values[:3]}"
+                )
+            numeric_by_seed = [
+                (seed, float(row.get(field)))
+                for seed, row in zip(available_seeds, rows)
+                if isinstance(row.get(field), (int, float))
+                and not isinstance(row.get(field), bool)
+            ]
+            numeric = [value for _, value in numeric_by_seed]
             if any(not math.isfinite(value) for value in numeric):
                 raise ValueError(f"Non-finite metric '{field}' in scope {identity}")
             result[f"{field}_available_seeds"] = len(numeric)
-            if len(numeric) != len(values):
+            result[f"{field}_seed_ids"] = ";".join(
+                str(seed) for seed, _ in numeric_by_seed
+            )
+            if not numeric:
                 result[f"{field}_mean"] = None
                 result[f"{field}_std"] = None
             else:

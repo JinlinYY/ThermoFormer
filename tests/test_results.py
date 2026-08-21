@@ -111,6 +111,7 @@ class ResultAggregationTests(unittest.TestCase):
                         "component_count": 3,
                         "subgroup": None,
                         "y_mae": 0.2 + seed,
+                        "pressure_mae_kpa": None if seed == 1 else 1.0 + seed,
                     },
                 ]
                 if seed in (0, 2, 4):
@@ -147,6 +148,14 @@ class ResultAggregationTests(unittest.TestCase):
             self.assertEqual(sparse["scope_available_seeds"], 3)
             self.assertEqual(sparse["scope_seed_ids"], "0;2;4")
             self.assertEqual(sparse["seeds"], 5)
+            ternary = next(
+                row
+                for row in summary
+                if row["scope"] == "cardinality" and row["component_count"] == 3
+            )
+            self.assertEqual(ternary["pressure_mae_kpa_available_seeds"], 4)
+            self.assertEqual(ternary["pressure_mae_kpa_seed_ids"], "0;2;3;4")
+            self.assertAlmostEqual(ternary["pressure_mae_kpa_mean"], 3.25)
 
     def test_formal_aggregate_rejects_incomplete_headline_scope(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
