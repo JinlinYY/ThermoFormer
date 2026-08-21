@@ -14,10 +14,13 @@ from .training import TrainingConfig
 
 @dataclass(frozen=True)
 class EncoderConfig:
+    representation: Literal["unimol_v2", "rdkit_2d"] = "unimol_v2"
     model_size: str = "84m"
     batch_size: int = 16
 
     def __post_init__(self) -> None:
+        if self.representation not in ("unimol_v2", "rdkit_2d"):
+            raise ValueError("encoder.representation must be unimol_v2 or rdkit_2d")
         if self.model_size not in ("84m", "164m", "310m", "570m", "1.1B"):
             raise ValueError(f"Unsupported Uni-Mol v2 model_size: {self.model_size}")
         if not isinstance(self.batch_size, int) or isinstance(self.batch_size, bool):

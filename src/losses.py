@@ -19,6 +19,7 @@ class Objective:
     total: Tensor
     vapor_composition: Tensor
     pressure: Tensor
+    temperature: Tensor
     pure_vapor_pressure: Tensor
     continuity: Tensor
     boundary: Tensor
@@ -29,6 +30,7 @@ class Objective:
             "total": float(self.total.detach().cpu()),
             "vapor_composition": float(self.vapor_composition.detach().cpu()),
             "pressure": float(self.pressure.detach().cpu()),
+            "temperature": float(self.temperature.detach().cpu()),
             "pure_vapor_pressure": float(self.pure_vapor_pressure.detach().cpu()),
             "continuity": float(self.continuity.detach().cpu()),
             "boundary": float(self.boundary.detach().cpu()),
@@ -78,7 +80,89 @@ def experimental_objective(
         total=total,
         vapor_composition=vapor_loss,
         pressure=pressure_loss,
+        temperature=zero,
         pure_vapor_pressure=pure_loss,
+        continuity=zero,
+        boundary=zero,
+        solver=zero,
+    )
+
+
+def direct_vle_objective(
+    model: nn.Module,
+    batch: "VLEBatch",
+    vapor_weight: float = 1.0,
+    pressure_weight: float = 1.0,
+    temperature_weight: float = 1.0,
+) -> Objective:
+    """Supervise a black-box direct head in both label-independent task directions."""
+    zero = batch.y.sum() * 0.0
+    vapor_terms: list[Tensor] = []
+    isothermal_rows = batch.experiment_mode != 1
+    if bool(isothermal_rows.any()):
+        predicted = model.predict_direct(
+            batch.molecules[isothermal_rows],
+            batch.temperature_k[isothermal_rows],
+            batch.pressure_kpa[isothermal_rows],
+            batch.x[isothermal_rows],
+            batch.mask[isothermal_rows],
+            direction="isothermal",
+        )
+        component_count = batch.mask[isothermal_rows].sum(-1).clamp_min(1.0)
+        vapor_error = (
+            (predicted.y - batch.y[isothermal_rows]).square()
+            * batch.mask[isothermal_rows]
+        ).sum(-1) / component_count
+        vapor_terms.append(
+            _weighted_mean(vapor_error, batch.quality_weight[isothermal_rows])
+        )
+        pressure_error = (
+            torch.log(predicted.pressure_kpa.clamp_min(1e-12))
+            - torch.log(batch.pressure_kpa[isothermal_rows].clamp_min(1e-12))
+        ).squeeze(-1).square()
+        pressure = _weighted_mean(
+            pressure_error, batch.quality_weight[isothermal_rows]
+        )
+    else:
+        pressure = zero
+    isobaric_rows = batch.experiment_mode != 0
+    if bool(isobaric_rows.any()):
+        predicted = model.predict_direct(
+            batch.molecules[isobaric_rows],
+            batch.temperature_k[isobaric_rows],
+            batch.pressure_kpa[isobaric_rows],
+            batch.x[isobaric_rows],
+            batch.mask[isobaric_rows],
+            direction="isobaric",
+        )
+        component_count = batch.mask[isobaric_rows].sum(-1).clamp_min(1.0)
+        vapor_error = (
+            (predicted.y - batch.y[isobaric_rows]).square()
+            * batch.mask[isobaric_rows]
+        ).sum(-1) / component_count
+        vapor_terms.append(
+            _weighted_mean(vapor_error, batch.quality_weight[isobaric_rows])
+        )
+        temperature_error = (
+            (predicted.temperature_k - batch.temperature_k[isobaric_rows]) / 100.0
+        ).squeeze(-1).square()
+        temperature = _weighted_mean(
+            temperature_error, batch.quality_weight[isobaric_rows]
+        )
+    else:
+        temperature = zero
+    vapor = torch.stack(vapor_terms).mean() if vapor_terms else zero
+    total = (
+        vapor_weight * vapor
+        + pressure_weight * pressure
+        + temperature_weight * temperature
+    )
+    return Objective(
+        total=total,
+        vapor_composition=vapor,
+        pressure=pressure,
+        temperature=temperature,
+        pure_vapor_pressure=zero,
         continuity=zero,
         boundary=zero,
         solver=zero,

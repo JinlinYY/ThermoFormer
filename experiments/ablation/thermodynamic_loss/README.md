@@ -1,4 +1,7 @@
-# Thermodynamic-consistency loss ablations
+# Preliminary thermodynamic-loss diagnostics
+
+These templates predate the frozen P0--P6 campaign and are not used in the formal
+ablation tables. Use sibling `../thermodynamic_constraint/` for formal runs.
 
 These experiments preserve the ThermoFormer architecture and training budget while
 removing one thermodynamic-consistency objective.

@@ -8,12 +8,22 @@ import numpy as np
 import openpyxl
 
 from src.data import load_vle_samples
-from src.paper_runner import run_paper_experiment
+from src.paper_runner import result_protocol_name, run_paper_experiment
 from src.splits import DatasetPartitions, save_split_assignment
 from scripts.run_paper_experiment import output_roots, parser
 
 
 class PaperRunnerTests(unittest.TestCase):
+    def test_ablation_result_namespace_reuses_split_without_overwriting_reference(self) -> None:
+        self.assertEqual(
+            result_protocol_name("overall_binary_ternary", "overall_binary_ternary"),
+            "overall_binary_ternary",
+        )
+        self.assertEqual(
+            result_protocol_name("ablation_pairwise", "overall_binary_ternary"),
+            "ablation_pairwise.on.overall_binary_ternary",
+        )
+
     def test_single_run_smoke_defaults_are_isolated_from_formal_roots(self) -> None:
         args = parser().parse_args(["--split", "split.json", "--seed", "0", "--smoke"])
         run_root, checkpoint_root, results_root = output_roots(args)
@@ -114,11 +124,14 @@ class PaperRunnerTests(unittest.TestCase):
             self.assertIn("numpy", manifest["runtime"])
             self.assertIn("rdkit", manifest["runtime"])
             self.assertIn("unimol_tools", manifest["runtime"])
+            self.assertGreaterEqual(manifest["inference_seconds"], 0.0)
+            self.assertGreaterEqual(manifest["inference_ms_per_attempt"], 0.0)
             self.assertTrue(checkpoint.is_file())
             self.assertTrue((run_dir / "history.json").is_file())
             self.assertTrue((run_dir / "training_curves.csv").is_file())
             self.assertTrue((result_dir / "predictions.csv").is_file())
             self.assertTrue((result_dir / "metrics.json").is_file())
+            self.assertTrue((result_dir / "physical_consistency.json").is_file())
             self.assertTrue((result_dir / "resolved_config.json").is_file())
             prediction_lines = (result_dir / "predictions.csv").read_text(
                 encoding="utf-8-sig"

@@ -1,0 +1,9 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "a6_direct_vle",
+  "model": {"decoder_mode": "direct_vle"},
+  "runtime": {
+    "output_dir": "runs/experiments/ablation/architecture/a6_direct_vle",
+    "results_file": "experiments/ablation/architecture/a6_direct_vle/results.md"
+  }
+}

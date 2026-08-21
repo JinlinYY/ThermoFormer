@@ -70,7 +70,7 @@ class ThermoFormerTests(unittest.TestCase):
 
         self.assertAlmostEqual(residual.item(), 0.0, places=5)
 
-    def test_film_can_be_disabled_for_conditioning_ablation(self) -> None:
+    def test_film_ablation_replaces_modulation_with_condition_concatenation(self) -> None:
         model = ThermoFormer(
             ThermoFormerConfig(
                 feature_dim=6,
@@ -90,8 +90,109 @@ class ThermoFormerTests(unittest.TestCase):
             self.mask,
         )
 
-        torch.testing.assert_close(first.log_gamma, second.log_gamma)
+        self.assertFalse(torch.equal(first.log_gamma, second.log_gamma))
         self.assertFalse(torch.equal(first.log_psat, second.log_psat))
+
+    def test_pairwise_mode_does_not_condition_a_pair_on_the_third_component(self) -> None:
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=6,
+                hidden_dim=32,
+                layers=1,
+                heads=4,
+                interaction_mode="pairwise",
+            )
+        ).eval()
+        changed = self.molecules[:1].clone()
+        changed[:, 2] = changed[:, 2] + 100.0
+
+        original = model(
+            self.molecules[:1], self.temperature[:1], self.pressure[:1], self.x[:1], self.mask[:1]
+        )
+        perturbed = model(
+            changed, self.temperature[:1], self.pressure[:1], self.x[:1], self.mask[:1]
+        )
+
+        self.assertIsNotNone(original.pair_interactions)
+        torch.testing.assert_close(
+            original.pair_interactions[:, 0, 1],
+            perturbed.pair_interactions[:, 0, 1],
+        )
+
+    def test_independent_mode_has_no_pair_interaction_terms(self) -> None:
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=6,
+                hidden_dim=32,
+                layers=1,
+                heads=4,
+                interaction_mode="independent",
+            )
+        )
+
+        output = model(
+            self.molecules, self.temperature, self.pressure, self.x, self.mask
+        )
+
+        self.assertIsNone(output.pair_interactions)
+        self.assertTrue(torch.isfinite(output.log_gamma).all())
+
+    def test_direct_activity_decoder_removes_excess_gibbs_bottleneck(self) -> None:
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=6,
+                hidden_dim=32,
+                layers=1,
+                heads=4,
+                activity_mode="direct_gamma",
+            )
+        )
+
+        output = model(
+            self.molecules[:1],
+            self.temperature[:1],
+            self.pressure[:1],
+            torch.tensor([[1.0, 0.0, 0.0]]),
+            self.mask[:1],
+        )
+
+        self.assertIsNone(output.excess_gibbs_rt)
+        self.assertAlmostEqual(output.log_gamma[0, 0].item(), 0.0, places=6)
+
+    def test_direct_vle_head_is_bounded_and_permutation_equivariant(self) -> None:
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=6,
+                hidden_dim=32,
+                layers=1,
+                heads=4,
+                decoder_mode="direct_vle",
+            )
+        ).eval()
+        order = torch.tensor([2, 0, 1])
+
+        actual = model.predict_direct(
+            self.molecules[:1],
+            self.temperature[:1],
+            self.pressure[:1],
+            self.x[:1],
+            self.mask[:1],
+            direction="isothermal",
+        )
+        permuted = model.predict_direct(
+            self.molecules[:1, order],
+            self.temperature[:1],
+            self.pressure[:1],
+            self.x[:1, order],
+            self.mask[:1, order],
+            direction="isothermal",
+        )
+
+        self.assertTrue(torch.all(actual.pressure_kpa > 0.0))
+        self.assertTrue(torch.all((actual.y >= 0.0) & (actual.y <= 1.0)))
+        torch.testing.assert_close(actual.y.sum(-1), torch.ones(1))
+        torch.testing.assert_close(permuted.pressure_kpa, actual.pressure_kpa)
+        torch.testing.assert_close(permuted.y, actual.y[:, order])
 
     def test_ideal_activity_ablation_has_unit_activity_coefficients(self) -> None:
         config = ThermoFormerConfig(

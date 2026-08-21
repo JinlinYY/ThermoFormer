@@ -19,8 +19,10 @@ experiments/
   README.md                           # 实验总索引
   baseline/thermoformer_base/         # 完整模型基线
   ablation/
-    component/                        # 模型组件消融
-    thermodynamic_loss/               # 热力学一致性 loss 消融
+    architecture/                     # 正式 A0--A6 架构消融
+    thermodynamic_constraint/         # 正式 P0--P6 约束消融
+    component/                        # 早期诊断模板（不进入正式表）
+    thermodynamic_loss/               # 早期诊断模板（不进入正式表）
   comparison/                         # 对比实验
   interpolation_extrapolation/        # 内插/外推实验设计与后续结果
   explainability/                     # 可解释性实验设计与后续结果
@@ -95,7 +97,10 @@ conda activate ggnn39
 python scripts/train_thermoformer.py --config experiments/baseline/thermoformer_base/config.json
 ```
 
-当前预置实验包括：
+当前正式消融由 `scripts/run_ablation_suite.py` 统一运行，完整索引见
+`experiments/ablation/README.md`。A0--A6 比较分子表征、多组分交互、条件注入、
+非理想性瓶颈和直接 VLE 回归；P0--P6 区分硬约束与可移除的软物理 loss。
+旧的下列目录仅作为早期诊断模板保留，不进入正式消融表：
 
 - `baseline/thermoformer_base`：完整模型，默认 5 折交叉验证；
 - `ablation/component/no_film`：移除 FiLM 条件调制；
@@ -106,7 +111,7 @@ python scripts/train_thermoformer.py --config experiments/baseline/thermoformer_
 - `ablation/thermodynamic_loss/no_solver_loss`：关闭可微泡点求解监督；
 - `comparison/ideal_activity`：理想活度系数对比基线。
 
-`interpolation_extrapolation/` 和 `explainability/` 使用独立类别；本轮论文预测性能与泛化协议已经正式完成，尚未执行的消融、基线和可解释性实验继续明确标记为未运行。
+`interpolation_extrapolation/` 和 `explainability/` 使用独立类别；论文预测性能与泛化协议已经正式完成。正式消融的运行状态以各实验 `results.md` 和 `results/ablation/` 的机器可读表为准。
 
 消融配置通过 `extends` 继承完整基线，只覆盖目标开关、输出目录和结果文件路径。配置 section 或字段拼写错误会直接报错。
 

@@ -2,8 +2,10 @@ import unittest
 
 import torch
 
-from src.losses import experimental_objective
-from src.model import ModelOutputs
+from src.data import VLEBatch
+from src.losses import direct_vle_objective, experimental_objective
+from src.model import ModelOutputs, ThermoFormer, ThermoFormerConfig
+from src.pure_properties import CORRELATION_PARAMETER_COUNT
 from src.thermo import equilibrium_at_tp
 
 
@@ -50,6 +52,37 @@ class ExperimentalObjectiveTests(unittest.TestCase):
         )
 
         self.assertGreater(objective.pressure.item(), 0.1)
+
+    def test_direct_vle_objective_trains_both_inference_directions(self) -> None:
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=4,
+                hidden_dim=16,
+                layers=1,
+                heads=4,
+                decoder_mode="direct_vle",
+            )
+        )
+        batch = VLEBatch(
+            molecules=torch.randn(2, 3, 4),
+            temperature_k=torch.tensor([[330.0], [350.0]]),
+            pressure_kpa=torch.tensor([[80.0], [101.325]]),
+            x=torch.tensor([[0.4, 0.6, 0.0], [0.2, 0.3, 0.5]]),
+            y=torch.tensor([[0.5, 0.5, 0.0], [0.3, 0.2, 0.5]]),
+            mask=torch.tensor([[1.0, 1.0, 0.0], [1.0, 1.0, 1.0]]),
+            quality_weight=torch.ones(2, 1),
+            experiment_mode=torch.tensor([0, 1]),
+            pure_property_parameters=torch.zeros(
+                2, 3, CORRELATION_PARAMETER_COUNT
+            ),
+        )
+
+        objective = direct_vle_objective(model, batch)
+        objective.total.backward()
+
+        self.assertTrue(torch.isfinite(objective.total))
+        self.assertGreater(objective.pressure.item(), 0.0)
+        self.assertTrue(any(parameter.grad is not None for parameter in model.parameters()))
 
 
 if __name__ == "__main__":

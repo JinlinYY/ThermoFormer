@@ -1,0 +1,9 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "a3_pairwise_only",
+  "model": {"interaction_mode": "pairwise"},
+  "runtime": {
+    "output_dir": "runs/experiments/ablation/architecture/a3_pairwise_only",
+    "results_file": "experiments/ablation/architecture/a3_pairwise_only/results.md"
+  }
+}

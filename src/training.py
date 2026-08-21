@@ -16,6 +16,7 @@ from torch.utils.data import DataLoader
 from .data import VLEBatch, VLESample, VLETensorDataset, collate_vle
 from .losses import (
     Objective,
+    direct_vle_objective,
     experimental_objective,
     with_local_continuity,
     with_pure_boundary,
@@ -170,6 +171,12 @@ def _objective(
     physics: bool,
     solver_enabled: bool,
 ) -> Objective:
+    if getattr(getattr(model, "config", None), "decoder_mode", None) == "direct_vle":
+        return direct_vle_objective(
+            model,
+            batch,
+            pressure_weight=config.pressure_weight,
+        )
     state = equilibrium_at_tp(
         model,
         batch.molecules,

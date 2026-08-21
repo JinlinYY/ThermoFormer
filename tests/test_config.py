@@ -4,7 +4,7 @@ import unittest
 from dataclasses import replace
 from pathlib import Path
 
-from src.config import DataConfig, load_experiment_config
+from src.config import DataConfig, EncoderConfig, load_experiment_config
 from src.model import ThermoFormer, ThermoFormerConfig
 from src.training import TrainingConfig
 
@@ -179,6 +179,22 @@ class ExperimentConfigTests(unittest.TestCase):
             ThermoFormerConfig(layers=1.5)
         with self.assertRaises(ValueError):
             DataConfig(max_pressure_kpa=float("nan"))
+        with self.assertRaises(ValueError):
+            EncoderConfig(representation="unknown")
+
+    def test_ablation_switches_are_explicit_and_validated(self) -> None:
+        config = ThermoFormerConfig(
+            interaction_mode="pairwise",
+            activity_mode="direct_gamma",
+            decoder_mode="thermodynamic",
+        )
+
+        self.assertEqual(config.interaction_mode, "pairwise")
+        self.assertEqual(config.activity_mode, "direct_gamma")
+        with self.assertRaises(ValueError):
+            ThermoFormerConfig(interaction_mode="implicit")
+        with self.assertRaises(ValueError):
+            ThermoFormerConfig(decoder_mode="black_box")
 
 
 if __name__ == "__main__":

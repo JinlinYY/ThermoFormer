@@ -13,10 +13,11 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader
 
-from .data import VLESample, VLETensorDataset, collate_vle
-from .pure_properties import PurePropertyCatalog
-from .splits import canonical_smiles, component_id, sample_id, system_id
-from .thermo import EquilibriumState, solve_batch_modes
+from ..data import VLESample, VLETensorDataset, collate_vle
+from ..pure_properties import PurePropertyCatalog
+from ..splits import canonical_smiles, component_id, sample_id, system_id
+from ..model import DirectVLEOutputs
+from ..thermo import EquilibriumState, solve_batch_modes
 
 
 def _r2(actual: np.ndarray, predicted: np.ndarray) -> float | None:
@@ -367,6 +368,78 @@ def _prediction_record(
     return record
 
 
+def _direct_prediction_record(
+    sample: VLESample,
+    prediction: DirectVLEOutputs,
+    state_index: int,
+    direction: str,
+) -> dict[str, Any]:
+    order = sorted(
+        range(sample.component_count),
+        key=lambda index: canonical_smiles(sample.smiles[index]),
+    )
+    temperature = float(prediction.temperature_k[state_index, 0].detach().cpu())
+    pressure = float(prediction.pressure_kpa[state_index, 0].detach().cpu())
+    y = prediction.y[state_index, : sample.component_count].detach().cpu()
+    nonphysical = (
+        not math.isfinite(temperature)
+        or not math.isfinite(pressure)
+        or pressure <= 0.0
+        or not bool(torch.isfinite(y).all())
+        or bool((y < -1e-6).any())
+        or bool((y > 1.0 + 1e-6).any())
+        or abs(float(y.sum()) - 1.0) > 1e-4
+    )
+    record: dict[str, Any] = {
+        "sample_id": sample_id(sample),
+        "system_id": system_id(sample),
+        "component_count": sample.component_count,
+        "source": Path(sample.source).name,
+        "doi": sample.doi,
+        "quality_status": sample.quality_status,
+        "quality_weight": sample.quality_weight,
+        "experiment_mode": sample.experiment_mode,
+        "experiment_mode_confidence": sample.experiment_mode_confidence,
+        "direction": direction,
+        "target_temperature_k": sample.temperature_k if direction == "isobaric" else None,
+        "predicted_temperature_k": temperature if direction == "isobaric" else None,
+        "target_pressure_kpa": sample.pressure_kpa if direction == "isothermal" else None,
+        "predicted_pressure_kpa": pressure if direction == "isothermal" else None,
+        "pressure_residual_kpa": None,
+        "converged": True,
+        "nonphysical": nonphysical,
+        "iterations": 0,
+    }
+    for output_index in range(3):
+        suffix = output_index + 1
+        if output_index < sample.component_count:
+            source_index = order[output_index]
+            canonical = canonical_smiles(sample.smiles[source_index])
+            record.update(
+                {
+                    f"component_smiles_{suffix}": canonical,
+                    f"component_id_{suffix}": component_id(canonical),
+                    f"x_{suffix}": sample.liquid_composition[source_index],
+                    f"y_true_{suffix}": sample.vapor_composition[source_index],
+                    f"y_pred_{suffix}": float(prediction.y[state_index, source_index].detach().cpu()),
+                    f"gamma_pred_{suffix}": None,
+                    f"psat_pred_kpa_{suffix}": None,
+                }
+            )
+        else:
+            for name in (
+                "component_smiles",
+                "component_id",
+                "x",
+                "y_true",
+                "y_pred",
+                "gamma_pred",
+                "psat_pred_kpa",
+            ):
+                record[f"{name}_{suffix}"] = None
+    return record
+
+
 def predict_vle(
     model: nn.Module,
     samples: Sequence[VLESample],
@@ -388,11 +461,58 @@ def predict_vle(
     model.to(device).eval()
     records: list[dict[str, Any]] = []
     offset = 0
+    direct = getattr(getattr(model, "config", None), "decoder_mode", None) == "direct_vle"
     with torch.no_grad():
         for host_batch in loader:
             batch_samples = samples[offset : offset + host_batch.x.shape[0]]
             offset += host_batch.x.shape[0]
             batch = host_batch.to(device)
+            if direct:
+                isothermal_rows = batch.experiment_mode != 1
+                if bool(isothermal_rows.any()):
+                    prediction = model.predict_direct(
+                        batch.molecules[isothermal_rows],
+                        batch.temperature_k[isothermal_rows],
+                        batch.pressure_kpa[isothermal_rows],
+                        batch.x[isothermal_rows],
+                        batch.mask[isothermal_rows],
+                        direction="isothermal",
+                    )
+                    local_rows = torch.nonzero(
+                        isothermal_rows, as_tuple=False
+                    ).flatten().tolist()
+                    for state_index, local_index in enumerate(local_rows):
+                        records.append(
+                            _direct_prediction_record(
+                                batch_samples[local_index],
+                                prediction,
+                                state_index,
+                                "isothermal",
+                            )
+                        )
+                isobaric_rows = batch.experiment_mode != 0
+                if bool(isobaric_rows.any()):
+                    prediction = model.predict_direct(
+                        batch.molecules[isobaric_rows],
+                        batch.temperature_k[isobaric_rows],
+                        batch.pressure_kpa[isobaric_rows],
+                        batch.x[isobaric_rows],
+                        batch.mask[isobaric_rows],
+                        direction="isobaric",
+                    )
+                    local_rows = torch.nonzero(
+                        isobaric_rows, as_tuple=False
+                    ).flatten().tolist()
+                    for state_index, local_index in enumerate(local_rows):
+                        records.append(
+                            _direct_prediction_record(
+                                batch_samples[local_index],
+                                prediction,
+                                state_index,
+                                "isobaric",
+                            )
+                        )
+                continue
             solutions = solve_batch_modes(
                 model,
                 batch,

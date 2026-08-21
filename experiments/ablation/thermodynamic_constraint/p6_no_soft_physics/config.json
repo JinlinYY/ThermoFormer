@@ -1,0 +1,13 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "p6_no_soft_physics",
+  "training": {
+    "continuity_weight": 0.0,
+    "boundary_weight": 0.0,
+    "solver_weight": 0.0
+  },
+  "runtime": {
+    "output_dir": "runs/experiments/ablation/thermodynamic_constraint/p6_no_soft_physics",
+    "results_file": "experiments/ablation/thermodynamic_constraint/p6_no_soft_physics/results.md"
+  }
+}

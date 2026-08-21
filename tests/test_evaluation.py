@@ -1,6 +1,11 @@
 import unittest
 
-from src.evaluation import prediction_metric_rows
+import numpy as np
+import torch
+
+from src.data import VLESample
+from src.evaluation import predict_vle, prediction_metric_rows
+from src.model import ThermoFormer, ThermoFormerConfig
 
 
 def prediction(
@@ -115,6 +120,44 @@ class PaperMetricTests(unittest.TestCase):
         self.assertIn(("binary_subsystem_coverage", "3/3"), groups)
         self.assertIn(("binary_subsystem_coverage", "1/3"), groups)
         self.assertIn(("unseen_subset", "strict_all_components_unseen"), groups)
+
+    def test_direct_vle_prediction_exports_both_tasks_without_gamma_or_psat(self) -> None:
+        sample = VLESample(
+            smiles=("A", "B"),
+            names=("A", "B"),
+            temperature_k=350.0,
+            pressure_kpa=101.325,
+            liquid_composition=(0.4, 0.6),
+            vapor_composition=(0.5, 0.5),
+            quality_weight=1.0,
+            quality_status="passed",
+            source="synthetic.xlsx",
+            doi="test",
+            experiment_mode="full_state",
+            experiment_mode_confidence=1.0,
+        )
+        features = {"A": np.zeros(4, dtype=np.float32), "B": np.ones(4, dtype=np.float32)}
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=4,
+                hidden_dim=16,
+                layers=1,
+                heads=4,
+                decoder_mode="direct_vle",
+            )
+        )
+
+        records = predict_vle(
+            model,
+            [sample],
+            features,
+            batch_size=1,
+            device=torch.device("cpu"),
+        )
+
+        self.assertEqual({record["direction"] for record in records}, {"isothermal", "isobaric"})
+        self.assertTrue(all(record["gamma_pred_1"] is None for record in records))
+        self.assertTrue(all(record["psat_pred_kpa_1"] is None for record in records))
 
 
 if __name__ == "__main__":

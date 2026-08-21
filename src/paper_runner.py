@@ -22,14 +22,22 @@ from .config import ExperimentConfig, load_experiment_config
 from .auditing import ternary_subsystem_rows
 from .data import discover_vle_workbooks, load_vle_dataset, retain_pure_anchored_systems
 from .evaluation import predict_vle, prediction_metric_rows, write_prediction_csv
+from .evaluation.thermodynamic_consistency import evaluate_thermodynamic_consistency
 from .model import ThermoFormer
 from .pure_properties import empty_pure_property_catalog, load_pure_property_catalog
-from .representation import UniMolV2Encoder
+from .representation import RDKit2DEncoder, UniMolV2Encoder
 from .splits import dataset_digest, load_split_assignment, validate_protocol_name
 from .training import fit_model, seed_everything
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+
+def result_protocol_name(experiment_name: str, split_protocol: str) -> str:
+    """Namespace a variant on a reused split without overwriting its reference."""
+    experiment = validate_protocol_name(experiment_name)
+    split = validate_protocol_name(split_protocol)
+    return split if experiment == split else validate_protocol_name(f"{experiment}.on.{split}")
 
 
 def _json_digest(payload: object) -> str:
@@ -326,10 +334,11 @@ def run_paper_experiment(
     split = load_split_assignment(split_path, samples)
     if split.seed != seed:
         raise ValueError(f"Split seed {split.seed} does not match run seed {seed}")
-    protocol = validate_protocol_name(split.protocol)
+    split_protocol = validate_protocol_name(split.protocol)
+    protocol = result_protocol_name(experiment.name, split_protocol)
     if run_kind == "formal":
         expected_split_path = (
-            PROJECT_ROOT / "splits" / protocol / f"seed_{seed}.json"
+            PROJECT_ROOT / "splits" / split_protocol / f"seed_{seed}.json"
         ).resolve()
         if split_path.resolve() != expected_split_path:
             raise RuntimeError(
@@ -369,12 +378,15 @@ def run_paper_experiment(
     _atomic_json(completion, running_manifest)
 
     unique_smiles = sorted({value for sample in samples for value in sample.smiles})
-    encoder = UniMolV2Encoder(
-        feature_cache,
-        batch_size=experiment.encoder.batch_size,
-        model_size=experiment.encoder.model_size,
-        use_cuda=device.type == "cuda",
-    )
+    if experiment.encoder.representation == "rdkit_2d":
+        encoder = RDKit2DEncoder(feature_cache)
+    else:
+        encoder = UniMolV2Encoder(
+            feature_cache,
+            batch_size=experiment.encoder.batch_size,
+            model_size=experiment.encoder.model_size,
+            use_cuda=device.type == "cuda",
+        )
     seed_everything(seed)
     feature_map = encoder.encode(unique_smiles)
     feature_cache_sha256 = _file_digest(feature_cache)
@@ -402,6 +414,7 @@ def run_paper_experiment(
     environment_sha256 = _json_digest(runtime_context)
     resolved_payload["paper_protocol"] = {
         "name": protocol,
+        "split_protocol": split_protocol,
         "seed": seed,
         "split_file": str(split_path.resolve()),
         "dataset_sha256": dataset_digest(samples),
@@ -440,6 +453,7 @@ def run_paper_experiment(
         if device.type == "cuda"
         else 0.0
     )
+    inference_started = time.perf_counter()
     predictions = predict_vle(
         model,
         split.test,
@@ -449,7 +463,8 @@ def run_paper_experiment(
         solver_iterations=training.solver_iterations_eval,
         pure_property_catalog=catalog,
     )
-    if protocol.startswith("binary_to_ternary"):
+    inference_seconds = time.perf_counter() - inference_started
+    if split_protocol.startswith("binary_to_ternary"):
         subsystem_coverage = {
             str(row["ternary_system_id"]): int(row["covered_binary_subsystems"])
             for row in ternary_subsystem_rows(
@@ -460,17 +475,28 @@ def run_paper_experiment(
             record["binary_subsystem_coverage"] = subsystem_coverage.get(
                 str(record["system_id"])
             )
-    if protocol == "unseen_component":
+    if split_protocol == "unseen_component":
         strict_ids = set(split.metadata.get("strict_unseen_sample_ids", []))
         for record in predictions:
             record["strict_unseen"] = record["sample_id"] in strict_ids
     metric_rows = prediction_metric_rows(predictions)
+    physical_consistency = evaluate_thermodynamic_consistency(
+        model,
+        split.test,
+        feature_map,
+        device,
+        prediction_records=predictions,
+        solver_iterations=training.solver_iterations_eval,
+        grid_points=5 if run_kind == "smoke" else 21,
+        max_systems=2 if run_kind == "smoke" else 32,
+    )
     checkpoint_payload = {
         "model_name": "ThermoFormer",
         "model": result.state_dict,
         "model_config": model_config.to_dict(),
         "training_config": asdict(training),
         "protocol": protocol,
+        "split_protocol": split_protocol,
         "seed": seed,
         "split_file": str(split_path.resolve()),
         "dataset_sha256": dataset_digest(samples),
@@ -494,17 +520,20 @@ def run_paper_experiment(
     curves_path = run_dir / "training_curves.csv"
     predictions_path = result_dir / "predictions.csv"
     metrics_path = result_dir / "metrics.json"
+    physical_consistency_path = result_dir / "physical_consistency.json"
     result_config_path = result_dir / "resolved_config.json"
     _atomic_json(history_path, result.history)
     _write_training_curves(curves_path, result.history)
     write_prediction_csv(predictions_path, predictions)
     _atomic_json(metrics_path, metric_rows)
+    _atomic_json(physical_consistency_path, physical_consistency)
     artifact_paths = {
         "checkpoint": checkpoint_path,
         "history": history_path,
         "training_curves": curves_path,
         "predictions": predictions_path,
         "metrics": metrics_path,
+        "physical_consistency": physical_consistency_path,
         "resolved_config": result_config_path,
     }
     artifacts = {
@@ -514,6 +543,7 @@ def run_paper_experiment(
     manifest: dict[str, Any] = {
         "status": "completed" if run_kind == "formal" else "smoke",
         "protocol": protocol,
+        "split_protocol": split_protocol,
         "seed": seed,
         "git_commit": git_commit,
         "git_dirty": git_dirty,
@@ -536,6 +566,8 @@ def run_paper_experiment(
             "prediction_attempts": len(predictions),
         },
         "training_seconds": training_seconds,
+        "inference_seconds": inference_seconds,
+        "inference_ms_per_attempt": 1000.0 * inference_seconds / max(1, len(predictions)),
         "peak_gpu_memory_mb": peak_gpu_memory_mb,
         "trainable_parameters": trainable_parameters,
         "best_validation_loss": result.best_validation_loss,
@@ -543,6 +575,7 @@ def run_paper_experiment(
         "artifacts": artifacts,
         "runtime": {**runtime_context, "device": str(device)},
         "headline_metrics": next(row for row in metric_rows if row["scope"] == "all"),
+        "physical_consistency": physical_consistency,
     }
     _atomic_json(run_dir / "manifest.json", manifest)
     _atomic_json(completion, manifest)

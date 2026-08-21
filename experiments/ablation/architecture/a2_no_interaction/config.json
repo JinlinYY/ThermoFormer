@@ -1,0 +1,9 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "a2_no_interaction",
+  "model": {"interaction_mode": "independent"},
+  "runtime": {
+    "output_dir": "runs/experiments/ablation/architecture/a2_no_interaction",
+    "results_file": "experiments/ablation/architecture/a2_no_interaction/results.md"
+  }
+}

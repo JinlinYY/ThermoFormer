@@ -8,6 +8,8 @@ experiments/
   baseline/
     thermoformer_base/
   ablation/
+    architecture/                    # formal A0--A6 controls
+    thermodynamic_constraint/        # formal P0--P6 campaign
     component/
       no_film/
       no_transformer/
@@ -43,6 +45,11 @@ Every runnable experiment directory contains:
 - `results.md`: honest current status, automatically replaced after a successful run.
 
 ## Experiment index
+
+The formal paper ablation matrix is indexed in
+[`ablation/README.md`](ablation/README.md). The `component/` and
+`thermodynamic_loss/` rows below are retained preliminary diagnostics and must not
+be mixed with the formal five-seed campaign.
 
 | Category | Experiment | Purpose | Command | Results |
 |---|---|---|---|---|

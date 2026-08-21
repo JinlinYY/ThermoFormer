@@ -1,0 +1,9 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "p3_no_pure_boundary",
+  "training": {"boundary_weight": 0.0},
+  "runtime": {
+    "output_dir": "runs/experiments/ablation/thermodynamic_constraint/p3_no_pure_boundary",
+    "results_file": "experiments/ablation/thermodynamic_constraint/p3_no_pure_boundary/results.md"
+  }
+}

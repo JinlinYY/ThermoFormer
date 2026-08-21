@@ -4,7 +4,7 @@ from pathlib import Path
 
 import numpy as np
 
-from src.representation import UniMolV2Encoder
+from src.representation import RDKit2DEncoder, UniMolV2Encoder
 
 
 class FakeUniMol:
@@ -30,6 +30,20 @@ class UniMolV2EncoderTests(unittest.TestCase):
         self.assertEqual(first["CCO"].shape, (4,))
         self.assertEqual(len(backend.calls), 1)
         self.assertFalse(backend.calls[0][1])
+        np.testing.assert_array_equal(first["O"], second["O"])
+
+    def test_rdkit_ablation_encoder_is_deterministic_finite_and_cached(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            cache = Path(directory) / "rdkit_2d.npz"
+            encoder = RDKit2DEncoder(cache)
+
+            first = encoder.encode(["O", "CCO", "O"])
+            second = RDKit2DEncoder(cache).encode(["CCO", "O"])
+
+        self.assertEqual(set(first), {"CCO", "O"})
+        self.assertEqual(first["O"].shape, first["CCO"].shape)
+        self.assertGreater(first["O"].shape[0], 10)
+        self.assertTrue(np.isfinite(first["CCO"]).all())
         np.testing.assert_array_equal(first["O"], second["O"])
 
 
