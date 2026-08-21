@@ -1,3 +1,8 @@
-# P4 Without phase-continuity loss
+# P4 No phase-continuity loss
 
-Status: not run.
+Status: **completed formal five-seed ablation**.
+
+| Benchmark | Direction | Observable | System-wise MAE (mean ± SD) | Seeds |
+|---|---|---|---:|---:|
+
+Full machine-readable results: `results/ablation/architecture.csv` and `results/ablation/physical_consistency.csv`.

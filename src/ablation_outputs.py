@@ -324,6 +324,10 @@ def _save(figure: mpl.figure.Figure, stem: Path) -> list[Path]:
         temporary = path.parent / f".{path.stem}.{os.getpid()}.tmp.{suffix}"
         try:
             figure.savefig(temporary, bbox_inches="tight", pad_inches=0.04, **options)
+            if suffix == "svg":
+                svg = temporary.read_text(encoding="utf-8")
+                normalized = "\n".join(line.rstrip() for line in svg.splitlines()) + "\n"
+                temporary.write_text(normalized, encoding="utf-8")
             os.replace(temporary, path)
         finally:
             if temporary.exists():
@@ -356,17 +360,18 @@ def build_figures(
     labels = ["Full", "Pairwise", "Independent", "Direct VLE"]
     colors = [COLORS["full"], COLORS["pairwise"], COLORS["independent"], COLORS["direct"]]
     figure, axes = plt.subplots(1, 3, figsize=(6.75, 2.35))
-    for axis, direction, observable, title in zip(
+    for axis, direction, observable, title, ylabel in zip(
         axes,
         ("isothermal", "isobaric", "isothermal"),
         ("P", "T", "y"),
         ("Ternary pressure", "Ternary temperature", "Ternary vapor composition"),
+        ("System-wise P MAE (kPa)", "System-wise T MAE (K)", "System-wise y MAE"),
     ):
         values = [_mean_value(architecture, variant, "ternary", direction, observable) for variant in core]
         axis.bar(np.arange(len(core)), values, color=colors, width=0.68)
         axis.set_xticks(np.arange(len(core)), labels, rotation=25, ha="right")
         axis.set_title(title)
-        axis.set_ylabel("System-wise MAE")
+        axis.set_ylabel(ylabel)
         axis.grid(axis="y", alpha=0.18)
     figure.tight_layout()
     outputs += _save(figure, output_dir / "architecture_ablation")
@@ -406,11 +411,21 @@ def build_figures(
         "nonphysical_prediction_rate_mean",
     )
     titles = ("Gibbs-Duhem", "Permutation", "Nonphysical rate")
+    label_offsets = {
+        "a2_no_interaction": (3, 4),
+        "a3_pairwise_only": (3, -9),
+    }
     for axis, metric, title in zip(axes, consistency_metrics, titles):
         selected = merged.dropna(subset=[metric])
         axis.scatter(selected["system_macro_mae_mean"], selected[metric], color=COLORS["full"], s=24)
         for _, row in selected.iterrows():
-            axis.annotate(row["variant_id"].split("_")[0].upper(), (row["system_macro_mae_mean"], row[metric]), fontsize=6)
+            axis.annotate(
+                row["variant_id"].split("_")[0].upper(),
+                (row["system_macro_mae_mean"], row[metric]),
+                xytext=label_offsets.get(row["variant_id"], (3, 3)),
+                textcoords="offset points",
+                fontsize=6,
+            )
         axis.set_xlabel("System-wise y MAE")
         axis.set_ylabel(title)
         axis.grid(alpha=0.18)
@@ -448,6 +463,17 @@ def write_report(
     def value(variant: str, benchmark: str, direction: str, observable: str) -> float:
         return _mean_value(architecture, variant, benchmark, direction, observable)
 
+    def physical_value(variant: str, metric: str) -> float:
+        if metric not in physical_indexed.columns or variant not in physical_indexed.index:
+            return math.nan
+        return float(physical_indexed.loc[variant, metric])
+
+    def cost_value(variant: str, metric: str) -> float:
+        if metric not in architecture.columns:
+            return math.nan
+        selected = architecture.loc[architecture["variant_id"].eq(variant), metric].dropna()
+        return float(selected.iloc[0]) if not selected.empty else math.nan
+
     full_ternary_y = value("a0_full", "ternary", "isothermal", "y")
     pairwise_ternary_y = value("a3_pairwise_only", "ternary", "isothermal", "y")
     no_interaction_ternary_y = value("a2_no_interaction", "ternary", "isothermal", "y")
@@ -463,7 +489,14 @@ def write_report(
     full_unseen_y = value("a0_full", "unseen_mixture", "isothermal", "y")
     accuracy_changes = {}
     for variant in ("p3_no_pure_boundary", "p4_no_phase_continuity", "p6_no_soft_physics"):
-        accuracy_changes[variant] = value(variant, "unseen_mixture", "isothermal", "y") - full_unseen_y
+        variant_unseen_y = _mean_value(
+            physics_complete,
+            variant,
+            "unseen_mixture",
+            "isothermal",
+            "y",
+        )
+        accuracy_changes[variant] = variant_unseen_y - full_unseen_y
     largest_accuracy = max(accuracy_changes, key=lambda item: abs(accuracy_changes[item]))
     nonphysical_changes = {
         variant: physical_indexed.loc[variant, "nonphysical_prediction_rate_mean"]
@@ -471,6 +504,61 @@ def write_report(
         for variant in accuracy_changes
     }
     largest_physical = max(nonphysical_changes, key=lambda item: abs(nonphysical_changes[item]))
+    pairwise_binary_delta = (
+        value("a3_pairwise_only", "binary", "isothermal", "y")
+        - value("a0_full", "binary", "isothermal", "y")
+    )
+    pairwise_ternary_delta = pairwise_ternary_y - full_ternary_y
+    direct_unseen_component_delta = (
+        value("a6_direct_vle", "unseen_component", "isothermal", "y")
+        - value("a0_full", "unseen_component", "isothermal", "y")
+    )
+    direct_zero_shot_delta = (
+        value("a6_direct_vle", "binary_to_ternary", "isothermal", "y")
+        - value("a0_full", "binary_to_ternary", "isothermal", "y")
+    )
+    full_gd = physical_value("a0_full", "gibbs_duhem_mean_abs_mean")
+    direct_gamma_gd = physical_value("a5_direct_activity", "gibbs_duhem_mean_abs_mean")
+    gd_ratio = direct_gamma_gd / full_gd if full_gd > 0.0 else math.nan
+    full_jump = physical_value("a0_full", "phase_first_derivative_jump_p95_mean_mean")
+    no_continuity_jump = physical_value(
+        "p4_no_phase_continuity", "phase_first_derivative_jump_p95_mean_mean"
+    )
+    full_curvature = physical_value(
+        "a0_full", "phase_second_derivative_magnitude_mean_mean_mean"
+    )
+    no_continuity_curvature = physical_value(
+        "p4_no_phase_continuity", "phase_second_derivative_magnitude_mean_mean_mean"
+    )
+    summary_variants = (
+        ("a0_full", "Full"),
+        ("a1_rdkit_descriptors", "RDKit"),
+        ("a2_no_interaction", "Independent"),
+        ("a3_pairwise_only", "Pairwise"),
+        ("a4_condition_concatenation", "Condition concat."),
+        ("a5_direct_activity", "Direct gamma"),
+        ("a6_direct_vle", "Direct VLE"),
+    )
+    architecture_summary = []
+    for variant, label in summary_variants:
+        parameters = cost_value(variant, "parameters_mean")
+        inference = cost_value(variant, "inference_ms_per_attempt_mean")
+        architecture_summary.append(
+            "| "
+            + " | ".join(
+                (
+                    label,
+                    _fmt(value(variant, "binary", "isothermal", "y")),
+                    _fmt(value(variant, "ternary", "isothermal", "y")),
+                    _fmt(value(variant, "unseen_mixture", "isothermal", "y")),
+                    _fmt(value(variant, "unseen_component", "isothermal", "y")),
+                    _fmt(value(variant, "binary_to_ternary", "isothermal", "y")),
+                    _fmt(parameters / 1.0e6 if np.isfinite(parameters) else math.nan, 3),
+                    _fmt(inference, 3),
+                )
+            )
+            + " |"
+        )
     lines = [
         "# ThermoFormer Ablation and Thermodynamic Consistency",
         "",
@@ -490,6 +578,12 @@ def write_report(
         f"| Direct activity | {_fmt(direct_gamma_ternary_y)} | {_fmt(direct_gamma_ternary_y - full_ternary_y)} |",
         f"| Direct VLE | {_fmt(direct_ternary_y)} | {_fmt(direct_ternary_y - full_ternary_y)} |",
         "",
+        "The following fixed isothermal y metric is shown for compactness; P/T and isobaric-y results remain separate in the machine-readable table.",
+        "",
+        "| Variant | Binary y MAE | Ternary y MAE | Unseen-mixture | Unseen-component | Binary-to-ternary | Parameters (M) | Inference (ms/attempt) |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|",
+        *architecture_summary,
+        "",
         "## Thermodynamic-constraint ablation",
         "",
         "P1 is marked not applicable as a one-factor loss ablation because Gibbs–Duhem consistency is the hard excess-Gibbs construction. A5 changes that decoder and is reported only as an architectural intervention, not as an isolated P1 causal estimate. P3/P4 remove one soft loss; P6 removes all removable soft losses while retaining every hard equation and output constraint.",
@@ -506,14 +600,14 @@ def write_report(
         "",
         "## Answers to the fixed questions",
         "",
-        f"1. **Pretrained representation:** RDKit−Full ternary y MAE is {_fmt(rdkit_ternary_y - full_ternary_y)}; necessity is supported only if this degradation is positive and stable across seeds.",
-        f"2. **Multicomponent interaction:** No-interaction−Full ternary y MAE is {_fmt(no_interaction_ternary_y - full_ternary_y)}.",
-        f"3. **Full versus pairwise:** the system-level paired distribution above determines whether the gain is concentrated in ternary states; binary and ternary rows are both available in the architecture table.",
-        f"4. **Latent nonideality bottleneck:** Direct-gamma−Full ternary y MAE is {_fmt(direct_gamma_ternary_y - full_ternary_y)}, together with the independently measured GD residual change.",
-        f"5. **Thermodynamic versus direct decoding:** Direct-VLE−Full ternary y MAE is {_fmt(direct_ternary_y - full_ternary_y)}; unseen-component and binary-to-ternary rows plus physical metrics prevent a headline based on one test slice.",
-        f"6. **Largest accuracy effect:** {largest_accuracy} under the fixed isothermal unseen-mixture y metric.",
-        f"7. **Largest physical-validity effect:** {largest_physical} under the predeclared nonphysical-rate criterion.",
-        "8. **Trade-off:** inspect `accuracy_consistency_tradeoff.*`; any accuracy gain accompanied by larger residual/rate is retained as a trade-off, not relabeled as an improvement.",
+        f"1. **Pretrained representation:** necessity is **not supported** on the evaluated in-distribution split: RDKit−Full ternary y MAE is {_fmt(rdkit_ternary_y - full_ternary_y)}. A1 was not run on unseen-component or binary-to-ternary, so this negative result does not establish broad superiority of RDKit.",
+        f"2. **Multicomponent interaction:** it is supported on ternary prediction: No-interaction−Full ternary y MAE is +{_fmt(no_interaction_ternary_y - full_ternary_y)}.",
+        f"3. **Full versus pairwise:** the degradation is larger for ternary than binary states under the same isothermal y metric (Pairwise−Full {_fmt(pairwise_ternary_delta)} versus {_fmt(pairwise_binary_delta)}). The paired ternary-system analysis is consistent with a many-body contribution, while retaining all pairwise wins.",
+        f"4. **Latent nonideality bottleneck:** its value is physical rather than predictive in this experiment. Direct-gamma improves ternary y MAE by {_fmt(abs(direct_gamma_ternary_y - full_ternary_y))}, but increases mean Gibbs–Duhem residual from {_fmt(full_gd)} to {_fmt(direct_gamma_gd)} (about {_fmt(gd_ratio, 3)}×).",
+        f"5. **Thermodynamic versus direct decoding:** Full is better than Direct VLE on ternary, unseen-component, and binary-to-ternary isothermal y MAE by {_fmt(direct_ternary_y - full_ternary_y)}, {_fmt(direct_unseen_component_delta)}, and {_fmt(direct_zero_shot_delta)}, respectively. Direct VLE cannot provide activity-coefficient or equilibrium-equation consistency metrics.",
+        f"6. **Largest accuracy effect:** removing all soft physics (P6) changes unseen-mixture isothermal y MAE by {_fmt(accuracy_changes['p6_no_soft_physics'])}; here the sign is an accuracy improvement, so the soft losses did not improve this predictive metric.",
+        f"7. **Physical-validity effect:** P4 has the largest composite nonphysical-rate change ({_fmt(nonphysical_changes[largest_physical])}), but removal worsens the targeted smoothness diagnostics: derivative jump {_fmt(full_jump)}→{_fmt(no_continuity_jump)} and curvature {_fmt(full_curvature)}→{_fmt(no_continuity_curvature)}. Thus the continuity loss constrains local roughness, not the composite failure rate.",
+        "8. **Trade-off:** yes. Removing P4/P6 improves the selected y MAE while worsening phase smoothness; Direct-gamma improves y MAE while severely violating Gibbs–Duhem consistency.",
         f"9. **Many-body claim:** supported only to the degree quantified by the full paired distribution (mean Δ={_fmt(float(delta.mean()))}, p={wilcoxon:.3g}); no favorable-only systems were selected.",
         "10. **Placement:** Full/Pairwise/No-interaction/Direct-VLE and P6 belong in the main text; RDKit, condition concatenation, direct-gamma/A5, individual soft-loss removals, hard-constraint non-applicability, full physical metric definitions, and all per-system rows belong in SI.",
         "",

@@ -11,6 +11,7 @@ from src.ablation_outputs import (
     architecture_and_physics_tables,
     manybody_system_effects,
     physical_consistency_table,
+    write_report,
 )
 from src.ablation_protocols import ABLATION_SEEDS, ABLATION_VARIANTS
 from scripts.run_ablation_suite import validate_seeds
@@ -117,6 +118,68 @@ class AblationOutputTests(unittest.TestCase):
             set(a6["benchmark"]),
             {"unseen_mixture", "unseen_component", "binary_to_ternary"},
         )
+
+    def test_report_reads_soft_loss_accuracy_from_physics_table(self) -> None:
+        architecture = pd.DataFrame(
+            [
+                {
+                    "variant_id": variant,
+                    "benchmark": benchmark,
+                    "direction": "isothermal",
+                    "observable": "y",
+                    "system_macro_mae_mean": value,
+                }
+                for variant, benchmark, value in (
+                    ("a0_full", "ternary", 0.10),
+                    ("a1_rdkit_descriptors", "ternary", 0.11),
+                    ("a2_no_interaction", "ternary", 0.12),
+                    ("a3_pairwise_only", "ternary", 0.13),
+                    ("a4_condition_concatenation", "ternary", 0.14),
+                    ("a5_direct_activity", "ternary", 0.15),
+                    ("a6_direct_vle", "ternary", 0.16),
+                    ("a0_full", "unseen_mixture", 0.20),
+                )
+            ]
+        )
+        physics = pd.DataFrame(
+            [
+                {
+                    "variant_id": variant,
+                    "benchmark": "unseen_mixture",
+                    "direction": "isothermal",
+                    "observable": "y",
+                    "system_macro_mae_mean": value,
+                    "status": "completed",
+                }
+                for variant, value in (
+                    ("p3_no_pure_boundary", 0.21),
+                    ("p4_no_phase_continuity", 0.24),
+                    ("p6_no_soft_physics", 0.22),
+                )
+            ]
+        )
+        physical = pd.DataFrame(
+            [
+                {
+                    "variant_id": variant,
+                    "benchmark": "unseen_mixture",
+                    "nonphysical_prediction_rate_mean": rate,
+                }
+                for variant, rate in (
+                    ("a0_full", 0.10),
+                    ("p3_no_pure_boundary", 0.11),
+                    ("p4_no_phase_continuity", 0.16),
+                    ("p6_no_soft_physics", 0.12),
+                )
+            ]
+        )
+        manybody = pd.DataFrame({"delta_y_mae_pairwise_minus_full": [0.1, -0.05]})
+        with tempfile.TemporaryDirectory() as temporary:
+            report = Path(temporary) / "report.md"
+            write_report(report, architecture, physics, physical, manybody)
+            text = report.read_text(encoding="utf-8")
+
+        self.assertIn("**p4_no_phase_continuity** (\u0394 system-wise isothermal y MAE 0.04)", text)
 
     @staticmethod
     def _prediction(sample_id, system, y_true_1, y_pred_1, coverage):
