@@ -29,6 +29,9 @@ logs/
 *.npy
 *.npz
 
+# Publish formal ThermoFormer weights through Git LFS.
+!checkpoints/**/*.pt
+
 # Temporary files
 *.tmp
 *.temp
