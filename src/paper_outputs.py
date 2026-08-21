@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import math
 from pathlib import Path
-from typing import Any, Callable, Iterable, Sequence
+from typing import Any, Callable, Iterable, NamedTuple, Sequence
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -82,6 +82,59 @@ METRICS = (
     "nonphysical_rate",
     "attempted_samples",
     "systems",
+)
+
+
+class MetricSection(NamedTuple):
+    title: str
+    page_label: str
+    unit: str
+    mae: str
+    rmse: str
+    r2: str
+    table_error_digits: int
+    table_r2_digits: int
+    page_error_digits: int
+    page_r2_digits: int
+
+
+METRIC_SECTIONS = (
+    MetricSection(
+        "Pressure metrics",
+        "pressure",
+        "kPa",
+        "pressure_mae_kpa",
+        "pressure_rmse_kpa",
+        "pressure_r2",
+        2,
+        3,
+        3,
+        4,
+    ),
+    MetricSection(
+        "Temperature metrics",
+        "temperature",
+        "K",
+        "temperature_mae_k",
+        "temperature_rmse_k",
+        "temperature_r2",
+        2,
+        3,
+        3,
+        4,
+    ),
+    MetricSection(
+        "Vapor-composition metrics",
+        "vapor composition",
+        "",
+        "y_mae",
+        "y_rmse",
+        "y_r2",
+        4,
+        3,
+        4,
+        4,
+    ),
 )
 
 
@@ -573,37 +626,11 @@ def _format_metric(row: pd.Series, metric: str, digits: int) -> str:
 
 def metric_markdown_tables(records: pd.DataFrame) -> str:
     """Render publication metrics without pooling unlike physical observables."""
-    sections = (
-        (
-            "Pressure metrics",
-            "kPa",
-            "pressure_mae_kpa",
-            "pressure_rmse_kpa",
-            "pressure_r2",
-            2,
-        ),
-        (
-            "Temperature metrics",
-            "K",
-            "temperature_mae_k",
-            "temperature_rmse_k",
-            "temperature_r2",
-            2,
-        ),
-        (
-            "Vapor-composition metrics",
-            "mole fraction",
-            "y_mae",
-            "y_rmse",
-            "y_r2",
-            4,
-        ),
-    )
     blocks: list[str] = []
-    for title, unit, mae, rmse, r2, digits in sections:
-        unit_suffix = f" ({unit})" if unit != "mole fraction" else ""
+    for section in METRIC_SECTIONS:
+        unit_suffix = f" ({section.unit})" if section.unit else ""
         lines = [
-            f"**{title}**",
+            f"**{section.title}**",
             "",
             f"| Test subset | MAE{unit_suffix} | RMSE{unit_suffix} | R² |",
             "|---|---:|---:|---:|",
@@ -612,9 +639,9 @@ def metric_markdown_tables(records: pd.DataFrame) -> str:
             lines.append(
                 "| {label} | {mae} | {rmse} | {r2} |".format(
                     label=row["test_subset"],
-                    mae=_format_metric(row, mae, digits),
-                    rmse=_format_metric(row, rmse, digits),
-                    r2=_format_metric(row, r2, 3),
+                    mae=_format_metric(row, section.mae, section.table_error_digits),
+                    rmse=_format_metric(row, section.rmse, section.table_error_digits),
+                    r2=_format_metric(row, section.r2, section.table_r2_digits),
                 )
             )
         blocks.append("\n".join(lines))
@@ -827,27 +854,27 @@ def _write_experiment_result_pages(
             "Status: **completed formal five-seed experiment**.",
             "",
             f"- Seeds: `{','.join(str(value) for value in manifest['seeds'])}`",
-            "- Point-wise pressure: "
-            f"MAE {_format_metric(row, 'pressure_mae_kpa', 3)} kPa; "
-            f"RMSE {_format_metric(row, 'pressure_rmse_kpa', 3)} kPa; "
-            f"R² {_format_metric(row, 'pressure_r2', 4)}.",
-            "- Point-wise temperature: "
-            f"MAE {_format_metric(row, 'temperature_mae_k', 3)} K; "
-            f"RMSE {_format_metric(row, 'temperature_rmse_k', 3)} K; "
-            f"R² {_format_metric(row, 'temperature_r2', 4)}.",
-            "- Point-wise vapor composition: "
-            f"MAE {_format_metric(row, 'y_mae', 4)}; "
-            f"RMSE {_format_metric(row, 'y_rmse', 4)}; "
-            f"R² {_format_metric(row, 'y_r2', 4)}.",
-            f"- Valid coverage: {_format(row['valid_coverage_mean'], row['valid_coverage_std'], 5)}",
-            f"- Solver failure rate: {_format(row['solver_failure_rate_mean'], row['solver_failure_rate_std'], 5)}",
-            f"- Training commit: `{manifest['training_git_commit']}`",
-            f"- Aggregation commit: `{manifest['aggregation_git_commit']}`",
-            f"- Formal summary: `results/{protocol}/metrics_summary.csv`",
-            f"- Per-seed predictions: `results/{protocol}/seed_*/predictions.csv`",
-            "",
-            "These values are generated from committed fixed splits and should not be replaced by smoke or diagnostic runs.",
         ]
+        for section in METRIC_SECTIONS:
+            unit = f" {section.unit}" if section.unit else ""
+            content.append(
+                f"- Point-wise {section.page_label}: "
+                f"MAE {_format_metric(row, section.mae, section.page_error_digits)}{unit}; "
+                f"RMSE {_format_metric(row, section.rmse, section.page_error_digits)}{unit}; "
+                f"R² {_format_metric(row, section.r2, section.page_r2_digits)}."
+            )
+        content.extend(
+            [
+                f"- Valid coverage: {_format(row['valid_coverage_mean'], row['valid_coverage_std'], 5)}",
+                f"- Solver failure rate: {_format(row['solver_failure_rate_mean'], row['solver_failure_rate_std'], 5)}",
+                f"- Training commit: `{manifest['training_git_commit']}`",
+                f"- Aggregation commit: `{manifest['aggregation_git_commit']}`",
+                f"- Formal summary: `results/{protocol}/metrics_summary.csv`",
+                f"- Per-seed predictions: `results/{protocol}/seed_*/predictions.csv`",
+                "",
+                "These values are generated from committed fixed splits and should not be replaced by smoke or diagnostic runs.",
+            ]
+        )
         (project_root / config).parent.joinpath("results.md").write_text(
             "\n".join(content) + "\n", encoding="utf-8"
         )
