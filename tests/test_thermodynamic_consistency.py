@@ -93,6 +93,31 @@ class ThermodynamicConsistencyTests(unittest.TestCase):
 
         torch.testing.assert_close(residuals, torch.zeros(2))
 
+    def test_batched_gibbs_duhem_matches_individual_states(self) -> None:
+        model = ThermoFormer(
+            ThermoFormerConfig(feature_dim=4, hidden_dim=16, layers=1, heads=4)
+        )
+        molecules = torch.randn(2, 3, 4)
+        temperature = torch.tensor([[330.0], [370.0]])
+        pressure = torch.tensor([[90.0], [120.0]])
+        x = torch.tensor([[0.3, 0.7, 0.0], [0.2, 0.3, 0.5]])
+        mask = torch.tensor([[1.0, 1.0, 0.0], [1.0, 1.0, 1.0]])
+
+        batched = gibbs_duhem_residuals(
+            model, molecules, temperature, pressure, x, mask
+        )
+        individual = torch.cat(
+            [
+                gibbs_duhem_residuals(
+                    model, molecules[i : i + 1], temperature[i : i + 1],
+                    pressure[i : i + 1], x[i : i + 1], mask[i : i + 1],
+                )
+                for i in range(2)
+            ]
+        )
+
+        torch.testing.assert_close(batched, individual, atol=1e-6, rtol=1e-5)
+
     def test_composition_closure_reports_bounds_and_both_phase_sums(self) -> None:
         metrics = composition_closure_metrics(
             x=torch.tensor([[0.4, 0.6, 0.0], [0.2, 0.3, 0.5]]),

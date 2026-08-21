@@ -49,47 +49,46 @@ def gibbs_duhem_residuals(
 ) -> Tensor:
     """Evaluate directional ``sum_i x_i d ln(gamma_i)`` using autograd."""
     residuals: list[Tensor] = []
-    for sample_index in range(x.shape[0]):
-        count = int(mask[sample_index].sum().item())
-        sample_x = x[sample_index : sample_index + 1].detach().clone().requires_grad_(True)
+    chunk_size = 256
+    for start in range(0, x.shape[0], chunk_size):
+        stop = min(start + chunk_size, x.shape[0])
+        sample_x = x[start:stop].detach().clone().requires_grad_(True)
         output = model(
-            molecules[sample_index : sample_index + 1],
-            temperature_k[sample_index : sample_index + 1],
-            pressure_kpa[sample_index : sample_index + 1],
+            molecules[start:stop],
+            temperature_k[start:stop],
+            pressure_kpa[start:stop],
             sample_x,
-            mask[sample_index : sample_index + 1],
+            mask[start:stop],
         )
-        directions = simplex_tangent_directions(
-            count,
-            dtype=sample_x.dtype,
-            device=sample_x.device,
-        )
-        for direction in directions:
-            derivatives = []
-            for component in range(count):
-                value = output.log_gamma[0, component]
-                if value.requires_grad:
-                    gradient = torch.autograd.grad(
-                        value,
-                        sample_x,
-                        retain_graph=True,
-                        create_graph=False,
-                        allow_unused=True,
-                    )[0]
-                else:
-                    gradient = None
-                derivative = (
-                    (gradient[0, :count] * direction).sum()
-                    if gradient is not None
-                    else sample_x.sum() * 0.0
-                )
-                derivatives.append(derivative)
-            residuals.append(
-                (
-                    sample_x[0, :count]
-                    * torch.stack(derivatives)
-                ).sum().abs()
+        component_gradients = []
+        for component in range(sample_x.shape[1]):
+            value = output.log_gamma[:, component]
+            gradient = (
+                torch.autograd.grad(
+                    value.sum(), sample_x, retain_graph=True,
+                    create_graph=False, allow_unused=True,
+                )[0]
+                if value.requires_grad else None
             )
+            component_gradients.append(
+                gradient if gradient is not None else torch.zeros_like(sample_x)
+            )
+        jacobian = torch.stack(component_gradients, dim=1)
+        chunk_mask = mask[start:stop]
+        for count in (2, 3):
+            rows = chunk_mask.sum(-1).eq(count)
+            if not bool(rows.any()):
+                continue
+            directions = simplex_tangent_directions(
+                count, dtype=sample_x.dtype, device=sample_x.device
+            )
+            directional = torch.einsum(
+                "boi,di->bod", jacobian[rows, :count, :count], directions
+            )
+            values = torch.einsum(
+                "bo,bod->bd", sample_x[rows, :count], directional
+            )
+            residuals.extend(values.abs().flatten().unbind())
     if not residuals:
         return torch.empty(0, dtype=x.dtype, device=x.device)
     return torch.stack(residuals)
@@ -556,67 +555,66 @@ def _phase_metrics(
     solver_iterations: int,
     pure_property_catalog: PurePropertyCatalog | None,
 ) -> list[dict[str, float]]:
-    metrics: list[dict[str, float]] = []
+    molecule_parts: list[Tensor] = []
+    temperature_parts: list[Tensor] = []
+    pressure_parts: list[Tensor] = []
+    composition_parts: list[Tensor] = []
+    mask_parts: list[Tensor] = []
+    pure_parts: list[Tensor] = []
+    spans: list[tuple[np.ndarray, int, int, int]] = []
+    offset = 0
     for sample in samples:
         count = sample.component_count
         sample_batch = _batch([sample], feature_map, device, pure_property_catalog)
-        molecule_features = sample_batch.molecules
-        mask = sample_batch.mask
         for coordinate, path in _phase_paths(count, grid_points, device):
             padded_x = torch.zeros(grid_points, 3, device=device)
             padded_x[:, :count] = path
-            molecules = molecule_features.expand(grid_points, -1, -1)
-            masks = mask.expand(grid_points, -1)
-            pure_parameters = sample_batch.pure_property_parameters.expand(
-                grid_points, -1, -1
-            )
-            temperature = torch.full((grid_points, 1), sample.temperature_k, device=device)
-            pressure = torch.full((grid_points, 1), sample.pressure_kpa, device=device)
-            if direct:
-                predictions = (
-                    model.predict_direct(
-                        molecules, temperature, pressure, padded_x, masks, direction="isothermal"
-                    ),
-                    model.predict_direct(
-                        molecules, temperature, pressure, padded_x, masks, direction="isobaric"
-                    ),
-                )
-                curves = (
-                    torch.cat([torch.log(predictions[0].pressure_kpa), predictions[0].y[:, :count]], dim=-1),
-                    torch.cat([predictions[1].temperature_k / 100.0, predictions[1].y[:, :count]], dim=-1),
-                )
-            else:
-                isothermal = solve_isothermal(
-                    model,
-                    molecules,
-                    temperature,
-                    padded_x,
-                    masks,
-                    iterations=solver_iterations,
-                    strict=False,
-                    pure_property_parameters=pure_parameters,
-                )
-                isobaric = solve_isobaric(
-                    model,
-                    molecules,
-                    pressure,
-                    padded_x,
-                    masks,
-                    iterations=solver_iterations,
-                    strict=False,
-                    pure_property_parameters=pure_parameters,
-                )
-                curves = (
-                    torch.cat([torch.log(isothermal.pressure_kpa), isothermal.y[:, :count]], dim=-1),
-                    torch.cat([isobaric.temperature_k / 100.0, isobaric.y[:, :count]], dim=-1),
-                )
-            for curve in curves:
-                metrics.append(
-                    phase_curve_smoothness(
-                        coordinate.detach().cpu().numpy(),
-                        curve.detach().cpu().numpy(),
-                    )
-                )
+            molecule_parts.append(sample_batch.molecules.expand(grid_points, -1, -1))
+            temperature_parts.append(sample_batch.temperature_k.expand(grid_points, -1))
+            pressure_parts.append(sample_batch.pressure_kpa.expand(grid_points, -1))
+            composition_parts.append(padded_x)
+            mask_parts.append(sample_batch.mask.expand(grid_points, -1))
+            pure_parts.append(sample_batch.pure_property_parameters.expand(grid_points, -1, -1))
+            spans.append((coordinate.detach().cpu().numpy(), count, offset, offset + grid_points))
+            offset += grid_points
+    molecules = torch.cat(molecule_parts)
+    temperature = torch.cat(temperature_parts)
+    pressure = torch.cat(pressure_parts)
+    compositions = torch.cat(composition_parts)
+    masks = torch.cat(mask_parts)
+    pure_parameters = torch.cat(pure_parts)
+    if direct:
+        isothermal = model.predict_direct(
+            molecules, temperature, pressure, compositions, masks, direction="isothermal"
+        )
+        isobaric = model.predict_direct(
+            molecules, temperature, pressure, compositions, masks, direction="isobaric"
+        )
+    else:
+        isothermal = solve_isothermal(
+            model, molecules, temperature, compositions, masks,
+            iterations=solver_iterations, strict=False,
+            pure_property_parameters=pure_parameters,
+        )
+        isobaric = solve_isobaric(
+            model, molecules, pressure, compositions, masks,
+            iterations=solver_iterations, strict=False,
+            pure_property_parameters=pure_parameters,
+        )
+    metrics: list[dict[str, float]] = []
+    for coordinate, count, start, stop in spans:
+        curves = (
+            torch.cat(
+                [torch.log(isothermal.pressure_kpa[start:stop]), isothermal.y[start:stop, :count]],
+                dim=-1,
+            ),
+            torch.cat(
+                [isobaric.temperature_k[start:stop] / 100.0, isobaric.y[start:stop, :count]],
+                dim=-1,
+            ),
+        )
+        for curve in curves:
+            metrics.append(phase_curve_smoothness(coordinate, curve.detach().cpu().numpy()))
     return metrics
 
 
