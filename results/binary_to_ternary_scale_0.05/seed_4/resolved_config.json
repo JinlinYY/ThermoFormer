@@ -1,0 +1,71 @@
+{
+  "data": {
+    "failed_weight": 0.0,
+    "max_pressure_kpa": 500.0,
+    "minimum_pure_anchor_temperatures": 2,
+    "pure_property_catalog": "",
+    "root": "dataset",
+    "source_filter": ""
+  },
+  "encoder": {
+    "batch_size": 16,
+    "model_size": "84m"
+  },
+  "evaluation": {
+    "folds": 5,
+    "mode": "kfold",
+    "test_fraction": 0.15,
+    "validation_fraction": 0.15
+  },
+  "model": {
+    "activity_mode": "excess_gibbs",
+    "dropout": 0.0,
+    "feature_dim": 768,
+    "feedforward_multiplier": 4,
+    "film_scale": 0.1,
+    "heads": 6,
+    "hidden_dim": 192,
+    "layers": 3,
+    "pair_hidden_dim": 192,
+    "pure_hidden_dim": 192,
+    "use_composition_context": true,
+    "use_film": true,
+    "use_mixture_token": true,
+    "use_transformer": true
+  },
+  "name": "binary_to_ternary_scale_0.05",
+  "paper_protocol": {
+    "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+    "name": "binary_to_ternary_scale_0.05",
+    "seed": 4,
+    "split_file": "D:\\VLE\\VLE\\splits\\binary_to_ternary_scale_0.05\\seed_4.json"
+  },
+  "runtime": {
+    "device": "auto",
+    "output_dir": "runs/experiments/comparison/binary_to_ternary_generalization/scaling/percent_05",
+    "results_file": "experiments/comparison/binary_to_ternary_generalization/scaling/percent_05/results.md"
+  },
+  "seed": 4,
+  "training": {
+    "batch_size": 128,
+    "boundary_weight": 0.001,
+    "continuity_weight": 1e-05,
+    "early_stopping_patience": 12,
+    "epochs_physics": 5,
+    "epochs_supervised": 80,
+    "gradient_clip": 5.0,
+    "learning_rate": 0.0002,
+    "minimum_physics_epochs": 3,
+    "minimum_supervised_epochs": 10,
+    "physics_learning_rate": 2e-05,
+    "pressure_weight": 1.0,
+    "pure_weight": 0.5,
+    "seed": 4,
+    "solver_batches_per_epoch": 2,
+    "solver_iterations_eval": 48,
+    "solver_iterations_train": 16,
+    "solver_weight": 0.1,
+    "validation_min_delta": 0.0,
+    "weight_decay": 0.0001
+  }
+}

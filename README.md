@@ -14,6 +14,7 @@ scripts/
   run_paper_experiment.py             # 单协议/单种子论文运行器
   run_paper_suite.py                  # 五种子实验套件
   aggregate_results.py                # mean ± std 聚合
+  build_paper_outputs.py              # 论文表格、图和诊断报告生成器
 experiments/
   README.md                           # 实验总索引
   baseline/thermoformer_base/         # 完整模型基线
@@ -28,6 +29,7 @@ reports/                              # 实现、数据、划分和训练诊断�
 results/                              # 逐种子预测 CSV 与指标 JSON/CSV
 figures/                              # 由结果脚本生成的 PDF/PNG 图
 checkpoints/                          # 正式最佳模型（*.pt 默认不入 Git）
+configs/experiments/                  # 正式配置入口与冻结快照说明
 dataset/
   binary_vle_english.xlsx             # 二元 VLE 数据
   ternary_vle_english.xlsx            # 三元 VLE 数据
@@ -104,7 +106,7 @@ python scripts/train_thermoformer.py --config experiments/baseline/thermoformer_
 - `ablation/thermodynamic_loss/no_solver_loss`：关闭可微泡点求解监督；
 - `comparison/ideal_activity`：理想活度系数对比基线。
 
-`interpolation_extrapolation/` 和 `explainability/` 已建立独立类别及实验设计说明；在具体方案和数据划分尚未确定前，不创建虚假的实验结果目录。
+`interpolation_extrapolation/` 和 `explainability/` 使用独立类别；本轮论文预测性能与泛化协议已经正式完成，尚未执行的消融、基线和可解释性实验继续明确标记为未运行。
 
 消融配置通过 `extends` 继承完整基线，只覆盖目标开关、输出目录和结果文件路径。配置 section 或字段拼写错误会直接报错。
 
@@ -121,7 +123,7 @@ python scripts/train_thermoformer.py --config experiments/baseline/thermoformer_
 
 每次拟合分为两阶段：默认先进行 80 个 epoch 的实验数据监督，再从最佳监督模型继续进行 5 个 epoch 的物理微调。物理阶段加入相图连续性、近纯边界，以及每个 epoch 少量批次上的可微泡点求解监督。组分置换等变性由模型结构硬约束并由测试验证，不再用数值近零、无有效梯度的辅助 loss。求解器监督批次数和迭代次数均可通过配置调整，以兼顾物理性与训练速度。
 
-论文实验将 80/5 视为阶段上限：监督阶段采用验证 patience 12（至少 10 epoch），物理阶段以监督最佳 checkpoint 作为 epoch 0 候选，只有共同实验验证目标改善时才接受微调结果。监督/物理学习率分别为 `2e-4`/`2e-5`，连续性权重为 `1e-5`；这些设置来自 `reports/first_training_diagnosis.md` 中明确标为非正式结果的单种子 pilot。训练历史记录预裁剪梯度均值/最大值，正式求解评估使用 48 次迭代并始终报告收敛覆盖率。
+论文实验将 80/5 视为阶段上限：监督阶段采用验证 patience 12（至少 10 epoch），物理阶段以监督最佳 checkpoint 作为 epoch 0 候选，只有共同实验验证目标改善时才接受微调结果。监督/物理学习率分别为 `2e-4`/`2e-5`，连续性权重为 `1e-5`；这些超参数在正式实验前由独立 pilot 固定，未使用正式测试集调参。训练历史记录预裁剪梯度均值/最大值，正式求解评估使用 48 次迭代并始终报告收敛覆盖率。
 
 固定协议划分先运行：
 
@@ -138,6 +140,15 @@ python scripts/run_paper_suite.py --protocol overall_binary_ternary --device cud
 ```
 
 每个正式运行保存完整 split 引用、数据 SHA-256、Git commit、解析后的配置、最佳 checkpoint、训练曲线、逐样本预测和点/物系等权指标。代码、配置或划分未提交时，正式运行会拒绝启动；`--smoke` 产物隔离在 `runs/suite_smoke/` 且不会被五种子聚合器当作正式结果。
+
+本轮已完成 15 个协议 × 5 个种子，共 75 次正式训练。所有协议级 `aggregate_manifest.json` 均为 `completed`；汇总结果、论文图和诊断报告可重复生成：
+
+```powershell
+conda activate ggnn39
+python scripts/build_paper_outputs.py
+```
+
+主要入口为 `reports/predictive_performance_report.md` 与 `reports/first_training_diagnosis.md`；论文表位于 `results/performance/` 和 `results/generalization/`，PDF/SVG/600-dpi PNG 位于 `figures/performance/` 与 `figures/generalization/`。正式结果保留了三元数据规模曲线非单调、未见组分性能明显下降和极少量求解失败等负面结果；当前不包含任何四元实验或四元性能声称。
 
 单次训练/验证/测试划分可通过覆盖参数运行：
 

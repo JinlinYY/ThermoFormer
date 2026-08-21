@@ -1,54 +1,53 @@
-# First ThermoFormer training diagnosis
+# First Formal Training Diagnosis
 
-Date: 2026-08-21. Hardware: NVIDIA GeForce RTX 3090 Ti. Environment: `ggnn39`, Python 3.9.25, PyTorch 2.6.0+cu126, Uni-Mol v2 84M. Dataset/split: retained 11,014-row modeling set, `overall_binary_ternary/seed_0` (7,684 train / 1,660 validation / 1,670 test rows). These are **diagnostic single-seed pilots, not paper results**.
+Date: 2026-08-21. This report supersedes the earlier single-seed pilot diagnosis. It summarizes 15 protocols × 5 seeds = 75 completed formal runs on an NVIDIA GeForce RTX 3090 Ti in `ggnn39`.
 
-## Environment and data-path checks
+## Convergence and numerical behavior
 
-- The real `unimol-tools` backend loaded `unimolv2.py` and the 84M checkpoint; all 138 SMILES received `cls_repr` vectors.
-- Conformer generation reported one 3D fallback for the single-atom SMILES `O`; representation generation still completed. The cache is `cache/unimolv2_84m.npz` and is reused by all subsequent runs.
-- The initial GPU attempt correctly failed before training because deterministic PyTorch operations lacked `CUBLAS_WORKSPACE_CONFIG`. The unified seed setup now defines `:4096:8` before CUDA work.
-- A second reproducibility issue was found: cache-miss Uni-Mol inference consumed RNG state before ThermoFormer initialization. The runner now reseeds immediately after feature extraction. Two repeated runs then produced byte-identical metric JSON SHA-256 values.
-- No NaN/Inf loss or gradient was observed. Non-finite values remain hard failures.
+- Non-finite values in all recorded numeric training/validation curves: **0**.
+- Median best/initial experimental validation-loss ratio: **0.037** (lower is better).
+- Median validation-minus-training total loss at the selected supervised epoch: **-0.0301**.
+- Supervised early stopping before the 80-epoch ceiling occurred in **48/75** runs.
+- Physics fine-tuning produced a lower experimental validation objective than the supervised best in **14/75** runs; otherwise the supervised checkpoint was retained as the valid epoch-0 candidate.
+- Maximum protocol-mean solver failure rate: **0.1723%**; maximum protocol-mean nonphysical rate: **0.0000%**.
 
-## Pilot A: 2 supervised + 1 physics epoch
+## Physics-loss and gradient scales
 
-Purpose: execution, memory, gradient and solver smoke test.
+Across physics epochs, median raw continuity loss was **2.46e+03**; after the configured 1e-5 weight its median contribution was **0.0246**. Median raw boundary loss was **1.07e-11** (weighted contribution **1.07e-14**), and median raw differentiable-solver loss was **0.00108** (weighted contribution **0.000108**).
+The recorded total pre-clipping gradient-norm mean was **36.5** in supervised epochs and **13** in physics epochs. Historical runs did not record a separate gradient norm for each objective, so per-loss gradients cannot be reconstructed exactly from history alone; the weighted loss contributions above are not mislabeled as gradients. A future instrumentation-only run should record those norms explicitly.
 
-- Training time: 7.26 s; peak allocated GPU memory: 474.35 MiB; trainable ThermoFormer parameters: 1,780,419.
-- Supervised epoch 1 validation objective: 0.6389; epoch 2: 0.7247. The epoch-1 checkpoint was retained.
-- The physics epoch validation objective was 1.0802 and was rejected, proving that physics fine-tuning can no longer overwrite a better supervised checkpoint.
-- Pre-clipping gradient norms were mean/max 20.6/82.3 (supervised epoch 1), 46.8/127.6 (supervised epoch 2), and 71.8/803.4 (physics). All updates were clipped at the configured norm 5.
-- With only eight evaluation iterations, the isothermal solver converged on essentially none of the rows. An iteration sensitivity check gave isothermal coverage 0.5% / 54.3% / 100% at 8 / 16 / 24 iterations for this checkpoint; 24 and 48 iterations produced the same converged predictions to numerical precision. This confirms iteration truncation, not nonphysical output, caused the early failures.
+## Error gaps and capability boundaries
 
-## Pilot B: 20 supervised + 5 physics epochs, original physics scaling
+| Test subset | P MAE (kPa) | T MAE (K) | y MAE | Coverage |
+|---|---:|---:|---:|---:|
+| Binary-only model: binary test | 17.26 ± 8.42 | 5.75 ± 1.61 | 0.0657 ± 0.0176 | 1.0000 ± 0.0000 |
+| Joint model: binary test | 18.57 ± 6.40 | 5.72 ± 1.56 | 0.0697 ± 0.0160 | 1.0000 ± 0.0000 |
+| Joint model: ternary test | 4.43 ± 3.39 | 2.67 ± 0.46 | 0.0530 ± 0.0133 | 1.0000 ± 0.0000 |
 
-Configuration: common learning rate `2e-4`, continuity weight `1e-3`, one solver batch/epoch, eight training-solver iterations.
+| Test subset | P MAE (kPa) | T MAE (K) | y MAE | Coverage |
+|---|---:|---:|---:|---:|
+| State interpolation | 4.45 ± 1.03 | 1.83 ± 0.45 | 0.0324 ± 0.0071 | 1.0000 ± 0.0000 |
+| Unseen mixture | 16.99 ± 5.88 | 5.46 ± 1.48 | 0.0671 ± 0.0144 | 1.0000 ± 0.0000 |
+| Unseen component | 27.40 ± 0.87 | 37.87 ± 3.63 | 0.0931 ± 0.0180 | 0.9983 ± 0.0021 |
 
-- Training time: 48.17 s; peak allocated GPU memory: 969.75 MiB.
-- Best supervised validation objective: 0.1667 at epoch 18.
-- Physics validation did not improve on 0.1667 and the supervised checkpoint was restored.
-- The first physics epoch had raw continuity 655 and pre-clipping gradient maximum 4,784.8. The continuity contribution dominated the intended small fine-tuning step.
+The joint-model ternary subset is not uniformly harder than its binary subset, but the unseen-component protocol is dramatically harder than both state interpolation and system-disjoint unseen mixtures. Binary-to-ternary zero-shot transfer is viable on the fixed four-system test sets, whereas adding small ternary subsets gives a non-monotonic response.
 
-Verdict: the two-stage control flow was correct, but the original physical-stage scale was not a credible fine-tuning regime.
+## Best and worst systems in the joint binary/ternary benchmark
 
-## Pilot C: 20 supervised + 5 physics epochs, balanced fine-tuning
+| Metric | Extreme | System | Components | Mean absolute error |
+|---|---|---|---|---:|
+| pressure_abs_error_kpa | best | `2c_d7eb8d723543d918ecd0` | `ClC(Cl)C(Cl)Cl | O=C1CCCCC1` | 0.57778 |
+| temperature_abs_error_k | best | `2c_3c1769052d07951ac3d7` | `CC(C)O | CCOC(C)=O` | 0.80657 |
+| y_abs_error | best | `2c_acbe0e6e906b285e5990` | `CCCCCO | CCCOCCC` | 0.0045636 |
+| pressure_abs_error_kpa | worst | `2c_ae514b5a938c4d83d1c9` | `CCCC | CCO` | 136.83 |
+| temperature_abs_error_k | worst | `2c_1423cf5c6cbb9a123e33` | `CC(=O)O | CS(C)=O` | 27.52 |
+| y_abs_error | worst | `2c_303f5d258da9140f9795` | `CCOC(=O)OCC | O` | 0.25639 |
 
-Configuration: supervised learning rate `2e-4`, physics learning rate `2e-5`, continuity weight `1e-5`, one solver batch/epoch, eight training-solver iterations, 48 evaluation iterations.
+## Diagnosis
 
-- Training time: 48.11 s; peak allocated GPU memory: 969.75 MiB.
-- Best supervised validation objective remained 0.1667.
-- Physics epoch 4 achieved 0.1519, an 8.9% reduction in the common experimental validation objective, so that checkpoint was accepted. Epoch 5 worsened to 0.1931 and was rejected.
-- Physics pre-clipping gradient maxima across epochs were 93.7, 89.7, 72.8, 63.8 and 120.0—still clipped, but no longer several orders larger than the supervised regime.
-- All 1,676 requested test-direction solves converged at 48 iterations; nonphysical rate was 0%.
+- **Data limitation:** only 18 ternary training systems are available for the scaling pool, so nominal fractions correspond to very small discrete subsets and strong selection variance.
+- **Optimization issue:** several scaling seeds degrade despite more ternary systems, suggesting multi-task/cardinality optimization conflict or sensitivity to subset composition; this should be tested before changing architecture.
+- **Architectural limitation:** the large unseen-component gap indicates that learned pure-property/nonideality extrapolation outside observed molecular support remains weak.
+- **Implementation bug:** no new bug is indicated by the formal runs; NaN checks, strict split audit, artifact hashes, solver convergence flags, and provenance gates behaved as designed.
 
-For context only, the accepted diagnostic checkpoint produced P/T/y point-wise MAE of 17.03 kPa / 9.40 K / 0.0937. Relative to the supervised-only checkpoint evaluated at the same 48 iterations, T and y improved (10.82→9.40 K and 0.0983→0.0937), while P MAE slightly worsened (16.44→17.03 kPa). This single seed does not support a superiority claim; it supports the feasibility and safety of the staged procedure.
-
-## Decisions for formal runs
-
-1. Keep the user's intended strategy: supervised training followed by a short physics fine-tune.
-2. Use independent learning rates: `2e-4` supervised and `2e-5` physics.
-3. Use continuity weight `1e-5`; keep solver and boundary terms configurable for later ablation.
-4. Use 48 evaluation iterations. Report coverage/failure/nonphysical rates even when they are zero.
-5. Treat 80 supervised epochs as a maximum and use validation patience 12 (minimum 10 epochs). Use at most five physics epochs with the supervised checkpoint as the epoch-0 candidate.
-6. Preserve gradient clipping at norm 5 and record pre-clipping mean/max norms in every training curve.
-7. Do not claim a physics-loss benefit until five-seed ablation confirms it. Pilot C is a hyperparameter diagnosis, not confirmatory evidence.
+Recommendation: proceed first to baseline comparisons on the exact splits and add instrumentation/diagnostics. Do not add layers, hidden dimensions, or new loss terms solely in response to this first round. If a method change is later justified, write `reports/proposed_model_change.md` before implementation and retain these results as the unchanged reference.

@@ -1,0 +1,134 @@
+{
+  "artifacts": {
+    "checkpoint": {
+      "path": "D:\\VLE\\VLE\\checkpoints\\overall_binary\\seed_1\\best_model.pt",
+      "sha256": "16ac2e819ee3275cd83e9dce79d9e4834765c0deef0a918cb7fbf280746097d2"
+    },
+    "history": {
+      "path": "D:\\VLE\\VLE\\runs\\paper\\overall_binary\\seed_1\\history.json",
+      "sha256": "1f02c90be63a3175b9b000a1192ec332f626955ec472d24c03e9118b01b52a52"
+    },
+    "metrics": {
+      "path": "D:\\VLE\\VLE\\results\\overall_binary\\seed_1\\metrics.json",
+      "sha256": "bd1ceeabd14b8ac0b2a503c15f1e2c93705c2bd4e027c44a890fb2a6853595db"
+    },
+    "predictions": {
+      "path": "D:\\VLE\\VLE\\results\\overall_binary\\seed_1\\predictions.csv",
+      "sha256": "e7e11ee5b78c2f3cd3ccf7ef42c89cdd7bf696f104a0e38dd78a06b36bdf307a"
+    },
+    "resolved_config": {
+      "path": "D:\\VLE\\VLE\\results\\overall_binary\\seed_1\\resolved_config.json",
+      "sha256": "9325cd105016c83ebfd357ffa1e549fdff700964d97eb3437cfd48e2b1cdcbb1"
+    },
+    "training_curves": {
+      "path": "D:\\VLE\\VLE\\runs\\paper\\overall_binary\\seed_1\\training_curves.csv",
+      "sha256": "9f1ce9f2acb5df1c1aee348d3cffc038bd38691c6165b4251fa40ddd8557c3f7"
+    }
+  },
+  "best_validation_loss": 0.04335935297828393,
+  "checkpoint": "D:\\VLE\\VLE\\checkpoints\\overall_binary\\seed_1\\best_model.pt",
+  "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+  "dirty_code_paths": [],
+  "environment_sha256": "28e589adc3ad2d802ec4fb4076888689ac53071c9e057f5562be17e28a2281d9",
+  "feature_cache_sha256": "b535a370dd661eb51a48615c4992ae33c43a7fd9b244753d46713b8fc526ba11",
+  "feature_subset_sha256": "1eccd1812c03d548bfb963b8a1ae928f359b0820fa7cde663c86ece6090f1675",
+  "git_commit": "8c41a1b46d217f5b9714bd5179fe28224b86408c",
+  "git_dirty": false,
+  "git_worktree_dirty": true,
+  "headline_metrics": {
+    "attempted_samples": 1510,
+    "component_count": null,
+    "direction": null,
+    "nonphysical_rate": 0.0,
+    "pressure_count": 628,
+    "pressure_mae_kpa": 19.305406090980856,
+    "pressure_r2": 0.9303180539066581,
+    "pressure_rmse_kpa": 34.850712492298626,
+    "pressure_system_macro_mae_kpa": 17.73653870874606,
+    "pressure_system_macro_rmse_kpa": 32.48742943841559,
+    "scope": "all",
+    "solver_failure_rate": 0.0,
+    "subgroup": null,
+    "systems": 52,
+    "temperature_count": 882,
+    "temperature_mae_k": 4.9525143730180945,
+    "temperature_r2": 0.9447217043187417,
+    "temperature_rmse_k": 6.68803225463404,
+    "temperature_system_macro_mae_k": 5.302709610214893,
+    "temperature_system_macro_rmse_k": 7.109916365376629,
+    "valid_coverage": 1.0,
+    "valid_samples": 1510,
+    "y_component_macro_mae": 0.05771689858961166,
+    "y_component_values": 3020,
+    "y_mae": 0.05843421703862785,
+    "y_r2": 0.931175334282508,
+    "y_rmse": 0.08514226822046803,
+    "y_sample_macro_mae": 0.05882472352278962,
+    "y_system_macro_mae": 0.05852824872035299,
+    "y_system_macro_rmse": 0.08674959336083236
+  },
+  "peak_gpu_memory_mb": 1569.791015625,
+  "protocol": "overall_binary",
+  "request_sha256": "d26145cc744afdea4f7eb611c13580a8d3e18b2d05af035b208bb49c4550cd2a",
+  "resolved_config_sha256": "81b0c1c04400c5fed06a84c1724b17a8a07fb160a1cd87f4b0fc455e4514c71f",
+  "rows": {
+    "prediction_attempts": 1510,
+    "test": 1492,
+    "train": 6923,
+    "validation": 1490
+  },
+  "run_kind": "formal",
+  "runtime": {
+    "cuda_capability": [
+      8,
+      6
+    ],
+    "cuda_device": "NVIDIA GeForce RTX 3090 Ti",
+    "cudnn": 90501,
+    "device": "cuda",
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "rdkit": "2025.03.5",
+    "requested_device": "cuda",
+    "resolved_device": "cuda",
+    "torch": "2.6.0+cu126",
+    "torch_cuda": "12.6",
+    "unimol_tools": "0.1.4.post1"
+  },
+  "seed": 1,
+  "split_file": "D:\\VLE\\VLE\\splits\\overall_binary\\seed_1.json",
+  "split_metadata": {
+    "anchor_reference_systems": 132,
+    "component_count_rows": {
+      "test": {
+        "2": 1492
+      },
+      "train": {
+        "2": 6923
+      },
+      "validation": {
+        "2": 1490
+      }
+    },
+    "requested_fraction": {
+      "test": 0.15,
+      "train": 0.7,
+      "validation": 0.15
+    },
+    "rows": {
+      "test": 1492,
+      "train": 6923,
+      "validation": 1490
+    },
+    "split_rule": "unordered canonical system disjoint, row-balanced by cardinality",
+    "systems": {
+      "test": 52,
+      "train": 231,
+      "validation": 38
+    }
+  },
+  "split_sha256": "c463d01cbdb7bff228a7c97b1f1231c774ed6446803ea9af042bd72d032c5d4d",
+  "status": "completed",
+  "trainable_parameters": 1780419,
+  "training_seconds": 118.66087730000001
+}

@@ -1,0 +1,165 @@
+{
+  "aggregate_kind": "formal",
+  "aggregation_git_commit": "704458163ee2afd9e2c0a681ea4a670a287b6778",
+  "dirty_code_paths": [],
+  "git_commit": "704458163ee2afd9e2c0a681ea4a670a287b6778",
+  "git_dirty": false,
+  "input_manifest_sha256": {
+    "0": "b1afee772a8ce90b717f06945debd75d89790a2907848b6ef30c20dfaabd6afd",
+    "1": "e3c37987974e4ff00ced4d6c09822186b04b7d2c27e45e9a2de28b1c14ee8d77",
+    "2": "ddca1c30c3a1cc2bd0294de47e9813bad48edfe3123de7f62dfc462446348539",
+    "3": "13a47426ce0754108087c4b475afb86186b781bfcf3df17a9c0517cc4adc0087",
+    "4": "474eb39f4edf5d40bf561a0fa22cb31848c06d7e67900dd21d5ff3d4ead405b5"
+  },
+  "input_provenance": {
+    "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+    "environment_sha256": "28e589adc3ad2d802ec4fb4076888689ac53071c9e057f5562be17e28a2281d9",
+    "feature_subset_sha256": "1eccd1812c03d548bfb963b8a1ae928f359b0820fa7cde663c86ece6090f1675",
+    "git_commit": "704458163ee2afd9e2c0a681ea4a670a287b6778",
+    "protocol": "state_temperature_high_extrapolation",
+    "resolved_config_sha256": "ff02169681d8497b4f69ce269df30b17fd7a0147757ab655cb27db05c1ebb7e9"
+  },
+  "outputs": {
+    "metrics_by_seed": {
+      "path": "D:\\VLE\\VLE\\results\\state_temperature_high_extrapolation\\metrics_by_seed.csv",
+      "sha256": "1c68d044615ce054d1deafd8cade54e5d7bd169a45ba3b97fefe696ee5b1f2ca"
+    },
+    "metrics_summary": {
+      "path": "D:\\VLE\\VLE\\results\\state_temperature_high_extrapolation\\metrics_summary.csv",
+      "sha256": "930fe5c20d1e2557bd04f3e2f29c15c72d9467a200d77d73d2cca741b007ad5b"
+    }
+  },
+  "protocol": "state_temperature_high_extrapolation",
+  "runtime": {
+    "numpy": "1.26.4",
+    "python": "3.9.25"
+  },
+  "scope_availability": [
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": null,
+      "scope": "all",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 2,
+      "direction": null,
+      "scope": "cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 3,
+      "direction": null,
+      "scope": "cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": "isobaric",
+      "scope": "direction",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": "isothermal",
+      "scope": "direction",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 2,
+      "direction": "isobaric",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 3,
+      "direction": "isobaric",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 2,
+      "direction": "isothermal",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 3,
+      "direction": "isothermal",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    }
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "status": "completed",
+  "training_git_commit": "704458163ee2afd9e2c0a681ea4a670a287b6778"
+}

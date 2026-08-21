@@ -1,0 +1,137 @@
+{
+  "artifacts": {
+    "checkpoint": {
+      "path": "D:\\VLE\\VLE\\checkpoints\\overall_binary_ternary\\seed_1\\best_model.pt",
+      "sha256": "5987f641a83e3541b8e902d36aa668b47d409900ef606c9461f1bea4a61198e8"
+    },
+    "history": {
+      "path": "D:\\VLE\\VLE\\runs\\paper\\overall_binary_ternary\\seed_1\\history.json",
+      "sha256": "73c715ba6c1e29f8ef74e7c6bdf2fc033414e3229138ea2dab4b18aeae9c0e42"
+    },
+    "metrics": {
+      "path": "D:\\VLE\\VLE\\results\\overall_binary_ternary\\seed_1\\metrics.json",
+      "sha256": "86486a4557b1cf48e4551cf95ba5b3d24e2a9c2c12e29ce890af5218f83496f7"
+    },
+    "predictions": {
+      "path": "D:\\VLE\\VLE\\results\\overall_binary_ternary\\seed_1\\predictions.csv",
+      "sha256": "5765e27e453371d45eb044f0265a6b08e357a555a97ed5d8da15c093635cfc22"
+    },
+    "resolved_config": {
+      "path": "D:\\VLE\\VLE\\results\\overall_binary_ternary\\seed_1\\resolved_config.json",
+      "sha256": "79933854229d43fec15f02c20c4ccf346ecb64ddf956fa7e841a6f42ee4ccd94"
+    },
+    "training_curves": {
+      "path": "D:\\VLE\\VLE\\runs\\paper\\overall_binary_ternary\\seed_1\\training_curves.csv",
+      "sha256": "90db759b050f64202f8b99073a066597aa2808df3cdd698283ee7640c8b230ef"
+    }
+  },
+  "best_validation_loss": 0.03641507755853459,
+  "checkpoint": "D:\\VLE\\VLE\\checkpoints\\overall_binary_ternary\\seed_1\\best_model.pt",
+  "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+  "dirty_code_paths": [],
+  "environment_sha256": "28e589adc3ad2d802ec4fb4076888689ac53071c9e057f5562be17e28a2281d9",
+  "feature_cache_sha256": "b535a370dd661eb51a48615c4992ae33c43a7fd9b244753d46713b8fc526ba11",
+  "feature_subset_sha256": "1eccd1812c03d548bfb963b8a1ae928f359b0820fa7cde663c86ece6090f1675",
+  "git_commit": "8c41a1b46d217f5b9714bd5179fe28224b86408c",
+  "git_dirty": false,
+  "git_worktree_dirty": true,
+  "headline_metrics": {
+    "attempted_samples": 1685,
+    "component_count": null,
+    "direction": null,
+    "nonphysical_rate": 0.0,
+    "pressure_count": 628,
+    "pressure_mae_kpa": 25.136060001405625,
+    "pressure_r2": 0.8039968475003856,
+    "pressure_rmse_kpa": 58.44980329747097,
+    "pressure_system_macro_mae_kpa": 24.65432937230064,
+    "pressure_system_macro_rmse_kpa": 58.45630197997458,
+    "scope": "all",
+    "solver_failure_rate": 0.0,
+    "subgroup": null,
+    "systems": 57,
+    "temperature_count": 1057,
+    "temperature_mae_k": 4.720246782979544,
+    "temperature_r2": 0.9444954144700722,
+    "temperature_rmse_k": 6.552072595340458,
+    "temperature_system_macro_mae_k": 5.493930873160653,
+    "temperature_system_macro_rmse_k": 7.605286298799981,
+    "valid_coverage": 1.0,
+    "valid_samples": 1685,
+    "y_component_macro_mae": 0.052821122482527724,
+    "y_component_values": 3545,
+    "y_mae": 0.05627706949047365,
+    "y_r2": 0.930907850626041,
+    "y_rmse": 0.0842498314852068,
+    "y_sample_macro_mae": 0.05593403419347904,
+    "y_system_macro_mae": 0.05492219880663292,
+    "y_system_macro_rmse": 0.08377982679322905
+  },
+  "peak_gpu_memory_mb": 1687.93212890625,
+  "protocol": "overall_binary_ternary",
+  "request_sha256": "b2c04d276a13da4b9a7f067067d9cafa6d91d82b91f7cb7d51e63014e77f36b5",
+  "resolved_config_sha256": "623ca8b860f80ecfa05de1ba4582d77eb60933969c03d24b4e213b118d9f2507",
+  "rows": {
+    "prediction_attempts": 1685,
+    "test": 1667,
+    "train": 7677,
+    "validation": 1670
+  },
+  "run_kind": "formal",
+  "runtime": {
+    "cuda_capability": [
+      8,
+      6
+    ],
+    "cuda_device": "NVIDIA GeForce RTX 3090 Ti",
+    "cudnn": 90501,
+    "device": "cuda",
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "rdkit": "2025.03.5",
+    "requested_device": "cuda",
+    "resolved_device": "cuda",
+    "torch": "2.6.0+cu126",
+    "torch_cuda": "12.6",
+    "unimol_tools": "0.1.4.post1"
+  },
+  "seed": 1,
+  "split_file": "D:\\VLE\\VLE\\splits\\overall_binary_ternary\\seed_1.json",
+  "split_metadata": {
+    "anchor_reference_systems": 132,
+    "component_count_rows": {
+      "test": {
+        "2": 1492,
+        "3": 175
+      },
+      "train": {
+        "2": 6923,
+        "3": 754
+      },
+      "validation": {
+        "2": 1490,
+        "3": 180
+      }
+    },
+    "requested_fraction": {
+      "test": 0.15,
+      "train": 0.7,
+      "validation": 0.15
+    },
+    "rows": {
+      "test": 1667,
+      "train": 7677,
+      "validation": 1670
+    },
+    "split_rule": "unordered canonical system disjoint, row-balanced by cardinality",
+    "systems": {
+      "test": 57,
+      "train": 247,
+      "validation": 43
+    }
+  },
+  "split_sha256": "aa22a8006e6d8987bacfe51fd545930a8145cc205c0501d6b98f883ba3f51619",
+  "status": "completed",
+  "trainable_parameters": 1780419,
+  "training_seconds": 215.90903239999997
+}

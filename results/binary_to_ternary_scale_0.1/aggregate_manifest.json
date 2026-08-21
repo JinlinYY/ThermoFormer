@@ -1,0 +1,178 @@
+{
+  "aggregate_kind": "formal",
+  "aggregation_git_commit": "704458163ee2afd9e2c0a681ea4a670a287b6778",
+  "dirty_code_paths": [],
+  "git_commit": "704458163ee2afd9e2c0a681ea4a670a287b6778",
+  "git_dirty": false,
+  "input_manifest_sha256": {
+    "0": "c054de98845cc9f31c96118b4b7fd8761abad3928757911cecc294a29695264e",
+    "1": "2e0a61bc54c0dc026d17e6d52779ef09bec18427b660637c680476b134b768de",
+    "2": "816886353ea1fb7d852d406bd803921179d5f02c1719022c292cd41424980b3b",
+    "3": "77128b95b5978d0f0fe7649ae83f76dc3f2bf8c14ca0829c212af1da27914222",
+    "4": "86cc0bef8226048e1f6fe089463267b8a72e9730de8e99eba756a842e8b8925a"
+  },
+  "input_provenance": {
+    "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+    "environment_sha256": "28e589adc3ad2d802ec4fb4076888689ac53071c9e057f5562be17e28a2281d9",
+    "feature_subset_sha256": "1eccd1812c03d548bfb963b8a1ae928f359b0820fa7cde663c86ece6090f1675",
+    "git_commit": "704458163ee2afd9e2c0a681ea4a670a287b6778",
+    "protocol": "binary_to_ternary_scale_0.1",
+    "resolved_config_sha256": "e7fa00f9b0ea46ea47e6e4514087faf0c84a19e18b5651f5949a3fa1bb8c0d63"
+  },
+  "outputs": {
+    "metrics_by_seed": {
+      "path": "D:\\VLE\\VLE\\results\\binary_to_ternary_scale_0.1\\metrics_by_seed.csv",
+      "sha256": "270c49b18b2c0242344819552727b8aadd76d7c89b979ba746f3953e046d4acb"
+    },
+    "metrics_summary": {
+      "path": "D:\\VLE\\VLE\\results\\binary_to_ternary_scale_0.1\\metrics_summary.csv",
+      "sha256": "79a00def7f22fe33799124bdfe5fa6cef74ed2499f81e00a50dd833f9717b856"
+    }
+  },
+  "protocol": "binary_to_ternary_scale_0.1",
+  "runtime": {
+    "numpy": "1.26.4",
+    "python": "3.9.25"
+  },
+  "scope_availability": [
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": null,
+      "scope": "all",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": null,
+      "scope": "binary_subsystem_coverage",
+      "subgroup": "0/3"
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": null,
+      "scope": "binary_subsystem_coverage",
+      "subgroup": "1/3"
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": null,
+      "scope": "binary_subsystem_coverage",
+      "subgroup": "2/3"
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": null,
+      "scope": "binary_subsystem_coverage",
+      "subgroup": "3/3"
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 3,
+      "direction": null,
+      "scope": "cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": "isobaric",
+      "scope": "direction",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": "isothermal",
+      "scope": "direction",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 3,
+      "direction": "isobaric",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 3,
+      "direction": "isothermal",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    }
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "status": "completed",
+  "training_git_commit": "704458163ee2afd9e2c0a681ea4a670a287b6778"
+}

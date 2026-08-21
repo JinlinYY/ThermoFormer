@@ -1,0 +1,126 @@
+{
+  "aggregate_kind": "formal",
+  "aggregation_git_commit": "704458163ee2afd9e2c0a681ea4a670a287b6778",
+  "dirty_code_paths": [],
+  "git_commit": "704458163ee2afd9e2c0a681ea4a670a287b6778",
+  "git_dirty": false,
+  "input_manifest_sha256": {
+    "0": "0a65976b31088a70344375caa83316725f27ce05826dd1c0f98c934916b6172f",
+    "1": "3b3c821564e010bf175a95289d8b39657803f89f482f1bf00387b06dfce721d2",
+    "2": "72c276e1ef7b21f391346045a3344f91d9c5400a82aea9e37a7a5d73e0d3fc1a",
+    "3": "0ebb4cce6e1d001d946f933412d20460ae816a5fed6da1760e1c39a3ef56448c",
+    "4": "3d59d5c3bf8f96676f50d42073e66649377be75df45d0ac89b9bb0664e8fb099"
+  },
+  "input_provenance": {
+    "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+    "environment_sha256": "28e589adc3ad2d802ec4fb4076888689ac53071c9e057f5562be17e28a2281d9",
+    "feature_subset_sha256": "1eccd1812c03d548bfb963b8a1ae928f359b0820fa7cde663c86ece6090f1675",
+    "git_commit": "8c41a1b46d217f5b9714bd5179fe28224b86408c",
+    "protocol": "overall_binary",
+    "resolved_config_sha256": "81b0c1c04400c5fed06a84c1724b17a8a07fb160a1cd87f4b0fc455e4514c71f"
+  },
+  "outputs": {
+    "metrics_by_seed": {
+      "path": "D:\\VLE\\VLE\\results\\overall_binary\\metrics_by_seed.csv",
+      "sha256": "a2491ea955cd839e33bea1e53ab36777b0988448f2a06483e4c7a06f9644904e"
+    },
+    "metrics_summary": {
+      "path": "D:\\VLE\\VLE\\results\\overall_binary\\metrics_summary.csv",
+      "sha256": "35bf36355472028f366be1eab4bfad117de2bf7d770ad9c9c0cd4360bcb571db"
+    }
+  },
+  "protocol": "overall_binary",
+  "runtime": {
+    "numpy": "1.26.4",
+    "python": "3.9.25"
+  },
+  "scope_availability": [
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": null,
+      "scope": "all",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 2,
+      "direction": null,
+      "scope": "cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": "isobaric",
+      "scope": "direction",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": "isothermal",
+      "scope": "direction",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 2,
+      "direction": "isobaric",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 2,
+      "direction": "isothermal",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    }
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "status": "completed",
+  "training_git_commit": "8c41a1b46d217f5b9714bd5179fe28224b86408c"
+}

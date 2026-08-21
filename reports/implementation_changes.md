@@ -23,11 +23,6 @@ This log records changes made in response to the paper-grade audit request. It d
 - Generated `reports/data_audit.md`, `reports/data_audit.json` and `reports/ternary_binary_subsystem_coverage.csv` from the same loader and filtering rules used by training.
 - Recorded the complete row ledger, cardinality/system/component coverage, state ranges, quality/mode/DOI summaries, pure-anchor coverage, canonical identity checks and ternary binary-subsystem categories.
 
-### Pending in this audit cycle
-
-- Formal five-seed training for the requested protocols.
-- Result tables/figures generated only after successful formal runs.
-
 ### Stabilized deterministic GPU execution and two-stage fine-tuning
 
 - Set `CUBLAS_WORKSPACE_CONFIG=:4096:8` in the common seed entry point before CUDA operations; this fixes deterministic Uni-Mol v2 execution under PyTorch 2.6.
@@ -35,7 +30,7 @@ This log records changes made in response to the paper-grade audit request. It d
 - Added independent `physics_learning_rate` (`2e-5`), reduced the default continuity weight to `1e-5` based on controlled pilot diagnostics, and increased evaluation solver iterations to 48.
 - Added validation early stopping (patience 12, minimum 10 supervised epochs) while retaining 80/5 as maximum supervised/physics epochs.
 - Added pre-clipping gradient mean/max values to every training epoch record.
-- Generated `reports/first_training_diagnosis.md`; all reported values are explicitly labeled single-seed diagnostics rather than formal results.
+- Used a separate single-seed pilot to freeze optimization settings before formal evaluation; the final `reports/first_training_diagnosis.md` now reports the complete five-seed experiment suite.
 
 ### Added complete paper experiment protocols and evaluation
 
@@ -53,3 +48,10 @@ This log records changes made in response to the paper-grade audit request. It d
 - A seed start first invalidates both formal and diagnostic protocol-level aggregate manifests, then replaces the seed completion marker with `running`; an interrupted job therefore cannot retain any old valid summary or seed status while partially replacing artifacts.
 - Resume checks reject stale Git/config/split/cache/environment fingerprints. Formal aggregation requires exactly seeds 0–4 and rejects duplicate metric scopes, mixed training provenance, any missing/changed material artifact and all non-finite metrics. Global and component-cardinality headline scopes must cover all five seeds; finer direction/cardinality strata, or a specific observable inside an otherwise complete scope, may be absent when a split contains no such samples. Each summary field records the exact contributing seed IDs instead of fabricating values or suppressing the available measurements. The aggregate manifest distinguishes the training-code commit from the clean post-processing commit. A single atomic aggregate manifest is invalidated before replacement and marked complete only after both tables and their hashes are committed; partial-seed summaries are isolated under `diagnostic_*` names.
 - Both suite and single-experiment smoke commands automatically redirect runs, checkpoints, results and aggregate markers below `runs/*_smoke/`; they cannot overwrite or block formal artifacts by default.
+
+### Completed formal training and paper outputs
+
+- Completed 15 registered protocols with seeds 0–4 (75 formal runs) in `ggnn39`; every seed includes a best checkpoint, history, curves, predictions, metrics, resolved configuration and cryptographic provenance. All protocol aggregate manifests are `completed`.
+- Added `src/paper_outputs.py` and `scripts/build_paper_outputs.py` to generate the requested performance/generalization tables, parity/error plots, difficulty ladder, state-distance plots, binary-to-ternary transfer figure, formal diagnosis and experiment result pages from validated aggregates.
+- Generated PDF, SVG and 600-dpi PNG figures plus machine-readable CSV tables. The reports retain non-monotonic ternary scaling, sparse direction-specific measurements, solver failures and unseen-component degradation rather than filtering or smoothing them away.
+- Activity-coefficient error is deliberately omitted from confirmatory claims because the workbooks do not provide a complete independent trusted pure-property reference for experimental inversion. The scope remains binary/ternary VLE below 500 kPa; no quaternary result is claimed.
