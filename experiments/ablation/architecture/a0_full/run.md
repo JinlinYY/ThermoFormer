@@ -1,7 +1,7 @@
 # A0 Full ThermoFormer
 
-This is an immutable reference to the existing formal runs. Its exact snapshot is
-`configs/ablation/full_model_reference.yaml`; the ablation suite reuses those artifacts.
+This is the current Full hybrid model and must be trained for the new campaign. Its
+architecture snapshot is `configs/ablation/full_model_reference.yaml`.
 Config: `experiments/ablation/architecture/a0_full/config.json`.
 
 ```powershell

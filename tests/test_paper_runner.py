@@ -76,6 +76,7 @@ class PaperRunnerTests(unittest.TestCase):
                     "heads": 2,
                     "activity_mode": "ideal",
                 },
+                "encoder": {"representation": "unimol_v2"},
                 "data": {
                     "root": str(data_root),
                     "minimum_pure_anchor_temperatures": 0,

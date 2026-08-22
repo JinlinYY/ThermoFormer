@@ -25,7 +25,7 @@ from .evaluation import predict_vle, prediction_metric_rows, write_prediction_cs
 from .evaluation.thermodynamic_consistency import evaluate_thermodynamic_consistency
 from .model import ThermoFormer
 from .pure_properties import empty_pure_property_catalog, load_pure_property_catalog
-from .representation import RDKit2DEncoder, UniMolV2Encoder
+from .representation import build_molecular_encoder
 from .splits import dataset_digest, load_split_assignment, validate_protocol_name
 from .training import fit_model, seed_everything
 
@@ -378,15 +378,11 @@ def run_paper_experiment(
     _atomic_json(completion, running_manifest)
 
     unique_smiles = sorted({value for sample in samples for value in sample.smiles})
-    if experiment.encoder.representation == "rdkit_2d":
-        encoder = RDKit2DEncoder(feature_cache)
-    else:
-        encoder = UniMolV2Encoder(
-            feature_cache,
-            batch_size=experiment.encoder.batch_size,
-            model_size=experiment.encoder.model_size,
-            use_cuda=device.type == "cuda",
-        )
+    encoder = build_molecular_encoder(
+        experiment.encoder,
+        feature_cache,
+        use_cuda=device.type == "cuda",
+    )
     seed_everything(seed)
     feature_map = encoder.encode(unique_smiles)
     feature_cache_sha256 = _file_digest(feature_cache)
@@ -394,7 +390,7 @@ def run_paper_experiment(
     feature_dim = int(next(iter(feature_map.values())).shape[0])
     if experiment.model.feature_dim not in (None, feature_dim):
         raise ValueError(
-            f"Configured feature_dim {experiment.model.feature_dim} != Uni-Mol {feature_dim}"
+            f"Configured feature_dim {experiment.model.feature_dim} != molecular features {feature_dim}"
         )
     model_config = replace(experiment.model, feature_dim=feature_dim)
     resolved_experiment = replace(experiment, model=model_config)

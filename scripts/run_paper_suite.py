@@ -13,6 +13,8 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from src.paper_runner import requested_run_fingerprint, run_paper_experiment
 from src.paper_protocols import PAPER_SEEDS, PROTOCOL_CONFIGS
+from src.config import load_experiment_config
+from src.representation import encoder_cache_filename
 from src.results import aggregate_protocol_results
 
 
@@ -42,6 +44,8 @@ def main() -> None:
         overrides = ()
     for protocol in protocols:
         config = PROJECT_ROOT / PROTOCOL_CONFIGS[protocol]
+        experiment = load_experiment_config(config, overrides)
+        feature_cache = PROJECT_ROOT / "cache" / encoder_cache_filename(experiment.encoder)
         for seed in args.seeds:
             manifest_path = results_root / protocol / f"seed_{seed}" / "manifest.json"
             if manifest_path.exists() and not args.overwrite:
@@ -52,7 +56,7 @@ def main() -> None:
                         config,
                         PROJECT_ROOT / "splits" / protocol / f"seed_{seed}.json",
                         seed,
-                        PROJECT_ROOT / "cache" / "unimolv2_84m.npz",
+                        feature_cache,
                         args.device,
                         overrides,
                         "smoke" if args.smoke else "formal",
@@ -71,7 +75,7 @@ def main() -> None:
                 run_root=run_root,
                 checkpoint_root=checkpoint_root,
                 results_root=results_root,
-                feature_cache=PROJECT_ROOT / "cache" / "unimolv2_84m.npz",
+                feature_cache=feature_cache,
                 device_name=args.device,
                 overrides=overrides,
                 allow_overwrite=args.overwrite,

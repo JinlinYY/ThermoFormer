@@ -18,6 +18,7 @@ from src.paper_runner import (
     result_protocol_name,
     run_paper_experiment,
 )
+from src.representation import encoder_cache_filename
 from src.results import aggregate_protocol_results
 
 
@@ -63,11 +64,7 @@ def main(argv: list[str] | None = None) -> None:
             continue
         config_path = PROJECT_ROOT / variant.config
         experiment = load_experiment_config(config_path, overrides)
-        feature_cache = (
-            artifact_root / "cache" / "rdkit_2d_scaled24_v1.npz"
-            if experiment.encoder.representation == "rdkit_2d"
-            else artifact_root / "cache" / "unimolv2_84m.npz"
-        )
+        feature_cache = artifact_root / "cache" / encoder_cache_filename(experiment.encoder)
         for benchmark in variant.benchmarks:
             result_protocol = result_protocol_name(experiment.name, benchmark)
             split_root = PROJECT_ROOT / "splits" / benchmark

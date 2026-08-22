@@ -12,6 +12,8 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.paper_runner import run_paper_experiment
+from src.config import load_experiment_config
+from src.representation import encoder_cache_filename
 
 
 def parser() -> argparse.ArgumentParser:
@@ -31,7 +33,7 @@ def parser() -> argparse.ArgumentParser:
     value.add_argument(
         "--feature-cache",
         type=Path,
-        default=PROJECT_ROOT / "cache" / "unimolv2_84m.npz",
+        default=None,
     )
     value.add_argument("--overwrite", action="store_true")
     value.add_argument(
@@ -61,6 +63,10 @@ def output_roots(args: argparse.Namespace) -> tuple[Path, Path, Path]:
 def main(argv: list[str] | None = None) -> None:
     args = parser().parse_args(argv)
     run_root, checkpoint_root, results_root = output_roots(args)
+    experiment = load_experiment_config(args.config, args.overrides)
+    feature_cache = args.feature_cache or (
+        PROJECT_ROOT / "cache" / encoder_cache_filename(experiment.encoder)
+    )
     manifest = run_paper_experiment(
         config_path=args.config,
         split_path=args.split,
@@ -68,7 +74,7 @@ def main(argv: list[str] | None = None) -> None:
         run_root=run_root,
         checkpoint_root=checkpoint_root,
         results_root=results_root,
-        feature_cache=args.feature_cache,
+        feature_cache=feature_cache,
         device_name=args.device,
         overrides=args.overrides,
         allow_overwrite=args.overwrite,

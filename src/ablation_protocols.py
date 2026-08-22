@@ -21,16 +21,40 @@ CORE_BENCHMARKS = (
 
 ABLATION_VARIANTS = {
     "a0_full": AblationVariant(
-        "A0 Full ThermoFormer",
+        "A0 Full hybrid ThermoFormer",
         "architecture",
         "experiments/ablation/architecture/a0_full/config.json",
+        CORE_BENCHMARKS,
+    ),
+    "a1_unimol_v2": AblationVariant(
+        "A1a Uni-Mol v2 only",
+        "architecture",
+        "experiments/ablation/architecture/a1_unimol_v2/config.json",
         CORE_BENCHMARKS,
         True,
     ),
     "a1_rdkit_descriptors": AblationVariant(
-        "A1 RDKit descriptors",
+        "A1b RDKit descriptors only",
         "architecture",
         "experiments/ablation/architecture/a1_rdkit_descriptors/config.json",
+        ("overall_binary_ternary",),
+    ),
+    "a1_no_rdkit_descriptors": AblationVariant(
+        "A1c Hybrid without RDKit descriptors",
+        "architecture",
+        "experiments/ablation/architecture/a1_no_rdkit_descriptors/config.json",
+        ("overall_binary_ternary",),
+    ),
+    "a1_no_unimol": AblationVariant(
+        "A1d Hybrid without Uni-Mol v2",
+        "architecture",
+        "experiments/ablation/architecture/a1_no_unimol/config.json",
+        ("overall_binary_ternary",),
+    ),
+    "a1_no_functional_groups": AblationVariant(
+        "A1e Hybrid without functional groups",
+        "architecture",
+        "experiments/ablation/architecture/a1_no_functional_groups/config.json",
         ("overall_binary_ternary",),
     ),
     "a2_no_interaction": AblationVariant(

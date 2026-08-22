@@ -30,7 +30,7 @@ from .pure_properties import (
     empty_pure_property_catalog,
     load_pure_property_catalog,
 )
-from .representation import UniMolV2Encoder
+from .representation import build_molecular_encoder, encoder_cache_filename
 from .reporting import write_experiment_results
 from .training import TrainingConfig, evaluate_model, fit_model, seed_everything
 
@@ -230,7 +230,7 @@ def _manifest(
         "model_config": model_config.to_dict(),
         "experiment_config": experiment.to_dict(),
         "device": str(device),
-        "molecular_encoder": f"Uni-Mol v2 {experiment.encoder.model_size} frozen cls_repr",
+        "molecular_encoder": asdict(experiment.encoder),
         "failed_quality_weight": experiment.data.failed_weight,
         "maximum_training_pressure_kpa": experiment.data.max_pressure_kpa,
         "minimum_pure_anchor_temperatures": experiment.data.minimum_pure_anchor_temperatures,
@@ -358,25 +358,27 @@ def main(argv: list[str] | None = None) -> None:
     )
     unique_smiles = sorted({smile for sample in samples for smile in sample.smiles})
     seed_everything(experiment.seed)
-    encoder = UniMolV2Encoder(
-        formal_output_dir / "unimolv2_features.npz",
-        batch_size=experiment.encoder.batch_size,
-        model_size=experiment.encoder.model_size,
+    encoder = build_molecular_encoder(
+        experiment.encoder,
+        formal_output_dir / encoder_cache_filename(experiment.encoder),
         use_cuda=device.type == "cuda",
     )
     feature_map = encoder.encode(unique_smiles)
     feature_dim = int(next(iter(feature_map.values())).shape[0])
     if experiment.model.feature_dim not in (None, feature_dim):
         raise ValueError(
-            "Configured model.feature_dim does not match the Uni-Mol v2 representation: "
+            "Configured model.feature_dim does not match the molecular representation: "
             f"{experiment.model.feature_dim} != {feature_dim}"
         )
     model_config = replace(experiment.model, feature_dim=feature_dim)
     base_training_config = experiment.training
     encoder_config = {
-        "name": "unimolv2",
+        "name": experiment.encoder.representation,
         "model_size": experiment.encoder.model_size,
         "feature_dim": feature_dim,
+        "use_rdkit_descriptors": experiment.encoder.use_rdkit_descriptors,
+        "use_unimol": experiment.encoder.use_unimol,
+        "use_functional_groups": experiment.encoder.use_functional_groups,
     }
     _clear_stale_artifacts(out_dir)
     resolved_experiment = replace(experiment, model=model_config, training=base_training_config)

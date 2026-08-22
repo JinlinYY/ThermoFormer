@@ -80,14 +80,14 @@ class OutputLifecycleTests(unittest.TestCase):
             )
             smiles = []
             for index in range(10):
-                first, second = f"A{index}", f"B{index}"
+                first, second = "C" * (2 * index + 1), "C" * (2 * index + 2)
                 smiles.extend((first, second))
                 sheet.append(
                     [first, "", first, second, "", second, 1, 1, 760.0, 30.0, 0.5, 0.5, "synthetic"]
                 )
             workbook.save(data_root / "binary.xlsx")
             np.savez_compressed(
-                output / "unimolv2_features.npz",
+                output / "unimolv2_84m.npz",
                 smiles=np.asarray(sorted(smiles)),
                 features=np.arange(80, dtype=np.float32).reshape(20, 4) / 80.0,
                 model=np.asarray("unimolv2"),

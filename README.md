@@ -1,6 +1,6 @@
 # ThermoFormer：二元/三元汽液相平衡模型
 
-ThermoFormer 使用 Uni-Mol v2 分子表征、可配置多组分交互与可微热力学求解器建模低压 VLE。当前范围只包括二元和三元体系；LLM-Agent、四元体系与高压气相 EOS 暂不实现。
+ThermoFormer 默认融合 RDKit 2D 描述符、Uni-Mol v2 高阶分子表示和 RDKit SMARTS 官能团计数，并通过可配置多组分交互与可微热力学求解器建模低压 VLE。当前范围只包括二元和三元体系；LLM-Agent、四元体系与高压气相 EOS 暂不实现。
 
 ## 工程结构
 
@@ -53,7 +53,7 @@ python -V
 python -m unittest discover -s tests -v
 ```
 
-已验证的核心版本包括 Python 3.9.25、PyTorch 2.6.0+cu126、NumPy 1.26.4、Pandas 1.5.3、OpenPyXL 3.1.5 和 `unimol-tools` 0.1.4.post1。当前 Uni-Mol 安装支持 `model_name="unimolv2"`、84M 权重和 `cls_repr` 输出。
+已验证的核心版本包括 Python 3.9.25、PyTorch 2.6.0+cu126、NumPy 1.26.4、Pandas 1.5.3、OpenPyXL 3.1.5、RDKit 和 `unimol-tools` 0.1.4.post1。当前 Uni-Mol 安装支持 `model_name="unimolv2"`、84M 权重和 `cls_repr` 输出。
 
 ## 数据集
 
@@ -76,7 +76,7 @@ python -m unittest discover -s tests -v
 
 | 输入 | 形状 | 含义 |
 |---|---:|---|
-| `molecules` | `[B, 3, D_uni]` | Uni-Mol v2 `cls_repr`；二元体系第三项补零 |
+| `molecules` | `[B, 3, D_mol]` | 默认连接缩放后的 24 维 RDKit 描述符、Uni-Mol v2 `cls_repr` 与 RDKit 官能团计数；二元体系第三项补零 |
 | `temperature_k` | `[B, 1]` | 温度，K |
 | `pressure_kpa` | `[B, 1]` | 压力，kPa |
 | `x` | `[B, 3]` | 液相摩尔分数 |
@@ -85,6 +85,8 @@ python -m unittest discover -s tests -v
 | `pure_property_parameters` | `[B, 3, 11]` | 可选纯物性相关式类型、系数、单位换算、有效温区和可用标志 |
 
 神经网络直接输出 `log_gamma`、学习型纯组分 `log_psat`、非理想性 token 和 `g^E/RT`。若配置了可靠 Antoine 或 DIPPR 101 参数且温度处于声明的有效范围，求解器优先使用相关式；否则回退到学习型 `P_i^sat(T)`。热力学求解器进一步输出平衡 `T/P`、`x/y`、`gamma`、`P^sat`、平衡残差、收敛标志与迭代次数。等温模式给定 `T,x` 求 `P,y`；等压模式给定 `P,x` 求 `T,y`。
+
+这里不再额外叠加一个 GNN：Uni-Mol v2 已承担可学习的三维高阶结构编码，RDKit 描述符补充可解释的整体理化量，官能团分支补充明确的局部化学先验。三类特征按固定顺序连接后由 ThermoFormer 的共享分子投影层融合。配置项 `encoder.use_rdkit_descriptors`、`encoder.use_unimol` 和 `encoder.use_functional_groups` 可独立关闭，以便做严格的特征分支消融；`encoder.representation` 还支持 `unimol_v2`、`rdkit_2d` 和 `functional_groups` 单分支对照。
 
 可选纯物性目录通过 `data.pure_property_catalog` 指定 JSON 文件，键为标准化 SMILES。每项用 `type` 选择 `antoine` 或 `dippr101`，并明确 `pressure_unit`、`temperature_unit`、`minimum_temperature_k` 与 `maximum_temperature_k`。Antoine 采用 `log10(P)=A-B/(C+T)`；DIPPR 101 采用 `ln(P)=A+B/T+C ln(T)+D T^E`。为兼容已有目录，省略 `type` 和单位时按 Antoine、mmHg、°C 解释；默认目录留空，不伪造缺失参数。
 
@@ -98,7 +100,7 @@ python scripts/train_thermoformer.py --config experiments/baseline/thermoformer_
 ```
 
 当前正式消融由 `scripts/run_ablation_suite.py` 统一运行，完整索引见
-`experiments/ablation/README.md`。A0--A6 比较分子表征、多组分交互、条件注入、
+`experiments/ablation/README.md`。A0--A6 比较融合/单分支分子表征、多组分交互、条件注入、
 非理想性瓶颈和直接 VLE 回归；P0--P6 区分硬约束与可移除的软物理 loss。
 旧的下列目录仅作为早期诊断模板保留，不进入正式消融表：
 
@@ -120,7 +122,7 @@ python scripts/train_thermoformer.py --config experiments/baseline/thermoformer_
 1. 将 checkpoint、训练历史、数据 manifest 和完整指标写入与实验层级一致的 `runs/experiments/<category>/.../<experiment>/`；
 2. 自动更新 `experiments/<category>/.../<experiment>/results.md`，记录最终测试指标与交叉验证均值/标准差。
 
-结果摘要使用同目录临时文件完成后再原子替换，写入中断不会破坏上一次结果。`--skip-validation` 会把 checkpoint、history、manifest 和 `smoke_results.md` 全部隔离到正式输出目录下的 `smoke/` 子目录；Uni-Mol 特征缓存可以安全共享，正式产物不会被清理或覆盖。整理前生成的旧运行已隔离至 `runs/legacy/`，不得与当前配置结果混用。
+结果摘要使用同目录临时文件完成后再原子替换，写入中断不会破坏上一次结果。`--skip-validation` 会把 checkpoint、history、manifest 和 `smoke_results.md` 全部隔离到正式输出目录下的 `smoke/` 子目录；RDKit、Uni-Mol 与融合特征缓存按表示签名隔离并可安全共享，正式产物不会被清理或覆盖。整理前生成的旧运行已隔离至 `runs/legacy/`，不得与当前配置结果混用。
 
 ## 训练、验证与测试划分
 

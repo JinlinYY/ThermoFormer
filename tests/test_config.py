@@ -48,6 +48,23 @@ class ExperimentConfigTests(unittest.TestCase):
         self.assertEqual(config.evaluation.folds, 3)
         self.assertEqual(config.evaluation.mode, "kfold")
 
+    def test_default_encoder_combines_rdkit_unimol_and_functional_groups(self) -> None:
+        encoder = EncoderConfig()
+
+        self.assertEqual(encoder.representation, "hybrid")
+        self.assertTrue(encoder.use_rdkit_descriptors)
+        self.assertTrue(encoder.use_unimol)
+        self.assertTrue(encoder.use_functional_groups)
+
+    def test_hybrid_encoder_rejects_disabling_every_feature_branch(self) -> None:
+        with self.assertRaisesRegex(ValueError, "at least one branch"):
+            EncoderConfig(
+                representation="hybrid",
+                use_rdkit_descriptors=False,
+                use_unimol=False,
+                use_functional_groups=False,
+            )
+
     def test_repository_configs_construct_thermoformer(self) -> None:
         paths = sorted(self.CONFIG_ROOT.rglob("config.json"))
 

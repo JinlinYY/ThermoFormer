@@ -14,19 +14,34 @@ from .training import TrainingConfig
 
 @dataclass(frozen=True)
 class EncoderConfig:
-    representation: Literal["unimol_v2", "rdkit_2d"] = "unimol_v2"
+    representation: Literal[
+        "hybrid", "unimol_v2", "rdkit_2d", "functional_groups"
+    ] = "hybrid"
     model_size: str = "84m"
     batch_size: int = 16
+    use_rdkit_descriptors: bool = True
+    use_unimol: bool = True
+    use_functional_groups: bool = True
 
     def __post_init__(self) -> None:
-        if self.representation not in ("unimol_v2", "rdkit_2d"):
-            raise ValueError("encoder.representation must be unimol_v2 or rdkit_2d")
+        allowed = ("hybrid", "unimol_v2", "rdkit_2d", "functional_groups")
+        if self.representation not in allowed:
+            raise ValueError(f"encoder.representation must be one of {allowed}")
         if self.model_size not in ("84m", "164m", "310m", "570m", "1.1B"):
             raise ValueError(f"Unsupported Uni-Mol v2 model_size: {self.model_size}")
         if not isinstance(self.batch_size, int) or isinstance(self.batch_size, bool):
             raise ValueError("encoder.batch_size must be an integer")
         if self.batch_size < 1:
             raise ValueError("encoder.batch_size must be positive")
+        branch_values = (
+            self.use_rdkit_descriptors,
+            self.use_unimol,
+            self.use_functional_groups,
+        )
+        if any(not isinstance(value, bool) for value in branch_values):
+            raise ValueError("hybrid encoder branch switches must be boolean")
+        if self.representation == "hybrid" and not any(branch_values):
+            raise ValueError("hybrid encoder requires at least one branch")
 
 
 @dataclass(frozen=True)

@@ -1,7 +1,9 @@
-# Current Full hybrid ThermoFormer snapshot.
-# Formal training provenance is filled from the completed manifests after the campaign.
-reference_training_commits: {}
-reference_aggregation_commit: pending
+# Immutable reference for the historical Uni-Mol v2-only comparator.
+reference_training_commits:
+  overall_binary_ternary: 8c41a1b46d217f5b9714bd5179fe28224b86408c
+  unseen_component: 704458163ee2afd9e2c0a681ea4a670a287b6778
+  binary_to_ternary_zero_shot: 704458163ee2afd9e2c0a681ea4a670a287b6778
+reference_aggregation_commit: 704458163ee2afd9e2c0a681ea4a670a287b6778
 reference_protocol: overall_binary_ternary
 architecture:
   model_name: ThermoFormer
@@ -21,13 +23,8 @@ architecture:
   activity_mode: excess_gibbs
   decoder_mode: thermodynamic
 molecular_encoder:
-  representation: hybrid
+  representation: unimol_v2
   model_size: 84m
-  rdkit_descriptors: scaled24_v1
-  functional_groups: rdkit_fragments_v1
-  use_rdkit_descriptors: true
-  use_unimol: true
-  use_functional_groups: true
   frozen_precomputed_cls_repr: true
 optimizer:
   name: AdamW

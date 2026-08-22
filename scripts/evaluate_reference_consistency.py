@@ -1,4 +1,4 @@
-"""Post-process immutable Full ThermoFormer checkpoints with new physical metrics."""
+"""Post-process the frozen Uni-Mol v2-only comparator with physical metrics."""
 
 from __future__ import annotations
 
@@ -42,7 +42,7 @@ def _digest(path: Path) -> str:
 
 
 def _reference_training_commit(protocol: str) -> str:
-    snapshot = PROJECT_ROOT / "configs" / "ablation" / "full_model_reference.yaml"
+    snapshot = PROJECT_ROOT / "configs" / "ablation" / "unimol_v2_reference.yaml"
     payload = yaml.safe_load(snapshot.read_text(encoding="utf-8"))
     commits = payload.get("reference_training_commits", {})
     if protocol not in commits:
@@ -84,7 +84,7 @@ def _validate_reference_provenance(
     }
     mismatches = [name for name, (actual, expected) in invariants.items() if actual != expected]
     if mismatches:
-        raise RuntimeError(f"Invalid immutable Full provenance: {', '.join(mismatches)}")
+        raise RuntimeError(f"Invalid immutable Uni-Mol v2 provenance: {', '.join(mismatches)}")
 
 
 def _atomic_write_json(path: Path, payload: dict) -> None:

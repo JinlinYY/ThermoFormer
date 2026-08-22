@@ -1,0 +1,9 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "a1_no_functional_groups",
+  "encoder": {"use_functional_groups": false},
+  "runtime": {
+    "output_dir": "runs/experiments/ablation/architecture/a1_no_functional_groups",
+    "results_file": "experiments/ablation/architecture/a1_no_functional_groups/results.md"
+  }
+}
