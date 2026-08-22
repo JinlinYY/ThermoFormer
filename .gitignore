@@ -35,6 +35,13 @@ logs/
 checkpoints/multiview/smoke/
 checkpoints/multiview/screening/
 
+# Publish formal multi-view manifests, predictions and aggregates even though
+# their protocol namespace contains a directory named "runs".
+!results/multiview/
+!results/multiview/formal/
+!results/multiview/formal/runs/
+!results/multiview/formal/runs/**
+
 # Temporary files
 *.tmp
 *.temp
