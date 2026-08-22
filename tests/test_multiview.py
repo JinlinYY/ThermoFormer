@@ -6,7 +6,7 @@ import torch
 
 from src.model import ThermoFormer, ThermoFormerConfig
 from src.representation import RDKitDescriptorScaler
-from src.thermo import solve_isothermal
+from src.thermo import solve_isobaric, solve_isothermal
 
 
 def multiview_model() -> ThermoFormer:
@@ -82,6 +82,19 @@ class MultiViewRepresentationTests(unittest.TestCase):
         )
         self.assertTrue(torch.allclose(original_state.pressure_kpa, permuted_state.pressure_kpa, atol=1e-5))
         self.assertTrue(torch.allclose(original_state.y[:, permutation], permuted_state.y, atol=1e-5))
+        original_isobaric = solve_isobaric(
+            model, molecules, pressure, x, mask, iterations=3, strict=False
+        )
+        permuted_isobaric = solve_isobaric(
+            model, molecules[:, permutation], pressure, x[:, permutation],
+            mask[:, permutation], iterations=3, strict=False,
+        )
+        self.assertTrue(torch.allclose(
+            original_isobaric.temperature_k, permuted_isobaric.temperature_k, atol=1e-5
+        ))
+        self.assertTrue(torch.allclose(
+            original_isobaric.y[:, permutation], permuted_isobaric.y, atol=1e-5
+        ))
 
     def test_excess_gibbs_activity_and_solver_gradients_are_finite(self) -> None:
         model = multiview_model()
