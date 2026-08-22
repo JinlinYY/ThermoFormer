@@ -35,6 +35,14 @@ class AblationOutputTests(unittest.TestCase):
                 if name.startswith("a1_no_")
             },
         )
+        for variant_id in (
+            "a1_unimol_v2",
+            "a1_rdkit_descriptors",
+            "a1_no_rdkit_descriptors",
+            "a1_no_unimol",
+            "a1_no_functional_groups",
+        ):
+            self.assertEqual(ABLATION_VARIANTS[variant_id].benchmarks, ABLATION_VARIANTS["a0_full"].benchmarks)
 
     def test_predictive_ablation_rows_include_mae_rmse_and_r2(self) -> None:
         variant = ABLATION_VARIANTS["a1_unimol_v2"]

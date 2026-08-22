@@ -9,4 +9,6 @@ variant's `run.md` and share `scripts/run_ablation_suite.py`.
 
 The historical Uni-Mol-only results are an immutable comparator, not the new Full
 model. New hybrid-dependent variants are retrained with the same fixed splits,
-training budget, validation-only selection, and seeds 0--4.
+training budget, validation-only selection, and seeds 0--4. Every molecular
+representation variant is evaluated on all three core benchmarks so the comparison
+covers ordinary held-out systems, unseen components, and binary-to-ternary transfer.
