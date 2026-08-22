@@ -21,7 +21,7 @@ from .multiview_protocols import (
 )
 
 
-def _atomic_text(path: Path, text: str) -> None:
+def atomic_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary: Path | None = None
     try:
@@ -177,7 +177,7 @@ def write_screening_report(root: Path, table: pd.DataFrame) -> Path:
             "Primary exploratory criterion: unseen-component P/T/y performance. Overall, state-interpolation, and binary-to-ternary rows are retained as non-degradation constraints; no test row is removed. The five-seed table must therefore be interpreted as selection-aware evidence, not an untouched-test confirmation.",
         ]
     )
-    _atomic_text(output, "\n".join(lines) + "\n")
+    atomic_text(output, "\n".join(lines) + "\n")
     return output
 
 
@@ -375,7 +375,7 @@ def write_variant_result_pages(
                     f"{state} | {y_value} | {coverage} |"
                 )
         lines.extend(["", "Machine-readable source: `results/multiview/`.", ""])
-        _atomic_text(path, "\n".join(lines))
+        atomic_text(path, "\n".join(lines))
         outputs.append(path)
     return outputs
 
@@ -501,5 +501,5 @@ def write_final_report(
             "5. **Should V6 replace ThermoFormer?** No. The predeclared primary objective failed and seed variance increased. V1 is the preferred candidate when unseen-component state prediction is primary; retain V0 when isothermal vapor-composition accuracy is paramount, and V5 when fixed-molecule binary-to-ternary transfer is the sole target. No single model dominates every task.",
         ]
     )
-    _atomic_text(output, "\n".join(lines) + "\n")
+    atomic_text(output, "\n".join(lines) + "\n")
     return output

@@ -40,6 +40,12 @@ class MultiViewProtocolTests(unittest.TestCase):
             ])
         with self.assertRaisesRegex(ValueError, "seeds must be exactly"):
             run_suite(["--stage", "formal", "--seeds", "0"])
+        with self.assertRaisesRegex(ValueError, "locked stage matrix"):
+            run_suite([
+                "--stage", "predictive", "--protocol", "unseen_component"
+            ])
+        with self.assertRaisesRegex(ValueError, "seeds must be exactly"):
+            run_suite(["--stage", "predictive", "--seeds", "0"])
 
 
 if __name__ == "__main__":

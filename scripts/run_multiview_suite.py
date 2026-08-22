@@ -18,6 +18,8 @@ from src.multiview_protocols import (
     FORMAL_VARIANTS,
     MULTIVIEW_SEEDS,
     MULTIVIEW_VARIANTS,
+    PREDICTIVE_PROTOCOLS,
+    PREDICTIVE_VARIANTS,
     SCREENING_PROTOCOLS,
     SCREENING_VARIANTS,
     SMOKE_VARIANTS,
@@ -41,7 +43,9 @@ def release_accelerator_memory() -> None:
 
 def parser() -> argparse.ArgumentParser:
     value = argparse.ArgumentParser(description=__doc__)
-    value.add_argument("--stage", choices=("smoke", "screening", "formal"), required=True)
+    value.add_argument(
+        "--stage", choices=("smoke", "screening", "formal", "predictive"), required=True
+    )
     value.add_argument("--variant", action="append", choices=sorted(MULTIVIEW_VARIANTS))
     value.add_argument("--protocol", action="append")
     value.add_argument("--seeds", type=int, nargs="+")
@@ -60,6 +64,8 @@ def _matrix(stage: str) -> tuple[tuple[str, ...], tuple[str, ...], tuple[int, ..
         return SMOKE_VARIANTS, ("overall_binary_ternary",), (0,)
     if stage == "screening":
         return SCREENING_VARIANTS, SCREENING_PROTOCOLS, (0,)
+    if stage == "predictive":
+        return PREDICTIVE_VARIANTS, PREDICTIVE_PROTOCOLS, MULTIVIEW_SEEDS
     return FORMAL_VARIANTS, FORMAL_PROTOCOLS, MULTIVIEW_SEEDS
 
 
@@ -78,7 +84,7 @@ def main(argv: list[str] | None = None) -> None:
             raise ValueError(f"{args.stage} protocols must stay within the locked stage matrix")
         if seeds != default_seeds:
             raise ValueError(f"{args.stage} seeds must be exactly {default_seeds}")
-    elif args.stage == "formal":
+    elif args.stage in {"formal", "predictive"}:
         raise ValueError("Off-matrix experiments cannot use the formal namespace")
     artifact_root = args.artifact_root.resolve()
     namespace = f"{args.stage}_exploratory" if args.exploratory else args.stage
@@ -125,7 +131,7 @@ def main(argv: list[str] | None = None) -> None:
                     "status": manifest["status"],
                     "training_seconds": manifest["training_seconds"],
                 }))
-            if args.stage == "formal":
+            if args.stage in {"formal", "predictive"}:
                 aggregate_protocol_results(
                     results_root / protocol,
                     expected_seeds=MULTIVIEW_SEEDS,

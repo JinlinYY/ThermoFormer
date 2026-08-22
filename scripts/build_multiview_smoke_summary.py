@@ -12,7 +12,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.multiview_outputs import _atomic_text, atomic_csv
+from src.multiview_outputs import atomic_csv, atomic_text
 from src.multiview_protocols import MULTIVIEW_VARIANTS, SMOKE_VARIANTS
 
 
@@ -90,7 +90,7 @@ def main() -> None:
         "The deliberately short solver evaluation used four iterations, so coverage is a stability signal only; the formal campaign used 48 iterations.",
         "",
     ])
-    _atomic_text(report_path, "\n".join(lines))
+    atomic_text(report_path, "\n".join(lines))
     print(json.dumps({"csv": str(csv_path), "report": str(report_path)}))
 
 

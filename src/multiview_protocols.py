@@ -69,4 +69,18 @@ FORMAL_PROTOCOLS = (
     "unseen_component",
     "binary_to_ternary_zero_shot",
 )
+# Table-1-style predictive comparison requested after the original staged
+# campaign. V0 is reused from the frozen reference and V2 is an explicit alias
+# of V0, so only the scientifically distinct trainable variants run here.
+PREDICTIVE_VARIANTS = (
+    "v1_rdkit_only",
+    "v3_functional_group_only",
+    "v4_rdkit_unimol_naive",
+    "v5_three_view_naive",
+    "v6_full_interaction",
+)
+PREDICTIVE_PROTOCOLS = (
+    "overall_binary",
+    "overall_binary_ternary",
+)
 MULTIVIEW_SEEDS = (0, 1, 2, 3, 4)

@@ -127,9 +127,12 @@ python scripts/train_thermoformer.py --config experiments/baseline/thermoformer_
 conda run -n ggnn39 python scripts\run_multiview_suite.py --stage smoke --device cuda
 conda run -n ggnn39 python scripts\run_multiview_suite.py --stage screening --device cuda
 conda run -n ggnn39 python scripts\run_multiview_suite.py --stage formal --device cuda
+conda run -n ggnn39 python scripts\run_multiview_suite.py --stage predictive --device cuda
 ```
 
 Stage A 仅检查 V1/V4/V5/V6 的数值与资源稳定性；Stage B 在固定 split 上做 seed-0 快速筛选；只有通过筛选的 V1/V5/V6 才进入三个核心协议的 seeds 0--4 聚合。由于按本轮约定 Stage B 已查看 held-out test 指标，这组五种子结果属于 **selection-aware evaluation**，不能再表述为未触碰测试集的独立确认性估计。V3 官能团-only 是之后补充的探索性负对照，必须使用 `--exploratory`，产物隔离在 `screening_exploratory`。
+
+最新的表征对比采用 Table-1 风格的主评估，不再以未见组分结果排序：`overall_binary` 给出“二元训练→二元测试”，`overall_binary_ternary` 分别给出“二元+三元训练→二元测试”和“二元+三元训练→三元测试”。每项均以 seeds 0--4 报告等温 P/y 与等压 T/y 的 MAE、RMSE、R²。运行 `scripts\build_representation_outputs.py` 生成统一报告。
 
 运行门控分析时同时加入状态内插的 known-mixture 对照：
 

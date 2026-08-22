@@ -18,3 +18,12 @@ such post-hoc representation control.
 
 Published formal manifests use repository-relative artifact paths and include the
 referenced histories/curves, so SHA validation and aggregation survive relocation.
+
+The current primary representation comparison follows the requested Table-1
+layout rather than unseen-component ranking. It uses five seeds for binary
+train → binary test and joint binary+ternary train → binary/ternary test:
+
+```powershell
+conda run -n ggnn39 python scripts\run_multiview_suite.py --stage predictive --device cuda
+conda run -n ggnn39 python scripts\build_representation_outputs.py
+```
