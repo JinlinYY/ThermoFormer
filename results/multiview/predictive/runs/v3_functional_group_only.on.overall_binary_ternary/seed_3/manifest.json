@@ -1,0 +1,260 @@
+{
+  "artifact_path_schema": "project-relative-v1",
+  "artifacts": {
+    "checkpoint": {
+      "path": "checkpoints/multiview/predictive/v3_functional_group_only.on.overall_binary_ternary/seed_3/best_model.pt",
+      "sha256": "1cb15240ed612a25fb37ac9d8f324e78b249695286a628f736b4c6db963b01fb"
+    },
+    "history": {
+      "path": "runs/multiview/predictive/v3_functional_group_only.on.overall_binary_ternary/seed_3/history.json",
+      "sha256": "c81b5656ae8431cddcd2dc17d88f1bb0fb99a8a89b649e7b8ad730310816b474"
+    },
+    "metrics": {
+      "path": "results/multiview/predictive/runs/v3_functional_group_only.on.overall_binary_ternary/seed_3/metrics.json",
+      "sha256": "31eced234ee5a77b026e220e2d65ecd45c471ebfa0a817e0247e34aad65e5018"
+    },
+    "physical_consistency": {
+      "path": "results/multiview/predictive/runs/v3_functional_group_only.on.overall_binary_ternary/seed_3/physical_consistency.json",
+      "sha256": "260c1d928572ae30c9712623b4de6673f6a719611adfa59f97699e134439f2e8"
+    },
+    "predictions": {
+      "path": "results/multiview/predictive/runs/v3_functional_group_only.on.overall_binary_ternary/seed_3/predictions.csv",
+      "sha256": "47702eee1c5b2802294af76de215e3e13b018e8ed13e1f7b5ab47e26359c4984"
+    },
+    "resolved_config": {
+      "path": "results/multiview/predictive/runs/v3_functional_group_only.on.overall_binary_ternary/seed_3/resolved_config.json",
+      "sha256": "154a19ab0a8f2f5f964b11a4f51829889dc27296baf6c866490b5f3af2dfa843"
+    },
+    "training_curves": {
+      "path": "runs/multiview/predictive/v3_functional_group_only.on.overall_binary_ternary/seed_3/training_curves.csv",
+      "sha256": "fad2856c2ca89e8c08978af6d4ddbf7d487a25e2c22fd3e4770e65ef54e7b9ad"
+    }
+  },
+  "best_validation_loss": 0.5776187431614627,
+  "checkpoint": "checkpoints/multiview/predictive/v3_functional_group_only.on.overall_binary_ternary/seed_3/best_model.pt",
+  "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+  "dirty_code_paths": [],
+  "environment_sha256": "28e589adc3ad2d802ec4fb4076888689ac53071c9e057f5562be17e28a2281d9",
+  "feature_cache_sha256": "52280762bbd05f00404e64a9b50393c9f1aadf2610ac15471158be326e05b443",
+  "feature_definition_sha256": "e4c62c656aba6be2e60a2bb8fef173939c0aaf777a89369176da012d659d4791",
+  "feature_subset_sha256": "7227b81f10b6f71ed47d5a0f2d68f235cc69899bb4363d06b1dca785acc6c469",
+  "functional_group_vocabulary_sha256": "e0aa342568cb26e6ce1f24a3d079a038cf9583d5b936c30d48d7038643fc7c22",
+  "git_commit": "11f5ce53e877b71f19dd4ad13491a8b28d2ba9be",
+  "git_dirty": false,
+  "git_worktree_dirty": true,
+  "headline_metrics": {
+    "attempted_samples": 1691,
+    "component_count": null,
+    "direction": null,
+    "nonphysical_rate": 0.0,
+    "pressure_count": 423,
+    "pressure_mae_kpa": 427734.63358766475,
+    "pressure_r2": -3867538500.1818204,
+    "pressure_rmse_kpa": 8795681.05909363,
+    "pressure_system_macro_mae_kpa": 1076864.3990287394,
+    "pressure_system_macro_rmse_kpa": 13956773.026183512,
+    "scope": "all",
+    "solver_failure_rate": 0.2720283855706682,
+    "subgroup": null,
+    "systems": 48,
+    "temperature_count": 808,
+    "temperature_mae_k": 55.481040862432806,
+    "temperature_r2": -25.287680400300612,
+    "temperature_rmse_k": 144.4743955801654,
+    "temperature_system_macro_mae_k": 73.82029487241267,
+    "temperature_system_macro_rmse_k": 169.61667262665225,
+    "valid_coverage": 0.7279716144293318,
+    "valid_samples": 1231,
+    "y_component_macro_mae": 0.19896496032802433,
+    "y_component_values": 2526,
+    "y_mae": 0.20975225200671688,
+    "y_r2": 0.24827403733075248,
+    "y_rmse": 0.2794828422912992,
+    "y_sample_macro_mae": 0.21029989136169705,
+    "y_system_macro_mae": 0.21300683534673648,
+    "y_system_macro_rmse": 0.2968209373320654
+  },
+  "inference_ms_per_attempt": 9.486232465996473,
+  "inference_seconds": 16.041219100000035,
+  "molecular_feature_preprocessing": {
+    "block_order": [
+      "functional_groups"
+    ],
+    "feature_definition_sha256": "e4c62c656aba6be2e60a2bb8fef173939c0aaf777a89369176da012d659d4791",
+    "functional_group_names": [
+      "alcohol",
+      "phenol",
+      "carboxylic_acid",
+      "ester",
+      "ether",
+      "aldehyde",
+      "ketone",
+      "amide",
+      "primary_amine",
+      "secondary_amine",
+      "tertiary_amine",
+      "nitrile",
+      "nitro",
+      "thiol",
+      "thioether",
+      "sulfoxide",
+      "sulfone",
+      "fluoro",
+      "chloro",
+      "bromo",
+      "iodo",
+      "alkene",
+      "alkyne",
+      "aromatic_ring",
+      "heteroaromatic",
+      "epoxide",
+      "phosphate",
+      "siloxane"
+    ],
+    "functional_group_presence": "deterministic counts > 0; BASE/OTHER in model",
+    "functional_group_vocabulary_sha256": "e0aa342568cb26e6ce1f24a3d079a038cf9583d5b936c30d48d7038643fc7c22",
+    "source_cache_sha256": {
+      "functional_groups": "52280762bbd05f00404e64a9b50393c9f1aadf2610ac15471158be326e05b443"
+    },
+    "view_dimensions": {
+      "functional_groups": 28,
+      "rdkit_2d": 0,
+      "unimol_v2": 0
+    }
+  },
+  "peak_gpu_memory_mb": 1603.07958984375,
+  "physical_consistency": {
+    "equilibrium_residual_max_abs_kpa": 2100342.0,
+    "equilibrium_residual_mean_abs_kpa": 1990.9420670057457,
+    "equilibrium_residual_p95_abs_kpa": 70.23884963989258,
+    "evaluated_predictions": 1691,
+    "evaluated_systems": 48,
+    "fraction_y_above_one": 0.0,
+    "fraction_y_below_zero": 0.0,
+    "gibbs_duhem_finite_difference_max_abs": 0.0016247928142547607,
+    "gibbs_duhem_finite_difference_mean_abs": 0.000585321569815278,
+    "gibbs_duhem_finite_difference_p95_abs": 0.001337456703186035,
+    "gibbs_duhem_grid_states": 1134,
+    "gibbs_duhem_max_abs": 7.62939453125e-06,
+    "gibbs_duhem_mean_abs": 2.775616251855796e-07,
+    "gibbs_duhem_p95_abs": 1.0609626770019369e-06,
+    "nonphysical_prediction_rate": 0.38028169014084506,
+    "ordinary_nonphysical_prediction_rate": 0.2726197516262567,
+    "permutation_gamma_max_abs": 0.000732421875,
+    "permutation_gamma_mean_abs": 1.1146804226959333e-06,
+    "permutation_gamma_p95_abs": 1.9073486328125e-06,
+    "permutation_pressure_kpa_max_abs": 464.0,
+    "permutation_pressure_kpa_mean_abs": 0.33333308543188545,
+    "permutation_pressure_kpa_p95_abs": 7.62939453125e-05,
+    "permutation_psat_kpa_max_abs": 0.0,
+    "permutation_psat_kpa_mean_abs": 0.0,
+    "permutation_psat_kpa_p95_abs": 0.0,
+    "permutation_states": 1674,
+    "permutation_temperature_k_max_abs": 1350.0,
+    "permutation_temperature_k_mean_abs": 9.822018625799462,
+    "permutation_temperature_k_p95_abs": 0.00037536621093750555,
+    "permutation_y_max_abs": 0.9943132400512695,
+    "permutation_y_mean_abs": 0.0032549394519374676,
+    "permutation_y_p95_abs": 4.172325134277344e-07,
+    "phase_first_derivative_jump_p95_mean": 53.9981702086091,
+    "phase_first_derivative_jump_p95_p95": 170.18097274256945,
+    "phase_second_derivative_magnitude_mean_mean": 280.2467094413799,
+    "phase_second_derivative_magnitude_mean_p95": 989.3994481904357,
+    "phase_total_variation_mean": 14.296374440084676,
+    "phase_total_variation_p95": 45.476634949401635,
+    "physical_criteria": {
+      "gross_equilibrium_residual_kpa": 0.1,
+      "pure_limit_vle_error": 0.05
+    },
+    "pure_limit_failure_rate": 0.9932659932659933,
+    "pure_limit_log_gamma_max_abs": 0.07447707653045654,
+    "pure_limit_log_gamma_mean_abs": 0.0022698405511790546,
+    "pure_limit_log_gamma_p95_abs": 0.009773576259613016,
+    "pure_limit_pressure_relative_max_abs": 3.5373635292053223,
+    "pure_limit_pressure_relative_mean_abs": 0.8674308697282265,
+    "pure_limit_pressure_relative_p95_abs": 2.6686294078826873,
+    "pure_limit_reference_coverage": 0.9595959595959596,
+    "pure_limit_temperature_k_max_abs": 1499.9732666015625,
+    "pure_limit_temperature_k_mean_abs": 125.56344774034288,
+    "pure_limit_temperature_k_p95_abs": 1112.7887451171873,
+    "pure_limit_vle_max_abs": 14.99973201751709,
+    "pure_limit_vle_mean_abs": 1.705588551413782,
+    "pure_limit_vle_p95_abs": 11.127887535095212,
+    "pure_limit_y_max_abs": 0.4247783422470093,
+    "pure_limit_y_mean_abs": 0.02093385706846963,
+    "pure_limit_y_p95_abs": 0.09681322574615468,
+    "solver_convergence_failure_rate": 0.2720283855706682,
+    "x_closure_mean_abs": 1.4099264811218148e-10,
+    "y_closure_mean_abs": 8.38906277778051e-09
+  },
+  "protocol": "v3_functional_group_only.on.overall_binary_ternary",
+  "rdkit_descriptor_list_sha256": null,
+  "rdkit_scaler_sha256": null,
+  "request_sha256": "a9310caae5aca50de104a92a669cdbff181f94b41be8eee782223b7393c533bc",
+  "resolved_config_sha256": "2cb9d82a257a46d04adff413801d08872dc87d489ba4820ab7e16bb4aa522602",
+  "rows": {
+    "prediction_attempts": 1691,
+    "test": 1674,
+    "train": 7591,
+    "validation": 1749
+  },
+  "run_kind": "formal",
+  "runtime": {
+    "cuda_capability": [
+      8,
+      6
+    ],
+    "cuda_device": "NVIDIA GeForce RTX 3090 Ti",
+    "cudnn": 90501,
+    "device": "cuda",
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "rdkit": "2025.03.5",
+    "requested_device": "cuda",
+    "resolved_device": "cuda",
+    "torch": "2.6.0+cu126",
+    "torch_cuda": "12.6",
+    "unimol_tools": "0.1.4.post1"
+  },
+  "seed": 3,
+  "split_file": "splits/overall_binary_ternary/seed_3.json",
+  "split_metadata": {
+    "anchor_reference_systems": 132,
+    "component_count_rows": {
+      "test": {
+        "2": 1508,
+        "3": 166
+      },
+      "train": {
+        "2": 6891,
+        "3": 700
+      },
+      "validation": {
+        "2": 1506,
+        "3": 243
+      }
+    },
+    "requested_fraction": {
+      "test": 0.15,
+      "train": 0.7,
+      "validation": 0.15
+    },
+    "rows": {
+      "test": 1674,
+      "train": 7591,
+      "validation": 1749
+    },
+    "split_rule": "unordered canonical system disjoint, row-balanced by cardinality",
+    "systems": {
+      "test": 48,
+      "train": 244,
+      "validation": 55
+    }
+  },
+  "split_protocol": "overall_binary_ternary",
+  "split_sha256": "ce53e968422d87d2b1ded43b7df96e65758a23d0729929ec0c25f88381e13ab4",
+  "status": "completed",
+  "trainable_parameters": 1638339,
+  "training_seconds": 129.1494088999998,
+  "unimol_cache_sha256": null
+}

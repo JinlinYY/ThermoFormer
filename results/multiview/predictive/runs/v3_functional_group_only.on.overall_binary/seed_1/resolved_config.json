@@ -1,0 +1,129 @@
+{
+  "data": {
+    "failed_weight": 0.0,
+    "max_pressure_kpa": 500.0,
+    "minimum_pure_anchor_temperatures": 2,
+    "pure_property_catalog": "",
+    "root": "dataset",
+    "source_filter": ""
+  },
+  "encoder": {
+    "batch_size": 16,
+    "fusion_mode": "legacy",
+    "model_size": "84m",
+    "representation": "functional_groups",
+    "use_functional_groups": true,
+    "use_rdkit_descriptors": true,
+    "use_unimol": true
+  },
+  "evaluation": {
+    "folds": 5,
+    "mode": "kfold",
+    "test_fraction": 0.15,
+    "validation_fraction": 0.15
+  },
+  "model": {
+    "activity_mode": "excess_gibbs",
+    "decoder_mode": "thermodynamic",
+    "dropout": 0.0,
+    "feature_dim": 28,
+    "feedforward_multiplier": 4,
+    "film_scale": 0.1,
+    "functional_group_feature_dim": 0,
+    "fusion_mode": "legacy",
+    "heads": 6,
+    "hidden_dim": 192,
+    "interaction_mode": "full",
+    "layers": 3,
+    "pair_hidden_dim": 192,
+    "pure_hidden_dim": 192,
+    "rdkit_feature_dim": 0,
+    "unimol_feature_dim": 0,
+    "use_composition_context": true,
+    "use_film": true,
+    "use_mixture_token": true,
+    "use_transformer": true
+  },
+  "molecular_feature_preprocessing": {
+    "block_order": [
+      "functional_groups"
+    ],
+    "feature_definition_sha256": "e4c62c656aba6be2e60a2bb8fef173939c0aaf777a89369176da012d659d4791",
+    "functional_group_names": [
+      "alcohol",
+      "phenol",
+      "carboxylic_acid",
+      "ester",
+      "ether",
+      "aldehyde",
+      "ketone",
+      "amide",
+      "primary_amine",
+      "secondary_amine",
+      "tertiary_amine",
+      "nitrile",
+      "nitro",
+      "thiol",
+      "thioether",
+      "sulfoxide",
+      "sulfone",
+      "fluoro",
+      "chloro",
+      "bromo",
+      "iodo",
+      "alkene",
+      "alkyne",
+      "aromatic_ring",
+      "heteroaromatic",
+      "epoxide",
+      "phosphate",
+      "siloxane"
+    ],
+    "functional_group_presence": "deterministic counts > 0; BASE/OTHER in model",
+    "functional_group_vocabulary_sha256": "e0aa342568cb26e6ce1f24a3d079a038cf9583d5b936c30d48d7038643fc7c22",
+    "source_cache_sha256": {
+      "functional_groups": "52280762bbd05f00404e64a9b50393c9f1aadf2610ac15471158be326e05b443"
+    },
+    "view_dimensions": {
+      "functional_groups": 28,
+      "rdkit_2d": 0,
+      "unimol_v2": 0
+    }
+  },
+  "name": "v3_functional_group_only",
+  "paper_protocol": {
+    "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+    "name": "v3_functional_group_only.on.overall_binary",
+    "seed": 1,
+    "split_file": "splits/overall_binary/seed_1.json",
+    "split_protocol": "overall_binary"
+  },
+  "runtime": {
+    "device": "auto",
+    "output_dir": "runs/experiments/multiview/representations/v3_functional_group_only",
+    "results_file": "experiments/multiview/representations/v3_functional_group_only/results.md"
+  },
+  "seed": 1,
+  "training": {
+    "batch_size": 128,
+    "boundary_weight": 0.001,
+    "continuity_weight": 1e-05,
+    "early_stopping_patience": 12,
+    "epochs_physics": 5,
+    "epochs_supervised": 80,
+    "gradient_clip": 5.0,
+    "learning_rate": 0.0002,
+    "minimum_physics_epochs": 3,
+    "minimum_supervised_epochs": 10,
+    "physics_learning_rate": 2e-05,
+    "pressure_weight": 1.0,
+    "pure_weight": 0.5,
+    "seed": 1,
+    "solver_batches_per_epoch": 2,
+    "solver_iterations_eval": 48,
+    "solver_iterations_train": 16,
+    "solver_weight": 0.1,
+    "validation_min_delta": 0.0,
+    "weight_decay": 0.0001
+  }
+}

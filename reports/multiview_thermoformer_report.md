@@ -1,150 +1,47 @@
-# Multi-view ThermoFormer report
+# ThermoFormer molecular-representation comparison
 
-## 1. Implementation summary
+## Evaluation protocol
 
-The frozen thermodynamic backbone is unchanged: pair interactions still form `sum(x_i x_j phi_ij)`, activity coefficients still come from composition autograd, and the same differentiable isothermal/isobaric solvers and physics losses are used.
+This report uses only the requested Table-1-style settings: binary train → binary test, binary+ternary train → binary test, and binary+ternary train → ternary test. It does not use unseen-component ranking. All values are mean ± sample standard deviation across five fixed random seeds. Each metric cell lists MAE, RMSE, and R² from top to bottom; pressure and temperature errors use kPa and K, while vapor-composition errors are dimensionless.
 
-V6 uses 24 train-only-standardized RDKit descriptors, 768 frozen Uni-Mol v2 features, and 28 audited SMARTS occurrence counts (820 raw features total). Independent view projections feed the existing mixture Transformer; three symmetric pair branches and a mixture/state-conditioned softmax gate form `phi_ij`. No additional GNN was introduced.
+V2 is an explicit interface-equivalent alias of V0 and is shown for completeness, not counted as an independent experiment. A dagger marks a metric with fewer than five contributing seeds.
 
-New modules/assets are under `src/multiview_*`, `assets/`, `scripts/*multiview*`, and `experiments/multiview/`; runner/config/model/representation/provenance seams were extended without changing committed splits.
+## Predictive performance
 
-| Variant | Parameters | Formal runs | Train seconds/run | Peak GPU MB mean / max |
-|---|---:|---:|---:|---:|
-| V0 Legacy Uni-Mol v2 | 1,780,419 | 15 | 169.7 ± 34.0 | 1650.4 / 1695.3 |
-| V1 RDKit descriptors only | 1,637,571 | 15 | 99.8 ± 17.8 | 1633.3 / 1734.3 |
-| V5 Three-view naive fusion | 2,015,043 | 15 | 105.2 ± 15.6 | 1905.9 / 2007.3 |
-| V6 Interaction-specific multi-view fusion | 2,613,896 | 15 | 194.7 ± 27.4 | 8870.3 / 9912.5 |
+| Representation | Evaluation setting | P (kPa), isothermal | y, isothermal | T (K), isobaric | y, isobaric |
+|---|---|---:|---:|---:|---:|
+| V0 Legacy Uni-Mol v2 | Binary train → binary test | 17.26 ± 8.42 kPa<br>35.13 ± 14.93 kPa<br>0.911 ± 0.051 | 0.0681 ± 0.0146<br>0.1023 ± 0.0231<br>0.898 ± 0.049 | 5.75 ± 1.61 K<br>8.09 ± 2.50 K<br>0.920 ± 0.052 | 0.0638 ± 0.0217<br>0.0917 ± 0.0270<br>0.908 ± 0.058 |
+| V0 Legacy Uni-Mol v2 | Binary+ternary train → binary test | 18.57 ± 6.40 kPa<br>40.45 ± 14.09 kPa<br>0.882 ± 0.052 | 0.0720 ± 0.0158<br>0.1083 ± 0.0203<br>0.887 ± 0.044 | 5.72 ± 1.56 K<br>8.16 ± 2.02 K<br>0.925 ± 0.025 | 0.0680 ± 0.0161<br>0.0987 ± 0.0176<br>0.898 ± 0.039 |
+| V0 Legacy Uni-Mol v2 | Binary+ternary train → ternary test | 4.43 ± 3.39 kPa<br>5.68 ± 4.07 kPa<br>0.888 ± 0.130† | 0.0531 ± 0.0160<br>0.0729 ± 0.0197<br>0.909 ± 0.048† | 2.67 ± 0.46 K<br>3.60 ± 0.80 K<br>0.949 ± 0.040† | 0.0504 ± 0.0138<br>0.0695 ± 0.0233<br>0.891 ± 0.079† |
+| V1 RDKit descriptors only | Binary train → binary test | 9.19 ± 4.76 kPa<br>18.85 ± 8.71 kPa<br>0.975 ± 0.015 | 0.0268 ± 0.0029<br>0.0468 ± 0.0106<br>0.979 ± 0.009 | 2.75 ± 0.29 K<br>4.78 ± 0.77 K<br>0.973 ± 0.013 | 0.0304 ± 0.0021<br>0.0534 ± 0.0077<br>0.971 ± 0.008 |
+| V1 RDKit descriptors only | Binary+ternary train → binary test | 9.47 ± 4.11 kPa<br>20.36 ± 9.01 kPa<br>0.970 ± 0.019 | 0.0287 ± 0.0024<br>0.0506 ± 0.0085<br>0.976 ± 0.008 | 2.73 ± 0.32 K<br>4.63 ± 1.17 K<br>0.973 ± 0.018 | 0.0297 ± 0.0029<br>0.0524 ± 0.0096<br>0.972 ± 0.010 |
+| V1 RDKit descriptors only | Binary+ternary train → ternary test | 1.94 ± 0.46 kPa<br>2.79 ± 0.55 kPa<br>0.975 ± 0.017† | 0.0220 ± 0.0075<br>0.0302 ± 0.0096<br>0.983 ± 0.013† | 1.54 ± 0.62 K<br>1.98 ± 0.97 K<br>0.978 ± 0.033† | 0.0343 ± 0.0173<br>0.0540 ± 0.0349<br>0.920 ± 0.079† |
+| V2 Uni-Mol v2 unified interface (alias of V0) | Binary train → binary test | 17.26 ± 8.42 kPa<br>35.13 ± 14.93 kPa<br>0.911 ± 0.051 | 0.0681 ± 0.0146<br>0.1023 ± 0.0231<br>0.898 ± 0.049 | 5.75 ± 1.61 K<br>8.09 ± 2.50 K<br>0.920 ± 0.052 | 0.0638 ± 0.0217<br>0.0917 ± 0.0270<br>0.908 ± 0.058 |
+| V2 Uni-Mol v2 unified interface (alias of V0) | Binary+ternary train → binary test | 18.57 ± 6.40 kPa<br>40.45 ± 14.09 kPa<br>0.882 ± 0.052 | 0.0720 ± 0.0158<br>0.1083 ± 0.0203<br>0.887 ± 0.044 | 5.72 ± 1.56 K<br>8.16 ± 2.02 K<br>0.925 ± 0.025 | 0.0680 ± 0.0161<br>0.0987 ± 0.0176<br>0.898 ± 0.039 |
+| V2 Uni-Mol v2 unified interface (alias of V0) | Binary+ternary train → ternary test | 4.43 ± 3.39 kPa<br>5.68 ± 4.07 kPa<br>0.888 ± 0.130† | 0.0531 ± 0.0160<br>0.0729 ± 0.0197<br>0.909 ± 0.048† | 2.67 ± 0.46 K<br>3.60 ± 0.80 K<br>0.949 ± 0.040† | 0.0504 ± 0.0138<br>0.0695 ± 0.0233<br>0.891 ± 0.079† |
+| V3 Functional groups only | Binary train → binary test | 21497.19 ± 47933.77 kPa<br>510164.56 ± 1140512.65 kPa<br>-133210773.173 ± 297868344.404 | 0.1414 ± 0.0175<br>0.2132 ± 0.0346<br>0.640 ± 0.113 | 36.61 ± 9.52 K<br>69.64 ± 14.51 K<br>-4.447 ± 1.605 | 0.2135 ± 0.0314<br>0.2849 ± 0.0427<br>0.149 ± 0.275 |
+| V3 Functional groups only | Binary+ternary train → binary test | 100838.92 ± 225363.66 kPa<br>1909645.01 ± 4269724.72 kPa<br>-811715524.841 ± 1815051087.620 | 0.1560 ± 0.0191<br>0.2313 ± 0.0252<br>0.560 ± 0.094 | 32.22 ± 14.14 K<br>70.44 ± 49.53 K<br>-7.555 ± 10.968 | 0.2073 ± 0.0216<br>0.2731 ± 0.0261<br>0.233 ± 0.146 |
+| V3 Functional groups only | Binary+ternary train → ternary test | 23.05 ± 9.80 kPa<br>31.33 ± 19.63 kPa<br>-3.671 ± 5.403† | 0.1409 ± 0.0418<br>0.2016 ± 0.0663<br>0.481 ± 0.310† | 20.10 ± 10.47 K<br>40.70 ± 44.50 K<br>-17.722 ± 35.106† | 0.1628 ± 0.0191<br>0.2032 ± 0.0169<br>0.167 ± 0.233† |
+| V4 RDKit + Uni-Mol naive fusion | Binary train → binary test | 9.55 ± 5.21 kPa<br>21.73 ± 11.47 kPa<br>0.964 ± 0.027 | 0.0292 ± 0.0033<br>0.0506 ± 0.0090<br>0.976 ± 0.008 | 2.75 ± 0.41 K<br>4.55 ± 0.89 K<br>0.976 ± 0.011 | 0.0305 ± 0.0023<br>0.0520 ± 0.0050<br>0.972 ± 0.005 |
+| V4 RDKit + Uni-Mol naive fusion | Binary+ternary train → binary test | 10.45 ± 5.97 kPa<br>23.54 ± 14.46 kPa<br>0.955 ± 0.040 | 0.0294 ± 0.0041<br>0.0517 ± 0.0102<br>0.974 ± 0.009 | 2.66 ± 0.43 K<br>4.28 ± 1.14 K<br>0.977 ± 0.016 | 0.0302 ± 0.0042<br>0.0516 ± 0.0085<br>0.972 ± 0.009 |
+| V4 RDKit + Uni-Mol naive fusion | Binary+ternary train → ternary test | 1.46 ± 0.60 kPa<br>2.11 ± 0.77 kPa<br>0.985 ± 0.010† | 0.0166 ± 0.0045<br>0.0244 ± 0.0057<br>0.990 ± 0.007† | 1.47 ± 0.69 K<br>2.00 ± 1.17 K<br>0.976 ± 0.037† | 0.0313 ± 0.0194<br>0.0516 ± 0.0395<br>0.921 ± 0.082† |
+| V5 Three-view naive fusion | Binary train → binary test | 9.62 ± 5.09 kPa<br>20.97 ± 10.61 kPa<br>0.968 ± 0.022 | 0.0283 ± 0.0047<br>0.0487 ± 0.0108<br>0.977 ± 0.010 | 2.75 ± 0.52 K<br>4.54 ± 0.50 K<br>0.977 ± 0.006 | 0.0294 ± 0.0054<br>0.0510 ± 0.0079<br>0.973 ± 0.008 |
+| V5 Three-view naive fusion | Binary+ternary train → binary test | 9.03 ± 4.32 kPa<br>20.41 ± 9.39 kPa<br>0.969 ± 0.021 | 0.0274 ± 0.0046<br>0.0482 ± 0.0093<br>0.978 ± 0.008 | 2.57 ± 0.33 K<br>4.25 ± 0.86 K<br>0.979 ± 0.012 | 0.0300 ± 0.0045<br>0.0523 ± 0.0070<br>0.972 ± 0.007 |
+| V5 Three-view naive fusion | Binary+ternary train → ternary test | 2.85 ± 1.01 kPa<br>3.40 ± 1.10 kPa<br>0.966 ± 0.018† | 0.0196 ± 0.0043<br>0.0267 ± 0.0066<br>0.988 ± 0.005† | 1.69 ± 0.46 K<br>2.21 ± 0.79 K<br>0.975 ± 0.030† | 0.0332 ± 0.0189<br>0.0534 ± 0.0371<br>0.919 ± 0.079† |
+| V6 Interaction-specific multi-view fusion | Binary train → binary test | 10.05 ± 5.92 kPa<br>20.65 ± 9.79 kPa<br>0.969 ± 0.022 | 0.0279 ± 0.0043<br>0.0475 ± 0.0111<br>0.978 ± 0.010 | 2.84 ± 0.40 K<br>4.75 ± 1.00 K<br>0.972 ± 0.016 | 0.0315 ± 0.0063<br>0.0572 ± 0.0137<br>0.966 ± 0.016 |
+| V6 Interaction-specific multi-view fusion | Binary+ternary train → binary test | 7.71 ± 2.56 kPa<br>15.80 ± 4.48 kPa<br>0.982 ± 0.006 | 0.0253 ± 0.0049<br>0.0448 ± 0.0125<br>0.980 ± 0.010 | 2.74 ± 0.44 K<br>4.76 ± 1.04 K<br>0.972 ± 0.016 | 0.0312 ± 0.0040<br>0.0563 ± 0.0115<br>0.967 ± 0.013 |
+| V6 Interaction-specific multi-view fusion | Binary+ternary train → ternary test | 2.10 ± 0.46 kPa<br>2.65 ± 0.69 kPa<br>0.978 ± 0.013† | 0.0119 ± 0.0042<br>0.0171 ± 0.0051<br>0.995 ± 0.003† | 2.21 ± 0.60 K<br>2.83 ± 0.88 K<br>0.963 ± 0.036† | 0.0348 ± 0.0163<br>0.0572 ± 0.0347<br>0.912 ± 0.086† |
 
-## 2. Representation ablation
+## MAE winners by setting
 
-V0--V6 are implemented. V2 is interface-equivalent to V0. V3 was run as a later, isolated seed-0 exploratory diagnostic to complete the functional-group-only control; it did not influence the locked Stage C matrix. Full seed-0 tables are in `reports/multiview_screening_report.md`.
+V2 is excluded from winner selection because it duplicates V0. Lower is better.
 
-Exploratory screening showed V1 strongest on unseen components; V4 and V5 degraded that primary target, so simple feature addition was insufficient. V6 improved selected overall/zero-shot directions but did not pass the unseen-component gate. Per the predeclared rule, no further V6 branch ablations were run because V6 had no clear primary-target benefit.
+| Evaluation setting | P winner | Isothermal y winner | T winner | Isobaric y winner |
+|---|---|---|---|---|
+| Binary train → binary test | V1 RDKit descriptors only (9.19 kPa) | V1 RDKit descriptors only (0.0268) | V5 Three-view naive fusion (2.75 K) | V5 Three-view naive fusion (0.0294) |
+| Binary+ternary train → binary test | V6 Interaction-specific multi-view fusion (7.71 kPa) | V6 Interaction-specific multi-view fusion (0.0253) | V5 Three-view naive fusion (2.57 K) | V1 RDKit descriptors only (0.0297) |
+| Binary+ternary train → ternary test | V4 RDKit + Uni-Mol naive fusion (1.46 kPa) | V6 Interaction-specific multi-view fusion (0.0119) | V4 RDKit + Uni-Mol naive fusion (1.47 K) | V4 RDKit + Uni-Mol naive fusion (0.0313) |
 
-Seed-0 unseen-component representation diagnostic (exploratory; V2 equals V0 by interface):
+## Interpretation boundary
 
-| Variant | Task | State MAE | y MAE | Coverage |
-|---|---|---:|---:|---:|
-| V0 Legacy Uni-Mol v2 | isobaric (T+y) | 40.9916 K | 0.1149 | 1.000 |
-| V0 Legacy Uni-Mol v2 | isothermal (P+y) | 27.7285 kPa | 0.0808 | 0.998 |
-| V1 RDKit descriptors only | isobaric (T+y) | 25.7650 K | 0.0999 | 1.000 |
-| V1 RDKit descriptors only | isothermal (P+y) | 20.9613 kPa | 0.0858 | 1.000 |
-| V4 RDKit + Uni-Mol naive fusion | isobaric (T+y) | 35.6889 K | 0.1095 | 1.000 |
-| V4 RDKit + Uni-Mol naive fusion | isothermal (P+y) | 25.6072 kPa | 0.0950 | 1.000 |
-| V5 Three-view naive fusion | isobaric (T+y) | 37.1878 K | 0.1129 | 1.000 |
-| V5 Three-view naive fusion | isothermal (P+y) | 29.6872 kPa | 0.1065 | 1.000 |
-| V6 Interaction-specific multi-view fusion | isobaric (T+y) | 35.0374 K | 0.1020 | 1.000 |
-| V6 Interaction-specific multi-view fusion | isothermal (P+y) | 36.4023 kPa | 0.1147 | 1.000 |
-| V3 Functional groups only | isobaric (T+y) | 127.9842 K | 0.1616 | 0.912 |
-| V3 Functional groups only | isothermal (P+y) | 14662742.9560 kPa | 0.1942 | 0.698 |
-
-V3 FG-only was numerically weak: its unseen-component isothermal pressure MAE was extremely large and coverage was only about 0.70. This negative control indicates that sparse motif counts cannot replace molecular physicochemical/structural information.
-
-## 3. Overall performance
-
-These five-seed results use fixed splits and complete seed coverage, but the seed-0 test metrics were inspected during Stage B. They are therefore selection-aware evaluation results rather than an untouched-test confirmatory estimate.
-
-| Variant | Protocol | Task | State MAE | State RMSE | State R² | y MAE | y RMSE | y R² | Coverage |
-|---|---|---|---:|---:|---:|---:|---:|---:|---:|
-| V0 Legacy Uni-Mol v2 | overall_binary_ternary | isobaric (T+y) | 5.4566 ± 1.4836 K | 7.8774 ± 2.0071 K | 0.9283 ± 0.0254 | 0.0659 ± 0.0142 | 0.0965 ± 0.0155 | 0.9005 ± 0.0327 | 1.000 ± 0.000 |
-| V0 Legacy Uni-Mol v2 | overall_binary_ternary | isothermal (P+y) | 16.9887 ± 5.8781 kPa | 38.2395 ± 13.8932 kPa | 0.8845 ± 0.0518 | 0.0685 ± 0.0148 | 0.1032 ± 0.0188 | 0.8947 ± 0.0405 | 1.000 ± 0.000 |
-| V0 Legacy Uni-Mol v2 | unseen_component | isobaric (T+y) | 37.8732 ± 3.6302 K | 48.6310 ± 4.1006 K | 0.4151 ± 0.0977 | 0.1266 ± 0.0194 | 0.1708 ± 0.0237 | 0.7761 ± 0.0655 | 1.000 ± 0.000 |
-| V0 Legacy Uni-Mol v2 | unseen_component | isothermal (P+y) | 27.3989 ± 0.8662 kPa | 71.9183 ± 5.2130 kPa | 0.4600 ± 0.0764 | 0.0789 ± 0.0180 | 0.1229 ± 0.0244 | 0.8764 ± 0.0512 | 0.998 ± 0.003 |
-| V0 Legacy Uni-Mol v2 | binary_to_ternary_zero_shot | isobaric (T+y) | 5.5837 ± 2.0812 K | 6.2417 ± 2.0819 K | 0.9500 ± 0.0303 | 0.0828 ± 0.0153 | 0.1225 ± 0.0164 | 0.7143 ± 0.0889 | 1.000 ± 0.000 |
-| V0 Legacy Uni-Mol v2 | binary_to_ternary_zero_shot | isothermal (P+y) | 5.0257 ± 2.9048 kPa | 5.8621 ± 3.1227 kPa | 0.7486 ± 0.2873 | 0.0318 ± 0.0031 | 0.0409 ± 0.0048 | 0.9664 ± 0.0112 | 1.000 ± 0.000 |
-| V1 RDKit descriptors only | overall_binary_ternary | isobaric (T+y) | 2.6502 ± 0.3520 K | 4.4997 ± 1.2346 K | 0.9740 ± 0.0185 | 0.0306 ± 0.0047 | 0.0540 ± 0.0124 | 0.9684 ± 0.0138 | 1.000 ± 0.000 |
-| V1 RDKit descriptors only | overall_binary_ternary | isothermal (P+y) | 8.5146 ± 3.1801 kPa | 19.0101 ± 7.5815 kPa | 0.9709 ± 0.0170 | 0.0275 ± 0.0032 | 0.0482 ± 0.0089 | 0.9772 ± 0.0079 | 1.000 ± 0.000 |
-| V1 RDKit descriptors only | unseen_component | isobaric (T+y) | 28.2520 ± 2.8413 K | 38.0592 ± 3.1515 K | 0.6418 ± 0.0604 | 0.1011 ± 0.0045 | 0.1428 ± 0.0045 | 0.8459 ± 0.0097 | 1.000 ± 0.000 |
-| V1 RDKit descriptors only | unseen_component | isothermal (P+y) | 23.0828 ± 2.2172 kPa | 52.5165 ± 2.2055 kPa | 0.7131 ± 0.0243 | 0.0925 ± 0.0050 | 0.1421 ± 0.0071 | 0.8393 ± 0.0159 | 1.000 ± 0.000 |
-| V1 RDKit descriptors only | binary_to_ternary_zero_shot | isobaric (T+y) | 2.9256 ± 0.6540 K | 3.5290 ± 0.6933 K | 0.9841 ± 0.0091 | 0.0778 ± 0.0123 | 0.1129 ± 0.0116 | 0.7605 ± 0.0531 | 1.000 ± 0.000 |
-| V1 RDKit descriptors only | binary_to_ternary_zero_shot | isothermal (P+y) | 2.9611 ± 1.1353 kPa | 3.3975 ± 1.1373 kPa | 0.9306 ± 0.0673 | 0.0240 ± 0.0028 | 0.0319 ± 0.0039 | 0.9782 ± 0.0118 | 1.000 ± 0.000 |
-| V5 Three-view naive fusion | overall_binary_ternary | isobaric (T+y) | 2.5126 ± 0.3710 K | 4.1460 ± 0.9107 K | 0.9789 ± 0.0121 | 0.0307 ± 0.0051 | 0.0541 ± 0.0102 | 0.9687 ± 0.0118 | 1.000 ± 0.000 |
-| V5 Three-view naive fusion | overall_binary_ternary | isothermal (P+y) | 8.2046 ± 3.3088 kPa | 19.0171 ± 7.8243 kPa | 0.9697 ± 0.0194 | 0.0262 ± 0.0046 | 0.0457 ± 0.0089 | 0.9795 ± 0.0073 | 1.000 ± 0.000 |
-| V5 Three-view naive fusion | unseen_component | isobaric (T+y) | 36.3334 ± 1.5461 K | 46.9445 ± 2.0072 K | 0.4572 ± 0.0455 | 0.1193 ± 0.0043 | 0.1684 ± 0.0061 | 0.7855 ± 0.0156 | 1.000 ± 0.000 |
-| V5 Three-view naive fusion | unseen_component | isothermal (P+y) | 28.9055 ± 7.1440 kPa | 63.4726 ± 8.6856 kPa | 0.5753 ± 0.1166 | 0.1012 ± 0.0156 | 0.1606 ± 0.0229 | 0.7919 ± 0.0594 | 1.000 ± 0.000 |
-| V5 Three-view naive fusion | binary_to_ternary_zero_shot | isobaric (T+y) | 1.9663 ± 0.7879 K | 2.5768 ± 1.0845 K | 0.9893 ± 0.0107 | 0.0722 ± 0.0159 | 0.1101 ± 0.0133 | 0.7717 ± 0.0587 | 1.000 ± 0.000 |
-| V5 Three-view naive fusion | binary_to_ternary_zero_shot | isothermal (P+y) | 1.7929 ± 0.4701 kPa | 2.1828 ± 0.5199 kPa | 0.9707 ± 0.0194 | 0.0149 ± 0.0023 | 0.0206 ± 0.0020 | 0.9914 ± 0.0034 | 1.000 ± 0.000 |
-| V6 Interaction-specific multi-view fusion | overall_binary_ternary | isobaric (T+y) | 2.7010 ± 0.4539 K | 4.6408 ± 1.0909 K | 0.9729 ± 0.0164 | 0.0319 ± 0.0058 | 0.0577 ± 0.0140 | 0.9639 ± 0.0166 | 1.000 ± 0.000 |
-| V6 Interaction-specific multi-view fusion | overall_binary_ternary | isothermal (P+y) | 7.0342 ± 2.0512 kPa | 14.8414 ± 3.8018 kPa | 0.9825 ± 0.0051 | 0.0232 ± 0.0044 | 0.0420 ± 0.0127 | 0.9821 ± 0.0102 | 1.000 ± 0.000 |
-| V6 Interaction-specific multi-view fusion | unseen_component | isobaric (T+y) | 36.7037 ± 1.8896 K | 47.2096 ± 1.9731 K | 0.4511 ± 0.0465 | 0.1112 ± 0.0065 | 0.1529 ± 0.0075 | 0.8230 ± 0.0177 | 1.000 ± 0.000 |
-| V6 Interaction-specific multi-view fusion | unseen_component | isothermal (P+y) | 31.7126 ± 8.0805 kPa | 67.6307 ± 9.6256 kPa | 0.5172 ± 0.1382 | 0.1033 ± 0.0210 | 0.1663 ± 0.0326 | 0.7738 ± 0.0860 | 1.000 ± 0.000 |
-| V6 Interaction-specific multi-view fusion | binary_to_ternary_zero_shot | isobaric (T+y) | 2.8789 ± 0.8865 K | 3.6999 ± 1.2084 K | 0.9817 ± 0.0112 | 0.0829 ± 0.0140 | 0.1169 ± 0.0142 | 0.7417 ± 0.0717 | 1.000 ± 0.000 |
-| V6 Interaction-specific multi-view fusion | binary_to_ternary_zero_shot | isothermal (P+y) | 2.2206 ± 0.7344 kPa | 2.7687 ± 0.9292 kPa | 0.9538 ± 0.0312 | 0.0164 ± 0.0115 | 0.0219 ± 0.0152 | 0.9879 ± 0.0155 | 1.000 ± 0.000 |
-
-## 4. Unseen-component generalization
-
-The unseen-component rows above are the primary evidence. Every seed is shown below; no seed is excluded.
-
-| Variant | Seed | Task | State MAE | State RMSE | State R² | y MAE | y RMSE | y R² | Coverage |
-|---|---:|---|---:|---:|---:|---:|---:|---:|---:|
-| V0 Legacy Uni-Mol v2 | 0 | isobaric (T+y) | 40.9916 K | 51.9206 K | 0.3371 | 0.1149 | 0.1570 | 0.8137 | 1.000 |
-| V0 Legacy Uni-Mol v2 | 0 | isothermal (P+y) | 27.7285 kPa | 74.0068 kPa | 0.4288 | 0.0808 | 0.1213 | 0.8835 | 0.998 |
-| V0 Legacy Uni-Mol v2 | 1 | isobaric (T+y) | 35.4455 K | 45.5517 K | 0.4897 | 0.1197 | 0.1621 | 0.8014 | 1.000 |
-| V0 Legacy Uni-Mol v2 | 1 | isothermal (P+y) | 28.0726 kPa | 77.0332 kPa | 0.3836 | 0.0750 | 0.1186 | 0.8883 | 1.000 |
-| V0 Legacy Uni-Mol v2 | 2 | isobaric (T+y) | 32.9162 K | 43.5629 K | 0.5333 | 0.1103 | 0.1510 | 0.8279 | 1.000 |
-| V0 Legacy Uni-Mol v2 | 2 | isothermal (P+y) | 25.9619 kPa | 71.6823 kPa | 0.4641 | 0.0586 | 0.0951 | 0.9283 | 0.998 |
-| V0 Legacy Uni-Mol v2 | 3 | isobaric (T+y) | 41.3141 K | 53.2359 K | 0.3030 | 0.1590 | 0.2107 | 0.6648 | 1.000 |
-| V0 Legacy Uni-Mol v2 | 3 | isothermal (P+y) | 27.2423 kPa | 63.2457 kPa | 0.5864 | 0.1077 | 0.1623 | 0.7906 | 0.993 |
-| V0 Legacy Uni-Mol v2 | 4 | isobaric (T+y) | 38.6988 K | 48.8841 K | 0.4123 | 0.1292 | 0.1734 | 0.7728 | 1.000 |
-| V0 Legacy Uni-Mol v2 | 4 | isothermal (P+y) | 27.9896 kPa | 73.6233 kPa | 0.4370 | 0.0725 | 0.1170 | 0.8913 | 1.000 |
-| V1 RDKit descriptors only | 0 | isobaric (T+y) | 25.7650 K | 35.5523 K | 0.6892 | 0.0999 | 0.1488 | 0.8327 | 1.000 |
-| V1 RDKit descriptors only | 0 | isothermal (P+y) | 20.9613 kPa | 51.5833 kPa | 0.7236 | 0.0858 | 0.1327 | 0.8603 | 1.000 |
-| V1 RDKit descriptors only | 1 | isobaric (T+y) | 27.0593 K | 36.1743 K | 0.6782 | 0.0974 | 0.1442 | 0.8430 | 1.000 |
-| V1 RDKit descriptors only | 1 | isothermal (P+y) | 22.1077 kPa | 50.1054 kPa | 0.7392 | 0.0899 | 0.1390 | 0.8466 | 1.000 |
-| V1 RDKit descriptors only | 2 | isobaric (T+y) | 29.8520 K | 40.0243 K | 0.6060 | 0.1039 | 0.1435 | 0.8445 | 1.000 |
-| V1 RDKit descriptors only | 2 | isothermal (P+y) | 26.4683 kPa | 55.6370 kPa | 0.6785 | 0.0973 | 0.1454 | 0.8321 | 1.000 |
-| V1 RDKit descriptors only | 3 | isobaric (T+y) | 32.4511 K | 42.6700 K | 0.5522 | 0.1074 | 0.1407 | 0.8504 | 1.000 |
-| V1 RDKit descriptors only | 3 | isothermal (P+y) | 21.7747 kPa | 51.4017 kPa | 0.7256 | 0.0923 | 0.1419 | 0.8401 | 1.000 |
-| V1 RDKit descriptors only | 4 | isobaric (T+y) | 26.1326 K | 35.8750 K | 0.6835 | 0.0968 | 0.1367 | 0.8589 | 1.000 |
-| V1 RDKit descriptors only | 4 | isothermal (P+y) | 24.1022 kPa | 53.8553 kPa | 0.6987 | 0.0973 | 0.1516 | 0.8176 | 1.000 |
-| V5 Three-view naive fusion | 0 | isobaric (T+y) | 37.1878 K | 47.4671 K | 0.4459 | 0.1129 | 0.1604 | 0.8057 | 1.000 |
-| V5 Three-view naive fusion | 0 | isothermal (P+y) | 29.6872 kPa | 59.9483 kPa | 0.6267 | 0.1065 | 0.1715 | 0.7665 | 1.000 |
-| V5 Three-view naive fusion | 1 | isobaric (T+y) | 33.8394 K | 43.6100 K | 0.5323 | 0.1175 | 0.1678 | 0.7874 | 1.000 |
-| V5 Three-view naive fusion | 1 | isothermal (P+y) | 39.3275 kPa | 76.1047 kPa | 0.3984 | 0.1233 | 0.1924 | 0.7060 | 1.000 |
-| V5 Three-view naive fusion | 2 | isobaric (T+y) | 37.8120 K | 48.8853 K | 0.4123 | 0.1236 | 0.1744 | 0.7703 | 1.000 |
-| V5 Three-view naive fusion | 2 | isothermal (P+y) | 25.6469 kPa | 65.9427 kPa | 0.5483 | 0.0833 | 0.1344 | 0.8565 | 1.000 |
-| V5 Three-view naive fusion | 3 | isobaric (T+y) | 36.8675 K | 47.9172 K | 0.4354 | 0.1206 | 0.1746 | 0.7697 | 1.000 |
-| V5 Three-view naive fusion | 3 | isothermal (P+y) | 19.7978 kPa | 52.3620 kPa | 0.7152 | 0.0896 | 0.1439 | 0.8356 | 1.000 |
-| V5 Three-view naive fusion | 4 | isobaric (T+y) | 35.9602 K | 46.8432 K | 0.4604 | 0.1221 | 0.1650 | 0.7943 | 1.000 |
-| V5 Three-view naive fusion | 4 | isothermal (P+y) | 30.0683 kPa | 63.0056 kPa | 0.5877 | 0.1033 | 0.1607 | 0.7950 | 1.000 |
-| V6 Interaction-specific multi-view fusion | 0 | isobaric (T+y) | 35.0374 K | 45.2927 K | 0.4955 | 0.1020 | 0.1467 | 0.8375 | 1.000 |
-| V6 Interaction-specific multi-view fusion | 0 | isothermal (P+y) | 36.4023 kPa | 72.8665 kPa | 0.4485 | 0.1147 | 0.1837 | 0.7320 | 1.000 |
-| V6 Interaction-specific multi-view fusion | 1 | isobaric (T+y) | 37.5797 K | 47.8776 K | 0.4363 | 0.1084 | 0.1499 | 0.8302 | 1.000 |
-| V6 Interaction-specific multi-view fusion | 1 | isothermal (P+y) | 42.3219 kPa | 81.0675 kPa | 0.3174 | 0.1306 | 0.2083 | 0.6556 | 1.000 |
-| V6 Interaction-specific multi-view fusion | 2 | isobaric (T+y) | 35.3584 K | 46.1668 K | 0.4759 | 0.1154 | 0.1568 | 0.8142 | 1.000 |
-| V6 Interaction-specific multi-view fusion | 2 | isothermal (P+y) | 24.4357 kPa | 60.5344 kPa | 0.6194 | 0.0863 | 0.1483 | 0.8253 | 1.000 |
-| V6 Interaction-specific multi-view fusion | 3 | isobaric (T+y) | 39.5947 K | 50.3225 K | 0.3772 | 0.1188 | 0.1642 | 0.7963 | 1.000 |
-| V6 Interaction-specific multi-view fusion | 3 | isothermal (P+y) | 23.1464 kPa | 57.0842 kPa | 0.6615 | 0.0789 | 0.1232 | 0.8795 | 1.000 |
-| V6 Interaction-specific multi-view fusion | 4 | isobaric (T+y) | 35.9483 K | 46.3884 K | 0.4708 | 0.1116 | 0.1469 | 0.8370 | 1.000 |
-| V6 Interaction-specific multi-view fusion | 4 | isothermal (P+y) | 32.2565 kPa | 66.6007 kPa | 0.5393 | 0.1061 | 0.1678 | 0.7763 | 1.000 |
-
-## 5. Binary-to-ternary zero-shot
-
-The zero-shot rows use the unchanged fixed ternary test set and train-only binary subsystem coverage.
-
-## 6. Gate analysis
-
-| Protocol | View | Mean weight across seeds | Seed SD |
-|---|---|---:|---:|
-| binary_to_ternary_zero_shot | functional_group | 0.0107 | 0.0214 |
-| binary_to_ternary_zero_shot | rdkit | 0.8032 | 0.4366 |
-| binary_to_ternary_zero_shot | unimol | 0.1861 | 0.4153 |
-| overall_binary_ternary | functional_group | 0.0400 | 0.0540 |
-| overall_binary_ternary | rdkit | 0.9548 | 0.0593 |
-| overall_binary_ternary | unimol | 0.0052 | 0.0065 |
-| state_composition_interpolation | functional_group | 0.0015 | NA |
-| state_composition_interpolation | rdkit | 0.9982 | NA |
-| state_composition_interpolation | unimol | 0.0003 | NA |
-| unseen_component | functional_group | 0.0652 | 0.0579 |
-| unseen_component | rdkit | 0.9213 | 0.0561 |
-| unseen_component | unimol | 0.0134 | 0.0137 |
-
-The gate largely collapsed onto RDKit (about 0.95 overall and 0.92 for unseen components); functional-group weights remained small and Uni-Mol was usually near zero. Zero-shot was seed-unstable: seed 4 switched to approximately 0.93 Uni-Mol while the other seeds were nearly all RDKit. The state-interpolation seed-0 diagnostic supplies the known-mixture stratum; it is not pooled as five-seed evidence. These are learned associations, not causal feature importance. Full known/unseen, chemical-family, and composition-region strata are in `results/multiview/analysis/multiview_gate_statistics.csv`.
-
-## 7. Conclusion
-
-1. **Why RDKit can beat Uni-Mol-only:** the compact descriptors expose molecular size, polarity, hydrogen bonding, topology and charge in a low-data-friendly form. Formally, V1 improved unseen-component P/T and isobaric y over V0, although V0 retained better isothermal y.
-2. **Does Uni-Mol add robust value on top of RDKit?** Not for the primary target in the tested fusion schemes. V4 screening and V5/V6 formal unseen-component results were worse than V1.
-3. **Do functional-group interactions improve unseen components?** No. V5 degraded all four primary MAE outputs relative to V1; V6 also remained worse, and its learned functional-group gate weight was small.
-4. **Is interaction-specific fusion better than naive concatenation?** Only conditionally. V6 improved V5's overall isothermal P/y, but it was worse on unseen-component P/T and did not beat V5 zero-shot. It also used more parameters and roughly doubled training time.
-5. **Should V6 replace ThermoFormer?** No. The predeclared primary objective failed and seed variance increased. V1 is the preferred candidate when unseen-component state prediction is primary; retain V0 when isothermal vapor-composition accuracy is paramount, and V5 when fixed-molecule binary-to-ternary transfer is the sole target. No single model dominates every task.
+The table supports comparisons only under these three grouped random-seed settings. It does not establish unseen-component extrapolation. The raw per-seed metrics, checkpoints, manifests, and resolved configurations remain the source of record under `results/`, `checkpoints/`, and `runs/`.

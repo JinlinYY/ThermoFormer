@@ -1,0 +1,257 @@
+{
+  "artifact_path_schema": "project-relative-v1",
+  "artifacts": {
+    "checkpoint": {
+      "path": "checkpoints/multiview/predictive/v3_functional_group_only.on.overall_binary/seed_3/best_model.pt",
+      "sha256": "516ee521d7689b494f93f17dcdd2923a4fafedcb474171a4a5af6de6ae37afb4"
+    },
+    "history": {
+      "path": "runs/multiview/predictive/v3_functional_group_only.on.overall_binary/seed_3/history.json",
+      "sha256": "172d43ed8cf4025883a86ddf578b0f5ebf4238b48494f8d8a1c653be08142689"
+    },
+    "metrics": {
+      "path": "results/multiview/predictive/runs/v3_functional_group_only.on.overall_binary/seed_3/metrics.json",
+      "sha256": "202bd3bc589c1ad9c164d43736e55a25ecc0040bbe6b835b6b52a067b1708439"
+    },
+    "physical_consistency": {
+      "path": "results/multiview/predictive/runs/v3_functional_group_only.on.overall_binary/seed_3/physical_consistency.json",
+      "sha256": "5eeaa6b17676b94df73787e4438685ffd8e75eb1a9008e292732acfe094d1b45"
+    },
+    "predictions": {
+      "path": "results/multiview/predictive/runs/v3_functional_group_only.on.overall_binary/seed_3/predictions.csv",
+      "sha256": "5bcd2c475f25736bb6fdfbb424159e028695f895149f90717dc6795e99935513"
+    },
+    "resolved_config": {
+      "path": "results/multiview/predictive/runs/v3_functional_group_only.on.overall_binary/seed_3/resolved_config.json",
+      "sha256": "324a9100740d1fcdf08e5af903756dae3da79b12df8ea737cb3614a72f11bc4f"
+    },
+    "training_curves": {
+      "path": "runs/multiview/predictive/v3_functional_group_only.on.overall_binary/seed_3/training_curves.csv",
+      "sha256": "c046ac4f07a71ba2bd1b74eed2ccf6b054fd9390aec28404273b3490baab5493"
+    }
+  },
+  "best_validation_loss": 0.6326469613578056,
+  "checkpoint": "checkpoints/multiview/predictive/v3_functional_group_only.on.overall_binary/seed_3/best_model.pt",
+  "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+  "dirty_code_paths": [],
+  "environment_sha256": "28e589adc3ad2d802ec4fb4076888689ac53071c9e057f5562be17e28a2281d9",
+  "feature_cache_sha256": "52280762bbd05f00404e64a9b50393c9f1aadf2610ac15471158be326e05b443",
+  "feature_definition_sha256": "e4c62c656aba6be2e60a2bb8fef173939c0aaf777a89369176da012d659d4791",
+  "feature_subset_sha256": "7227b81f10b6f71ed47d5a0f2d68f235cc69899bb4363d06b1dca785acc6c469",
+  "functional_group_vocabulary_sha256": "e0aa342568cb26e6ce1f24a3d079a038cf9583d5b936c30d48d7038643fc7c22",
+  "git_commit": "11f5ce53e877b71f19dd4ad13491a8b28d2ba9be",
+  "git_dirty": false,
+  "git_worktree_dirty": true,
+  "headline_metrics": {
+    "attempted_samples": 1525,
+    "component_count": null,
+    "direction": null,
+    "nonphysical_rate": 0.0,
+    "pressure_count": 342,
+    "pressure_mae_kpa": 70.45325837541594,
+    "pressure_r2": 0.33659369785362236,
+    "pressure_rmse_kpa": 118.97025251340635,
+    "pressure_system_macro_mae_kpa": 83.00034160352556,
+    "pressure_system_macro_rmse_kpa": 139.37873271583186,
+    "scope": "all",
+    "solver_failure_rate": 0.2078688524590164,
+    "subgroup": null,
+    "systems": 45,
+    "temperature_count": 866,
+    "temperature_mae_k": 35.840480655379444,
+    "temperature_r2": -5.470553087425921,
+    "temperature_rmse_k": 70.42022558154807,
+    "temperature_system_macro_mae_k": 40.28258619145264,
+    "temperature_system_macro_rmse_k": 76.32063797477282,
+    "valid_coverage": 0.7921311475409836,
+    "valid_samples": 1208,
+    "y_component_macro_mae": 0.1916171531758007,
+    "y_component_values": 2416,
+    "y_mae": 0.21230848127172414,
+    "y_r2": 0.1676329030081012,
+    "y_rmse": 0.2926616174055521,
+    "y_sample_macro_mae": 0.21194202343853236,
+    "y_system_macro_mae": 0.2033054087658543,
+    "y_system_macro_rmse": 0.2852723997444157
+  },
+  "inference_ms_per_attempt": 9.12722465573768,
+  "inference_seconds": 13.919017599999961,
+  "molecular_feature_preprocessing": {
+    "block_order": [
+      "functional_groups"
+    ],
+    "feature_definition_sha256": "e4c62c656aba6be2e60a2bb8fef173939c0aaf777a89369176da012d659d4791",
+    "functional_group_names": [
+      "alcohol",
+      "phenol",
+      "carboxylic_acid",
+      "ester",
+      "ether",
+      "aldehyde",
+      "ketone",
+      "amide",
+      "primary_amine",
+      "secondary_amine",
+      "tertiary_amine",
+      "nitrile",
+      "nitro",
+      "thiol",
+      "thioether",
+      "sulfoxide",
+      "sulfone",
+      "fluoro",
+      "chloro",
+      "bromo",
+      "iodo",
+      "alkene",
+      "alkyne",
+      "aromatic_ring",
+      "heteroaromatic",
+      "epoxide",
+      "phosphate",
+      "siloxane"
+    ],
+    "functional_group_presence": "deterministic counts > 0; BASE/OTHER in model",
+    "functional_group_vocabulary_sha256": "e0aa342568cb26e6ce1f24a3d079a038cf9583d5b936c30d48d7038643fc7c22",
+    "source_cache_sha256": {
+      "functional_groups": "52280762bbd05f00404e64a9b50393c9f1aadf2610ac15471158be326e05b443"
+    },
+    "view_dimensions": {
+      "functional_groups": 28,
+      "rdkit_2d": 0,
+      "unimol_v2": 0
+    }
+  },
+  "peak_gpu_memory_mb": 1581.73291015625,
+  "physical_consistency": {
+    "equilibrium_residual_max_abs_kpa": 90980768.0,
+    "equilibrium_residual_mean_abs_kpa": 108571.51341584207,
+    "equilibrium_residual_p95_abs_kpa": 53.6443359374999,
+    "evaluated_predictions": 1525,
+    "evaluated_systems": 45,
+    "fraction_y_above_one": 0.0,
+    "fraction_y_below_zero": 0.0,
+    "gibbs_duhem_finite_difference_max_abs": 0.001513838768005371,
+    "gibbs_duhem_finite_difference_mean_abs": 0.0005578091368079185,
+    "gibbs_duhem_finite_difference_p95_abs": 0.0013809204101562498,
+    "gibbs_duhem_grid_states": 945,
+    "gibbs_duhem_max_abs": 5.7220458984375e-06,
+    "gibbs_duhem_mean_abs": 1.919214372281675e-07,
+    "gibbs_duhem_p95_abs": 7.152557373046875e-07,
+    "nonphysical_prediction_rate": 0.3253481894150418,
+    "ordinary_nonphysical_prediction_rate": 0.2078688524590164,
+    "permutation_gamma_max_abs": 0.000213623046875,
+    "permutation_gamma_mean_abs": 1.3588332604548217e-06,
+    "permutation_gamma_p95_abs": 5.7220458984375e-06,
+    "permutation_pressure_kpa_max_abs": 2464.0,
+    "permutation_pressure_kpa_mean_abs": 5.04382241015672,
+    "permutation_pressure_kpa_p95_abs": 0.1011718749999968,
+    "permutation_psat_kpa_max_abs": 0.0,
+    "permutation_psat_kpa_mean_abs": 0.0,
+    "permutation_psat_kpa_p95_abs": 0.0,
+    "permutation_states": 1508,
+    "permutation_temperature_k_max_abs": 962.8133544921875,
+    "permutation_temperature_k_mean_abs": 1.6196278235640387,
+    "permutation_temperature_k_p95_abs": 0.000152587890625,
+    "permutation_y_max_abs": 0.6270216703414917,
+    "permutation_y_mean_abs": 0.0011278197256103363,
+    "permutation_y_p95_abs": 3.2782554626464844e-07,
+    "phase_first_derivative_jump_p95_mean": 61.68191855623177,
+    "phase_first_derivative_jump_p95_p95": 205.78044327734725,
+    "phase_second_derivative_magnitude_mean_mean": 301.81454618862284,
+    "phase_second_derivative_magnitude_mean_p95": 1059.9335252131154,
+    "phase_total_variation_mean": 12.671179762812393,
+    "phase_total_variation_p95": 39.33678759599633,
+    "physical_criteria": {
+      "gross_equilibrium_residual_kpa": 0.1,
+      "pure_limit_vle_error": 0.05
+    },
+    "pure_limit_failure_rate": 0.9888888888888889,
+    "pure_limit_log_gamma_max_abs": 0.03806716203689575,
+    "pure_limit_log_gamma_mean_abs": 0.0016281665988437319,
+    "pure_limit_log_gamma_p95_abs": 0.007771588861942283,
+    "pure_limit_pressure_relative_max_abs": 3.134481906890869,
+    "pure_limit_pressure_relative_mean_abs": 0.9328447917441803,
+    "pure_limit_pressure_relative_p95_abs": 2.5100551128387445,
+    "pure_limit_reference_coverage": 0.9555555555555556,
+    "pure_limit_temperature_k_max_abs": 1499.9732666015625,
+    "pure_limit_temperature_k_mean_abs": 124.06796694155092,
+    "pure_limit_temperature_k_p95_abs": 1052.0441833496066,
+    "pure_limit_vle_max_abs": 14.99973201751709,
+    "pure_limit_vle_mean_abs": 1.6957193885964377,
+    "pure_limit_vle_p95_abs": 10.520441389083834,
+    "pure_limit_y_max_abs": 0.5952187180519104,
+    "pure_limit_y_mean_abs": 0.029055199358198378,
+    "pure_limit_y_p95_abs": 0.15320764183998098,
+    "solver_convergence_failure_rate": 0.2078688524590164,
+    "x_closure_mean_abs": 0.0,
+    "y_closure_mean_abs": 8.051512345730316e-09
+  },
+  "protocol": "v3_functional_group_only.on.overall_binary",
+  "rdkit_descriptor_list_sha256": null,
+  "rdkit_scaler_sha256": null,
+  "request_sha256": "af03cc74546401e62a4f4f43ededb9ae2fe2a91221a0f844b484f8d12cf8f39c",
+  "resolved_config_sha256": "2cb9d82a257a46d04adff413801d08872dc87d489ba4820ab7e16bb4aa522602",
+  "rows": {
+    "prediction_attempts": 1525,
+    "test": 1508,
+    "train": 6891,
+    "validation": 1506
+  },
+  "run_kind": "formal",
+  "runtime": {
+    "cuda_capability": [
+      8,
+      6
+    ],
+    "cuda_device": "NVIDIA GeForce RTX 3090 Ti",
+    "cudnn": 90501,
+    "device": "cuda",
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "rdkit": "2025.03.5",
+    "requested_device": "cuda",
+    "resolved_device": "cuda",
+    "torch": "2.6.0+cu126",
+    "torch_cuda": "12.6",
+    "unimol_tools": "0.1.4.post1"
+  },
+  "seed": 3,
+  "split_file": "splits/overall_binary/seed_3.json",
+  "split_metadata": {
+    "anchor_reference_systems": 132,
+    "component_count_rows": {
+      "test": {
+        "2": 1508
+      },
+      "train": {
+        "2": 6891
+      },
+      "validation": {
+        "2": 1506
+      }
+    },
+    "requested_fraction": {
+      "test": 0.15,
+      "train": 0.7,
+      "validation": 0.15
+    },
+    "rows": {
+      "test": 1508,
+      "train": 6891,
+      "validation": 1506
+    },
+    "split_rule": "unordered canonical system disjoint, row-balanced by cardinality",
+    "systems": {
+      "test": 45,
+      "train": 226,
+      "validation": 50
+    }
+  },
+  "split_protocol": "overall_binary",
+  "split_sha256": "c84c3e1e2196bca40f313ea9961d5998f10b4361371a3f9115761f32a0f6e524",
+  "status": "completed",
+  "trainable_parameters": 1638339,
+  "training_seconds": 91.65461599999992,
+  "unimol_cache_sha256": null
+}

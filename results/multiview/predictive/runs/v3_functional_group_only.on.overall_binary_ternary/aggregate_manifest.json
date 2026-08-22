@@ -1,0 +1,165 @@
+{
+  "aggregate_kind": "formal",
+  "aggregation_git_commit": "11f5ce53e877b71f19dd4ad13491a8b28d2ba9be",
+  "artifact_path_schema": "project-relative-v1",
+  "dirty_code_paths": [],
+  "git_commit": "11f5ce53e877b71f19dd4ad13491a8b28d2ba9be",
+  "git_dirty": false,
+  "input_manifest_sha256": {
+    "0": "6ab98ea7d42135560f694a9554e4fc5f72b6b3d414029e722dc3c022d056bd82",
+    "1": "3789bffc2f2859f577d091ade1900536aa2863672e830b9ecfe8b8e9d2a85460",
+    "2": "a560e8010a48b2e373b51f30304fa33c2a2a6c0f9999c06397a53aff112db5c6",
+    "3": "6cc2635d8ba0085157343449838b2b643ed74fea7ec4d6f5962f4d6ac9a29c10",
+    "4": "3be679f8b732cd4fbb0178a06b0a376414a0666b612b0e394fccc77e9addae4b"
+  },
+  "input_provenance": {
+    "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+    "environment_sha256": "28e589adc3ad2d802ec4fb4076888689ac53071c9e057f5562be17e28a2281d9",
+    "feature_cache_sha256": "52280762bbd05f00404e64a9b50393c9f1aadf2610ac15471158be326e05b443",
+    "feature_definition_sha256": "e4c62c656aba6be2e60a2bb8fef173939c0aaf777a89369176da012d659d4791",
+    "git_commit": "11f5ce53e877b71f19dd4ad13491a8b28d2ba9be",
+    "protocol": "v3_functional_group_only.on.overall_binary_ternary",
+    "resolved_config_sha256": "2cb9d82a257a46d04adff413801d08872dc87d489ba4820ab7e16bb4aa522602"
+  },
+  "outputs": {
+    "metrics_by_seed": {
+      "path": "results/multiview/predictive/runs/v3_functional_group_only.on.overall_binary_ternary/metrics_by_seed.csv",
+      "sha256": "7278be4141f45b5c47ad69af21952ce0cdc7976f99f0ed1edbd2f31af80a8a73"
+    },
+    "metrics_summary": {
+      "path": "results/multiview/predictive/runs/v3_functional_group_only.on.overall_binary_ternary/metrics_summary.csv",
+      "sha256": "b92734427b5ae73b72800d2567ee9df25865a3f0d253410cffb2f743eb80e94f"
+    }
+  },
+  "protocol": "v3_functional_group_only.on.overall_binary_ternary",
+  "runtime": {
+    "numpy": "1.26.4",
+    "python": "3.9.25"
+  },
+  "scope_availability": [
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": null,
+      "scope": "all",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 2,
+      "direction": null,
+      "scope": "cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 3,
+      "direction": null,
+      "scope": "cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": "isobaric",
+      "scope": "direction",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": "isothermal",
+      "scope": "direction",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 2,
+      "direction": "isobaric",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "component_count": 3,
+      "direction": "isobaric",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 2,
+      "direction": "isothermal",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "component_count": 3,
+      "direction": "isothermal",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    }
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "status": "completed",
+  "training_git_commit": "11f5ce53e877b71f19dd4ad13491a8b28d2ba9be"
+}
