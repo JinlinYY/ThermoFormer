@@ -1,6 +1,6 @@
 # Multi-view ThermoFormer seed-0 screening
 
-All rows use committed seed-0 splits and validation-only checkpoint selection. Because Stage B also inspected the held-out test metrics before Stage C variants were fixed, this table is exploratory model-development evidence, not an independent confirmatory test. V3 was added later in the isolated `screening_exploratory` namespace and did not affect Stage C selection.
+All rows use committed seed-0 splits and validation-only checkpoint selection. Because Stage B inspected held-out test metrics before the repeated five-seed Stage C evaluation, this table is test-exposed exploratory evidence, not an independent confirmatory test. V3 was added later in the isolated `screening_exploratory` namespace and did not affect Stage C evaluation.
 
 | Variant | Protocol | Task | State MAE | State RMSE | State R² | y MAE | y RMSE | y R² | Valid coverage | Train s | Params |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
