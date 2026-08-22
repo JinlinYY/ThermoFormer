@@ -15,8 +15,9 @@ from .training import TrainingConfig
 @dataclass(frozen=True)
 class EncoderConfig:
     representation: Literal[
-        "hybrid", "unimol_v2", "rdkit_2d", "functional_groups"
-    ] = "hybrid"
+        "multiview", "hybrid", "unimol_v2", "rdkit_2d", "functional_groups"
+    ] = "unimol_v2"
+    fusion_mode: Literal["legacy", "naive", "interaction_specific"] = "legacy"
     model_size: str = "84m"
     batch_size: int = 16
     use_rdkit_descriptors: bool = True
@@ -24,7 +25,7 @@ class EncoderConfig:
     use_functional_groups: bool = True
 
     def __post_init__(self) -> None:
-        allowed = ("hybrid", "unimol_v2", "rdkit_2d", "functional_groups")
+        allowed = ("multiview", "hybrid", "unimol_v2", "rdkit_2d", "functional_groups")
         if self.representation not in allowed:
             raise ValueError(f"encoder.representation must be one of {allowed}")
         if self.model_size not in ("84m", "164m", "310m", "570m", "1.1B"):
@@ -40,8 +41,17 @@ class EncoderConfig:
         )
         if any(not isinstance(value, bool) for value in branch_values):
             raise ValueError("hybrid encoder branch switches must be boolean")
-        if self.representation == "hybrid" and not any(branch_values):
-            raise ValueError("hybrid encoder requires at least one branch")
+        if self.fusion_mode not in ("legacy", "naive", "interaction_specific"):
+            raise ValueError("encoder.fusion_mode must be legacy, naive, or interaction_specific")
+        multiview = self.representation in ("multiview", "hybrid")
+        if multiview and not any(branch_values):
+            raise ValueError("multiview encoder requires at least one branch")
+        if multiview and self.fusion_mode == "legacy":
+            raise ValueError("multiview representation requires naive or interaction_specific fusion")
+        if not multiview and self.fusion_mode != "legacy":
+            raise ValueError("single-view representations require legacy fusion")
+        if self.fusion_mode == "interaction_specific" and not all(branch_values):
+            raise ValueError("interaction-specific fusion requires all three molecular views")
 
 
 @dataclass(frozen=True)

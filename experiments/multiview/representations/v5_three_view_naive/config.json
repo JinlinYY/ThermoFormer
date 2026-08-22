@@ -1,0 +1,9 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "v5_three_view_naive",
+  "encoder": {"representation": "multiview", "fusion_mode": "naive", "use_rdkit_descriptors": true, "use_unimol": true, "use_functional_groups": true},
+  "runtime": {
+    "output_dir": "runs/experiments/multiview/representations/v5_three_view_naive",
+    "results_file": "experiments/multiview/representations/v5_three_view_naive/results.md"
+  }
+}

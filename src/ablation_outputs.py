@@ -443,25 +443,12 @@ def build_figures(
         "a2_no_interaction": (3, 4),
         "a3_pairwise_only": (3, -9),
     }
-    plot_labels = {
-        "a0_full": "Hybrid",
-        "a1_unimol_v2": "UniMol",
-        "a1_rdkit_descriptors": "RDKit",
-        "a1_no_rdkit_descriptors": "−RDKit",
-        "a1_no_unimol": "−UniMol",
-        "a1_no_functional_groups": "−FG",
-        "a2_no_interaction": "A2",
-        "a3_pairwise_only": "A3",
-        "a4_condition_concatenation": "A4",
-        "a5_direct_activity": "A5",
-        "a6_direct_vle": "A6",
-    }
     for axis, metric, title in zip(axes, consistency_metrics, titles):
         selected = merged.dropna(subset=[metric])
         axis.scatter(selected["system_macro_mae_mean"], selected[metric], color=COLORS["full"], s=24)
         for _, row in selected.iterrows():
             axis.annotate(
-                plot_labels.get(row["variant_id"], row["variant_id"]),
+                row["variant_id"].split("_")[0].upper(),
                 (row["system_macro_mae_mean"], row[metric]),
                 xytext=label_offsets.get(row["variant_id"], (3, 3)),
                 textcoords="offset points",
@@ -519,15 +506,7 @@ def write_report(
     pairwise_ternary_y = value("a3_pairwise_only", "ternary", "isothermal", "y")
     no_interaction_ternary_y = value("a2_no_interaction", "ternary", "isothermal", "y")
     direct_ternary_y = value("a6_direct_vle", "ternary", "isothermal", "y")
-    unimol_ternary_y = value("a1_unimol_v2", "ternary", "isothermal", "y")
     rdkit_ternary_y = value("a1_rdkit_descriptors", "ternary", "isothermal", "y")
-    no_rdkit_ternary_y = value(
-        "a1_no_rdkit_descriptors", "ternary", "isothermal", "y"
-    )
-    no_unimol_ternary_y = value("a1_no_unimol", "ternary", "isothermal", "y")
-    no_functional_ternary_y = value(
-        "a1_no_functional_groups", "ternary", "isothermal", "y"
-    )
     direct_gamma_ternary_y = value("a5_direct_activity", "ternary", "isothermal", "y")
     delta = manybody["delta_y_mae_pairwise_minus_full"].to_numpy()
     wilcoxon = stats.wilcoxon(delta).pvalue if np.any(delta != 0.0) else 1.0
@@ -580,12 +559,8 @@ def write_report(
         "p4_no_phase_continuity", "phase_second_derivative_magnitude_mean_mean_mean"
     )
     summary_variants = (
-        ("a0_full", "Full hybrid"),
-        ("a1_unimol_v2", "Uni-Mol v2 only"),
-        ("a1_rdkit_descriptors", "RDKit only"),
-        ("a1_no_rdkit_descriptors", "Hybrid w/o RDKit"),
-        ("a1_no_unimol", "Hybrid w/o Uni-Mol"),
-        ("a1_no_functional_groups", "Hybrid w/o functional groups"),
+        ("a0_full", "Full"),
+        ("a1_rdkit_descriptors", "RDKit"),
         ("a2_no_interaction", "Independent"),
         ("a3_pairwise_only", "Pairwise"),
         ("a4_condition_concatenation", "Condition concat."),
@@ -623,12 +598,8 @@ def write_report(
         "",
         "| Variant | Ternary y MAE | Difference from Full |",
         "|---|---:|---:|",
-        f"| Full hybrid | {_fmt(full_ternary_y)} | 0 |",
-        f"| Uni-Mol v2 only | {_fmt(unimol_ternary_y)} | {_fmt(unimol_ternary_y - full_ternary_y)} |",
-        f"| RDKit descriptors only | {_fmt(rdkit_ternary_y)} | {_fmt(rdkit_ternary_y - full_ternary_y)} |",
-        f"| Hybrid w/o RDKit descriptors | {_fmt(no_rdkit_ternary_y)} | {_fmt(no_rdkit_ternary_y - full_ternary_y)} |",
-        f"| Hybrid w/o Uni-Mol v2 | {_fmt(no_unimol_ternary_y)} | {_fmt(no_unimol_ternary_y - full_ternary_y)} |",
-        f"| Hybrid w/o functional groups | {_fmt(no_functional_ternary_y)} | {_fmt(no_functional_ternary_y - full_ternary_y)} |",
+        f"| Full | {_fmt(full_ternary_y)} | 0 |",
+        f"| RDKit descriptors | {_fmt(rdkit_ternary_y)} | {_fmt(rdkit_ternary_y - full_ternary_y)} |",
         f"| No interaction | {_fmt(no_interaction_ternary_y)} | {_fmt(no_interaction_ternary_y - full_ternary_y)} |",
         f"| Pairwise-only | {_fmt(pairwise_ternary_y)} | {_fmt(pairwise_ternary_y - full_ternary_y)} |",
         f"| Condition concatenation | {_fmt(value('a4_condition_concatenation', 'ternary', 'isothermal', 'y'))} | {_fmt(value('a4_condition_concatenation', 'ternary', 'isothermal', 'y') - full_ternary_y)} |",
@@ -657,7 +628,7 @@ def write_report(
         "",
         "## Answers to the fixed questions",
         "",
-        f"1. **Molecular representation:** relative to Full hybrid, ternary y MAE changes by Uni-Mol-only {_fmt(unimol_ternary_y - full_ternary_y)}, RDKit-only {_fmt(rdkit_ternary_y - full_ternary_y)}, w/o RDKit {_fmt(no_rdkit_ternary_y - full_ternary_y)}, w/o Uni-Mol {_fmt(no_unimol_ternary_y - full_ternary_y)}, and w/o functional groups {_fmt(no_functional_ternary_y - full_ternary_y)}. These one-branch-off results determine whether complementary fusion is supported.",
+        f"1. **Pretrained representation:** necessity is **not supported** on the evaluated in-distribution split: RDKit−Full ternary y MAE is {_fmt(rdkit_ternary_y - full_ternary_y)}. A1 was not run on unseen-component or binary-to-ternary, so this negative result does not establish broad superiority of RDKit.",
         f"2. **Multicomponent interaction:** it is supported on ternary prediction: No-interaction−Full ternary y MAE is +{_fmt(no_interaction_ternary_y - full_ternary_y)}.",
         f"3. **Full versus pairwise:** the degradation is larger for ternary than binary states under the same isothermal y metric (Pairwise−Full {_fmt(pairwise_ternary_delta)} versus {_fmt(pairwise_binary_delta)}). The paired ternary-system analysis is consistent with a many-body contribution, while retaining all pairwise wins.",
         f"4. **Latent nonideality bottleneck:** its value is physical rather than predictive in this experiment. Direct-gamma improves ternary y MAE by {_fmt(abs(direct_gamma_ternary_y - full_ternary_y))}, but increases mean Gibbs–Duhem residual from {_fmt(full_gd)} to {_fmt(direct_gamma_gd)} (about {_fmt(gd_ratio, 3)}×).",
@@ -666,7 +637,7 @@ def write_report(
         f"7. **Physical-validity effect:** P4 has the largest composite nonphysical-rate change ({_fmt(nonphysical_changes[largest_physical])}), but removal worsens the targeted smoothness diagnostics: derivative jump {_fmt(full_jump)}→{_fmt(no_continuity_jump)} and curvature {_fmt(full_curvature)}→{_fmt(no_continuity_curvature)}. Thus the continuity loss constrains local roughness, not the composite failure rate.",
         "8. **Trade-off:** yes. Removing P4/P6 improves the selected y MAE while worsening phase smoothness; Direct-gamma improves y MAE while severely violating Gibbs–Duhem consistency.",
         f"9. **Many-body claim:** supported only to the degree quantified by the full paired distribution (mean Δ={_fmt(float(delta.mean()))}, p={wilcoxon:.3g}); no favorable-only systems were selected.",
-        "10. **Placement:** Full hybrid, its representation-branch ablations, Pairwise/No-interaction/Direct-VLE, and P6 belong in the main text; single-source encoders, condition concatenation, direct-gamma/A5, individual soft-loss removals, hard-constraint non-applicability, full physical metric definitions, and all per-system rows belong in SI.",
+        "10. **Placement:** Full/Pairwise/No-interaction/Direct-VLE and P6 belong in the main text; RDKit, condition concatenation, direct-gamma/A5, individual soft-loss removals, hard-constraint non-applicability, full physical metric definitions, and all per-system rows belong in SI.",
         "",
         "## Scope and negative results",
         "",

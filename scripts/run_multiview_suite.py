@@ -1,0 +1,108 @@
+"""Run staged multi-view ThermoFormer experiments without touching legacy results."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.config import load_experiment_config
+from src.multiview_protocols import (
+    FORMAL_PROTOCOLS,
+    FORMAL_VARIANTS,
+    MULTIVIEW_SEEDS,
+    MULTIVIEW_VARIANTS,
+    SCREENING_PROTOCOLS,
+    SCREENING_VARIANTS,
+    SMOKE_VARIANTS,
+)
+from src.paper_runner import result_protocol_name, run_paper_experiment
+from src.representation import encoder_cache_filename
+from src.results import aggregate_protocol_results
+
+
+def parser() -> argparse.ArgumentParser:
+    value = argparse.ArgumentParser(description=__doc__)
+    value.add_argument("--stage", choices=("smoke", "screening", "formal"), required=True)
+    value.add_argument("--variant", action="append", choices=sorted(MULTIVIEW_VARIANTS))
+    value.add_argument("--protocol", action="append")
+    value.add_argument("--seeds", type=int, nargs="+")
+    value.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
+    value.add_argument("--artifact-root", type=Path, default=PROJECT_ROOT)
+    value.add_argument("--overwrite", action="store_true")
+    return value
+
+
+def _matrix(stage: str) -> tuple[tuple[str, ...], tuple[str, ...], tuple[int, ...]]:
+    if stage == "smoke":
+        return SMOKE_VARIANTS, ("overall_binary_ternary",), (0,)
+    if stage == "screening":
+        return SCREENING_VARIANTS, SCREENING_PROTOCOLS, (0,)
+    return FORMAL_VARIANTS, FORMAL_PROTOCOLS, MULTIVIEW_SEEDS
+
+
+def main(argv: list[str] | None = None) -> None:
+    args = parser().parse_args(argv)
+    default_variants, default_protocols, default_seeds = _matrix(args.stage)
+    variants = tuple(args.variant or default_variants)
+    protocols = tuple(args.protocol or default_protocols)
+    seeds = tuple(args.seeds or default_seeds)
+    if len(seeds) != len(set(seeds)) or not set(seeds).issubset(MULTIVIEW_SEEDS):
+        raise ValueError("Multi-view seeds must be a unique subset of 0--4")
+    if args.stage == "formal" and set(seeds) != set(MULTIVIEW_SEEDS):
+        raise ValueError("Formal multi-view evaluation requires all seeds 0--4")
+    artifact_root = args.artifact_root.resolve()
+    run_root = artifact_root / "runs" / "multiview" / args.stage
+    checkpoint_root = artifact_root / "checkpoints" / "multiview" / args.stage
+    results_root = artifact_root / "results" / "multiview" / args.stage / "runs"
+    overrides = (
+        "training.epochs_supervised=2",
+        "training.epochs_physics=1",
+        "training.solver_iterations_train=2",
+        "training.solver_iterations_eval=4",
+    ) if args.stage == "smoke" else ()
+    for variant_id in variants:
+        variant = MULTIVIEW_VARIANTS[variant_id]
+        if variant.reference:
+            print(json.dumps({"variant": variant_id, "status": "reuses_legacy_reference"}))
+            continue
+        config_path = PROJECT_ROOT / variant.config
+        experiment = load_experiment_config(config_path, overrides)
+        feature_cache = artifact_root / "cache" / encoder_cache_filename(experiment.encoder)
+        for split_protocol in protocols:
+            protocol = result_protocol_name(experiment.name, split_protocol)
+            for seed in seeds:
+                manifest = run_paper_experiment(
+                    config_path=config_path,
+                    split_path=PROJECT_ROOT / "splits" / split_protocol / f"seed_{seed}.json",
+                    seed=seed,
+                    run_root=run_root,
+                    checkpoint_root=checkpoint_root,
+                    results_root=results_root,
+                    feature_cache=feature_cache,
+                    device_name=args.device,
+                    overrides=overrides,
+                    allow_overwrite=args.overwrite,
+                    run_kind="smoke" if args.stage == "smoke" else "formal",
+                )
+                print(json.dumps({
+                    "variant": variant_id,
+                    "protocol": split_protocol,
+                    "seed": seed,
+                    "status": manifest["status"],
+                    "training_seconds": manifest["training_seconds"],
+                }))
+            if args.stage == "formal":
+                aggregate_protocol_results(
+                    results_root / protocol,
+                    expected_seeds=MULTIVIEW_SEEDS,
+                )
+
+
+if __name__ == "__main__":
+    main()

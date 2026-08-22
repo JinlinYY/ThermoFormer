@@ -25,7 +25,7 @@ from .evaluation import predict_vle, prediction_metric_rows, write_prediction_cs
 from .evaluation.thermodynamic_consistency import evaluate_thermodynamic_consistency
 from .model import ThermoFormer
 from .pure_properties import empty_pure_property_catalog, load_pure_property_catalog
-from .representation import build_molecular_encoder
+from .representation import build_molecular_encoder, prepare_partition_features
 from .splits import dataset_digest, load_split_assignment, validate_protocol_name
 from .training import fit_model, seed_everything
 
@@ -384,15 +384,37 @@ def run_paper_experiment(
         use_cuda=device.type == "cuda",
     )
     seed_everything(seed)
-    feature_map = encoder.encode(unique_smiles)
+    train_smiles = sorted({value for sample in split.train for value in sample.smiles})
+    prepared_features = prepare_partition_features(
+        encoder,
+        unique_smiles,
+        train_smiles,
+    )
+    feature_map = prepared_features.values
     feature_cache_sha256 = _file_digest(feature_cache)
     feature_subset_sha256 = _feature_subset_digest(feature_map)
+    feature_definition_sha256 = str(
+        prepared_features.metadata["feature_definition_sha256"]
+    )
+    source_cache_sha256 = prepared_features.metadata.get("source_cache_sha256", {})
+    rdkit_scaler = prepared_features.metadata.get("rdkit_scaler", {})
     feature_dim = int(next(iter(feature_map.values())).shape[0])
     if experiment.model.feature_dim not in (None, feature_dim):
         raise ValueError(
             f"Configured feature_dim {experiment.model.feature_dim} != molecular features {feature_dim}"
         )
-    model_config = replace(experiment.model, feature_dim=feature_dim)
+    view_dimensions = prepared_features.view_dimensions
+    multiview = experiment.encoder.fusion_mode != "legacy"
+    model_config = replace(
+        experiment.model,
+        feature_dim=feature_dim,
+        fusion_mode=experiment.encoder.fusion_mode,
+        rdkit_feature_dim=(view_dimensions["rdkit_2d"] if multiview else 0),
+        unimol_feature_dim=(view_dimensions["unimol_v2"] if multiview else 0),
+        functional_group_feature_dim=(
+            view_dimensions["functional_groups"] if multiview else 0
+        ),
+    )
     resolved_experiment = replace(experiment, model=model_config)
     resolved_payload = resolved_experiment.to_dict()
     resolved_config_sha256 = _normalized_experiment_digest(resolved_experiment)
@@ -415,6 +437,7 @@ def run_paper_experiment(
         "split_file": str(split_path.resolve()),
         "dataset_sha256": dataset_digest(samples),
     }
+    resolved_payload["molecular_feature_preprocessing"] = prepared_features.metadata
     _atomic_json(run_dir / "resolved_config.json", resolved_payload)
     _atomic_json(result_dir / "resolved_config.json", resolved_payload)
 
@@ -502,6 +525,22 @@ def run_paper_experiment(
         "resolved_config_sha256": resolved_config_sha256,
         "feature_cache_sha256": feature_cache_sha256,
         "feature_subset_sha256": feature_subset_sha256,
+        "feature_definition_sha256": feature_definition_sha256,
+        "rdkit_descriptor_list_sha256": prepared_features.metadata.get(
+            "rdkit_descriptor_definition_sha256"
+        ),
+        "rdkit_scaler_sha256": (
+            rdkit_scaler.get("sha256") if isinstance(rdkit_scaler, dict) else None
+        ),
+        "functional_group_vocabulary_sha256": prepared_features.metadata.get(
+            "functional_group_vocabulary_sha256"
+        ),
+        "unimol_cache_sha256": (
+            source_cache_sha256.get("unimol_v2")
+            if isinstance(source_cache_sha256, dict)
+            else None
+        ),
+        "molecular_feature_preprocessing": prepared_features.metadata,
         "environment_sha256": environment_sha256,
         "request_sha256": request_sha256,
         "git_commit": git_commit,
@@ -553,6 +592,22 @@ def run_paper_experiment(
         "resolved_config_sha256": resolved_config_sha256,
         "feature_cache_sha256": feature_cache_sha256,
         "feature_subset_sha256": feature_subset_sha256,
+        "feature_definition_sha256": feature_definition_sha256,
+        "rdkit_descriptor_list_sha256": prepared_features.metadata.get(
+            "rdkit_descriptor_definition_sha256"
+        ),
+        "rdkit_scaler_sha256": (
+            rdkit_scaler.get("sha256") if isinstance(rdkit_scaler, dict) else None
+        ),
+        "functional_group_vocabulary_sha256": prepared_features.metadata.get(
+            "functional_group_vocabulary_sha256"
+        ),
+        "unimol_cache_sha256": (
+            source_cache_sha256.get("unimol_v2")
+            if isinstance(source_cache_sha256, dict)
+            else None
+        ),
+        "molecular_feature_preprocessing": prepared_features.metadata,
         "environment_sha256": environment_sha256,
         "request_sha256": request_sha256,
         "split_file": str(split_path.resolve()),

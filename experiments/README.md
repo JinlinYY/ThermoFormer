@@ -36,6 +36,8 @@ experiments/
       pressure_high_extrapolation/
     chemical_space/unseen_component/
   explainability/
+  multiview/
+    representations/v0_legacy_unimol...v6_full_interaction/
 ```
 
 Every runnable experiment directory contains:
@@ -50,6 +52,10 @@ The formal paper ablation matrix is indexed in
 [`ablation/README.md`](ablation/README.md). The `component/` and
 `thermodynamic_loss/` rows below are retained preliminary diagnostics and must not
 be mixed with the formal five-seed campaign.
+
+The new interaction-specific molecular representation campaign is isolated under
+[`multiview/`](multiview/README.md) and follows smoke → seed-0 screening →
+five-seed formal evaluation without replacing historical artifacts.
 
 | Category | Experiment | Purpose | Command | Results |
 |---|---|---|---|---|
@@ -66,6 +72,7 @@ be mixed with the formal five-seed campaign.
 | State generalization | six fixed state protocols | Composition interpolation/edge and low/high T/P tails | [index](interpolation_extrapolation/state/README.md) | per-protocol `results.md` |
 | Chemical generalization | `unseen_component` | At-least-one and strict all-component holdouts | [run](interpolation_extrapolation/chemical_space/unseen_component/run.md) | [results](interpolation_extrapolation/chemical_space/unseen_component/results.md) |
 | Binary → ternary | zero-shot + five positive scaling levels | Controlled ternary data-scaling curve and binary-subsystem coverage | [index](comparison/binary_to_ternary_generalization/README.md) | per-protocol `results.md` |
+| Multi-view representation | V0--V6 | Single-view, naive-fusion, and interaction-specific molecular views | [index](multiview/README.md) | per-variant `results.md` |
 
 `explainability/` remains a scoped plan and does not claim unrun results. Paper
 checkpoints, curves and predictions are separated into `checkpoints/`, `runs/paper/`

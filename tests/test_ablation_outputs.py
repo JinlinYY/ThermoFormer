@@ -20,33 +20,9 @@ from scripts.evaluate_reference_consistency import _reference_training_commit
 
 
 class AblationOutputTests(unittest.TestCase):
-    def test_hybrid_full_and_representation_branch_ablations_are_registered(self) -> None:
-        self.assertFalse(ABLATION_VARIANTS["a0_full"].reference)
-        self.assertTrue(ABLATION_VARIANTS["a1_unimol_v2"].reference)
-        self.assertEqual(
-            {
-                "a1_no_rdkit_descriptors",
-                "a1_no_unimol",
-                "a1_no_functional_groups",
-            },
-            {
-                name
-                for name in ABLATION_VARIANTS
-                if name.startswith("a1_no_")
-            },
-        )
-        for variant_id in (
-            "a1_unimol_v2",
-            "a1_rdkit_descriptors",
-            "a1_no_rdkit_descriptors",
-            "a1_no_unimol",
-            "a1_no_functional_groups",
-        ):
-            self.assertEqual(ABLATION_VARIANTS[variant_id].benchmarks, ABLATION_VARIANTS["a0_full"].benchmarks)
-
     def test_predictive_ablation_rows_include_mae_rmse_and_r2(self) -> None:
-        variant = ABLATION_VARIANTS["a1_unimol_v2"]
-        rows = _metric_rows(Path(__file__).resolve().parents[1], "a1_unimol_v2", variant)
+        variant = ABLATION_VARIANTS["a0_full"]
+        rows = _metric_rows(Path(__file__).resolve().parents[1], "a0_full", variant)
 
         self.assertGreater(len(rows), 0)
         for row in rows:

@@ -42,7 +42,7 @@ def _digest(path: Path) -> str:
 
 
 def _reference_training_commit(protocol: str) -> str:
-    snapshot = PROJECT_ROOT / "configs" / "ablation" / "unimol_v2_reference.yaml"
+    snapshot = PROJECT_ROOT / "configs" / "ablation" / "full_model_reference.yaml"
     payload = yaml.safe_load(snapshot.read_text(encoding="utf-8"))
     commits = payload.get("reference_training_commits", {})
     if protocol not in commits:

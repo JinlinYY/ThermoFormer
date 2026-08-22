@@ -30,7 +30,11 @@ from .pure_properties import (
     empty_pure_property_catalog,
     load_pure_property_catalog,
 )
-from .representation import build_molecular_encoder, encoder_cache_filename
+from .representation import (
+    build_molecular_encoder,
+    encoder_cache_filename,
+    prepare_partition_features,
+)
 from .reporting import write_experiment_results
 from .training import TrainingConfig, evaluate_model, fit_model, seed_everything
 
@@ -159,6 +163,7 @@ def _manifest(
     data_audit: DatasetAudit,
     validation_skipped: bool,
     pure_property_catalog: PurePropertyCatalog,
+    molecular_feature_preprocessing: dict[str, object],
 ) -> dict[str, object]:
     quality = Counter(sample.quality_status for sample in samples)
     components = Counter(str(sample.component_count) for sample in samples)
@@ -229,6 +234,7 @@ def _manifest(
         "model_name": "ThermoFormer",
         "model_config": model_config.to_dict(),
         "experiment_config": experiment.to_dict(),
+        "molecular_feature_preprocessing": molecular_feature_preprocessing,
         "device": str(device),
         "molecular_encoder": asdict(experiment.encoder),
         "failed_quality_weight": experiment.data.failed_weight,
@@ -363,17 +369,33 @@ def main(argv: list[str] | None = None) -> None:
         formal_output_dir / encoder_cache_filename(experiment.encoder),
         use_cuda=device.type == "cuda",
     )
-    feature_map = encoder.encode(unique_smiles)
-    feature_dim = int(next(iter(feature_map.values())).shape[0])
+    initial_prepared = prepare_partition_features(
+        encoder,
+        unique_smiles,
+        sorted({smile for sample in plan.cv for smile in sample.smiles}),
+    )
+    feature_dim = int(next(iter(initial_prepared.values.values())).shape[0])
     if experiment.model.feature_dim not in (None, feature_dim):
         raise ValueError(
             "Configured model.feature_dim does not match the molecular representation: "
             f"{experiment.model.feature_dim} != {feature_dim}"
         )
-    model_config = replace(experiment.model, feature_dim=feature_dim)
+    multiview = experiment.encoder.fusion_mode != "legacy"
+    view_dimensions = initial_prepared.view_dimensions
+    model_config = replace(
+        experiment.model,
+        feature_dim=feature_dim,
+        fusion_mode=experiment.encoder.fusion_mode,
+        rdkit_feature_dim=(view_dimensions["rdkit_2d"] if multiview else 0),
+        unimol_feature_dim=(view_dimensions["unimol_v2"] if multiview else 0),
+        functional_group_feature_dim=(
+            view_dimensions["functional_groups"] if multiview else 0
+        ),
+    )
     base_training_config = experiment.training
-    encoder_config = {
+    base_encoder_config = {
         "name": experiment.encoder.representation,
+        "fusion_mode": experiment.encoder.fusion_mode,
         "model_size": experiment.encoder.model_size,
         "feature_dim": feature_dim,
         "use_rdkit_descriptors": experiment.encoder.use_rdkit_descriptors,
@@ -389,6 +411,16 @@ def main(argv: list[str] | None = None) -> None:
     fold_metrics: list[dict[str, float]] = []
     if not args.skip_validation:
         for fold_index, fold in enumerate(plan.folds, start=1):
+            fold_prepared = prepare_partition_features(
+                encoder,
+                unique_smiles,
+                sorted({smile for sample in fold.train for smile in sample.smiles}),
+            )
+            feature_map = fold_prepared.values
+            encoder_config = {
+                **base_encoder_config,
+                "preprocessing": fold_prepared.metadata,
+            }
             fold_config = replace(base_training_config, seed=experiment.seed + fold_index)
             model = _model(model_config, fold_config.seed)
             result = fit_model(
@@ -435,11 +467,16 @@ def main(argv: list[str] | None = None) -> None:
             )
 
     final_config = replace(base_training_config, seed=experiment.seed + 1000)
+    final_feature_map = initial_prepared.values
+    final_encoder_config = {
+        **base_encoder_config,
+        "preprocessing": initial_prepared.metadata,
+    }
     final_model = _model(model_config, final_config.seed)
     final_result = fit_model(
         final_model,
         plan.cv,
-        feature_map,
+        final_feature_map,
         final_config,
         device,
         pure_property_catalog=pure_property_catalog,
@@ -447,7 +484,7 @@ def main(argv: list[str] | None = None) -> None:
     test_metrics = evaluate_model(
         final_model,
         plan.test,
-        feature_map,
+        final_feature_map,
         base_training_config.batch_size,
         device,
         solver_iterations=base_training_config.solver_iterations_eval,
@@ -459,7 +496,7 @@ def main(argv: list[str] | None = None) -> None:
         final_result.state_dict,
         model_config,
         final_config,
-        encoder_config,
+        final_encoder_config,
         test_metrics,
     )
     with (out_dir / "history.json").open("w", encoding="utf-8") as handle:
@@ -475,6 +512,7 @@ def main(argv: list[str] | None = None) -> None:
         load_result.audit,
         args.skip_validation,
         pure_property_catalog,
+        initial_prepared.metadata,
     )
     with (out_dir / "dataset_manifest.json").open("w", encoding="utf-8") as handle:
         json.dump(manifest, handle, ensure_ascii=False, indent=2)

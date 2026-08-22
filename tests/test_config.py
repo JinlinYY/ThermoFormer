@@ -48,22 +48,26 @@ class ExperimentConfigTests(unittest.TestCase):
         self.assertEqual(config.evaluation.folds, 3)
         self.assertEqual(config.evaluation.mode, "kfold")
 
-    def test_default_encoder_combines_rdkit_unimol_and_functional_groups(self) -> None:
+    def test_default_encoder_preserves_legacy_unimol_baseline(self) -> None:
         encoder = EncoderConfig()
 
-        self.assertEqual(encoder.representation, "hybrid")
-        self.assertTrue(encoder.use_rdkit_descriptors)
-        self.assertTrue(encoder.use_unimol)
-        self.assertTrue(encoder.use_functional_groups)
+        self.assertEqual(encoder.representation, "unimol_v2")
+        self.assertEqual(encoder.fusion_mode, "legacy")
 
-    def test_hybrid_encoder_rejects_disabling_every_feature_branch(self) -> None:
+    def test_multiview_encoder_requires_views_and_explicit_fusion(self) -> None:
         with self.assertRaisesRegex(ValueError, "at least one branch"):
             EncoderConfig(
-                representation="hybrid",
+                representation="multiview",
+                fusion_mode="naive",
                 use_rdkit_descriptors=False,
                 use_unimol=False,
                 use_functional_groups=False,
             )
+        encoder = EncoderConfig(
+            representation="multiview",
+            fusion_mode="interaction_specific",
+        )
+        self.assertEqual(encoder.fusion_mode, "interaction_specific")
 
     def test_repository_configs_construct_thermoformer(self) -> None:
         paths = sorted(self.CONFIG_ROOT.rglob("config.json"))

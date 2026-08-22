@@ -13,6 +13,7 @@ from src.representation import (
     UniMolV2Encoder,
     build_molecular_encoder,
     encoder_cache_filename,
+    functional_group_vocabulary_path,
 )
 
 
@@ -61,10 +62,23 @@ class UniMolV2EncoderTests(unittest.TestCase):
             features = encoder.encode(["CCO", "CC(=O)O", "c1ccccc1"])
 
         names = encoder.feature_names
-        self.assertGreater(len(names), 50)
-        self.assertGreater(features["CCO"][names.index("fr_Al_OH")], 0.0)
-        self.assertGreater(features["CC(=O)O"][names.index("fr_COO")], 0.0)
-        self.assertGreater(features["c1ccccc1"][names.index("fr_benzene")], 0.0)
+        self.assertGreater(len(names), 20)
+        self.assertGreater(features["CCO"][names.index("alcohol")], 0.0)
+        self.assertGreater(features["CC(=O)O"][names.index("carboxylic_acid")], 0.0)
+        self.assertGreater(features["c1ccccc1"][names.index("aromatic_ring")], 0.0)
+
+    def test_audited_functional_group_assignment_and_empty_fallback(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            encoder = FunctionalGroupEncoder(
+                Path(directory) / "functional_groups.npz",
+                vocabulary_path=functional_group_vocabulary_path(),
+            )
+            features = encoder.encode(["CCO", "CC(=O)O", "c1ccccc1", "C"])
+        names = encoder.feature_names
+        self.assertGreater(features["CCO"][names.index("alcohol")], 0.0)
+        self.assertGreater(features["CC(=O)O"][names.index("carboxylic_acid")], 0.0)
+        self.assertGreater(features["c1ccccc1"][names.index("aromatic_ring")], 0.0)
+        self.assertEqual(float(features["C"].sum()), 0.0)
 
     def test_hybrid_encoder_combines_all_three_branches_and_reuses_cache(self) -> None:
         backend = FakeUniMol()
@@ -87,12 +101,12 @@ class UniMolV2EncoderTests(unittest.TestCase):
         self.assertEqual(tuple(block_sizes), ("rdkit_2d", "unimol_v2", "functional_groups"))
         self.assertEqual(block_sizes["rdkit_2d"], len(RDKit2DEncoder._DESCRIPTORS))
         self.assertEqual(block_sizes["unimol_v2"], 4)
-        self.assertGreater(block_sizes["functional_groups"], 50)
+        self.assertGreater(block_sizes["functional_groups"], 20)
         self.assertEqual(first["CCO"].shape, (sum(block_sizes.values()),))
         np.testing.assert_array_equal(first["O"], cached["O"])
 
     def test_encoder_factory_uses_branch_specific_cache_identity(self) -> None:
-        full = EncoderConfig()
+        full = EncoderConfig(representation="multiview", fusion_mode="naive")
         without_unimol = replace(full, use_unimol=False)
         with tempfile.TemporaryDirectory() as directory:
             cache_root = Path(directory)

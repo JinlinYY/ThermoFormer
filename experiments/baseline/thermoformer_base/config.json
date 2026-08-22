@@ -17,12 +17,10 @@
     "activity_mode": "excess_gibbs"
   },
   "encoder": {
-    "representation": "hybrid",
+    "representation": "unimol_v2",
+    "fusion_mode": "legacy",
     "model_size": "84m",
-    "batch_size": 16,
-    "use_rdkit_descriptors": true,
-    "use_unimol": true,
-    "use_functional_groups": true
+    "batch_size": 16
   },
   "data": {
     "root": "dataset",

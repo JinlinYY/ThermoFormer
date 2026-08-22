@@ -1,0 +1,9 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "v3_functional_group_only",
+  "encoder": {"representation": "functional_groups", "fusion_mode": "legacy"},
+  "runtime": {
+    "output_dir": "runs/experiments/multiview/representations/v3_functional_group_only",
+    "results_file": "experiments/multiview/representations/v3_functional_group_only/results.md"
+  }
+}

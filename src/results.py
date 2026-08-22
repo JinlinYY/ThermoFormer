@@ -21,7 +21,8 @@ PROVENANCE_FIELDS = (
     "dataset_sha256",
     "git_commit",
     "resolved_config_sha256",
-    "feature_subset_sha256",
+    "feature_cache_sha256",
+    "feature_definition_sha256",
     "environment_sha256",
 )
 REQUIRED_ARTIFACTS = (
@@ -91,6 +92,14 @@ def _validate_manifest_artifacts(manifest: dict[str, Any], manifest_path: Path) 
         path = Path(path_value)
         if not path.is_file() or _file_digest(path) != expected_digest:
             raise ValueError(f"Artifact '{name}' is missing or has changed: {path}")
+
+
+def _provenance_value(manifest: dict[str, Any], field: str) -> Any:
+    if field in {"feature_cache_sha256", "feature_definition_sha256"} and not manifest.get(field):
+        # Historical Uni-Mol runs predate split-specific RDKit scaling; their
+        # all-molecule feature subset digest is also their feature definition.
+        return manifest.get("feature_subset_sha256")
+    return manifest.get(field)
 
 
 def _stage_csv(path: Path, rows: Sequence[dict[str, Any]]) -> Path:
@@ -199,12 +208,15 @@ def aggregate_protocol_results(
         return tuple(row.get(field) for field in IDENTITY_FIELDS)
 
     reference_provenance = {
-        field: manifests[expected[0]].get(field) for field in PROVENANCE_FIELDS
+        field: _provenance_value(manifests[expected[0]], field)
+        for field in PROVENANCE_FIELDS
     }
     if any(value in (None, "") for value in reference_provenance.values()):
         raise ValueError("Completed manifest is missing required provenance")
     for seed, manifest in manifests.items():
-        provenance = {field: manifest.get(field) for field in PROVENANCE_FIELDS}
+        provenance = {
+            field: _provenance_value(manifest, field) for field in PROVENANCE_FIELDS
+        }
         if provenance != reference_provenance:
             raise ValueError(f"Manifest provenance differs for seed {seed}")
     current_commit, code_dirty, dirty_code_paths = _git_aggregate_state()
