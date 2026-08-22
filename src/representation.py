@@ -212,6 +212,67 @@ class FunctionalGroupEncoder:
         return {smile: cached[smile] for smile in requested}
 
 
+class LegacyFixedScaleRDKit2DEncoder:
+    """Exact pre-multiview A1 descriptors divided by frozen hand scales."""
+
+    _MODEL_SIZE = "scaled24_v1"
+
+    def __init__(self, cache_path: Path, definition_path: Path | None = None) -> None:
+        self.cache_path = cache_path
+        self.definition_path = definition_path or rdkit_descriptor_definition_path()
+        payload = json.loads(self.definition_path.read_text(encoding="utf-8"))
+        self.feature_names = tuple(str(name) for name in payload["descriptors"])
+        expected = tuple(name for name, _ in RDKit2DEncoder._DESCRIPTORS)
+        if self.feature_names != expected:
+            raise ValueError("Legacy RDKit asset does not match the frozen RDKit-24 set")
+        self.definition_sha256 = _sha256(self.definition_path)
+
+    def _load_cache(self) -> dict[str, np.ndarray]:
+        if not self.cache_path.exists():
+            return {}
+        with np.load(self.cache_path, allow_pickle=False) as cache:
+            if str(cache["model"].item()) != "rdkit_2d":
+                return {}
+            if str(cache["model_size"].item()) != self._MODEL_SIZE:
+                return {}
+            smiles = cache["smiles"].astype(str).tolist()
+            features = np.asarray(cache["features"], dtype=np.float32)
+        if features.ndim != 2 or len(smiles) != len(features):
+            raise ValueError(f"Invalid legacy RDKit descriptor cache: {self.cache_path}")
+        return {smile: features[index] for index, smile in enumerate(smiles)}
+
+    @staticmethod
+    def _describe(smiles: str) -> np.ndarray:
+        raw = RDKit2DEncoder._describe(smiles)
+        scales = np.asarray(
+            [scale for _, scale in RDKit2DEncoder._DESCRIPTORS], dtype=np.float32
+        )
+        return raw / scales
+
+    def _save_cache(self, features: dict[str, np.ndarray]) -> None:
+        self.cache_path.parent.mkdir(parents=True, exist_ok=True)
+        ordered = sorted(features)
+        np.savez_compressed(
+            self.cache_path,
+            smiles=np.asarray(ordered),
+            features=np.stack([features[smile] for smile in ordered]).astype(np.float32),
+            model=np.asarray("rdkit_2d"),
+            model_size=np.asarray(self._MODEL_SIZE),
+        )
+
+    def encode(self, smiles: Sequence[str]) -> dict[str, np.ndarray]:
+        requested = sorted({value.strip() for value in smiles if value.strip()})
+        if not requested:
+            raise ValueError("At least one non-empty SMILES is required")
+        cached = self._load_cache()
+        missing = [value for value in requested if value not in cached]
+        for value in missing:
+            cached[value] = self._describe(value)
+        if missing:
+            self._save_cache(cached)
+        return {smile: cached[smile] for smile in requested}
+
+
 @dataclass(frozen=True)
 class RDKitDescriptorScaler:
     """Train-partition-only standardization for the frozen descriptor vector."""
@@ -487,6 +548,9 @@ def prepare_partition_features(
     elif isinstance(encoder, RDKit2DEncoder):
         view_dimensions["rdkit_2d"] = total_dim
         block_order = ("rdkit_2d",)
+    elif isinstance(encoder, LegacyFixedScaleRDKit2DEncoder):
+        view_dimensions["rdkit_2d"] = total_dim
+        block_order = ("rdkit_2d",)
     elif isinstance(encoder, UniMolV2Encoder):
         view_dimensions["unimol_v2"] = total_dim
         block_order = ("unimol_v2",)
@@ -512,6 +576,8 @@ def prepare_partition_features(
         }
     elif isinstance(encoder, RDKit2DEncoder):
         source_paths = {"rdkit_2d": encoder.cache_path}
+    elif isinstance(encoder, LegacyFixedScaleRDKit2DEncoder):
+        source_paths = {"rdkit_2d": encoder.cache_path}
     elif isinstance(encoder, UniMolV2Encoder):
         source_paths = {"unimol_v2": encoder.cache_path}
     elif isinstance(encoder, FunctionalGroupEncoder):
@@ -521,7 +587,9 @@ def prepare_partition_features(
         for name, path in source_paths.items()
         if name in block_order and path.is_file()
     }
-    if view_dimensions["rdkit_2d"]:
+    if view_dimensions["rdkit_2d"] and not isinstance(
+        encoder, LegacyFixedScaleRDKit2DEncoder
+    ):
         offset = sum(
             view_dimensions[name]
             for name in block_order[: block_order.index("rdkit_2d")]
@@ -544,6 +612,11 @@ def prepare_partition_features(
             )
         metadata["rdkit_descriptor_definition_sha256"] = descriptor_encoder.definition_sha256
         metadata["rdkit_scaler"] = scaler.to_dict()
+    elif isinstance(encoder, LegacyFixedScaleRDKit2DEncoder):
+        metadata["rdkit_legacy_fixed_scales"] = {
+            name: scale for name, scale in RDKit2DEncoder._DESCRIPTORS
+        }
+        metadata["rdkit_descriptor_definition_sha256"] = encoder.definition_sha256
     if view_dimensions["functional_groups"]:
         group_encoder = (
             encoder
@@ -580,6 +653,8 @@ def encoder_cache_filename(config: Any) -> str:
         return f"unimolv2_{config.model_size}.npz"
     if config.representation == "rdkit_2d":
         return "rdkit_2d_raw24_v1.npz"
+    if config.representation == "rdkit_2d_legacy_fixed":
+        return "rdkit_2d_scaled24_v1.npz"
     if config.representation == "functional_groups":
         return "functional_groups_thermoformer_v1.npz"
     if config.representation not in ("hybrid", "multiview"):
@@ -623,6 +698,8 @@ def build_molecular_encoder(
         )
     if config.representation == "rdkit_2d":
         return RDKit2DEncoder(cache_path)
+    if config.representation == "rdkit_2d_legacy_fixed":
+        return LegacyFixedScaleRDKit2DEncoder(cache_path)
     if config.representation == "functional_groups":
         return FunctionalGroupEncoder(cache_path)
     raise ValueError(f"Unsupported molecular representation: {config.representation}")

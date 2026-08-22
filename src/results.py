@@ -14,6 +14,8 @@ from typing import Any, Literal, Sequence
 
 import numpy as np
 
+from .artifacts import portable_artifact_path, resolve_artifact_path
+
 
 IDENTITY_FIELDS = ("scope", "direction", "component_count", "subgroup")
 PROVENANCE_FIELDS = (
@@ -89,7 +91,7 @@ def _validate_manifest_artifacts(manifest: dict[str, Any], manifest_path: Path) 
         expected_digest = entry.get("sha256")
         if not isinstance(path_value, str) or not isinstance(expected_digest, str):
             raise ValueError(f"Malformed artifact provenance for '{name}'")
-        path = Path(path_value)
+        path = resolve_artifact_path(path_value)
         if not path.is_file() or _file_digest(path) != expected_digest:
             raise ValueError(f"Artifact '{name}' is missing or has changed: {path}")
 
@@ -353,14 +355,15 @@ def aggregate_protocol_results(
         },
         "outputs": {
             "metrics_by_seed": {
-                "path": str(by_seed_path.resolve()),
+                "path": portable_artifact_path(by_seed_path),
                 "sha256": _file_digest(by_seed_path),
             },
             "metrics_summary": {
-                "path": str(summary_path.resolve()),
+                "path": portable_artifact_path(summary_path),
                 "sha256": _file_digest(summary_path),
             },
         },
+        "artifact_path_schema": "project-relative-v1",
         "runtime": {"python": platform.python_version(), "numpy": np.__version__},
     }
     _atomic_json(aggregate_manifest_path, aggregate_manifest)

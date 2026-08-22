@@ -1,7 +1,7 @@
 {
   "extends": "../../../baseline/thermoformer_base/config.json",
   "name": "a1_rdkit_descriptors",
-  "encoder": {"representation": "rdkit_2d"},
+  "encoder": {"representation": "rdkit_2d_legacy_fixed"},
   "runtime": {
     "output_dir": "runs/experiments/ablation/architecture/a1_rdkit_descriptors",
     "results_file": "experiments/ablation/architecture/a1_rdkit_descriptors/results.md"

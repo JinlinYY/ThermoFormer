@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from scripts.run_multiview_suite import release_accelerator_memory
+from scripts.run_multiview_suite import main as run_suite, release_accelerator_memory
 from src.config import load_experiment_config
 from src.multiview_protocols import MULTIVIEW_VARIANTS
 
@@ -32,6 +32,14 @@ class MultiViewProtocolTests(unittest.TestCase):
             load_experiment_config(root / MULTIVIEW_VARIANTS["v6_full_interaction"].config).encoder.fusion_mode,
             "interaction_specific",
         )
+
+    def test_locked_stage_rejects_off_matrix_variants_and_seeds(self) -> None:
+        with self.assertRaisesRegex(ValueError, "locked stage matrix"):
+            run_suite([
+                "--stage", "screening", "--variant", "v3_functional_group_only"
+            ])
+        with self.assertRaisesRegex(ValueError, "seeds must be exactly"):
+            run_suite(["--stage", "formal", "--seeds", "0"])
 
 
 if __name__ == "__main__":

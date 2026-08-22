@@ -48,6 +48,10 @@ def parser() -> argparse.ArgumentParser:
     value.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
     value.add_argument("--artifact-root", type=Path, default=PROJECT_ROOT)
     value.add_argument("--overwrite", action="store_true")
+    value.add_argument(
+        "--exploratory", action="store_true",
+        help="Allow an off-matrix diagnostic and isolate it from locked stage artifacts",
+    )
     return value
 
 
@@ -67,12 +71,20 @@ def main(argv: list[str] | None = None) -> None:
     seeds = tuple(args.seeds or default_seeds)
     if len(seeds) != len(set(seeds)) or not set(seeds).issubset(MULTIVIEW_SEEDS):
         raise ValueError("Multi-view seeds must be a unique subset of 0--4")
-    if args.stage == "formal" and set(seeds) != set(MULTIVIEW_SEEDS):
-        raise ValueError("Formal multi-view evaluation requires all seeds 0--4")
+    if not args.exploratory:
+        if not set(variants).issubset(default_variants):
+            raise ValueError(f"{args.stage} variants must stay within the locked stage matrix")
+        if not set(protocols).issubset(default_protocols):
+            raise ValueError(f"{args.stage} protocols must stay within the locked stage matrix")
+        if seeds != default_seeds:
+            raise ValueError(f"{args.stage} seeds must be exactly {default_seeds}")
+    elif args.stage == "formal":
+        raise ValueError("Off-matrix experiments cannot use the formal namespace")
     artifact_root = args.artifact_root.resolve()
-    run_root = artifact_root / "runs" / "multiview" / args.stage
-    checkpoint_root = artifact_root / "checkpoints" / "multiview" / args.stage
-    results_root = artifact_root / "results" / "multiview" / args.stage / "runs"
+    namespace = f"{args.stage}_exploratory" if args.exploratory else args.stage
+    run_root = artifact_root / "runs" / "multiview" / namespace
+    checkpoint_root = artifact_root / "checkpoints" / "multiview" / namespace
+    results_root = artifact_root / "results" / "multiview" / namespace / "runs"
     overrides = (
         "training.epochs_supervised=2",
         "training.epochs_physics=1",

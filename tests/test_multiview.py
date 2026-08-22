@@ -1,4 +1,5 @@
 import unittest
+from pathlib import Path
 
 import numpy as np
 import torch
@@ -107,6 +108,39 @@ class MultiViewRepresentationTests(unittest.TestCase):
         model = ThermoFormer(ThermoFormerConfig(feature_dim=4, hidden_dim=8, layers=1, heads=2))
         self.assertIn("molecular_encoder.0.weight", model.state_dict())
         self.assertFalse(any(name.startswith("view_projectors") for name in model.state_dict()))
+
+    def test_legacy_unimol_regression_from_published_checkpoint(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        checkpoint_path = (
+            root / "checkpoints" / "overall_binary_ternary" / "seed_0" / "best_model.pt"
+        )
+        self.assertFalse(
+            checkpoint_path.read_bytes().startswith(b"version https://git-lfs"),
+            "Git LFS checkpoint was not materialized; run `git lfs pull` before tests",
+        )
+        checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+        model = ThermoFormer(ThermoFormerConfig(**checkpoint["model_config"])).eval()
+        model.load_state_dict(checkpoint["model"], strict=True)
+        feature_dim = int(checkpoint["model_config"]["feature_dim"])
+        molecules = torch.linspace(-1.0, 1.0, steps=2 * feature_dim).reshape(
+            1, 2, feature_dim
+        )
+        x = torch.tensor([[0.4, 0.6]])
+        output = model(
+            molecules,
+            torch.tensor([[350.0]]),
+            torch.tensor([[101.325]]),
+            x,
+            torch.ones_like(x),
+        )
+        torch.testing.assert_close(
+            output.excess_gibbs_rt.detach(), torch.tensor([[0.08884782]]),
+            rtol=1e-5, atol=1e-6,
+        )
+        torch.testing.assert_close(
+            output.log_gamma.detach(), torch.tensor([[0.04087700, 0.12082836]]),
+            rtol=1e-5, atol=1e-6,
+        )
 
 
 if __name__ == "__main__":

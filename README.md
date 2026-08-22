@@ -129,7 +129,15 @@ conda run -n ggnn39 python scripts\run_multiview_suite.py --stage screening --de
 conda run -n ggnn39 python scripts\run_multiview_suite.py --stage formal --device cuda
 ```
 
-Stage A 仅检查 V1/V4/V5/V6 的数值与资源稳定性；Stage B 在固定 split 上做 seed-0 快速筛选；只有通过筛选的 V1/V5/V6 才进入三个核心协议的 seeds 0--4 正式聚合。
+Stage A 仅检查 V1/V4/V5/V6 的数值与资源稳定性；Stage B 在固定 split 上做 seed-0 快速筛选；只有通过筛选的 V1/V5/V6 才进入三个核心协议的 seeds 0--4 聚合。由于按本轮约定 Stage B 已查看 held-out test 指标，这组五种子结果属于 **selection-aware evaluation**，不能再表述为未触碰测试集的独立确认性估计。V3 官能团-only 是之后补充的探索性负对照，必须使用 `--exploratory`，产物隔离在 `screening_exploratory`。
+
+运行门控分析时同时加入状态内插的 known-mixture 对照：
+
+```powershell
+conda run -n ggnn39 python scripts\analyze_multiview_gates.py --device cuda --include-known-mixture
+```
+
+正式 multi-view manifest 使用仓库相对路径，并发布其引用的 history 与 training curves；因此换目录或重新 clone 后仍可按 SHA-256 复核、聚合并重算 gate。旧 A1 RDKit 消融固定使用 `rdkit_2d_legacy_fixed/scaled24_v1`，不会被新 V1 的训练分区 z-score 语义覆盖。
 
 消融配置通过 `extends` 继承完整基线，只覆盖目标开关、输出目录和结果文件路径。配置 section 或字段拼写错误会直接报错。
 

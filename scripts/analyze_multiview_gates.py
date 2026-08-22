@@ -19,6 +19,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.config import load_experiment_config
+from src.artifacts import resolve_artifact_path
 from src.data import load_vle_dataset, retain_pure_anchored_systems
 from src.model import ThermoFormer, ThermoFormerConfig
 from src.multiview_analysis import collect_gate_records, gate_statistics
@@ -54,7 +55,8 @@ def _validate_checkpoint_provenance(
     observed = {name: manifest.get(name) for name in expected}
     if observed != expected:
         raise RuntimeError(f"Invalid formal manifest for {protocol}/seed_{seed}: {observed}")
-    if Path(checkpoint_artifact.get("path", "")).resolve() != checkpoint_path.resolve():
+    recorded_path = resolve_artifact_path(str(checkpoint_artifact.get("path", "")))
+    if recorded_path != checkpoint_path.resolve():
         raise RuntimeError(f"Checkpoint path mismatch for {protocol}/seed_{seed}")
     if checkpoint_artifact.get("sha256") != _sha256(checkpoint_path):
         raise RuntimeError(f"Checkpoint SHA mismatch for {protocol}/seed_{seed}")
@@ -104,6 +106,10 @@ def main() -> None:
     parser.add_argument("--device", choices=("cpu", "cuda"), default="cuda")
     parser.add_argument("--artifact-root", type=Path, default=PROJECT_ROOT)
     parser.add_argument(
+        "--include-known-mixture", action="store_true",
+        help="Append the seed-0 state-interpolation screening checkpoint as known-mixture evidence",
+    )
+    parser.add_argument(
         "--output",
         type=Path,
         default=PROJECT_ROOT / "results" / "multiview" / "analysis" / "multiview_gate_statistics.csv",
@@ -125,70 +131,72 @@ def main() -> None:
     unique_smiles = sorted({smile for sample in samples for smile in sample.smiles})
     device = torch.device(args.device)
     records = []
-    for protocol in protocols:
-        for seed in args.seeds:
-            split = load_split_assignment(
-                PROJECT_ROOT / "splits" / protocol / f"seed_{seed}.json", samples
-            )
-            encoder = build_molecular_encoder(
-                experiment.encoder,
-                args.artifact_root / "cache" / encoder_cache_filename(experiment.encoder),
-                use_cuda=device.type == "cuda",
-            )
-            prepared = prepare_partition_features(
-                encoder,
-                unique_smiles,
-                sorted({smile for sample in split.train for smile in sample.smiles}),
-            )
-            result_protocol = result_protocol_name(experiment.name, protocol)
-            checkpoint_path = (
-                args.artifact_root / "checkpoints" / "multiview" / "formal"
-                / result_protocol / f"seed_{seed}" / "best_model.pt"
-            )
-            checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
-            manifest_path = (
-                args.artifact_root / "results" / "multiview" / "formal" / "runs"
-                / result_protocol / f"seed_{seed}" / "manifest.json"
-            )
-            _validate_checkpoint_provenance(
-                checkpoint_path,
-                checkpoint,
-                manifest_path,
+    jobs = [("formal", protocol, seed) for protocol in protocols for seed in args.seeds]
+    if args.include_known_mixture:
+        jobs.append(("screening", "state_composition_interpolation", 0))
+    for stage, protocol, seed in jobs:
+        split = load_split_assignment(
+            PROJECT_ROOT / "splits" / protocol / f"seed_{seed}.json", samples
+        )
+        encoder = build_molecular_encoder(
+            experiment.encoder,
+            args.artifact_root / "cache" / encoder_cache_filename(experiment.encoder),
+            use_cuda=device.type == "cuda",
+        )
+        prepared = prepare_partition_features(
+            encoder,
+            unique_smiles,
+            sorted({smile for sample in split.train for smile in sample.smiles}),
+        )
+        result_protocol = result_protocol_name(experiment.name, protocol)
+        checkpoint_path = (
+            args.artifact_root / "checkpoints" / "multiview" / stage
+            / result_protocol / f"seed_{seed}" / "best_model.pt"
+        )
+        checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+        manifest_path = (
+            args.artifact_root / "results" / "multiview" / stage / "runs"
+            / result_protocol / f"seed_{seed}" / "manifest.json"
+        )
+        _validate_checkpoint_provenance(
+            checkpoint_path,
+            checkpoint,
+            manifest_path,
+            protocol,
+            result_protocol,
+            seed,
+        )
+        if checkpoint.get("molecular_feature_preprocessing") != prepared.metadata:
+            raise RuntimeError(f"Feature preprocessing mismatch for {protocol}/seed_{seed}")
+        model = ThermoFormer(ThermoFormerConfig(**checkpoint["model_config"]))
+        model.load_state_dict(checkpoint["model"])
+        block_order = prepared.metadata["block_order"]
+        offset = 0
+        group_slice = slice(0, 0)
+        for block in block_order:
+            dimension = prepared.view_dimensions[block]
+            if block == "functional_groups":
+                group_slice = slice(offset, offset + dimension)
+            offset += dimension
+        records.extend(
+            collect_gate_records(
+                model,
+                split.test,
+                prepared.values,
+                prepared.metadata["functional_group_names"],
+                group_slice,
+                split.train,
+                experiment.training.batch_size,
+                device,
                 protocol,
-                result_protocol,
                 seed,
             )
-            if checkpoint.get("molecular_feature_preprocessing") != prepared.metadata:
-                raise RuntimeError(f"Feature preprocessing mismatch for {protocol}/seed_{seed}")
-            model = ThermoFormer(ThermoFormerConfig(**checkpoint["model_config"]))
-            model.load_state_dict(checkpoint["model"])
-            block_order = prepared.metadata["block_order"]
-            offset = 0
-            group_slice = slice(0, 0)
-            for block in block_order:
-                dimension = prepared.view_dimensions[block]
-                if block == "functional_groups":
-                    group_slice = slice(offset, offset + dimension)
-                offset += dimension
-            records.extend(
-                collect_gate_records(
-                    model,
-                    split.test,
-                    prepared.values,
-                    prepared.metadata["functional_group_names"],
-                    group_slice,
-                    split.train,
-                    experiment.training.batch_size,
-                    device,
-                    protocol,
-                    seed,
-                )
-            )
-            del model, checkpoint, prepared, encoder
-            gc.collect()
-            if device.type == "cuda":
-                torch.cuda.synchronize()
-                torch.cuda.empty_cache()
+        )
+        del model, checkpoint, prepared, encoder
+        gc.collect()
+        if device.type == "cuda":
+            torch.cuda.synchronize()
+            torch.cuda.empty_cache()
     rows = gate_statistics(records)
     _write_rows_atomically(args.output, rows)
     print(json.dumps({"output": str(args.output), "rows": len(rows)}))

@@ -48,6 +48,10 @@ SCREENING_VARIANTS = (
     "v5_three_view_naive",
     "v6_full_interaction",
 )
+# V3 was added after the locked screen solely to complete the representation
+# table. It lives in an exploratory namespace and cannot alter Stage C selection.
+EXPLORATORY_SCREENING_VARIANTS = ("v3_functional_group_only",)
+SCREENING_REPORT_VARIANTS = (*SCREENING_VARIANTS, *EXPLORATORY_SCREENING_VARIANTS)
 FORMAL_VARIANTS = (
     "v1_rdkit_only",
     "v5_three_view_naive",

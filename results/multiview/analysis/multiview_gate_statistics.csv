@@ -29,6 +29,9 @@ overall_binary_ternary,3,global,all,functional_group,0.12469452009233745,0.19049
 overall_binary_ternary,4,global,all,rdkit,0.9226010074180556,0.12930813059622095,2116
 overall_binary_ternary,4,global,all,unimol,0.014270943119765695,0.019151431393865843,2116
 overall_binary_ternary,4,global,all,functional_group,0.06312804822616336,0.11961925884979258,2116
+state_composition_interpolation,0,global,all,rdkit,0.9981825634575243,0.01085227024672871,1081
+state_composition_interpolation,0,global,all,unimol,0.00033443804428037006,0.0018185074226895845,1081
+state_composition_interpolation,0,global,all,functional_group,0.001483001917661086,0.009148790510492819,1081
 unseen_component,0,global,all,rdkit,0.9455480661048375,0.1114104789552461,1262
 unseen_component,0,global,all,unimol,0.03406098724769453,0.07445118305946392,1262
 unseen_component,0,global,all,functional_group,0.020390944357516618,0.03869798979000481,1262
@@ -89,6 +92,12 @@ overall_binary_ternary,4,cardinality,binary,functional_group,0.08047399239732968
 overall_binary_ternary,4,cardinality,ternary,rdkit,0.9717486075541055,0.013059651466149595,621
 overall_binary_ternary,4,cardinality,ternary,unimol,0.006882097362128241,0.005580870889174688,621
 overall_binary_ternary,4,cardinality,ternary,functional_group,0.0213692937400222,0.009537274314967736,621
+state_composition_interpolation,0,cardinality,binary,rdkit,0.999390210704539,0.002651053636988327,577
+state_composition_interpolation,0,cardinality,binary,unimol,0.00014260831942718337,0.0006689291993280124,577
+state_composition_interpolation,0,cardinality,binary,functional_group,0.00046718418209111654,0.0019868203289914394,577
+state_composition_interpolation,0,cardinality,ternary,rdkit,0.9967999990497317,0.015523355791271405,504
+state_composition_interpolation,0,cardinality,ternary,unimol,0.0005540526300745937,0.00254760418606499,504
+state_composition_interpolation,0,cardinality,ternary,functional_group,0.002645951983978293,0.013132821311193027,504
 unseen_component,0,cardinality,binary,rdkit,0.9423098030077398,0.11834299338053238,1106
 unseen_component,0,cardinality,binary,unimol,0.036701714068122636,0.07905984107803964,1106
 unseen_component,0,cardinality,binary,functional_group,0.02098848119620038,0.0410753199833058,1106
@@ -149,6 +158,9 @@ overall_binary_ternary,3,generalization,unseen_mixture,functional_group,0.124694
 overall_binary_ternary,4,generalization,unseen_mixture,rdkit,0.9226010074180556,0.12930813059622095,2116
 overall_binary_ternary,4,generalization,unseen_mixture,unimol,0.014270943119765695,0.019151431393865843,2116
 overall_binary_ternary,4,generalization,unseen_mixture,functional_group,0.06312804822616336,0.11961925884979258,2116
+state_composition_interpolation,0,generalization,known_mixture,rdkit,0.9981825634575243,0.01085227024672871,1081
+state_composition_interpolation,0,generalization,known_mixture,unimol,0.00033443804428037006,0.0018185074226895845,1081
+state_composition_interpolation,0,generalization,known_mixture,functional_group,0.001483001917661086,0.009148790510492819,1081
 unseen_component,0,generalization,unseen_component,rdkit,0.9455480661048375,0.1114104789552461,1262
 unseen_component,0,generalization,unseen_component,unimol,0.03406098724769453,0.07445118305946392,1262
 unseen_component,0,generalization,unseen_component,functional_group,0.020390944357516618,0.03869798979000481,1262
@@ -803,6 +815,174 @@ overall_binary_ternary,4,chemical_family_pair,ester <-> ester,functional_group,0
 overall_binary_ternary,4,chemical_family_pair,ester <-> sulfoxide,rdkit,0.9318557017379336,0.010661179400456624,18
 overall_binary_ternary,4,chemical_family_pair,ester <-> sulfoxide,unimol,0.007184486163573133,0.0011018285563818779,18
 overall_binary_ternary,4,chemical_family_pair,ester <-> sulfoxide,functional_group,0.060959802526566714,0.009610093759785584,18
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> BASE/OTHER,rdkit,0.9994598130385081,0.0007059925690705837,6
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> BASE/OTHER,unimol,9.723996708999039e-05,0.00013040666998384194,6
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> BASE/OTHER,functional_group,0.0004428993694697662,0.0005755810005591944,6
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> alcohol,rdkit,0.9999879889190197,4.426443393768201e-05,160
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> alcohol,unimol,1.6968425313302823e-06,6.031822343366726e-06,160
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> alcohol,functional_group,1.0330964308610455e-05,3.825101480306656e-05,160
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> aromatic_ring,rdkit,0.9988220717225756,0.0012368633328072114,14
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> aromatic_ring,unimol,0.00021941253531362496,0.00024824411091393787,14
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> aromatic_ring,functional_group,0.0009585271769278084,0.0009888150395335241,14
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> ester,rdkit,0.9999476224184036,5.292318319085108e-05,8
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> ester,unimol,7.6066127050467e-06,7.72203407026118e-06,8
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> ester,functional_group,4.4757401408190844e-05,4.518981827593365e-05,8
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> ether,rdkit,0.9971593737602233,0.00396881764073783,50
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> ether,unimol,0.0007744542033401559,0.0011058243534319372,50
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> ether,functional_group,0.0020661778026942555,0.0028665401960244227,50
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> fluoro,rdkit,1.0,0.0,2
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> fluoro,unimol,1.6018637971626504e-08,4.660324570693319e-09,2
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> fluoro,functional_group,3.315115382207523e-08,1.0844515507812957e-08,2
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> heteroaromatic,rdkit,0.9996873736381531,0.00039547782422062077,16
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> heteroaromatic,unimol,5.1101704627853906e-05,6.95543969272913e-05,16
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> heteroaromatic,functional_group,0.0002614987611195829,0.00032598438555132765,16
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> ketone,rdkit,0.9970793658560448,0.007132575061816593,91
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> ketone,unimol,0.0004988931983148221,0.0011552241066193124,91
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> ketone,functional_group,0.0024217442612731793,0.005984401068089354,91
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> nitrile,rdkit,1.0,0.0,3
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> nitrile,unimol,1.2359533396733013e-08,5.687553098498378e-09,3
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> nitrile,functional_group,2.775929471473167e-08,1.656829378597327e-08,3
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> primary_amine,rdkit,0.9996772905190786,0.0004964728052340648,12
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> primary_amine,unimol,6.812089778899615e-05,0.0001036919470201952,12
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> primary_amine,functional_group,0.00025458970155038213,0.0003928391714432592,12
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> sulfoxide,rdkit,0.9999997019767761,5.960464477539063e-08,2
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> sulfoxide,unimol,5.398147706614509e-08,3.392884195818624e-09,2
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> sulfoxide,functional_group,3.0053105604110897e-07,1.2213249078740773e-08,2
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> thioether,rdkit,0.9998040795326233,0.00023567829851540433,10
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> thioether,unimol,4.0078858495462556e-05,4.832006396748894e-05,10
+state_composition_interpolation,0,chemical_family_pair,BASE/OTHER <-> thioether,functional_group,0.0001558641905830882,0.0001873442133341108,10
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> alcohol,rdkit,0.9997800891361539,0.0009475127599673749,63
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> alcohol,unimol,5.432422968281135e-05,0.0002473542052927425,63
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> alcohol,functional_group,0.00016559181808647268,0.0007010784600782817,63
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> amide,rdkit,0.9999976694583893,2.675305861051162e-06,20
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> amide,unimol,4.2059835116958764e-07,3.915980210291564e-07,20
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> amide,functional_group,1.916994186501597e-06,2.292513269092242e-06,20
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> aromatic_ring,rdkit,0.9996628111059015,0.00035702554096007764,11
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> aromatic_ring,unimol,7.665907517855948e-05,9.583288992375726e-05,11
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> aromatic_ring,functional_group,0.00026054224930243726,0.00026841808643844465,11
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> carboxylic_acid,rdkit,0.9920460134744644,0.00034630744844980384,8
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> carboxylic_acid,unimol,0.0015908724744804204,7.983389571092395e-05,8
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> carboxylic_acid,functional_group,0.006363139254972339,0.0002814024917280996,8
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> chloro,rdkit,0.999997615814209,1.5149432453082602e-06,4
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> chloro,unimol,7.613578461018733e-07,4.5578618432773945e-07,4
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> chloro,functional_group,1.6447675790232097e-06,1.0798750131513113e-06,4
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> ester,rdkit,0.9990621234329653,0.0037469546502216615,71
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> ester,unimol,0.00016048933825169422,0.0005639756032480039,71
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> ester,functional_group,0.0007773798523796221,0.0031873039755945533,71
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> ether,rdkit,0.9961528480052948,0.01867232779975076,120
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> ether,unimol,0.00038075175454845104,0.0016842763227753904,120
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> ether,functional_group,0.003466388703033611,0.016997652834508648,120
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> ketone,rdkit,0.9999345245815459,0.00011534098494937353,105
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> ketone,unimol,1.851536041007153e-05,2.9840388969537913e-05,105
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> ketone,functional_group,4.696701387271132e-05,8.711260937964431e-05,105
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> nitrile,rdkit,0.9994768367873298,0.0003196284436896295,9
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> nitrile,unimol,0.00020208237899055348,0.00011976335183486,9
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> nitrile,functional_group,0.00032110172740986955,0.00020193280211870017,9
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> sulfoxide,rdkit,0.9999964594841003,2.2058872960857087e-06,10
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> sulfoxide,unimol,5.201545484112558e-07,4.013693743490077e-07,10
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> sulfoxide,functional_group,2.9938040427168746e-06,1.8190803717013585e-06,10
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> thioether,rdkit,0.9999998609224955,1.9967308881125628e-07,6
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> thioether,unimol,4.608682635520722e-08,4.093514275503003e-08,6
+state_composition_interpolation,0,chemical_family_pair,alcohol <-> thioether,functional_group,1.1707419774372359e-07,1.1568446995630961e-07,6
+state_composition_interpolation,0,chemical_family_pair,alkene <-> heteroaromatic,rdkit,0.9999674028820462,1.7211160287436466e-05,9
+state_composition_interpolation,0,chemical_family_pair,alkene <-> heteroaromatic,unimol,7.27479527995456e-06,3.4215572667780935e-06,9
+state_composition_interpolation,0,chemical_family_pair,alkene <-> heteroaromatic,functional_group,2.533455901559339e-05,1.3813523846846334e-05,9
+state_composition_interpolation,0,chemical_family_pair,amide <-> aromatic_ring,rdkit,0.9999994039535522,0.0,3
+state_composition_interpolation,0,chemical_family_pair,amide <-> aromatic_ring,unimol,5.321307957236362e-08,8.741023002499387e-10,3
+state_composition_interpolation,0,chemical_family_pair,amide <-> aromatic_ring,functional_group,5.467076675813587e-07,4.590591530964571e-09,3
+state_composition_interpolation,0,chemical_family_pair,amide <-> carboxylic_acid,rdkit,0.9999503294626871,4.607937218904439e-05,6
+state_composition_interpolation,0,chemical_family_pair,amide <-> carboxylic_acid,unimol,9.654074602849505e-06,9.155351190374687e-06,6
+state_composition_interpolation,0,chemical_family_pair,amide <-> carboxylic_acid,functional_group,4.001824815228853e-05,3.690968173720236e-05,6
+state_composition_interpolation,0,chemical_family_pair,amide <-> chloro,rdkit,0.9999976555506388,1.3516228478507161e-06,6
+state_composition_interpolation,0,chemical_family_pair,amide <-> chloro,unimol,2.3439095523751044e-07,1.1947606369367948e-07,6
+state_composition_interpolation,0,chemical_family_pair,amide <-> chloro,functional_group,2.1071966595324434e-06,1.2308572358418838e-06,6
+state_composition_interpolation,0,chemical_family_pair,amide <-> ester,rdkit,0.9986398191679091,0.0013318203538499583,21
+state_composition_interpolation,0,chemical_family_pair,amide <-> ester,unimol,0.00022265583339460483,0.00020237476618769322,21
+state_composition_interpolation,0,chemical_family_pair,amide <-> ester,functional_group,0.0011375198023632124,0.001133742045378077,21
+state_composition_interpolation,0,chemical_family_pair,amide <-> heteroaromatic,rdkit,0.9999991655349731,0.0,3
+state_composition_interpolation,0,chemical_family_pair,amide <-> heteroaromatic,unimol,8.518183373477466e-08,1.290939687021304e-09,3
+state_composition_interpolation,0,chemical_family_pair,amide <-> heteroaromatic,functional_group,7.074316007068168e-07,8.929029543352428e-09,3
+state_composition_interpolation,0,chemical_family_pair,amide <-> sulfoxide,rdkit,0.9998114705085754,1.180039504352805e-05,5
+state_composition_interpolation,0,chemical_family_pair,amide <-> sulfoxide,unimol,3.723819681908935e-05,2.094328098715367e-06,5
+state_composition_interpolation,0,chemical_family_pair,amide <-> sulfoxide,functional_group,0.00015131577383726836,9.71807454944316e-06,5
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> aromatic_ring,rdkit,0.9996509949366251,1.094015431240098e-06,3
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> aromatic_ring,unimol,4.175398498773575e-05,9.643720770514143e-07,3
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> aromatic_ring,functional_group,0.0003072309967440863,7.322415325073489e-07,3
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> chloro,rdkit,0.9993389397859573,0.0005738532976919279,20
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> chloro,unimol,0.00014716284395035472,0.00012848043451621507,20
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> chloro,functional_group,0.0005139044933457626,0.00044555379423973936,20
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> ester,rdkit,0.9999997019767761,1.7881393432617188e-07,2
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> ester,unimol,6.370722260840012e-08,1.49644172608987e-08,2
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> ester,functional_group,2.398615208676347e-07,8.202997037187743e-08,2
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> ether,rdkit,0.9999789396921793,1.0301473053777289e-05,3
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> ether,unimol,6.71183208093377e-06,2.7683697540097356e-06,3
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> ether,functional_group,1.4329041884290442e-05,7.528727714698022e-06,3
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> fluoro,rdkit,0.9999993244806925,2.4495180459693976e-07,3
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> fluoro,unimol,1.772624145246482e-07,6.092266065352996e-08,3
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> fluoro,functional_group,4.902885848423466e-07,2.0088176217503832e-07,3
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> heteroaromatic,rdkit,0.9977739334106446,0.000993965057107741,5
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> heteroaromatic,unimol,0.0005673010717146098,0.0003366180343682134,5
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> heteroaromatic,functional_group,0.0016587652266025544,0.0006574111883520434,5
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> nitrile,rdkit,0.9999998013178507,1.4868010627325142e-07,3
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> nitrile,unimol,6.587906753452444e-08,2.6073650241201797e-08,3
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> nitrile,functional_group,1.202628704769874e-07,6.250484072883664e-08,3
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> sulfoxide,rdkit,0.9999970197677612,1.8742794043572946e-06,5
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> sulfoxide,unimol,2.730618994917222e-07,1.7028829975373091e-07,5
+state_composition_interpolation,0,chemical_family_pair,aromatic_ring <-> sulfoxide,functional_group,2.728543620378332e-06,1.6965959706666803e-06,5
+state_composition_interpolation,0,chemical_family_pair,carboxylic_acid <-> chloro,rdkit,0.9999467531840006,8.795315635844499e-06,3
+state_composition_interpolation,0,chemical_family_pair,carboxylic_acid <-> chloro,unimol,7.283934489047776e-06,1.3470734697979982e-06,3
+state_composition_interpolation,0,chemical_family_pair,carboxylic_acid <-> chloro,functional_group,4.5939726987853646e-05,7.469929687747817e-06,3
+state_composition_interpolation,0,chemical_family_pair,carboxylic_acid <-> ester,rdkit,0.9999919235706329,2.715120786173433e-07,4
+state_composition_interpolation,0,chemical_family_pair,carboxylic_acid <-> ester,unimol,1.5405957185521402e-06,1.583591674086152e-07,4
+state_composition_interpolation,0,chemical_family_pair,carboxylic_acid <-> ester,functional_group,6.566307888533629e-06,1.4206288918717463e-07,4
+state_composition_interpolation,0,chemical_family_pair,carboxylic_acid <-> ketone,rdkit,0.9999938011169434,9.733397733303619e-08,3
+state_composition_interpolation,0,chemical_family_pair,carboxylic_acid <-> ketone,unimol,1.1734399928779264e-06,4.090778643658656e-08,3
+state_composition_interpolation,0,chemical_family_pair,carboxylic_acid <-> ketone,functional_group,5.038766630605096e-06,9.201931981115593e-08,3
+state_composition_interpolation,0,chemical_family_pair,carboxylic_acid <-> sulfoxide,rdkit,0.9999970197677612,0.0,2
+state_composition_interpolation,0,chemical_family_pair,carboxylic_acid <-> sulfoxide,unimol,4.2785417520008195e-07,2.559957579251204e-09,2
+state_composition_interpolation,0,chemical_family_pair,carboxylic_acid <-> sulfoxide,functional_group,2.489823032192362e-06,1.7357137949147727e-08,2
+state_composition_interpolation,0,chemical_family_pair,chloro <-> ether,rdkit,0.9990360233932734,0.0009287906056800531,32
+state_composition_interpolation,0,chemical_family_pair,chloro <-> ether,unimol,0.00027625696740329886,0.0002835016013345581,32
+state_composition_interpolation,0,chemical_family_pair,chloro <-> ether,functional_group,0.0006877167634797843,0.0006473687535086771,32
+state_composition_interpolation,0,chemical_family_pair,chloro <-> fluoro,rdkit,0.9999949137369791,1.7474995793736794e-06,3
+state_composition_interpolation,0,chemical_family_pair,chloro <-> fluoro,unimol,1.2445206228524814e-06,4.1073379703083e-07,3
+state_composition_interpolation,0,chemical_family_pair,chloro <-> fluoro,functional_group,3.874138656101422e-06,1.3372151767131777e-06,3
+state_composition_interpolation,0,chemical_family_pair,chloro <-> ketone,rdkit,0.9999383489290873,7.132467781818086e-06,6
+state_composition_interpolation,0,chemical_family_pair,chloro <-> ketone,unimol,9.251004485122394e-06,1.2332657733854607e-06,6
+state_composition_interpolation,0,chemical_family_pair,chloro <-> ketone,functional_group,5.239993515715469e-05,5.881971037556479e-06,6
+state_composition_interpolation,0,chemical_family_pair,chloro <-> nitro,rdkit,0.999488523373237,0.00020515396401297098,13
+state_composition_interpolation,0,chemical_family_pair,chloro <-> nitro,unimol,7.419725387500456e-05,2.2257452510561666e-05,13
+state_composition_interpolation,0,chemical_family_pair,chloro <-> nitro,functional_group,0.0004372827175897188,0.00018305308258032544,13
+state_composition_interpolation,0,chemical_family_pair,ester <-> ester,rdkit,0.9705932594480968,0.05217741802148525,21
+state_composition_interpolation,0,chemical_family_pair,ester <-> ester,unimol,0.0059115032596483135,0.009932931726344773,21
+state_composition_interpolation,0,chemical_family_pair,ester <-> ester,functional_group,0.023495265690447315,0.04229570277260786,21
+state_composition_interpolation,0,chemical_family_pair,ester <-> ketone,rdkit,0.9999871850013733,1.0157897639712387e-05,10
+state_composition_interpolation,0,chemical_family_pair,ester <-> ketone,unimol,2.8209638458065454e-06,2.4581565241352143e-06,10
+state_composition_interpolation,0,chemical_family_pair,ester <-> ketone,functional_group,1.0015843918154132e-05,7.692891185805738e-06,10
+state_composition_interpolation,0,chemical_family_pair,ester <-> nitrile,rdkit,0.9997386336326599,1.8715858459472656e-05,2
+state_composition_interpolation,0,chemical_family_pair,ester <-> nitrile,unimol,8.713451461517252e-05,4.771140083903447e-06,2
+state_composition_interpolation,0,chemical_family_pair,ester <-> nitrile,functional_group,0.00017422656674170867,1.3949706044513732e-05,2
+state_composition_interpolation,0,chemical_family_pair,ester <-> sulfoxide,rdkit,0.999977361588251,6.045653639747889e-05,21
+state_composition_interpolation,0,chemical_family_pair,ester <-> sulfoxide,unimol,4.491513593052332e-06,1.1983529935326544e-05,21
+state_composition_interpolation,0,chemical_family_pair,ester <-> sulfoxide,functional_group,1.8147429075486886e-05,4.8496339818782486e-05,21
+state_composition_interpolation,0,chemical_family_pair,ether <-> ketone,rdkit,0.9989520576265123,0.0008378573507654212,45
+state_composition_interpolation,0,chemical_family_pair,ether <-> ketone,unimol,0.00024310472003384752,0.00019930824692610278,45
+state_composition_interpolation,0,chemical_family_pair,ether <-> ketone,functional_group,0.0008048378854356189,0.0006405972113144825,45
+state_composition_interpolation,0,chemical_family_pair,ether <-> nitrile,rdkit,0.999917189280192,4.257561440566678e-05,3
+state_composition_interpolation,0,chemical_family_pair,ether <-> nitrile,unimol,1.4269705995199425e-05,5.87300317843121e-06,3
+state_composition_interpolation,0,chemical_family_pair,ether <-> nitrile,functional_group,6.850313851221775e-05,3.6732664151038846e-05,3
+state_composition_interpolation,0,chemical_family_pair,ether <-> thioether,rdkit,0.9999766647815704,2.348717983232018e-06,4
+state_composition_interpolation,0,chemical_family_pair,ether <-> thioether,unimol,6.02245142999891e-06,3.574725075036001e-07,4
+state_composition_interpolation,0,chemical_family_pair,ether <-> thioether,functional_group,1.7280547581322026e-05,2.0215427079620025e-06,4
+state_composition_interpolation,0,chemical_family_pair,fluoro <-> fluoro,rdkit,0.9762764672438303,0.0011589315343364954,6
+state_composition_interpolation,0,chemical_family_pair,fluoro <-> fluoro,unimol,0.006197566942622264,0.00027547706298726064,6
+state_composition_interpolation,0,chemical_family_pair,fluoro <-> fluoro,functional_group,0.0175259696940581,0.0008967322218510489,6
+state_composition_interpolation,0,chemical_family_pair,heteroaromatic <-> ketone,rdkit,0.9997797608375549,7.3909759521484375e-06,2
+state_composition_interpolation,0,chemical_family_pair,heteroaromatic <-> ketone,unimol,3.1211292480293196e-05,8.925935617298819e-07,2
+state_composition_interpolation,0,chemical_family_pair,heteroaromatic <-> ketone,functional_group,0.00018908362835645676,6.4354098867625e-06,2
+state_composition_interpolation,0,chemical_family_pair,primary_amine <-> primary_amine,rdkit,0.9999429782231649,8.504524358537004e-06,3
+state_composition_interpolation,0,chemical_family_pair,primary_amine <-> primary_amine,unimol,6.914191544638015e-06,1.1125636964823876e-06,3
+state_composition_interpolation,0,chemical_family_pair,primary_amine <-> primary_amine,functional_group,5.007764896921193e-05,7.346051197049066e-06,3
 unseen_component,0,chemical_family_pair,BASE/OTHER <-> alcohol,rdkit,0.9999935311832647,2.856649728315252e-06,87
 unseen_component,0,chemical_family_pair,BASE/OTHER <-> alcohol,unimol,2.2349101126481443e-06,1.3325838474052478e-06,87
 unseen_component,0,chemical_family_pair,BASE/OTHER <-> alcohol,functional_group,4.237082855812415e-06,1.5336137824914534e-06,87
@@ -1148,6 +1328,15 @@ overall_binary_ternary,4,composition_region,edge,functional_group,0.049690653428
 overall_binary_ternary,4,composition_region,interior,rdkit,0.9150531127893676,0.13732950936765317,960
 overall_binary_ternary,4,composition_region,interior,unimol,0.015127137247539698,0.019861619535566085,960
 overall_binary_ternary,4,composition_region,interior,functional_group,0.06981974888161252,0.12765062928090945,960
+state_composition_interpolation,0,composition_region,balanced_pair,rdkit,0.998188675077338,0.009525324795828368,285
+state_composition_interpolation,0,composition_region,balanced_pair,unimol,0.0003579709048526687,0.0018013118886124342,285
+state_composition_interpolation,0,composition_region,balanced_pair,functional_group,0.0014533569564525153,0.007797335660187167,285
+state_composition_interpolation,0,composition_region,edge,rdkit,0.9986908713291431,0.009717511270076681,232
+state_composition_interpolation,0,composition_region,edge,unimol,0.00019677741536548612,0.0009592585316769453,232
+state_composition_interpolation,0,composition_region,edge,functional_group,0.0011123574233886744,0.00880217847922486,232
+state_composition_interpolation,0,composition_region,interior,rdkit,0.9979703839577682,0.01186953345442645,564
+state_composition_interpolation,0,composition_region,interior,unimol,0.00037917279719729905,0.0020760894805583645,564
+state_composition_interpolation,0,composition_region,interior,functional_group,0.0016504457769086782,0.009886737107231694,564
 unseen_component,0,composition_region,balanced_pair,rdkit,0.9619682641420964,0.08323379897948238,207
 unseen_component,0,composition_region,balanced_pair,unimol,0.023007135070530888,0.055425787731845165,207
 unseen_component,0,composition_region,balanced_pair,functional_group,0.015024596474157315,0.029094756587942933,207

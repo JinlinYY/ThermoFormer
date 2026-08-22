@@ -9,6 +9,7 @@ from src.config import EncoderConfig
 from src.representation import (
     FunctionalGroupEncoder,
     HybridMolecularEncoder,
+    LegacyFixedScaleRDKit2DEncoder,
     RDKit2DEncoder,
     UniMolV2Encoder,
     build_molecular_encoder,
@@ -55,6 +56,22 @@ class UniMolV2EncoderTests(unittest.TestCase):
         self.assertGreater(first["O"].shape[0], 10)
         self.assertTrue(np.isfinite(first["CCO"]).all())
         np.testing.assert_array_equal(first["O"], second["O"])
+
+    def test_legacy_a1_fixed_scaling_remains_exactly_reproducible(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            raw = RDKit2DEncoder(root / "raw.npz").encode(["CCO"])["CCO"]
+            legacy = LegacyFixedScaleRDKit2DEncoder(root / "legacy.npz")
+            scaled = legacy.encode(["CCO"])["CCO"]
+            expected = raw / np.asarray(
+                [scale for _, scale in RDKit2DEncoder._DESCRIPTORS], dtype=np.float32
+            )
+            np.testing.assert_allclose(scaled, expected, rtol=0.0, atol=0.0)
+            cached = LegacyFixedScaleRDKit2DEncoder(root / "legacy.npz").encode(["CCO"])
+            np.testing.assert_array_equal(scaled, cached["CCO"])
+
+        config = EncoderConfig(representation="rdkit_2d_legacy_fixed")
+        self.assertEqual(encoder_cache_filename(config), "rdkit_2d_scaled24_v1.npz")
 
     def test_functional_group_encoder_exposes_chemical_fragment_counts(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

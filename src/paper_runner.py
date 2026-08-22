@@ -19,6 +19,7 @@ import rdkit
 import torch
 
 from .config import ExperimentConfig, load_experiment_config
+from .artifacts import portable_artifact_path
 from .auditing import ternary_subsystem_rows
 from .data import discover_vle_workbooks, load_vle_dataset, retain_pure_anchored_systems
 from .evaluation import predict_vle, prediction_metric_rows, write_prediction_csv
@@ -434,7 +435,7 @@ def run_paper_experiment(
         "name": protocol,
         "split_protocol": split_protocol,
         "seed": seed,
-        "split_file": str(split_path.resolve()),
+        "split_file": portable_artifact_path(split_path),
         "dataset_sha256": dataset_digest(samples),
     }
     resolved_payload["molecular_feature_preprocessing"] = prepared_features.metadata
@@ -574,7 +575,7 @@ def run_paper_experiment(
         "resolved_config": result_config_path,
     }
     artifacts = {
-        name: {"path": str(path.resolve()), "sha256": _file_digest(path)}
+        name: {"path": portable_artifact_path(path), "sha256": _file_digest(path)}
         for name, path in artifact_paths.items()
     }
     manifest: dict[str, Any] = {
@@ -610,7 +611,7 @@ def run_paper_experiment(
         "molecular_feature_preprocessing": prepared_features.metadata,
         "environment_sha256": environment_sha256,
         "request_sha256": request_sha256,
-        "split_file": str(split_path.resolve()),
+        "split_file": portable_artifact_path(split_path),
         "split_metadata": split.metadata,
         "rows": {
             "train": len(split.train),
@@ -624,7 +625,8 @@ def run_paper_experiment(
         "peak_gpu_memory_mb": peak_gpu_memory_mb,
         "trainable_parameters": trainable_parameters,
         "best_validation_loss": result.best_validation_loss,
-        "checkpoint": str(checkpoint_path.resolve()),
+        "checkpoint": portable_artifact_path(checkpoint_path),
+        "artifact_path_schema": "project-relative-v1",
         "artifacts": artifacts,
         "runtime": {**runtime_context, "device": str(device)},
         "headline_metrics": next(row for row in metric_rows if row["scope"] == "all"),

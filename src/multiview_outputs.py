@@ -16,6 +16,7 @@ from .multiview_protocols import (
     MULTIVIEW_SEEDS,
     MULTIVIEW_VARIANTS,
     SCREENING_PROTOCOLS,
+    SCREENING_REPORT_VARIANTS,
     SCREENING_VARIANTS,
 )
 
@@ -98,9 +99,13 @@ def _direction_rows(metrics: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
 
 def screening_table(root: Path) -> pd.DataFrame:
     rows = []
-    for variant_id in SCREENING_VARIANTS:
+    for variant_id in SCREENING_REPORT_VARIANTS:
         for protocol in SCREENING_PROTOCOLS:
-            directory = _seed_dir(root, "screening", variant_id, protocol, 0)
+            stage = (
+                "screening" if variant_id in SCREENING_VARIANTS
+                else "screening_exploratory"
+            )
+            directory = _seed_dir(root, stage, variant_id, protocol, 0)
             metrics = json.loads((directory / "metrics.json").read_text(encoding="utf-8"))
             manifest = json.loads((directory / "manifest.json").read_text(encoding="utf-8"))
             for direction in _direction_rows(metrics):
@@ -129,7 +134,7 @@ def write_screening_report(root: Path, table: pd.DataFrame) -> Path:
     lines = [
         "# Multi-view ThermoFormer seed-0 screening",
         "",
-        "All rows use committed seed-0 splits and validation-only model selection. This is a screening result, not a five-seed claim.",
+        "All rows use committed seed-0 splits and validation-only checkpoint selection. Because Stage B also inspected the held-out test metrics before Stage C variants were fixed, this table is exploratory model-development evidence, not an independent confirmatory test. V3 was added later in the isolated `screening_exploratory` namespace and did not affect Stage C selection.",
         "",
         "| Variant | Protocol | Task | State MAE | State RMSE | State R² | y MAE | y RMSE | y R² | Valid coverage | Train s | Params |",
         "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
@@ -145,7 +150,7 @@ def write_screening_report(root: Path, table: pd.DataFrame) -> Path:
     lines.extend(
         [
             "",
-            "Primary screening criterion: unseen-component P/T/y performance. Overall, state-interpolation, and binary-to-ternary rows are retained as non-degradation constraints; no test row is removed.",
+            "Primary exploratory criterion: unseen-component P/T/y performance. Overall, state-interpolation, and binary-to-ternary rows are retained as non-degradation constraints; no test row is removed. The five-seed table must therefore be interpreted as selection-aware evidence, not an untouched-test confirmation.",
         ]
     )
     _atomic_text(output, "\n".join(lines) + "\n")
@@ -283,8 +288,11 @@ def gate_summary_table(root: Path) -> pd.DataFrame:
             seeds=("seed", "nunique"),
         )
     )
-    if not output["seeds"].eq(len(MULTIVIEW_SEEDS)).all():
-        raise ValueError("Gate summary does not contain all formal seeds")
+    expected = output["protocol"].map(
+        lambda protocol: 1 if protocol == "state_composition_interpolation" else len(MULTIVIEW_SEEDS)
+    )
+    if not output["seeds"].eq(expected).all():
+        raise ValueError("Gate summary has incomplete seed coverage for its evidence stage")
     return output
 
 
@@ -307,8 +315,12 @@ def write_variant_result_pages(
         elif formal is not None and variant_id in set(FORMAL_VARIANTS):
             status = "completed formal evaluation (seeds 0--4)"
             table = formal.loc[formal["variant_id"].eq(variant_id)]
-        elif variant_id in set(SCREENING_VARIANTS):
-            status = "completed seed-0 screening only"
+        elif variant_id in set(SCREENING_REPORT_VARIANTS):
+            status = (
+                "completed seed-0 exploratory representation diagnostic"
+                if variant_id not in set(SCREENING_VARIANTS)
+                else "completed seed-0 screening only"
+            )
             table = screening.loc[screening["variant_id"].eq(variant_id)]
         elif variant_id == "v2_unimol_only":
             status = "not retrained; interface-equivalent to V0"
@@ -377,11 +389,30 @@ def write_final_report(
         "",
         "## 2. Representation ablation",
         "",
-        "V0--V6 are implemented. V2 is interface-equivalent to V0 and V3 is an implemented functional-group-only control; the locked screening matrix evaluated V0/V1/V4/V5/V6, so V2/V3 are not assigned invented performance. Full seed-0 tables are in `reports/multiview_screening_report.md`.",
+        "V0--V6 are implemented. V2 is interface-equivalent to V0. V3 was run as a later, isolated seed-0 exploratory diagnostic to complete the functional-group-only control; it did not influence the locked Stage C matrix. Full seed-0 tables are in `reports/multiview_screening_report.md`.",
         "",
-        "Screening showed V1 strongest on unseen components; V4 and V5 degraded that primary target, so simple feature addition was insufficient. V6 improved selected overall/zero-shot directions but did not pass the unseen-component gate. Per the preregistered rule, no further V6 branch ablations were run because V6 had no clear primary-target benefit.",
+        "Exploratory screening showed V1 strongest on unseen components; V4 and V5 degraded that primary target, so simple feature addition was insufficient. V6 improved selected overall/zero-shot directions but did not pass the unseen-component gate. Per the predeclared rule, no further V6 branch ablations were run because V6 had no clear primary-target benefit.",
+        "",
+        "Seed-0 unseen-component representation diagnostic (exploratory; V2 equals V0 by interface):",
+        "",
+        "| Variant | Task | State MAE | y MAE | Coverage |",
+        "|---|---|---:|---:|---:|",
+    ])
+    representation = screening.loc[screening["protocol"].eq("unseen_component")]
+    for _, row in representation.iterrows():
+        unit = " kPa" if row["state"] == "P" else " K"
+        lines.append(
+            f"| {row['variant']} | {row['direction']} ({row['state']}+y) | "
+            f"{_fmt(row['state_mae'])}{unit} | {_fmt(row['y_mae'])} | "
+            f"{_fmt(row['valid_coverage'], 3)} |"
+        )
+    lines.extend([
+        "",
+        "V3 FG-only was numerically weak: its unseen-component isothermal pressure MAE was extremely large and coverage was only about 0.70. This negative control indicates that sparse motif counts cannot replace molecular physicochemical/structural information.",
         "",
         "## 3. Overall performance",
+        "",
+        "These five-seed results use fixed splits and complete seed coverage, but the seed-0 test metrics were inspected during Stage B. They are therefore selection-aware evaluation results rather than an untouched-test confirmatory estimate.",
         "",
         "| Variant | Protocol | Task | State MAE | State RMSE | State R² | y MAE | y RMSE | y R² | Coverage |",
         "|---|---|---|---:|---:|---:|---:|---:|---:|---:|",
@@ -435,7 +466,7 @@ def write_final_report(
     lines.extend(
         [
             "",
-            "The gate largely collapsed onto RDKit (about 0.95 overall and 0.92 for unseen components); functional-group weights remained small and Uni-Mol was usually near zero. Zero-shot was seed-unstable: seed 4 switched to approximately 0.93 Uni-Mol while the other seeds were nearly all RDKit. These are learned associations, not causal feature importance. Full chemical-family and composition-region strata are in `results/multiview/analysis/multiview_gate_statistics.csv`.",
+            "The gate largely collapsed onto RDKit (about 0.95 overall and 0.92 for unseen components); functional-group weights remained small and Uni-Mol was usually near zero. Zero-shot was seed-unstable: seed 4 switched to approximately 0.93 Uni-Mol while the other seeds were nearly all RDKit. The state-interpolation seed-0 diagnostic supplies the known-mixture stratum; it is not pooled as five-seed evidence. These are learned associations, not causal feature importance. Full known/unseen, chemical-family, and composition-region strata are in `results/multiview/analysis/multiview_gate_statistics.csv`.",
             "",
             "## 7. Conclusion",
             "",
@@ -443,7 +474,7 @@ def write_final_report(
             "2. **Does Uni-Mol add robust value on top of RDKit?** Not for the primary target in the tested fusion schemes. V4 screening and V5/V6 formal unseen-component results were worse than V1.",
             "3. **Do functional-group interactions improve unseen components?** No. V5 degraded all four primary MAE outputs relative to V1; V6 also remained worse, and its learned functional-group gate weight was small.",
             "4. **Is interaction-specific fusion better than naive concatenation?** Only conditionally. V6 improved V5's overall isothermal P/y, but it was worse on unseen-component P/T and did not beat V5 zero-shot. It also used more parameters and roughly doubled training time.",
-            "5. **Should V6 replace ThermoFormer?** No. The preregistered primary objective failed and seed variance increased. V1 is the preferred candidate when unseen-component state prediction is primary; retain V0 when isothermal vapor-composition accuracy is paramount, and V5 when fixed-molecule binary-to-ternary transfer is the sole target. No single model dominates every task.",
+            "5. **Should V6 replace ThermoFormer?** No. The predeclared primary objective failed and seed variance increased. V1 is the preferred candidate when unseen-component state prediction is primary; retain V0 when isothermal vapor-composition accuracy is paramount, and V5 when fixed-molecule binary-to-ternary transfer is the sole target. No single model dominates every task.",
         ]
     )
     _atomic_text(output, "\n".join(lines) + "\n")

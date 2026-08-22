@@ -34,6 +34,7 @@ logs/
 # Smoke/screening checkpoints are reproducible diagnostics, not release weights.
 checkpoints/multiview/smoke/
 checkpoints/multiview/screening/
+checkpoints/multiview/*_exploratory/
 
 # Publish formal multi-view manifests, predictions and aggregates even though
 # their protocol namespace contains a directory named "runs".
@@ -41,6 +42,14 @@ checkpoints/multiview/screening/
 !results/multiview/formal/
 !results/multiview/formal/runs/
 !results/multiview/formal/runs/**
+
+# Formal multi-view manifests reference these compact training histories.
+!/runs/
+/runs/*
+!/runs/multiview/
+/runs/multiview/*
+!/runs/multiview/formal/
+!/runs/multiview/formal/**
 
 # Temporary files
 *.tmp

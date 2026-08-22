@@ -17,11 +17,32 @@ New modules/assets are under `src/multiview_*`, `assets/`, `scripts/*multiview*`
 
 ## 2. Representation ablation
 
-V0--V6 are implemented. V2 is interface-equivalent to V0 and V3 is an implemented functional-group-only control; the locked screening matrix evaluated V0/V1/V4/V5/V6, so V2/V3 are not assigned invented performance. Full seed-0 tables are in `reports/multiview_screening_report.md`.
+V0--V6 are implemented. V2 is interface-equivalent to V0. V3 was run as a later, isolated seed-0 exploratory diagnostic to complete the functional-group-only control; it did not influence the locked Stage C matrix. Full seed-0 tables are in `reports/multiview_screening_report.md`.
 
-Screening showed V1 strongest on unseen components; V4 and V5 degraded that primary target, so simple feature addition was insufficient. V6 improved selected overall/zero-shot directions but did not pass the unseen-component gate. Per the preregistered rule, no further V6 branch ablations were run because V6 had no clear primary-target benefit.
+Exploratory screening showed V1 strongest on unseen components; V4 and V5 degraded that primary target, so simple feature addition was insufficient. V6 improved selected overall/zero-shot directions but did not pass the unseen-component gate. Per the predeclared rule, no further V6 branch ablations were run because V6 had no clear primary-target benefit.
+
+Seed-0 unseen-component representation diagnostic (exploratory; V2 equals V0 by interface):
+
+| Variant | Task | State MAE | y MAE | Coverage |
+|---|---|---:|---:|---:|
+| V0 Legacy Uni-Mol v2 | isobaric (T+y) | 40.9916 K | 0.1149 | 1.000 |
+| V0 Legacy Uni-Mol v2 | isothermal (P+y) | 27.7285 kPa | 0.0808 | 0.998 |
+| V1 RDKit descriptors only | isobaric (T+y) | 25.7650 K | 0.0999 | 1.000 |
+| V1 RDKit descriptors only | isothermal (P+y) | 20.9613 kPa | 0.0858 | 1.000 |
+| V4 RDKit + Uni-Mol naive fusion | isobaric (T+y) | 35.6889 K | 0.1095 | 1.000 |
+| V4 RDKit + Uni-Mol naive fusion | isothermal (P+y) | 25.6072 kPa | 0.0950 | 1.000 |
+| V5 Three-view naive fusion | isobaric (T+y) | 37.1878 K | 0.1129 | 1.000 |
+| V5 Three-view naive fusion | isothermal (P+y) | 29.6872 kPa | 0.1065 | 1.000 |
+| V6 Interaction-specific multi-view fusion | isobaric (T+y) | 35.0374 K | 0.1020 | 1.000 |
+| V6 Interaction-specific multi-view fusion | isothermal (P+y) | 36.4023 kPa | 0.1147 | 1.000 |
+| V3 Functional groups only | isobaric (T+y) | 127.9842 K | 0.1616 | 0.912 |
+| V3 Functional groups only | isothermal (P+y) | 14662742.9560 kPa | 0.1942 | 0.698 |
+
+V3 FG-only was numerically weak: its unseen-component isothermal pressure MAE was extremely large and coverage was only about 0.70. This negative control indicates that sparse motif counts cannot replace molecular physicochemical/structural information.
 
 ## 3. Overall performance
+
+These five-seed results use fixed splits and complete seed coverage, but the seed-0 test metrics were inspected during Stage B. They are therefore selection-aware evaluation results rather than an untouched-test confirmatory estimate.
 
 | Variant | Protocol | Task | State MAE | State RMSE | State R² | y MAE | y RMSE | y R² | Coverage |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|
@@ -111,11 +132,14 @@ The zero-shot rows use the unchanged fixed ternary test set and train-only binar
 | overall_binary_ternary | functional_group | 0.0400 | 0.0540 |
 | overall_binary_ternary | rdkit | 0.9548 | 0.0593 |
 | overall_binary_ternary | unimol | 0.0052 | 0.0065 |
+| state_composition_interpolation | functional_group | 0.0015 | NA |
+| state_composition_interpolation | rdkit | 0.9982 | NA |
+| state_composition_interpolation | unimol | 0.0003 | NA |
 | unseen_component | functional_group | 0.0652 | 0.0579 |
 | unseen_component | rdkit | 0.9213 | 0.0561 |
 | unseen_component | unimol | 0.0134 | 0.0137 |
 
-The gate largely collapsed onto RDKit (about 0.95 overall and 0.92 for unseen components); functional-group weights remained small and Uni-Mol was usually near zero. Zero-shot was seed-unstable: seed 4 switched to approximately 0.93 Uni-Mol while the other seeds were nearly all RDKit. These are learned associations, not causal feature importance. Full chemical-family and composition-region strata are in `results/multiview/analysis/multiview_gate_statistics.csv`.
+The gate largely collapsed onto RDKit (about 0.95 overall and 0.92 for unseen components); functional-group weights remained small and Uni-Mol was usually near zero. Zero-shot was seed-unstable: seed 4 switched to approximately 0.93 Uni-Mol while the other seeds were nearly all RDKit. The state-interpolation seed-0 diagnostic supplies the known-mixture stratum; it is not pooled as five-seed evidence. These are learned associations, not causal feature importance. Full known/unseen, chemical-family, and composition-region strata are in `results/multiview/analysis/multiview_gate_statistics.csv`.
 
 ## 7. Conclusion
 
@@ -123,4 +147,4 @@ The gate largely collapsed onto RDKit (about 0.95 overall and 0.92 for unseen co
 2. **Does Uni-Mol add robust value on top of RDKit?** Not for the primary target in the tested fusion schemes. V4 screening and V5/V6 formal unseen-component results were worse than V1.
 3. **Do functional-group interactions improve unseen components?** No. V5 degraded all four primary MAE outputs relative to V1; V6 also remained worse, and its learned functional-group gate weight was small.
 4. **Is interaction-specific fusion better than naive concatenation?** Only conditionally. V6 improved V5's overall isothermal P/y, but it was worse on unseen-component P/T and did not beat V5 zero-shot. It also used more parameters and roughly doubled training time.
-5. **Should V6 replace ThermoFormer?** No. The preregistered primary objective failed and seed variance increased. V1 is the preferred candidate when unseen-component state prediction is primary; retain V0 when isothermal vapor-composition accuracy is paramount, and V5 when fixed-molecule binary-to-ternary transfer is the sole target. No single model dominates every task.
+5. **Should V6 replace ThermoFormer?** No. The predeclared primary objective failed and seed variance increased. V1 is the preferred candidate when unseen-component state prediction is primary; retain V0 when isothermal vapor-composition accuracy is paramount, and V5 when fixed-molecule binary-to-ternary transfer is the sole target. No single model dominates every task.

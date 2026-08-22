@@ -4,7 +4,7 @@ from tempfile import TemporaryDirectory
 
 import pandas as pd
 
-from src.multiview_outputs import _direction_rows, formal_seed_table
+from src.multiview_outputs import _direction_rows, formal_seed_table, gate_summary_table
 from src.multiview_protocols import FORMAL_PROTOCOLS, FORMAL_VARIANTS, MULTIVIEW_SEEDS
 
 
@@ -61,6 +61,28 @@ class MultiViewOutputTests(unittest.TestCase):
             )
             self.assertEqual(set(output["seed"]), set(MULTIVIEW_SEEDS))
             self.assertEqual(set(output["state"]), {"P", "T"})
+
+    def test_gate_summary_keeps_single_seed_known_mixture_diagnostic(self) -> None:
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            path = root / "results" / "multiview" / "analysis"
+            path.mkdir(parents=True)
+            rows = []
+            for seed in MULTIVIEW_SEEDS:
+                rows.append({
+                    "protocol": "unseen_component", "seed": seed, "scope": "global",
+                    "subgroup": "all", "view": "rdkit", "mean_weight": 0.8,
+                })
+            rows.append({
+                "protocol": "state_composition_interpolation", "seed": 0,
+                "scope": "global", "subgroup": "all", "view": "rdkit",
+                "mean_weight": 0.9,
+            })
+            pd.DataFrame(rows).to_csv(path / "multiview_gate_statistics.csv", index=False)
+            output = gate_summary_table(root)
+            observed = dict(zip(output["protocol"], output["seeds"]))
+            self.assertEqual(observed["unseen_component"], 5)
+            self.assertEqual(observed["state_composition_interpolation"], 1)
 
 
 if __name__ == "__main__":

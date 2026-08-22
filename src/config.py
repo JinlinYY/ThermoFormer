@@ -15,7 +15,8 @@ from .training import TrainingConfig
 @dataclass(frozen=True)
 class EncoderConfig:
     representation: Literal[
-        "multiview", "hybrid", "unimol_v2", "rdkit_2d", "functional_groups"
+        "multiview", "hybrid", "unimol_v2", "rdkit_2d",
+        "rdkit_2d_legacy_fixed", "functional_groups"
     ] = "unimol_v2"
     fusion_mode: Literal["legacy", "naive", "interaction_specific"] = "legacy"
     model_size: str = "84m"
@@ -25,7 +26,10 @@ class EncoderConfig:
     use_functional_groups: bool = True
 
     def __post_init__(self) -> None:
-        allowed = ("multiview", "hybrid", "unimol_v2", "rdkit_2d", "functional_groups")
+        allowed = (
+            "multiview", "hybrid", "unimol_v2", "rdkit_2d",
+            "rdkit_2d_legacy_fixed", "functional_groups",
+        )
         if self.representation not in allowed:
             raise ValueError(f"encoder.representation must be one of {allowed}")
         if self.model_size not in ("84m", "164m", "310m", "570m", "1.1B"):

@@ -1,6 +1,6 @@
 # Multi-view ThermoFormer seed-0 screening
 
-All rows use committed seed-0 splits and validation-only model selection. This is a screening result, not a five-seed claim.
+All rows use committed seed-0 splits and validation-only checkpoint selection. Because Stage B also inspected the held-out test metrics before Stage C variants were fixed, this table is exploratory model-development evidence, not an independent confirmatory test. V3 was added later in the isolated `screening_exploratory` namespace and did not affect Stage C selection.
 
 | Variant | Protocol | Task | State MAE | State RMSE | State R² | y MAE | y RMSE | y R² | Valid coverage | Train s | Params |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -54,5 +54,15 @@ All rows use committed seed-0 splits and validation-only model selection. This i
 | V6 Interaction-specific multi-view fusion | unseen_component | isothermal (P+y) | 36.4023 kPa | 72.8665 kPa | 0.4485 | 0.1147 | 0.1837 | 0.7320 | 1.000 | 175.9 | 2,613,896 |
 | V6 Interaction-specific multi-view fusion | binary_to_ternary_zero_shot | isobaric (T+y) | 3.1022 K | 3.9331 K | 0.9864 | 0.0998 | 0.1361 | 0.6229 | 1.000 | 205.4 | 2,613,896 |
 | V6 Interaction-specific multi-view fusion | binary_to_ternary_zero_shot | isothermal (P+y) | 1.3505 kPa | 1.8614 kPa | 0.9922 | 0.0073 | 0.0105 | 0.9983 | 1.000 | 205.4 | 2,613,896 |
+| V3 Functional groups only | overall_binary | isobaric (T+y) | 48.9937 K | 90.6761 K | -5.4688 | 0.2438 | 0.3313 | -0.1540 | 0.981 | 72.4 | 1,638,339 |
+| V3 Functional groups only | overall_binary | isothermal (P+y) | 59.7814 kPa | 108.5581 kPa | -0.2976 | 0.1423 | 0.2132 | 0.6685 | 0.534 | 72.4 | 1,638,339 |
+| V3 Functional groups only | overall_binary_ternary | isobaric (T+y) | 24.1535 K | 38.3833 K | -0.2200 | 0.1956 | 0.2687 | 0.2537 | 0.998 | 56.4 | 1,638,339 |
+| V3 Functional groups only | overall_binary_ternary | isothermal (P+y) | 35.8824 kPa | 114.7978 kPa | -0.6892 | 0.1757 | 0.2688 | 0.4151 | 0.651 | 56.4 | 1,638,339 |
+| V3 Functional groups only | state_composition_interpolation | isobaric (T+y) | 14.7785 K | 20.3383 K | 0.3777 | 0.1917 | 0.2424 | 0.1826 | 0.974 | 76.8 | 1,638,339 |
+| V3 Functional groups only | state_composition_interpolation | isothermal (P+y) | 31.4111 kPa | 66.7078 kPa | 0.4720 | 0.1614 | 0.2283 | 0.4726 | 0.340 | 76.8 | 1,638,339 |
+| V3 Functional groups only | unseen_component | isobaric (T+y) | 127.9842 K | 158.0213 K | -4.7137 | 0.1616 | 0.2381 | 0.5775 | 0.912 | 126.3 | 1,638,339 |
+| V3 Functional groups only | unseen_component | isothermal (P+y) | 14662742.9560 kPa | 108349349.5734 kPa | -1011689041750.7903 | 0.1942 | 0.2908 | 0.3617 | 0.698 | 126.3 | 1,638,339 |
+| V3 Functional groups only | binary_to_ternary_zero_shot | isobaric (T+y) | 9.3092 K | 11.6083 K | 0.8812 | 0.2085 | 0.2461 | -0.2332 | 1.000 | 63.8 | 1,638,339 |
+| V3 Functional groups only | binary_to_ternary_zero_shot | isothermal (P+y) | 13.0944 kPa | 17.5753 kPa | 0.0162 | 0.1289 | 0.2260 | 0.4675 | 0.229 | 63.8 | 1,638,339 |
 
-Primary screening criterion: unseen-component P/T/y performance. Overall, state-interpolation, and binary-to-ternary rows are retained as non-degradation constraints; no test row is removed.
+Primary exploratory criterion: unseen-component P/T/y performance. Overall, state-interpolation, and binary-to-ternary rows are retained as non-degradation constraints; no test row is removed. The five-seed table must therefore be interpreted as selection-aware evidence, not an untouched-test confirmation.
