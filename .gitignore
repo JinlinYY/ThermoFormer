@@ -31,6 +31,9 @@ logs/
 
 # Publish formal ThermoFormer weights through Git LFS.
 !checkpoints/**/*.pt
+# Smoke/screening checkpoints are reproducible diagnostics, not release weights.
+checkpoints/multiview/smoke/
+checkpoints/multiview/screening/
 
 # Temporary files
 *.tmp

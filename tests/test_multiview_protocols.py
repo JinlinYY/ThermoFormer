@@ -1,11 +1,17 @@
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
+from scripts.run_multiview_suite import release_accelerator_memory
 from src.config import load_experiment_config
 from src.multiview_protocols import MULTIVIEW_VARIANTS
 
 
 class MultiViewProtocolTests(unittest.TestCase):
+    def test_accelerator_cleanup_is_safe_without_cuda(self) -> None:
+        with patch("torch.cuda.is_available", return_value=False):
+            release_accelerator_memory()
+
     def test_v0_through_v6_are_concrete_and_scientifically_distinct(self) -> None:
         root = Path(__file__).resolve().parents[1]
         self.assertEqual(len(MULTIVIEW_VARIANTS), 7)

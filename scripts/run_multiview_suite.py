@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import gc
 import json
 import sys
 from pathlib import Path
@@ -24,6 +25,18 @@ from src.multiview_protocols import (
 from src.paper_runner import result_protocol_name, run_paper_experiment
 from src.representation import encoder_cache_filename
 from src.results import aggregate_protocol_results
+
+
+def release_accelerator_memory() -> None:
+    """Release per-run CUDA caches before the next experiment."""
+    gc.collect()
+    try:
+        import torch
+    except ImportError:
+        return
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
+        torch.cuda.empty_cache()
 
 
 def parser() -> argparse.ArgumentParser:
@@ -77,19 +90,22 @@ def main(argv: list[str] | None = None) -> None:
         for split_protocol in protocols:
             protocol = result_protocol_name(experiment.name, split_protocol)
             for seed in seeds:
-                manifest = run_paper_experiment(
-                    config_path=config_path,
-                    split_path=PROJECT_ROOT / "splits" / split_protocol / f"seed_{seed}.json",
-                    seed=seed,
-                    run_root=run_root,
-                    checkpoint_root=checkpoint_root,
-                    results_root=results_root,
-                    feature_cache=feature_cache,
-                    device_name=args.device,
-                    overrides=overrides,
-                    allow_overwrite=args.overwrite,
-                    run_kind="smoke" if args.stage == "smoke" else "formal",
-                )
+                try:
+                    manifest = run_paper_experiment(
+                        config_path=config_path,
+                        split_path=PROJECT_ROOT / "splits" / split_protocol / f"seed_{seed}.json",
+                        seed=seed,
+                        run_root=run_root,
+                        checkpoint_root=checkpoint_root,
+                        results_root=results_root,
+                        feature_cache=feature_cache,
+                        device_name=args.device,
+                        overrides=overrides,
+                        allow_overwrite=args.overwrite,
+                        run_kind="smoke" if args.stage == "smoke" else "formal",
+                    )
+                finally:
+                    release_accelerator_memory()
                 print(json.dumps({
                     "variant": variant_id,
                     "protocol": split_protocol,
