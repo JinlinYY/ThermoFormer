@@ -51,9 +51,13 @@ class MultiViewOutputTests(unittest.TestCase):
                     )
                     directory.mkdir(parents=True)
                     pd.DataFrame(source_rows).to_csv(directory / "metrics_by_seed.csv", index=False)
+            for protocol in FORMAL_PROTOCOLS:
+                directory = root / "results" / protocol
+                directory.mkdir(parents=True)
+                pd.DataFrame(source_rows).to_csv(directory / "metrics_by_seed.csv", index=False)
             output = formal_seed_table(root)
             self.assertEqual(
-                len(output), len(FORMAL_VARIANTS) * len(FORMAL_PROTOCOLS) * len(MULTIVIEW_SEEDS) * 2,
+                len(output), (1 + len(FORMAL_VARIANTS)) * len(FORMAL_PROTOCOLS) * len(MULTIVIEW_SEEDS) * 2,
             )
             self.assertEqual(set(output["seed"]), set(MULTIVIEW_SEEDS))
             self.assertEqual(set(output["state"]), {"P", "T"})

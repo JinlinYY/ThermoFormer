@@ -4,8 +4,12 @@ from __future__ import annotations
 
 import argparse
 import csv
+import gc
+import hashlib
 import json
+import os
 import sys
+import tempfile
 from pathlib import Path
 
 import torch
@@ -26,6 +30,71 @@ from src.representation import (
     prepare_partition_features,
 )
 from src.splits import load_split_assignment
+
+
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _validate_checkpoint_provenance(
+    checkpoint_path: Path,
+    checkpoint: dict[str, object],
+    manifest_path: Path,
+    protocol: str,
+    result_protocol: str,
+    seed: int,
+) -> None:
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    checkpoint_artifact = manifest.get("artifacts", {}).get("checkpoint", {})
+    expected = {
+        "status": "completed",
+        "protocol": result_protocol,
+        "seed": seed,
+    }
+    observed = {name: manifest.get(name) for name in expected}
+    if observed != expected:
+        raise RuntimeError(f"Invalid formal manifest for {protocol}/seed_{seed}: {observed}")
+    if Path(checkpoint_artifact.get("path", "")).resolve() != checkpoint_path.resolve():
+        raise RuntimeError(f"Checkpoint path mismatch for {protocol}/seed_{seed}")
+    if checkpoint_artifact.get("sha256") != _sha256(checkpoint_path):
+        raise RuntimeError(f"Checkpoint SHA mismatch for {protocol}/seed_{seed}")
+    checkpoint_identity = {
+        "protocol": checkpoint.get("protocol"),
+        "split_protocol": checkpoint.get("split_protocol"),
+        "seed": checkpoint.get("seed"),
+        "git_commit": checkpoint.get("git_commit"),
+    }
+    expected_identity = {
+        "protocol": result_protocol,
+        "split_protocol": protocol,
+        "seed": seed,
+        "git_commit": manifest.get("git_commit"),
+    }
+    if checkpoint_identity != expected_identity:
+        raise RuntimeError(
+            f"Checkpoint identity mismatch for {protocol}/seed_{seed}: {checkpoint_identity}"
+        )
+
+
+def _write_rows_atomically(path: Path, rows: list[dict[str, object]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8-sig", newline="", prefix=f".{path.name}.",
+            suffix=".tmp", dir=path.parent, delete=False,
+        ) as handle:
+            temporary = Path(handle.name)
+            writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+            writer.writeheader()
+            writer.writerows(rows)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+        temporary = None
+    finally:
+        if temporary is not None and temporary.exists():
+            temporary.unlink()
 
 
 def main() -> None:
@@ -77,6 +146,18 @@ def main() -> None:
                 / result_protocol / f"seed_{seed}" / "best_model.pt"
             )
             checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+            manifest_path = (
+                args.artifact_root / "results" / "multiview" / "formal" / "runs"
+                / result_protocol / f"seed_{seed}" / "manifest.json"
+            )
+            _validate_checkpoint_provenance(
+                checkpoint_path,
+                checkpoint,
+                manifest_path,
+                protocol,
+                result_protocol,
+                seed,
+            )
             if checkpoint.get("molecular_feature_preprocessing") != prepared.metadata:
                 raise RuntimeError(f"Feature preprocessing mismatch for {protocol}/seed_{seed}")
             model = ThermoFormer(ThermoFormerConfig(**checkpoint["model_config"]))
@@ -103,12 +184,13 @@ def main() -> None:
                     seed,
                 )
             )
+            del model, checkpoint, prepared, encoder
+            gc.collect()
+            if device.type == "cuda":
+                torch.cuda.synchronize()
+                torch.cuda.empty_cache()
     rows = gate_statistics(records)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    with args.output.open("w", encoding="utf-8-sig", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
-        writer.writeheader()
-        writer.writerows(rows)
+    _write_rows_atomically(args.output, rows)
     print(json.dumps({"output": str(args.output), "rows": len(rows)}))
 
 
