@@ -35,6 +35,15 @@ logs/
 checkpoints/multiview/smoke/
 checkpoints/multiview/screening/
 checkpoints/multiview/*_exploratory/
+# Publish the one V6 state-interpolation weight required to reproduce the
+# known-mixture gate diagnostic; all other screening weights stay ignored.
+!checkpoints/multiview/screening/
+checkpoints/multiview/screening/*
+!checkpoints/multiview/screening/v6_full_interaction.on.state_composition_interpolation/
+checkpoints/multiview/screening/v6_full_interaction.on.state_composition_interpolation/*
+!checkpoints/multiview/screening/v6_full_interaction.on.state_composition_interpolation/seed_0/
+checkpoints/multiview/screening/v6_full_interaction.on.state_composition_interpolation/seed_0/*
+!checkpoints/multiview/screening/v6_full_interaction.on.state_composition_interpolation/seed_0/best_model.pt
 
 # Publish formal multi-view manifests, predictions and aggregates even though
 # their protocol namespace contains a directory named "runs".

@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import csv
 import gc
-import hashlib
 import json
 import os
 import sys
@@ -19,7 +18,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.config import load_experiment_config
-from src.artifacts import resolve_artifact_path
+from src.artifacts import artifact_sha256, resolve_artifact_path
 from src.data import load_vle_dataset, retain_pure_anchored_systems
 from src.model import ThermoFormer, ThermoFormerConfig
 from src.multiview_analysis import collect_gate_records, gate_statistics
@@ -34,7 +33,7 @@ from src.splits import load_split_assignment
 
 
 def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return artifact_sha256(path)
 
 
 def _validate_checkpoint_provenance(
@@ -46,9 +45,14 @@ def _validate_checkpoint_provenance(
     seed: int,
 ) -> None:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    checkpoint_artifact = manifest.get("artifacts", {}).get("checkpoint", {})
+    is_reference = manifest.get("status") == "reference"
+    checkpoint_artifact = (
+        manifest.get("checkpoint_artifact", {})
+        if is_reference
+        else manifest.get("artifacts", {}).get("checkpoint", {})
+    )
     expected = {
-        "status": "completed",
+        "status": "reference" if is_reference else "completed",
         "protocol": result_protocol,
         "seed": seed,
     }
@@ -70,7 +74,10 @@ def _validate_checkpoint_provenance(
         "protocol": result_protocol,
         "split_protocol": protocol,
         "seed": seed,
-        "git_commit": manifest.get("git_commit"),
+        "git_commit": (
+            manifest.get("training_git_commit") if is_reference
+            else manifest.get("git_commit")
+        ),
     }
     if checkpoint_identity != expected_identity:
         raise RuntimeError(
@@ -155,7 +162,10 @@ def main() -> None:
         )
         checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
         manifest_path = (
-            args.artifact_root / "results" / "multiview" / stage / "runs"
+            PROJECT_ROOT / "results" / "multiview" / "analysis"
+            / "known_mixture_gate_reference.json"
+            if stage == "screening"
+            else args.artifact_root / "results" / "multiview" / stage / "runs"
             / result_protocol / f"seed_{seed}" / "manifest.json"
         )
         _validate_checkpoint_provenance(

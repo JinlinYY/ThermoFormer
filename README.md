@@ -137,7 +137,7 @@ Stage A 仅检查 V1/V4/V5/V6 的数值与资源稳定性；Stage B 在固定 sp
 conda run -n ggnn39 python scripts\analyze_multiview_gates.py --device cuda --include-known-mixture
 ```
 
-正式 multi-view manifest 使用仓库相对路径，并发布其引用的 history 与 training curves；因此换目录或重新 clone 后仍可按 SHA-256 复核、聚合并重算 gate。旧 A1 RDKit 消融固定使用 `rdkit_2d_legacy_fixed/scaled24_v1`，不会被新 V1 的训练分区 z-score 语义覆盖。
+正式 multi-view manifest 使用仓库相对路径，并发布其引用的 history 与 training curves；因此换目录或重新 clone 后仍可按 SHA-256 复核、聚合并重算 gate。文本产物的 SHA-256 以 UTF-8、去 BOM、统一 LF 换行后的规范内容计算，二进制产物则按原始字节计算，从而避免 Windows/Linux 换行差异破坏复核。旧 A1 RDKit 消融固定使用 `rdkit_2d_legacy_fixed/scaled24_v1`，不会被新 V1 的训练分区 z-score 语义覆盖。
 
 消融配置通过 `extends` 继承完整基线，只覆盖目标开关、输出目录和结果文件路径。配置 section 或字段拼写错误会直接报错。
 

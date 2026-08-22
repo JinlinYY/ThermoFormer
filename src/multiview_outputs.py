@@ -98,6 +98,30 @@ def _direction_rows(metrics: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def screening_table(root: Path) -> pd.DataFrame:
+    frozen = root / "results" / "multiview" / "screening" / "screening_metrics.csv"
+    raw_directories = [
+        _seed_dir(
+            root,
+            "screening" if variant_id in SCREENING_VARIANTS else "screening_exploratory",
+            variant_id,
+            protocol,
+            0,
+        )
+        for variant_id in SCREENING_REPORT_VARIANTS
+        for protocol in SCREENING_PROTOCOLS
+    ]
+    if frozen.is_file() and not all(
+        (directory / "metrics.json").is_file()
+        and (directory / "manifest.json").is_file()
+        for directory in raw_directories
+    ):
+        table = pd.read_csv(frozen)
+        expected_rows = len(SCREENING_REPORT_VARIANTS) * len(SCREENING_PROTOCOLS) * 2
+        if len(table) != expected_rows:
+            raise ValueError(
+                f"Frozen screening table has {len(table)} rows; expected {expected_rows}"
+            )
+        return table
     rows = []
     for variant_id in SCREENING_REPORT_VARIANTS:
         for protocol in SCREENING_PROTOCOLS:
@@ -134,7 +158,7 @@ def write_screening_report(root: Path, table: pd.DataFrame) -> Path:
     lines = [
         "# Multi-view ThermoFormer seed-0 screening",
         "",
-        "All rows use committed seed-0 splits and validation-only checkpoint selection. Because Stage B also inspected the held-out test metrics before Stage C variants were fixed, this table is exploratory model-development evidence, not an independent confirmatory test. V3 was added later in the isolated `screening_exploratory` namespace and did not affect Stage C selection.",
+        "All rows use committed seed-0 splits and validation-only checkpoint selection. Because Stage B inspected held-out test metrics before the repeated five-seed Stage C evaluation, this table is test-exposed exploratory evidence, not an independent confirmatory test. V3 was added later in the isolated `screening_exploratory` namespace and did not affect Stage C evaluation.",
         "",
         "| Variant | Protocol | Task | State MAE | State RMSE | State R² | y MAE | y RMSE | y R² | Valid coverage | Train s | Params |",
         "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",

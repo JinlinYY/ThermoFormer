@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import sys
@@ -14,15 +13,11 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.artifacts import portable_artifact_path, resolve_artifact_path
+from src.artifacts import artifact_sha256, portable_artifact_path, resolve_artifact_path
 
 
 def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    return artifact_sha256(path)
 
 
 def _atomic_json(path: Path, payload: Any) -> None:

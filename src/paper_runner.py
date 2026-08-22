@@ -19,7 +19,7 @@ import rdkit
 import torch
 
 from .config import ExperimentConfig, load_experiment_config
-from .artifacts import portable_artifact_path
+from .artifacts import artifact_sha256, portable_artifact_path
 from .auditing import ternary_subsystem_rows
 from .data import discover_vle_workbooks, load_vle_dataset, retain_pure_anchored_systems
 from .evaluation import predict_vle, prediction_metric_rows, write_prediction_csv
@@ -49,11 +49,7 @@ def _json_digest(payload: object) -> str:
 
 
 def _file_digest(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    return artifact_sha256(path)
 
 
 def _normalized_experiment_digest(experiment: ExperimentConfig) -> str:

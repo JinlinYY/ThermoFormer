@@ -4,8 +4,13 @@ from tempfile import TemporaryDirectory
 
 import pandas as pd
 
-from src.multiview_outputs import _direction_rows, formal_seed_table, gate_summary_table
-from src.multiview_protocols import FORMAL_PROTOCOLS, FORMAL_VARIANTS, MULTIVIEW_SEEDS
+from src.multiview_outputs import (
+    _direction_rows, formal_seed_table, gate_summary_table, screening_table,
+)
+from src.multiview_protocols import (
+    FORMAL_PROTOCOLS, FORMAL_VARIANTS, MULTIVIEW_SEEDS,
+    SCREENING_PROTOCOLS, SCREENING_REPORT_VARIANTS,
+)
 
 
 class MultiViewOutputTests(unittest.TestCase):
@@ -83,6 +88,27 @@ class MultiViewOutputTests(unittest.TestCase):
             observed = dict(zip(output["protocol"], output["seeds"]))
             self.assertEqual(observed["unseen_component"], 5)
             self.assertEqual(observed["state_composition_interpolation"], 1)
+
+    def test_screening_report_replays_published_table_without_raw_runs(self) -> None:
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            path = root / "results" / "multiview" / "screening"
+            path.mkdir(parents=True)
+            rows = [
+                {
+                    "variant_id": variant,
+                    "protocol": protocol,
+                    "direction": direction,
+                    "state": "P" if direction == "isothermal" else "T",
+                }
+                for variant in SCREENING_REPORT_VARIANTS
+                for protocol in SCREENING_PROTOCOLS
+                for direction in ("isothermal", "isobaric")
+            ]
+            pd.DataFrame(rows).to_csv(path / "screening_metrics.csv", index=False)
+            replayed = screening_table(root)
+            self.assertEqual(len(replayed), len(rows))
+            self.assertEqual(set(replayed["variant_id"]), set(SCREENING_REPORT_VARIANTS))
 
 
 if __name__ == "__main__":

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import csv
-import hashlib
 import json
 import math
 import os
@@ -14,7 +13,7 @@ from typing import Any, Literal, Sequence
 
 import numpy as np
 
-from .artifacts import portable_artifact_path, resolve_artifact_path
+from .artifacts import artifact_sha256, portable_artifact_path, resolve_artifact_path
 
 
 IDENTITY_FIELDS = ("scope", "direction", "component_count", "subgroup")
@@ -39,11 +38,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 def _file_digest(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    return artifact_sha256(path)
 
 
 def _atomic_json(path: Path, payload: object) -> None:
