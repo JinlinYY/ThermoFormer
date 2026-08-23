@@ -1,0 +1,132 @@
+{
+  "aggregate_kind": "diagnostic",
+  "aggregation_git_commit": "efee97184467f626a00fe31b55bdd60f7e41f5a4",
+  "artifact_path_schema": "project-relative-v1",
+  "dirty_code_paths": [],
+  "git_commit": "efee97184467f626a00fe31b55bdd60f7e41f5a4",
+  "git_dirty": false,
+  "input_manifest_sha256": {
+    "0": "efe4ada45540b2791754c95a81b037f073ab0876b83432f58adcd06420c8bd68"
+  },
+  "input_provenance": {
+    "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+    "environment_sha256": "28e589adc3ad2d802ec4fb4076888689ac53071c9e057f5562be17e28a2281d9",
+    "feature_cache_sha256": "c4a5ab2de285db15fd03e077a9ddefa63f2b7a9f180deb980668e7fe94edab56",
+    "feature_definition_sha256": "88a9909a120f1b629664d9c6441f16ce931e70145c180ea9137fb0d8b8bd7553",
+    "git_commit": "efee97184467f626a00fe31b55bdd60f7e41f5a4",
+    "protocol": "c2_chemical_bias_full.on.unseen_component",
+    "resolved_config_sha256": "12265e8b6fa482a3aff7eb29f11bade0bf91a544d808041a3158aa51c5682a40"
+  },
+  "outputs": {
+    "metrics_by_seed": {
+      "path": "results/multiview/chemical_attention/pilot/runs/c2_chemical_bias_full.on.unseen_component/diagnostic_metrics_by_seed.csv",
+      "sha256": "b47a45d9efcd0540d8ffe20f6b09bfb1c83ced4ed9df4a4dbd5cf69e52af5fc7"
+    },
+    "metrics_summary": {
+      "path": "results/multiview/chemical_attention/pilot/runs/c2_chemical_bias_full.on.unseen_component/diagnostic_metrics_summary.csv",
+      "sha256": "0aab28b10be3b64ff67e1eb35385ce90d9cc013c048918cd190f32b091bb53a8"
+    }
+  },
+  "protocol": "c2_chemical_bias_full.on.unseen_component",
+  "runtime": {
+    "numpy": "1.26.4",
+    "python": "3.9.25"
+  },
+  "scope_availability": [
+    {
+      "available_seeds": [
+        0
+      ],
+      "component_count": null,
+      "direction": null,
+      "scope": "all",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0
+      ],
+      "component_count": 2,
+      "direction": null,
+      "scope": "cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0
+      ],
+      "component_count": 3,
+      "direction": null,
+      "scope": "cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0
+      ],
+      "component_count": null,
+      "direction": "isobaric",
+      "scope": "direction",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0
+      ],
+      "component_count": null,
+      "direction": "isothermal",
+      "scope": "direction",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0
+      ],
+      "component_count": 2,
+      "direction": "isobaric",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0
+      ],
+      "component_count": 2,
+      "direction": "isothermal",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0
+      ],
+      "component_count": 3,
+      "direction": "isothermal",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0
+      ],
+      "component_count": null,
+      "direction": null,
+      "scope": "unseen_subset",
+      "subgroup": "at_least_one_component_unseen"
+    },
+    {
+      "available_seeds": [
+        0
+      ],
+      "component_count": null,
+      "direction": null,
+      "scope": "unseen_subset",
+      "subgroup": "strict_all_components_unseen"
+    }
+  ],
+  "seeds": [
+    0
+  ],
+  "status": "diagnostic",
+  "training_git_commit": "efee97184467f626a00fe31b55bdd60f7e41f5a4"
+}

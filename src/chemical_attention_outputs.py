@@ -239,6 +239,25 @@ def write_pilot_outputs(project_root: Path) -> tuple[Path, Path, Path]:
 
     lines.extend(
         [
+            "## Pilot decision",
+            "",
+            (
+                "Against the three-view vanilla control (C1), the full chemical-biased "
+                "model (C2) improves only "
+                f"{sum(float(by_identity[('c2_chemical_bias_full', protocol)][metric]) < float(by_identity[('c1_three_view_vanilla', protocol)][metric]) for protocol in ('unseen_component', 'binary_to_ternary_zero_shot') for metric in ('pressure_mae_kpa', 'temperature_mae_k', 'y_mae'))} of 6 MAEs across the two generalization protocols."
+            ),
+            (
+                "Within the context-conditioned decoder family, adding attention pair bias "
+                "(C2 versus C3) improves "
+                f"{sum(float(by_identity[('c2_chemical_bias_full', protocol)][metric]) < float(by_identity[('c3_no_pair_bias', protocol)][metric]) for protocol in ('unseen_component', 'binary_to_ternary_zero_shot') for metric in ('pressure_mae_kpa', 'temperature_mae_k', 'y_mae'))} of 6 generalization MAEs, but does not beat the simpler C1 control overall."
+            ),
+            (
+                "The functional-group branch is not consistently beneficial: C2 improves "
+                f"{sum(float(by_identity[('c2_chemical_bias_full', protocol)][metric]) < float(by_identity[('c4_no_functional_group', protocol)][metric]) for protocol in ('unseen_component', 'binary_to_ternary_zero_shot') for metric in ('pressure_mae_kpa', 'temperature_mae_k', 'y_mae'))} of 6 generalization MAEs versus C4."
+            ),
+            "",
+            "**Go/no-go:** do not replace the current interaction module or start the five-seed campaign on the evidence from this pilot. The useful result is the three-view representation itself (C1); the chemical attention/context module needs redesign or a stronger pilot result before confirmatory training.",
+            "",
             "## Interpretation boundary",
             "",
             "C2 versus C1 isolates the complete interaction-module change; C2 versus C3 isolates attention pair bias; C2 versus C4 isolates the functional-group branch. Seed 0 is sufficient for a go/no-go pilot only. Any replacement claim requires the locked seeds 0--4 campaign.",
