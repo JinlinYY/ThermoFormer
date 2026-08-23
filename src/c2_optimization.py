@@ -339,8 +339,11 @@ def write_c2_formal_report(
     output = aggregate.get("outputs", {}).get("metrics_summary", {})
     if output.get("sha256") != artifact_sha256(summary_path):
         raise ValueError("Formal C2 summary has changed")
-    with summary_path.open("r", encoding="utf-8-sig", newline="") as handle:
-        overall = next(row for row in csv.DictReader(handle) if row.get("scope") == "all")
+    def overall_row(path: Path) -> dict[str, str]:
+        with path.open("r", encoding="utf-8-sig", newline="") as handle:
+            return next(row for row in csv.DictReader(handle) if row.get("scope") == "all")
+
+    overall = overall_row(summary_path)
     selection = json.loads(selection_path.read_text(encoding="utf-8"))
     score = float(selection["scores"][selected])
     metrics = (
@@ -366,7 +369,78 @@ def write_c2_formal_report(
     ]
     for label, key in metrics:
         lines.append(f"| {label} | {float(overall[key + '_mean']):.6f} | {float(overall[key + '_std']):.6f} |")
-    lines.append("")
+    lines.extend(
+        [
+            "",
+            "## Validation candidate capacity",
+            "",
+            "| candidate | trainable parameters | validation score |",
+            "|---|---:|---:|",
+        ]
+    )
+    selection_runs = selection_path.parent / "runs"
+    for candidate, config_value in C2_CANDIDATES.items():
+        candidate_config = load_experiment_config(project_root / config_value)
+        candidate_protocol = f"{candidate_config.name}.on.{C2_SELECTION_PROTOCOL}"
+        seed_manifest = json.loads(
+            (selection_runs / candidate_protocol / "seed_0/manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        lines.append(
+            f"| {candidate} | {int(seed_manifest['trainable_parameters']):,} | "
+            f"{float(selection['scores'][candidate]):.6f} |"
+        )
+    comparison_root = (
+        project_root / "results/multiview/chemical_attention/formal/runs"
+    )
+    comparison_specs = (
+        ("C1 three-view vanilla", "c1_three_view_vanilla.on.overall_binary_ternary"),
+        ("C2 original", "c2_chemical_bias_full.on.overall_binary_ternary"),
+        ("C3 no attention pair bias", "c3_no_pair_bias.on.overall_binary_ternary"),
+    )
+    optimized_manifest = json.loads(
+        (protocol_dir / "seed_0/manifest.json").read_text(encoding="utf-8")
+    )
+    comparison_rows = [
+        ("C2 optimized headwise", overall, int(optimized_manifest["trainable_parameters"]))
+    ]
+    for label, protocol_name in comparison_specs:
+        reference_dir = comparison_root / protocol_name
+        reference_manifest = json.loads(
+            (reference_dir / "seed_0/manifest.json").read_text(encoding="utf-8")
+        )
+        comparison_rows.append(
+            (
+                label,
+                overall_row(reference_dir / "metrics_summary.csv"),
+                int(reference_manifest["trainable_parameters"]),
+            )
+        )
+    lines.extend(
+        [
+            "",
+            "## Comparison with the frozen ablation",
+            "",
+            "| variant | parameters | P MAE (kPa) | T MAE (K) | y MAE |",
+            "|---|---:|---:|---:|---:|",
+        ]
+    )
+    for label, row, parameters in comparison_rows:
+        lines.append(
+            f"| {label} | {parameters:,} | {float(row['pressure_mae_kpa_mean']):.4f} | "
+            f"{float(row['temperature_mae_k_mean']):.4f} | {float(row['y_mae_mean']):.6f} |"
+        )
+    lines.extend(
+        [
+            "",
+            "Conclusion: the validation-selected headwise bias is not the overall test winner. "
+            "It slightly improves y MAE over C1, but degrades pressure, while C3 remains better "
+            "on T and y. The current ThermoFormer should therefore not be replaced by this C2.",
+            "No additional configuration was chosen after observing these test results.",
+            "",
+        ]
+    )
     top_report = project_root / "experiments/multiview/chemical_attention/c2_optimization/results.md"
     candidate_report = (
         project_root / "experiments/multiview/chemical_attention/c2_optimization"
