@@ -11,6 +11,11 @@ test evaluation.
 
 All candidates use data supervision only (`epochs_physics=0`).
 
+The immutable validation evidence is written to `selection_results.md` (and
+each candidate's file of the same name). The later five-seed test evaluation
+is written separately to `results.md`, so formal reporting cannot invalidate
+the frozen selection manifest.
+
 ```powershell
 conda run --no-capture-output -n ggnn39 python scripts\run_c2_optimization.py --device cuda
 ```

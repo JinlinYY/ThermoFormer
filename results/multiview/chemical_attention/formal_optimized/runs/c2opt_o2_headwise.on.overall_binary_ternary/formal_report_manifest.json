@@ -1,5 +1,49 @@
 {
   "aggregate_manifest_sha256": "85f2ab8287975f80abca103049d3ab358bc9651b46fdef679aa1f41571ddc8fd",
+  "comparison_inputs": {
+    "c1_three_view_vanilla.on.overall_binary_ternary": {
+      "aggregate_manifest": {
+        "path": "results/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/aggregate_manifest.json",
+        "sha256": "5ac9f8c8643860d64ad5a457347b3500d27eb1857ee6f0f4d70e8de3a6996e9a"
+      },
+      "metrics_summary": {
+        "path": "results/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/metrics_summary.csv",
+        "sha256": "43cccc6b6e638d0b052885f2b9e101a0bd67f22e3026e24f802a470256e63a0f"
+      },
+      "seed_0_manifest": {
+        "path": "results/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_0/manifest.json",
+        "sha256": "ae8667be7ef25cc4a7c3a81f97f1bbcfcbf735380f88958667f2cea058040d85"
+      }
+    },
+    "c2_chemical_bias_full.on.overall_binary_ternary": {
+      "aggregate_manifest": {
+        "path": "results/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/aggregate_manifest.json",
+        "sha256": "914579d76e3f52e223b32cc0753b5155923731e2c61eb4c74013adc7bc972393"
+      },
+      "metrics_summary": {
+        "path": "results/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/metrics_summary.csv",
+        "sha256": "32d8cf09f3f58c450f1519df6b23e1490c47d67798a41892b0cc0e1f60cb274d"
+      },
+      "seed_0_manifest": {
+        "path": "results/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_0/manifest.json",
+        "sha256": "bbc0c0943f8f185f9a5804e19e0c147e5b43c4c8ae5e7dbf6350be2c24e721ee"
+      }
+    },
+    "c3_no_pair_bias.on.overall_binary_ternary": {
+      "aggregate_manifest": {
+        "path": "results/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/aggregate_manifest.json",
+        "sha256": "a8f14ccf8fc64bc58b8935c01f6cb228e81d42df26eef46a75261ba85c74678a"
+      },
+      "metrics_summary": {
+        "path": "results/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/metrics_summary.csv",
+        "sha256": "b6ae71e9a466fdf57f178231c55256ae995c6c285cf522e277bedcbcdbc8bd00"
+      },
+      "seed_0_manifest": {
+        "path": "results/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_0/manifest.json",
+        "sha256": "a3e768b9015cfc6fca85fb780e9d8458c80ca7c64e081448c8b950f8ec340f87"
+      }
+    }
+  },
   "evaluation_partition": "test",
   "metrics_summary_sha256": "d52c4d2e89bb3309c343018910066d00788b72736b0344bf8367c39fadabbeb6",
   "reports": {
@@ -20,5 +64,6 @@
     4
   ],
   "selected_candidate": "o2_headwise",
+  "selection_manifest_sha256": "5372f5b78199c10687cd544d98279144105e280f9c88bbb0d4e87b5c3ad22780",
   "status": "completed"
 }

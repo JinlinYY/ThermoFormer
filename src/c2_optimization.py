@@ -189,7 +189,7 @@ def write_c2_selection_report(project_root: Path, results_root: Path) -> str:
             f"| {candidate} | {scores[candidate]:.6f} | {'yes' if candidate == selected else ''} |"
         )
     lines.extend(["", f"Locked candidate: `{selected}`.", ""])
-    report_path = project_root / "experiments/multiview/chemical_attention/c2_optimization/results.md"
+    report_path = project_root / "experiments/multiview/chemical_attention/c2_optimization/selection_results.md"
     _atomic_text(report_path, "\n".join(lines))
     candidate_result_paths: dict[str, Path] = {}
     for candidate in C2_CANDIDATES:
@@ -197,7 +197,7 @@ def write_c2_selection_report(project_root: Path, results_root: Path) -> str:
             project_root
             / "experiments/multiview/chemical_attention/c2_optimization"
             / candidate
-            / "results.md"
+            / "selection_results.md"
         )
         _atomic_text(
             candidate_path,
@@ -405,18 +405,53 @@ def write_c2_formal_report(
     comparison_rows = [
         ("C2 optimized headwise", overall, int(optimized_manifest["trainable_parameters"]))
     ]
+    comparison_provenance: dict[str, dict[str, object]] = {}
     for label, protocol_name in comparison_specs:
         reference_dir = comparison_root / protocol_name
+        reference_aggregate_path = reference_dir / "aggregate_manifest.json"
+        reference_summary_path = reference_dir / "metrics_summary.csv"
+        reference_aggregate = json.loads(
+            reference_aggregate_path.read_text(encoding="utf-8")
+        )
+        reference_summary_output = reference_aggregate.get("outputs", {}).get(
+            "metrics_summary", {}
+        )
+        reference_inputs = reference_aggregate.get("input_manifest_sha256", {})
+        reference_seed_manifest_path = reference_dir / "seed_0/manifest.json"
+        if (
+            reference_aggregate.get("status") != "completed"
+            or reference_aggregate.get("protocol") != protocol_name
+            or reference_aggregate.get("seeds") != [0, 1, 2, 3, 4]
+            or reference_summary_output.get("sha256")
+            != artifact_sha256(reference_summary_path)
+            or reference_inputs.get("0")
+            != artifact_sha256(reference_seed_manifest_path)
+        ):
+            raise ValueError(f"Frozen ablation provenance is invalid: {protocol_name}")
         reference_manifest = json.loads(
-            (reference_dir / "seed_0/manifest.json").read_text(encoding="utf-8")
+            reference_seed_manifest_path.read_text(encoding="utf-8")
         )
         comparison_rows.append(
             (
                 label,
-                overall_row(reference_dir / "metrics_summary.csv"),
+                overall_row(reference_summary_path),
                 int(reference_manifest["trainable_parameters"]),
             )
         )
+        comparison_provenance[protocol_name] = {
+            "aggregate_manifest": {
+                "path": portable_artifact_path(reference_aggregate_path),
+                "sha256": artifact_sha256(reference_aggregate_path),
+            },
+            "metrics_summary": {
+                "path": portable_artifact_path(reference_summary_path),
+                "sha256": artifact_sha256(reference_summary_path),
+            },
+            "seed_0_manifest": {
+                "path": portable_artifact_path(reference_seed_manifest_path),
+                "sha256": artifact_sha256(reference_seed_manifest_path),
+            },
+        }
     lines.extend(
         [
             "",
@@ -456,6 +491,8 @@ def write_c2_formal_report(
         "seeds": [0, 1, 2, 3, 4],
         "aggregate_manifest_sha256": artifact_sha256(aggregate_path),
         "metrics_summary_sha256": artifact_sha256(summary_path),
+        "selection_manifest_sha256": artifact_sha256(selection_path),
+        "comparison_inputs": comparison_provenance,
         "reports": {
             "top": {"path": portable_artifact_path(top_report), "sha256": artifact_sha256(top_report)},
             "selected": {
