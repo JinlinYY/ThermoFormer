@@ -24,6 +24,7 @@ class Objective:
     continuity: Tensor
     boundary: Tensor
     solver: Tensor
+    chemical_bias: Tensor
 
     def detached(self) -> dict[str, float]:
         return {
@@ -35,6 +36,7 @@ class Objective:
             "continuity": float(self.continuity.detach().cpu()),
             "boundary": float(self.boundary.detach().cpu()),
             "solver": float(self.solver.detach().cpu()),
+            "chemical_bias": float(self.chemical_bias.detach().cpu()),
         }
 
 
@@ -85,6 +87,7 @@ def experimental_objective(
         continuity=zero,
         boundary=zero,
         solver=zero,
+        chemical_bias=zero,
     )
 
 
@@ -166,6 +169,23 @@ def direct_vle_objective(
         continuity=zero,
         boundary=zero,
         solver=zero,
+        chemical_bias=zero,
+    )
+
+
+def with_chemical_bias_regularization(
+    objective: Objective,
+    state: EquilibriumState,
+    weight: float,
+) -> Objective:
+    """Lightly regularize the effective attention bias, not thermodynamic outputs."""
+    if weight <= 0.0 or state.attention_bias_penalty is None:
+        return objective
+    penalty = state.attention_bias_penalty
+    return replace(
+        objective,
+        total=objective.total + weight * penalty,
+        chemical_bias=penalty,
     )
 
 

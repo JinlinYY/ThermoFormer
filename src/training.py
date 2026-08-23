@@ -19,6 +19,7 @@ from .losses import (
     direct_vle_objective,
     experimental_objective,
     with_local_continuity,
+    with_chemical_bias_regularization,
     with_pure_boundary,
     with_solver_supervision,
 )
@@ -44,6 +45,7 @@ class TrainingConfig:
     continuity_weight: float = 1e-5
     boundary_weight: float = 1e-3
     solver_weight: float = 0.1
+    chemical_bias_weight: float = 0.0
     solver_batches_per_epoch: int = 2
     solver_iterations_train: int = 16
     solver_iterations_eval: int = 48
@@ -74,6 +76,7 @@ class TrainingConfig:
             "continuity_weight": self.continuity_weight,
             "boundary_weight": self.boundary_weight,
             "solver_weight": self.solver_weight,
+            "chemical_bias_weight": self.chemical_bias_weight,
             "gradient_clip": self.gradient_clip,
             "validation_min_delta": self.validation_min_delta,
         }
@@ -114,6 +117,7 @@ class TrainingConfig:
                 self.continuity_weight,
                 self.boundary_weight,
                 self.solver_weight,
+                self.chemical_bias_weight,
                 self.validation_min_delta,
             )
         ):
@@ -194,6 +198,11 @@ def _objective(
         mask=batch.mask,
         pressure_weight=config.pressure_weight,
         pure_weight=config.pure_weight,
+    )
+    objective = with_chemical_bias_regularization(
+        objective,
+        state,
+        weight=config.chemical_bias_weight,
     )
     objective = with_local_continuity(
         objective,
@@ -316,6 +325,7 @@ def fit_model(
         epochs: int,
         physics: bool,
         minimum_epochs: int,
+        epoch_offset: int,
     ) -> None:
         nonlocal best_state, best_validation
         if epochs == 0:
@@ -333,6 +343,9 @@ def fit_model(
         stage_best_validation = best_validation
         epochs_without_improvement = 0
         for epoch in range(1, epochs + 1):
+            set_training_epoch = getattr(model, "set_training_epoch", None)
+            if callable(set_training_epoch):
+                set_training_epoch(epoch_offset + epoch)
             train_metrics = _run_epoch(
                 model, train_loader, device, config, optimizer, physics
             )
@@ -384,12 +397,14 @@ def fit_model(
         config.epochs_supervised,
         False,
         config.minimum_supervised_epochs,
+        0,
     )
     train_stage(
         "physics",
         config.epochs_physics,
         True,
         config.minimum_physics_epochs,
+        config.epochs_supervised,
     )
     model.load_state_dict(best_state)
     return FitResult(

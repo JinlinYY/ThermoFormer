@@ -110,12 +110,18 @@ class PaperRunnerTests(unittest.TestCase):
                 results_root=root / "results",
                 feature_cache=cache,
                 run_kind="smoke",
+                evaluation_partition="validation",
             )
 
             run_dir = root / "runs" / "runner_contract" / "seed_0"
             result_dir = root / "results" / "runner_contract" / "seed_0"
             checkpoint = root / "checkpoints" / "runner_contract" / "seed_0" / "best_model.pt"
             self.assertEqual(manifest["status"], "smoke")
+            self.assertEqual(manifest["evaluation_partition"], "validation")
+            self.assertEqual(manifest["rows"]["evaluated_rows"], len(split.validation))
+            self.assertEqual(
+                manifest["physical_consistency"]["status"], "not_evaluated"
+            )
             self.assertRegex(manifest["git_commit"], r"^[0-9a-f]{7,40}$")
             self.assertIsInstance(manifest["git_dirty"], bool)
             self.assertRegex(manifest["resolved_config_sha256"], r"^[0-9a-f]{64}$")

@@ -27,6 +27,86 @@ def multiview_model() -> ThermoFormer:
 
 
 class MultiViewRepresentationTests(unittest.TestCase):
+    def test_headwise_chemical_bias_is_gated_symmetric_and_curriculum_controlled(self) -> None:
+        torch.manual_seed(13)
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=9,
+                hidden_dim=12,
+                layers=2,
+                heads=3,
+                fusion_mode="naive",
+                rdkit_feature_dim=2,
+                unimol_feature_dim=4,
+                functional_group_feature_dim=3,
+                chemical_attention_bias=True,
+                context_pair_interaction=True,
+                chemical_bias_headwise=True,
+                chemical_bias_gate_init=0.03,
+                chemical_bias_warmup_start=5,
+                chemical_bias_warmup_end=20,
+                chemical_bias_hidden_dim=8,
+                chemical_bias_dropout=0.05,
+            )
+        ).eval()
+        molecules = torch.randn(1, 3, 9)
+        temperature = torch.tensor([[345.0]])
+        pressure = torch.tensor([[120.0]])
+        composition = torch.tensor([[0.2, 0.3, 0.5]])
+        mask = torch.ones(1, 3)
+
+        self.assertEqual(tuple(model.chemical_head_gates().shape), (2, 3))
+        torch.testing.assert_close(
+            model.chemical_head_gates(), torch.full((2, 3), 0.03), atol=1e-6, rtol=0.0
+        )
+        model.set_training_epoch(4)
+        before = model(molecules, temperature, pressure, composition, mask)
+        assert before.attention_bias is not None
+        torch.testing.assert_close(before.attention_bias, torch.zeros_like(before.attention_bias))
+        model.set_training_epoch(12)
+        middle = model(molecules, temperature, pressure, composition, mask)
+        model.set_training_epoch(20)
+        full = model(molecules, temperature, pressure, composition, mask)
+        assert middle.attention_bias is not None and full.attention_bias is not None
+        torch.testing.assert_close(
+            middle.attention_bias,
+            full.attention_bias * (7.0 / 15.0),
+            atol=1e-6,
+            rtol=1e-5,
+        )
+        torch.testing.assert_close(full.attention_bias, full.attention_bias.transpose(1, 2))
+        self.assertTrue(full.attention_bias.requires_grad)
+        assert full.attention_bias_penalty is not None
+        full.attention_bias_penalty.backward()
+        self.assertIsNotNone(model.chemical_head_gate_logits.grad)
+
+    def test_modality_gates_start_with_reduced_functional_group_contribution(self) -> None:
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=9,
+                hidden_dim=12,
+                layers=2,
+                heads=3,
+                fusion_mode="naive",
+                rdkit_feature_dim=2,
+                unimol_feature_dim=4,
+                functional_group_feature_dim=3,
+                chemical_attention_bias=True,
+                context_pair_interaction=True,
+                chemical_bias_headwise=True,
+                chemical_bias_modality_gates=True,
+                chemical_bias_gate_init=0.03,
+                chemical_bias_functional_group_gate_init=0.1,
+                chemical_bias_hidden_dim=8,
+            )
+        )
+        gates = model.chemical_modality_gates()
+        self.assertEqual(set(gates), {"rdkit", "unimol", "functional_group", "state"})
+        self.assertAlmostEqual(float(gates["rdkit"]), 0.95, places=6)
+        self.assertAlmostEqual(float(gates["unimol"]), 0.95, places=6)
+        self.assertAlmostEqual(float(gates["functional_group"]), 0.1, places=6)
+        self.assertAlmostEqual(float(gates["state"]), 0.95, places=6)
+
     def test_chemical_attention_bias_is_symmetric_and_permutation_equivariant(self) -> None:
         torch.manual_seed(17)
         config = ThermoFormerConfig(
@@ -203,6 +283,45 @@ class MultiViewRepresentationTests(unittest.TestCase):
             torch.isfinite(model.chemical_bias_mlp[-1].weight.grad).all()
         )
 
+    @unittest.skipUnless(torch.cuda.is_available(), "CUDA is required")
+    def test_headwise_modality_bias_supports_cuda_higher_order_backward(self) -> None:
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=9,
+                hidden_dim=12,
+                layers=2,
+                heads=3,
+                fusion_mode="naive",
+                rdkit_feature_dim=2,
+                unimol_feature_dim=4,
+                functional_group_feature_dim=3,
+                chemical_attention_bias=True,
+                context_pair_interaction=True,
+                chemical_bias_headwise=True,
+                chemical_bias_modality_gates=True,
+                chemical_bias_hidden_dim=8,
+                chemical_bias_warmup_start=5,
+                chemical_bias_warmup_end=20,
+            )
+        ).cuda()
+        model.set_training_epoch(20)
+        output = model(
+            torch.randn(1, 3, 9, device="cuda"),
+            torch.full((1, 1), 345.0, device="cuda"),
+            torch.full((1, 1), 120.0, device="cuda"),
+            torch.tensor([[0.2, 0.3, 0.5]], device="cuda"),
+            torch.ones(1, 3, device="cuda"),
+        )
+        output.log_gamma.square().mean().backward()
+        assert model.chemical_bias_mlps is not None
+        self.assertTrue(
+            all(
+                parameter.grad is not None and torch.isfinite(parameter.grad).all()
+                for parameter in model.chemical_bias_mlps.parameters()
+            )
+        )
+        self.assertIsNotNone(model.chemical_head_gate_logits.grad)
+
     def test_rdkit_scaler_uses_train_molecules_only(self) -> None:
         raw = {
             "train-a": np.asarray([0.0, 10.0], dtype=np.float32),
@@ -330,6 +449,17 @@ class MultiViewRepresentationTests(unittest.TestCase):
             output.log_gamma.detach(), torch.tensor([[0.04087700, 0.12082836]]),
             rtol=1e-5, atol=1e-6,
         )
+
+    def test_original_chemical_bias_checkpoint_remains_loadable(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        checkpoint_path = (
+            root / "checkpoints" / "multiview" / "chemical_attention" / "formal"
+            / "c2_chemical_bias_full.on.overall_binary_ternary" / "seed_0"
+            / "best_model.pt"
+        )
+        checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+        model = ThermoFormer(ThermoFormerConfig(**checkpoint["model_config"]))
+        model.load_state_dict(checkpoint["model"], strict=True)
 
 
 if __name__ == "__main__":

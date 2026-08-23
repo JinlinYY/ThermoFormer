@@ -82,6 +82,7 @@ def requested_run_fingerprint(
     device_name: str | None,
     overrides: Sequence[str] = (),
     run_kind: str = "formal",
+    evaluation_partition: str = "test",
 ) -> str:
     """Hash every cheap-to-check input needed to resume an existing run."""
     experiment = load_experiment_config(config_path, overrides)
@@ -98,6 +99,7 @@ def requested_run_fingerprint(
             "seed": int(seed),
             "runtime": runtime,
             "run_kind": run_kind,
+            "evaluation_partition": evaluation_partition,
         }
     )
 
@@ -286,11 +288,14 @@ def run_paper_experiment(
     overrides: Sequence[str] = (),
     allow_overwrite: bool = False,
     run_kind: str = "formal",
+    evaluation_partition: str = "test",
 ) -> dict[str, Any]:
     """Train/evaluate one immutable split and export every required artifact."""
-    if run_kind not in {"formal", "pilot", "smoke"}:
-        raise ValueError("run_kind must be 'formal', 'pilot', or 'smoke'")
-    audited_run = run_kind in {"formal", "pilot"}
+    if run_kind not in {"formal", "pilot", "selection", "smoke"}:
+        raise ValueError("run_kind must be formal, pilot, selection, or smoke")
+    if evaluation_partition not in {"test", "validation"}:
+        raise ValueError("evaluation_partition must be 'test' or 'validation'")
+    audited_run = run_kind in {"formal", "pilot", "selection"}
     git_commit = _git_commit()
     worktree_dirty, git_dirty, dirty_code_paths = _git_state()
     if audited_run and git_dirty:
@@ -427,6 +432,7 @@ def run_paper_experiment(
         device_name,
         overrides,
         run_kind,
+        evaluation_partition,
     )
     runtime_context = _runtime_context(requested_device)
     environment_sha256 = _json_digest(runtime_context)
@@ -473,9 +479,12 @@ def run_paper_experiment(
         else 0.0
     )
     inference_started = time.perf_counter()
+    evaluation_samples = (
+        split.test if evaluation_partition == "test" else split.validation
+    )
     predictions = predict_vle(
         model,
-        split.test,
+        evaluation_samples,
         feature_map,
         batch_size=training.batch_size,
         device=device,
@@ -487,29 +496,36 @@ def run_paper_experiment(
         subsystem_coverage = {
             str(row["ternary_system_id"]): int(row["covered_binary_subsystems"])
             for row in ternary_subsystem_rows(
-                split.test, binary_reference_samples=split.train
+                evaluation_samples, binary_reference_samples=split.train
             )
         }
         for record in predictions:
             record["binary_subsystem_coverage"] = subsystem_coverage.get(
                 str(record["system_id"])
             )
-    if split_protocol == "unseen_component":
+    if split_protocol == "unseen_component" and evaluation_partition == "test":
         strict_ids = set(split.metadata.get("strict_unseen_sample_ids", []))
         for record in predictions:
             record["strict_unseen"] = record["sample_id"] in strict_ids
     metric_rows = prediction_metric_rows(predictions)
-    physical_consistency = evaluate_thermodynamic_consistency(
-        model,
-        split.test,
-        feature_map,
-        device,
-        prediction_records=predictions,
-        solver_iterations=training.solver_iterations_eval,
-        grid_points=5 if run_kind == "smoke" else 21,
-        max_systems=2 if run_kind == "smoke" else None,
-        pure_reference_samples=split.train,
-        pure_property_catalog=catalog,
+    physical_consistency = (
+        evaluate_thermodynamic_consistency(
+            model,
+            split.test,
+            feature_map,
+            device,
+            prediction_records=predictions,
+            solver_iterations=training.solver_iterations_eval,
+            grid_points=5 if run_kind == "smoke" else 21,
+            max_systems=2 if run_kind == "smoke" else None,
+            pure_reference_samples=split.train,
+            pure_property_catalog=catalog,
+        )
+        if evaluation_partition == "test"
+        else {
+            "status": "not_evaluated",
+            "reason": "validation-only architecture selection",
+        }
     )
     checkpoint_payload = {
         "model_name": "ThermoFormer",
@@ -548,6 +564,7 @@ def run_paper_experiment(
         "git_worktree_dirty": worktree_dirty,
         "dirty_code_paths": dirty_code_paths,
         "run_kind": run_kind,
+        "evaluation_partition": evaluation_partition,
         "best_validation_loss": result.best_validation_loss,
         "units": {"temperature": "K", "pressure": "kPa"},
     }
@@ -587,6 +604,7 @@ def run_paper_experiment(
         "git_worktree_dirty": worktree_dirty,
         "dirty_code_paths": dirty_code_paths,
         "run_kind": run_kind,
+        "evaluation_partition": evaluation_partition,
         "dataset_sha256": dataset_digest(samples),
         "split_sha256": split_sha256,
         "resolved_config_sha256": resolved_config_sha256,
@@ -616,6 +634,8 @@ def run_paper_experiment(
             "train": len(split.train),
             "validation": len(split.validation),
             "test": len(split.test),
+            "evaluated_partition": evaluation_partition,
+            "evaluated_rows": len(evaluation_samples),
             "prediction_attempts": len(predictions),
         },
         "training_seconds": training_seconds,

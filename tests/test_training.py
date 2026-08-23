@@ -321,6 +321,9 @@ class TrainingSmokeTests(unittest.TestCase):
         with (
             mock.patch("src.thermo.solve_isothermal", wraps=solve_isothermal) as isothermal,
             mock.patch("src.thermo.solve_isobaric", wraps=solve_isobaric) as isobaric,
+            mock.patch.object(
+                model, "set_training_epoch", wraps=model.set_training_epoch
+            ) as set_training_epoch,
         ):
             result = fit_model(model, samples, features, config, torch.device("cpu"))
 
@@ -334,6 +337,9 @@ class TrainingSmokeTests(unittest.TestCase):
             self.assertTrue(np.isfinite(result.history[1]["train"][name]))
         self.assertIsNone(isothermal.call_args.kwargs.get("initial_pressure_kpa"))
         self.assertIsNone(isobaric.call_args.kwargs.get("initial_temperature_k"))
+        self.assertEqual(
+            [call.args[0] for call in set_training_epoch.call_args_list], [1, 2]
+        )
 
 
 if __name__ == "__main__":

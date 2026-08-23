@@ -191,6 +191,17 @@ class ExperimentConfig:
             raise ValueError(
                 "Configure context_pair_interaction in the encoder section"
             )
+        if (
+            self.model.chemical_bias_headwise
+            or self.model.chemical_bias_shared_gate
+            or self.model.chemical_bias_modality_gates
+        ) and not self.encoder.chemical_attention_bias:
+            raise ValueError("Chemical-bias controls require encoder.chemical_attention_bias")
+        if (
+            self.model.chemical_bias_modality_gates
+            and not self.encoder.use_functional_groups
+        ):
+            raise ValueError("Chemical modality gates require the functional-group branch")
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)

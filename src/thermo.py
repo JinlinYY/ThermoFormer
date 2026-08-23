@@ -28,6 +28,8 @@ class EquilibriumState:
     y: Tensor
     gamma: Tensor
     psat_kpa: Tensor
+    attention_bias: Tensor | None = None
+    attention_bias_penalty: Tensor | None = None
     converged: Tensor | None = None
     iterations: int = 0
 
@@ -160,6 +162,8 @@ def equilibrium_at_tp(
         y=vapor,
         gamma=gamma,
         psat_kpa=psat,
+        attention_bias=outputs.attention_bias,
+        attention_bias_penalty=outputs.attention_bias_penalty,
     )
 
 

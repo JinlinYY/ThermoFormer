@@ -1,0 +1,13 @@
+{
+  "extends": "../o2_headwise/config.json",
+  "name": "c2opt_o3_headwise_curriculum",
+  "model": {
+    "chemical_bias_hidden_dim": 96,
+    "chemical_bias_warmup_start": 5,
+    "chemical_bias_warmup_end": 20
+  },
+  "runtime": {
+    "output_dir": "runs/experiments/multiview/chemical_attention/c2_optimization/o3_headwise_curriculum",
+    "results_file": "experiments/multiview/chemical_attention/c2_optimization/o3_headwise_curriculum/results.md"
+  }
+}
