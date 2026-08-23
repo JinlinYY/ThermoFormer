@@ -39,5 +39,5 @@ CHEMICAL_ATTENTION_PROTOCOLS = (
     "unseen_component",
     "binary_to_ternary_zero_shot",
 )
+CHEMICAL_ATTENTION_FORMAL_PROTOCOLS = ("overall_binary_ternary",)
 CHEMICAL_ATTENTION_SEEDS = (0, 1, 2, 3, 4)
-

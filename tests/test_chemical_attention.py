@@ -4,6 +4,7 @@ from pathlib import Path
 
 from scripts.run_chemical_attention_suite import complete_pilot_matrix, main
 from src.chemical_attention_protocols import (
+    CHEMICAL_ATTENTION_FORMAL_PROTOCOLS,
     CHEMICAL_ATTENTION_PROTOCOLS,
     CHEMICAL_ATTENTION_VARIANTS,
 )
@@ -12,6 +13,9 @@ from src.config import load_experiment_config
 
 class ChemicalAttentionExperimentTests(unittest.TestCase):
     ROOT = Path(__file__).resolve().parents[1]
+
+    def test_formal_campaign_contains_only_joint_binary_ternary_protocol(self) -> None:
+        self.assertEqual(CHEMICAL_ATTENTION_FORMAL_PROTOCOLS, ("overall_binary_ternary",))
 
     def test_variants_are_single_factor_controlled(self) -> None:
         configs = {
@@ -28,6 +32,12 @@ class ChemicalAttentionExperimentTests(unittest.TestCase):
         self.assertTrue(configs["c3_no_pair_bias"].encoder.context_pair_interaction)
         self.assertFalse(configs["c4_no_functional_group"].encoder.use_functional_groups)
         self.assertTrue(configs["c4_no_functional_group"].encoder.chemical_attention_bias)
+
+    def test_variants_use_supervised_training_only(self) -> None:
+        for variant in CHEMICAL_ATTENTION_VARIANTS.values():
+            config = load_experiment_config(self.ROOT / variant.config)
+            self.assertEqual(config.training.epochs_physics, 0)
+            self.assertEqual(config.training.minimum_physics_epochs, 0)
 
     def test_formal_stage_requires_explicit_review_gate(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

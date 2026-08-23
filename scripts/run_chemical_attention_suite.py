@@ -13,6 +13,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.chemical_attention_protocols import (
+    CHEMICAL_ATTENTION_FORMAL_PROTOCOLS,
     CHEMICAL_ATTENTION_PROTOCOLS,
     CHEMICAL_ATTENTION_SEEDS,
     CHEMICAL_ATTENTION_VARIANTS,
@@ -71,7 +72,12 @@ def complete_pilot_matrix(
 def main(argv: list[str] | None = None) -> None:
     args = parser().parse_args(argv)
     variants = tuple(args.variant or CHEMICAL_ATTENTION_VARIANTS)
-    protocols = tuple(args.protocol or CHEMICAL_ATTENTION_PROTOCOLS)
+    default_protocols = (
+        CHEMICAL_ATTENTION_FORMAL_PROTOCOLS
+        if args.stage == "formal"
+        else CHEMICAL_ATTENTION_PROTOCOLS
+    )
+    protocols = tuple(args.protocol or default_protocols)
     seeds = (0,) if args.stage == "pilot" else CHEMICAL_ATTENTION_SEEDS
     artifact_root = args.artifact_root.resolve()
     if args.stage == "formal":
