@@ -8,6 +8,7 @@ import os
 import tempfile
 from pathlib import Path
 
+from .artifacts import artifact_sha256
 from .chemical_attention_protocols import (
     CHEMICAL_ATTENTION_PROTOCOLS,
     CHEMICAL_ATTENTION_VARIANTS,
@@ -16,8 +17,15 @@ from .chemical_attention_protocols import (
 
 METRICS = (
     ("pressure_mae_kpa_mean", "P MAE (kPa)"),
+    ("pressure_rmse_kpa_mean", "P RMSE (kPa)"),
+    ("pressure_r2_mean", "P R2"),
     ("temperature_mae_k_mean", "T MAE (K)"),
+    ("temperature_rmse_k_mean", "T RMSE (K)"),
+    ("temperature_r2_mean", "T R2"),
     ("y_mae_mean", "y MAE"),
+    ("y_rmse_mean", "y RMSE"),
+    ("y_r2_mean", "y R2"),
+    ("valid_coverage_mean", "valid coverage"),
 )
 
 
@@ -48,7 +56,14 @@ def _all_scope(summary_path: Path) -> dict[str, str]:
 
 
 def collect_pilot_rows(project_root: Path) -> list[dict[str, object]]:
-    result_root = project_root / "results" / "chemical_attention" / "pilot" / "runs"
+    result_root = (
+        project_root
+        / "results"
+        / "multiview"
+        / "chemical_attention"
+        / "pilot"
+        / "runs"
+    )
     rows: list[dict[str, object]] = []
     for variant_id, variant in CHEMICAL_ATTENTION_VARIANTS.items():
         for protocol in CHEMICAL_ATTENTION_PROTOCOLS:
@@ -56,8 +71,26 @@ def collect_pilot_rows(project_root: Path) -> list[dict[str, object]]:
             run_dir = result_root / run_name
             summary_path = run_dir / "diagnostic_metrics_summary.csv"
             manifest_path = run_dir / "seed_0" / "manifest.json"
-            if not summary_path.is_file() or not manifest_path.is_file():
+            aggregate_path = run_dir / "diagnostic_aggregate_manifest.json"
+            if (
+                not summary_path.is_file()
+                or not manifest_path.is_file()
+                or not aggregate_path.is_file()
+            ):
                 raise FileNotFoundError(f"Incomplete pilot output: {run_dir}")
+            aggregate = json.loads(aggregate_path.read_text(encoding="utf-8"))
+            expected_manifest_sha = aggregate.get("input_manifest_sha256", {}).get("0")
+            expected_summary_sha = (
+                aggregate.get("outputs", {}).get("metrics_summary", {}).get("sha256")
+            )
+            if (
+                aggregate.get("status") != "diagnostic"
+                or aggregate.get("aggregate_kind") != "diagnostic"
+                or aggregate.get("seeds") != [0]
+                or expected_manifest_sha != artifact_sha256(manifest_path)
+                or expected_summary_sha != artifact_sha256(summary_path)
+            ):
+                raise ValueError(f"Invalid or stale diagnostic aggregate: {aggregate_path}")
             summary = _all_scope(summary_path)
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
             if manifest.get("status") != "completed":
@@ -100,7 +133,12 @@ def _write_csv(path: Path, rows: list[dict[str, object]]) -> None:
 def write_pilot_outputs(project_root: Path) -> tuple[Path, Path]:
     rows = collect_pilot_rows(project_root)
     csv_path = (
-        project_root / "results" / "chemical_attention" / "pilot" / "pilot_performance.csv"
+        project_root
+        / "results"
+        / "multiview"
+        / "chemical_attention"
+        / "pilot"
+        / "pilot_performance.csv"
     )
     report_path = project_root / "reports" / "chemical_attention_pilot_report.md"
     _write_csv(csv_path, rows)
@@ -143,8 +181,10 @@ def write_pilot_outputs(project_root: Path) -> tuple[Path, Path]:
             [
                 f"### {protocol}",
                 "",
-                "| Variant | P MAE (kPa) | T MAE (K) | y MAE |",
-                "|---|---:|---:|---:|",
+                "Each cell lists MAE / RMSE / R².",
+                "",
+                "| Variant | P (kPa) | T (K) | y | valid coverage |",
+                "|---|---:|---:|---:|---:|",
             ]
         )
         for variant_id, variant in CHEMICAL_ATTENTION_VARIANTS.items():
@@ -152,9 +192,30 @@ def write_pilot_outputs(project_root: Path) -> tuple[Path, Path]:
             def formatted(key: str, digits: int) -> str:
                 value = row[key]
                 return "—" if value is None else f"{float(value):.{digits}f}"
+            pressure = " / ".join(
+                [
+                    formatted("pressure_mae_kpa", 3),
+                    formatted("pressure_rmse_kpa", 3),
+                    formatted("pressure_r2", 3),
+                ]
+            )
+            temperature = " / ".join(
+                [
+                    formatted("temperature_mae_k", 3),
+                    formatted("temperature_rmse_k", 3),
+                    formatted("temperature_r2", 3),
+                ]
+            )
+            vapor = " / ".join(
+                [
+                    formatted("y_mae", 4),
+                    formatted("y_rmse", 4),
+                    formatted("y_r2", 3),
+                ]
+            )
             lines.append(
-                f"| {variant.label} | {formatted('pressure_mae_kpa', 3)} | "
-                f"{formatted('temperature_mae_k', 3)} | {formatted('y_mae', 4)} |"
+                f"| {variant.label} | {pressure} | {temperature} | {vapor} | "
+                f"{formatted('valid_coverage', 3)} |"
             )
         lines.append("")
 
@@ -172,8 +233,10 @@ def write_pilot_outputs(project_root: Path) -> tuple[Path, Path]:
         page = [f"# {variant_id} pilot results", "", "Status: seed-0 pilot completed.", ""]
         for row in variant_rows:
             page.append(
-                f"- {row['protocol']}: P MAE={row['pressure_mae_kpa']}, "
-                f"T MAE={row['temperature_mae_k']}, y MAE={row['y_mae']}"
+                f"- {row['protocol']}: P MAE/RMSE/R2={row['pressure_mae_kpa']}/"
+                f"{row['pressure_rmse_kpa']}/{row['pressure_r2']}; "
+                f"T={row['temperature_mae_k']}/{row['temperature_rmse_k']}/"
+                f"{row['temperature_r2']}; y={row['y_mae']}/{row['y_rmse']}/{row['y_r2']}"
             )
         page.extend(["", "See `reports/chemical_attention_pilot_report.md` for the controlled comparison.", ""])
         _atomic_text(
@@ -186,4 +249,3 @@ def write_pilot_outputs(project_root: Path) -> tuple[Path, Path]:
             "\n".join(page),
         )
     return csv_path, report_path
-

@@ -867,16 +867,15 @@ class ThermoFormer(nn.Module):
         if self.vapor_pressure is None:
             raise RuntimeError("Thermodynamic decoder is unavailable")
         log_psat = self.vapor_pressure(molecular_tokens, temperature_k) * mask
-        components, mixture, attention_bias = self._structural_context(
-            molecular_tokens,
-            molecular_views,
-            temperature_k,
-            pressure_kpa,
-            x,
-            mask,
-        )
-
         if self.config.activity_mode == "ideal":
+            components, _, attention_bias = self._structural_context(
+                molecular_tokens,
+                molecular_views,
+                temperature_k,
+                pressure_kpa,
+                x,
+                mask,
+            )
             return ModelOutputs(
                 log_gamma=torch.zeros_like(x) * mask,
                 log_psat=log_psat,
@@ -889,6 +888,14 @@ class ThermoFormer(nn.Module):
         outer_grad_enabled = torch.is_grad_enabled()
         with torch.enable_grad():
             x_variable = x if x.requires_grad else x.detach().clone().requires_grad_(True)
+            components, mixture, attention_bias = self._structural_context(
+                molecular_tokens,
+                molecular_views,
+                temperature_k,
+                pressure_kpa,
+                x_variable,
+                mask,
+            )
             tokens, context = self._nonideality_tokens(
                 components,
                 mixture,

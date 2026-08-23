@@ -11,6 +11,5 @@ conda run --no-capture-output -n ggnn39 python scripts\run_chemical_attention_su
 The five-seed formal stage must only be launched after reviewing the pilot report with the project owner.
 
 ```powershell
-conda run --no-capture-output -n ggnn39 python scripts\run_chemical_attention_suite.py --stage formal --device cuda
+conda run --no-capture-output -n ggnn39 python scripts\run_chemical_attention_suite.py --stage formal --confirm-pilot-reviewed --device cuda
 ```
-

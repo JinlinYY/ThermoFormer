@@ -73,6 +73,14 @@ class MultiViewRepresentationTests(unittest.TestCase):
             rtol=2e-5,
             atol=2e-5,
         )
+        output.log_gamma.square().sum().backward()
+        assert model.chemical_bias_mlp is not None
+        bias_gradient = sum(
+            float(parameter.grad.abs().sum())
+            for parameter in model.chemical_bias_mlp.parameters()
+            if parameter.grad is not None
+        )
+        self.assertGreater(bias_gradient, 0.0)
 
     def test_context_pair_changes_with_third_component_environment(self) -> None:
         torch.manual_seed(23)
@@ -133,6 +141,37 @@ class MultiViewRepresentationTests(unittest.TestCase):
             torch.ones(1, 3),
         )
         self.assertTrue(torch.isfinite(output.log_gamma).all())
+
+    def test_chemical_attention_gamma_is_independent_of_input_grad_flag(self) -> None:
+        torch.manual_seed(29)
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=9,
+                hidden_dim=12,
+                layers=1,
+                heads=3,
+                fusion_mode="naive",
+                rdkit_feature_dim=2,
+                unimol_feature_dim=4,
+                functional_group_feature_dim=3,
+                chemical_attention_bias=True,
+                context_pair_interaction=True,
+            )
+        ).eval()
+        molecules = torch.randn(1, 3, 9)
+        temperature = torch.tensor([[345.0]])
+        pressure = torch.tensor([[120.0]])
+        composition = torch.tensor([[0.2, 0.3, 0.5]])
+        mask = torch.ones(1, 3)
+        without_flag = model(molecules, temperature, pressure, composition, mask)
+        with_flag = model(
+            molecules,
+            temperature,
+            pressure,
+            composition.clone().requires_grad_(True),
+            mask,
+        )
+        torch.testing.assert_close(without_flag.log_gamma, with_flag.log_gamma)
 
     def test_rdkit_scaler_uses_train_molecules_only(self) -> None:
         raw = {

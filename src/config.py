@@ -177,6 +177,20 @@ class ExperimentConfig:
     def __post_init__(self) -> None:
         if not isinstance(self.seed, int) or isinstance(self.seed, bool):
             raise ValueError("experiment seed must be an integer")
+        if (
+            self.model.chemical_attention_bias
+            and not self.encoder.chemical_attention_bias
+        ):
+            raise ValueError(
+                "Configure chemical_attention_bias in the encoder section"
+            )
+        if (
+            self.model.context_pair_interaction
+            and not self.encoder.context_pair_interaction
+        ):
+            raise ValueError(
+                "Configure context_pair_interaction in the encoder section"
+            )
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)
