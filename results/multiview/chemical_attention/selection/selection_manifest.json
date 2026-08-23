@@ -1,0 +1,717 @@
+{
+  "aggregate_manifests": {
+    "o0_original": {
+      "path": "results/multiview/chemical_attention/selection/runs/c2opt_o0_original.on.overall_binary_ternary/diagnostic_aggregate_manifest.json",
+      "sha256": "a119b5915c5a4e86ce1ed7f49ab5580d35ec16d56c1e47510e28b80c6679d33e"
+    },
+    "o1_shared_gate": {
+      "path": "results/multiview/chemical_attention/selection/runs/c2opt_o1_shared_gate.on.overall_binary_ternary/diagnostic_aggregate_manifest.json",
+      "sha256": "a49b1cec27cae0bdc83bbe5c376741182a86f0e53cb537d56ffc823121c96761"
+    },
+    "o2_headwise": {
+      "path": "results/multiview/chemical_attention/selection/runs/c2opt_o2_headwise.on.overall_binary_ternary/diagnostic_aggregate_manifest.json",
+      "sha256": "1b23310e2c9631f0814af3d47a6b6ba6d2c8216044fe8d45954def4d3a3b9a4c"
+    },
+    "o3_headwise_curriculum": {
+      "path": "results/multiview/chemical_attention/selection/runs/c2opt_o3_headwise_curriculum.on.overall_binary_ternary/diagnostic_aggregate_manifest.json",
+      "sha256": "b3573279d746d1bba629afb8eedf0f4f200085bee9d5d41e2317fb1919677794"
+    },
+    "o4_headwise_curriculum_modality": {
+      "path": "results/multiview/chemical_attention/selection/runs/c2opt_o4_headwise_curriculum_modality.on.overall_binary_ternary/diagnostic_aggregate_manifest.json",
+      "sha256": "dd88a15fb4fea35fb1054b0adb3f681aa52b28267ef6623dc9b015ef0b8039cf"
+    }
+  },
+  "candidate_results": {
+    "o0_original": {
+      "path": "experiments/multiview/chemical_attention/c2_optimization/o0_original/results.md",
+      "sha256": "c8f4048bb07330553486eb0cac40addd6c638ae39272e695981aa2df5d8b8025"
+    },
+    "o1_shared_gate": {
+      "path": "experiments/multiview/chemical_attention/c2_optimization/o1_shared_gate/results.md",
+      "sha256": "165c7430623df6d7842163347941d0bffb163311511739a2db25d18d77b0cd1b"
+    },
+    "o2_headwise": {
+      "path": "experiments/multiview/chemical_attention/c2_optimization/o2_headwise/results.md",
+      "sha256": "08112a0dce42c8327629edb80ddf82e7426bf7abafd664c5851aa281b33da439"
+    },
+    "o3_headwise_curriculum": {
+      "path": "experiments/multiview/chemical_attention/c2_optimization/o3_headwise_curriculum/results.md",
+      "sha256": "203c5c17f2c05c2cd21bd044f634d6ae2720bb0df92d4aed3833eabf83ee11c8"
+    },
+    "o4_headwise_curriculum_modality": {
+      "path": "experiments/multiview/chemical_attention/c2_optimization/o4_headwise_curriculum_modality/results.md",
+      "sha256": "64945cddc78c52e17052b1890d590c4434a6a561bb5a1d95e088410d58012d55"
+    }
+  },
+  "evaluation_partition": "validation",
+  "protocol": "overall_binary_ternary",
+  "report": {
+    "path": "experiments/multiview/chemical_attention/c2_optimization/results.md",
+    "sha256": "22507fcb8db166cc308b3924f8a6dbe96b9f70425b53fd9f8432f93a03606ab4"
+  },
+  "score_definition": "mean per-seed ratio of P/T/y MAE and RMSE vs o0_original",
+  "scores": {
+    "o0_original": 1.0,
+    "o1_shared_gate": 0.9749410635399988,
+    "o2_headwise": 0.9439809322838055,
+    "o3_headwise_curriculum": 0.9495087924593951,
+    "o4_headwise_curriculum_modality": 0.9643956249705433
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "selected_candidate": "o2_headwise",
+  "selected_config": {
+    "path": "experiments/multiview/chemical_attention/c2_optimization/o2_headwise/config.json",
+    "resolved": {
+      "data": {
+        "failed_weight": 0.0,
+        "max_pressure_kpa": 500.0,
+        "minimum_pure_anchor_temperatures": 2,
+        "pure_property_catalog": "",
+        "root": "dataset",
+        "source_filter": ""
+      },
+      "encoder": {
+        "batch_size": 16,
+        "chemical_attention_bias": true,
+        "context_pair_interaction": true,
+        "fusion_mode": "naive",
+        "model_size": "84m",
+        "representation": "multiview",
+        "use_functional_groups": true,
+        "use_rdkit_descriptors": true,
+        "use_unimol": true
+      },
+      "evaluation": {
+        "folds": 5,
+        "mode": "kfold",
+        "test_fraction": 0.15,
+        "validation_fraction": 0.15
+      },
+      "model": {
+        "activity_mode": "excess_gibbs",
+        "chemical_attention_bias": false,
+        "chemical_bias_apply_to": "all",
+        "chemical_bias_bound": 1.0,
+        "chemical_bias_dropout": 0.05,
+        "chemical_bias_functional_group_gate_init": 0.1,
+        "chemical_bias_gate_init": 0.03,
+        "chemical_bias_headwise": true,
+        "chemical_bias_hidden_dim": 48,
+        "chemical_bias_modality_gate_init": 0.95,
+        "chemical_bias_modality_gates": false,
+        "chemical_bias_shared_gate": false,
+        "chemical_bias_warmup_end": 0,
+        "chemical_bias_warmup_start": 0,
+        "context_pair_interaction": false,
+        "decoder_mode": "thermodynamic",
+        "dropout": 0.0,
+        "feature_dim": null,
+        "feedforward_multiplier": 4,
+        "film_scale": 0.1,
+        "functional_group_feature_dim": 0,
+        "fusion_mode": "legacy",
+        "heads": 6,
+        "hidden_dim": 192,
+        "interaction_mode": "full",
+        "layers": 3,
+        "pair_hidden_dim": 192,
+        "pure_hidden_dim": 192,
+        "rdkit_feature_dim": 0,
+        "unimol_feature_dim": 0,
+        "use_composition_context": true,
+        "use_film": true,
+        "use_mixture_token": true,
+        "use_transformer": true
+      },
+      "name": "c2opt_o2_headwise",
+      "runtime": {
+        "device": "auto",
+        "output_dir": "runs/experiments/multiview/chemical_attention/c2_optimization/o2_headwise",
+        "results_file": "experiments/multiview/chemical_attention/c2_optimization/o2_headwise/results.md"
+      },
+      "seed": 0,
+      "training": {
+        "batch_size": 128,
+        "boundary_weight": 0.001,
+        "chemical_bias_weight": 1e-05,
+        "continuity_weight": 1e-05,
+        "early_stopping_patience": 12,
+        "epochs_physics": 0,
+        "epochs_supervised": 80,
+        "gradient_clip": 5.0,
+        "learning_rate": 0.0002,
+        "minimum_physics_epochs": 0,
+        "minimum_supervised_epochs": 10,
+        "physics_learning_rate": 2e-05,
+        "pressure_weight": 1.0,
+        "pure_weight": 0.5,
+        "seed": 0,
+        "solver_batches_per_epoch": 2,
+        "solver_iterations_eval": 48,
+        "solver_iterations_train": 16,
+        "solver_weight": 0.1,
+        "validation_min_delta": 0.0,
+        "weight_decay": 0.0001
+      }
+    },
+    "resolved_sha256": "95defaf81e81996b541c42a28adf284ff218502e5e31a6920f07e68e7bb5618d",
+    "sha256": "41ce5c413826c9843be683e64ae74cd8721f8e8113091af165843ba4c5f03e7e"
+  },
+  "selection_inputs": {
+    "o0_original": {
+      "aggregate_manifest_sha256": "a119b5915c5a4e86ce1ed7f49ab5580d35ec16d56c1e47510e28b80c6679d33e",
+      "config": {
+        "path": "experiments/multiview/chemical_attention/c2_optimization/o0_original/config.json",
+        "resolved": {
+          "data": {
+            "failed_weight": 0.0,
+            "max_pressure_kpa": 500.0,
+            "minimum_pure_anchor_temperatures": 2,
+            "pure_property_catalog": "",
+            "root": "dataset",
+            "source_filter": ""
+          },
+          "encoder": {
+            "batch_size": 16,
+            "chemical_attention_bias": true,
+            "context_pair_interaction": true,
+            "fusion_mode": "naive",
+            "model_size": "84m",
+            "representation": "multiview",
+            "use_functional_groups": true,
+            "use_rdkit_descriptors": true,
+            "use_unimol": true
+          },
+          "evaluation": {
+            "folds": 5,
+            "mode": "kfold",
+            "test_fraction": 0.15,
+            "validation_fraction": 0.15
+          },
+          "model": {
+            "activity_mode": "excess_gibbs",
+            "chemical_attention_bias": false,
+            "chemical_bias_apply_to": "all",
+            "chemical_bias_bound": 4.0,
+            "chemical_bias_dropout": 0.0,
+            "chemical_bias_functional_group_gate_init": 0.1,
+            "chemical_bias_gate_init": 0.03,
+            "chemical_bias_headwise": false,
+            "chemical_bias_hidden_dim": 0,
+            "chemical_bias_modality_gate_init": 0.95,
+            "chemical_bias_modality_gates": false,
+            "chemical_bias_shared_gate": false,
+            "chemical_bias_warmup_end": 0,
+            "chemical_bias_warmup_start": 0,
+            "context_pair_interaction": false,
+            "decoder_mode": "thermodynamic",
+            "dropout": 0.0,
+            "feature_dim": null,
+            "feedforward_multiplier": 4,
+            "film_scale": 0.1,
+            "functional_group_feature_dim": 0,
+            "fusion_mode": "legacy",
+            "heads": 6,
+            "hidden_dim": 192,
+            "interaction_mode": "full",
+            "layers": 3,
+            "pair_hidden_dim": 192,
+            "pure_hidden_dim": 192,
+            "rdkit_feature_dim": 0,
+            "unimol_feature_dim": 0,
+            "use_composition_context": true,
+            "use_film": true,
+            "use_mixture_token": true,
+            "use_transformer": true
+          },
+          "name": "c2opt_o0_original",
+          "runtime": {
+            "device": "auto",
+            "output_dir": "runs/experiments/multiview/chemical_attention/c2_optimization/o0_original",
+            "results_file": "experiments/multiview/chemical_attention/c2_optimization/o0_original/results.md"
+          },
+          "seed": 0,
+          "training": {
+            "batch_size": 128,
+            "boundary_weight": 0.001,
+            "chemical_bias_weight": 0.0,
+            "continuity_weight": 1e-05,
+            "early_stopping_patience": 12,
+            "epochs_physics": 0,
+            "epochs_supervised": 80,
+            "gradient_clip": 5.0,
+            "learning_rate": 0.0002,
+            "minimum_physics_epochs": 0,
+            "minimum_supervised_epochs": 10,
+            "physics_learning_rate": 2e-05,
+            "pressure_weight": 1.0,
+            "pure_weight": 0.5,
+            "seed": 0,
+            "solver_batches_per_epoch": 2,
+            "solver_iterations_eval": 48,
+            "solver_iterations_train": 16,
+            "solver_weight": 0.1,
+            "validation_min_delta": 0.0,
+            "weight_decay": 0.0001
+          }
+        },
+        "resolved_sha256": "c98adc4f4cafc67e86aa02186f299c1aaaed5bb08c040998ccaa9fddb1da020f",
+        "sha256": "1d2b277584162918932cd3df189267d176874ed953de62dc58fef838b4babc8d"
+      },
+      "input_manifest_sha256": {
+        "0": "2b9b972523957c7d02859a01fa80624d10c0891a3673a42abba2591f283b2f4f",
+        "1": "afe65f7a71fa090d853b2c4ac071bbec4dfd67a82c0497d5cb391e8efd94638b",
+        "2": "aafe3eed7b77817c0fcd475f262a14bc21965ba119e145e5986396d8814d22c8"
+      },
+      "metrics_by_seed": {
+        "path": "results/multiview/chemical_attention/selection/runs/c2opt_o0_original.on.overall_binary_ternary/diagnostic_metrics_by_seed.csv",
+        "sha256": "aed96c062d6957423e73a5246d8e8136807afdf6a9701f3f6da462f064c8229b"
+      }
+    },
+    "o1_shared_gate": {
+      "aggregate_manifest_sha256": "a49b1cec27cae0bdc83bbe5c376741182a86f0e53cb537d56ffc823121c96761",
+      "config": {
+        "path": "experiments/multiview/chemical_attention/c2_optimization/o1_shared_gate/config.json",
+        "resolved": {
+          "data": {
+            "failed_weight": 0.0,
+            "max_pressure_kpa": 500.0,
+            "minimum_pure_anchor_temperatures": 2,
+            "pure_property_catalog": "",
+            "root": "dataset",
+            "source_filter": ""
+          },
+          "encoder": {
+            "batch_size": 16,
+            "chemical_attention_bias": true,
+            "context_pair_interaction": true,
+            "fusion_mode": "naive",
+            "model_size": "84m",
+            "representation": "multiview",
+            "use_functional_groups": true,
+            "use_rdkit_descriptors": true,
+            "use_unimol": true
+          },
+          "evaluation": {
+            "folds": 5,
+            "mode": "kfold",
+            "test_fraction": 0.15,
+            "validation_fraction": 0.15
+          },
+          "model": {
+            "activity_mode": "excess_gibbs",
+            "chemical_attention_bias": false,
+            "chemical_bias_apply_to": "all",
+            "chemical_bias_bound": 1.0,
+            "chemical_bias_dropout": 0.05,
+            "chemical_bias_functional_group_gate_init": 0.1,
+            "chemical_bias_gate_init": 0.03,
+            "chemical_bias_headwise": false,
+            "chemical_bias_hidden_dim": 96,
+            "chemical_bias_modality_gate_init": 0.95,
+            "chemical_bias_modality_gates": false,
+            "chemical_bias_shared_gate": true,
+            "chemical_bias_warmup_end": 0,
+            "chemical_bias_warmup_start": 0,
+            "context_pair_interaction": false,
+            "decoder_mode": "thermodynamic",
+            "dropout": 0.0,
+            "feature_dim": null,
+            "feedforward_multiplier": 4,
+            "film_scale": 0.1,
+            "functional_group_feature_dim": 0,
+            "fusion_mode": "legacy",
+            "heads": 6,
+            "hidden_dim": 192,
+            "interaction_mode": "full",
+            "layers": 3,
+            "pair_hidden_dim": 192,
+            "pure_hidden_dim": 192,
+            "rdkit_feature_dim": 0,
+            "unimol_feature_dim": 0,
+            "use_composition_context": true,
+            "use_film": true,
+            "use_mixture_token": true,
+            "use_transformer": true
+          },
+          "name": "c2opt_o1_shared_gate",
+          "runtime": {
+            "device": "auto",
+            "output_dir": "runs/experiments/multiview/chemical_attention/c2_optimization/o1_shared_gate",
+            "results_file": "experiments/multiview/chemical_attention/c2_optimization/o1_shared_gate/results.md"
+          },
+          "seed": 0,
+          "training": {
+            "batch_size": 128,
+            "boundary_weight": 0.001,
+            "chemical_bias_weight": 1e-05,
+            "continuity_weight": 1e-05,
+            "early_stopping_patience": 12,
+            "epochs_physics": 0,
+            "epochs_supervised": 80,
+            "gradient_clip": 5.0,
+            "learning_rate": 0.0002,
+            "minimum_physics_epochs": 0,
+            "minimum_supervised_epochs": 10,
+            "physics_learning_rate": 2e-05,
+            "pressure_weight": 1.0,
+            "pure_weight": 0.5,
+            "seed": 0,
+            "solver_batches_per_epoch": 2,
+            "solver_iterations_eval": 48,
+            "solver_iterations_train": 16,
+            "solver_weight": 0.1,
+            "validation_min_delta": 0.0,
+            "weight_decay": 0.0001
+          }
+        },
+        "resolved_sha256": "a7c195004d964229f0dad6e6108aec5c65c48b9e8d748c4d1f2558d9c67faa5a",
+        "sha256": "189cc12429e1d02fcb15d25807d49f7ffd8a7d7d11b72fe0b3ffa4024341f60f"
+      },
+      "input_manifest_sha256": {
+        "0": "5f605a82ce1523f2d3f85de2ecc45d8c70f6c540be46802e13a7ca3956c79a37",
+        "1": "10f03491c4d752b71908fd2e5a58fb45f5962612357eaa3b89fdc561a234b49a",
+        "2": "e9a31bea2496c0ec991552741c688cd32e18fd094d292f4ccad42f4738a669f4"
+      },
+      "metrics_by_seed": {
+        "path": "results/multiview/chemical_attention/selection/runs/c2opt_o1_shared_gate.on.overall_binary_ternary/diagnostic_metrics_by_seed.csv",
+        "sha256": "32cac94e0be8e9361e9ea38cc7c83a7defe168095ab5bd2f81704686375a9de2"
+      }
+    },
+    "o2_headwise": {
+      "aggregate_manifest_sha256": "1b23310e2c9631f0814af3d47a6b6ba6d2c8216044fe8d45954def4d3a3b9a4c",
+      "config": {
+        "path": "experiments/multiview/chemical_attention/c2_optimization/o2_headwise/config.json",
+        "resolved": {
+          "data": {
+            "failed_weight": 0.0,
+            "max_pressure_kpa": 500.0,
+            "minimum_pure_anchor_temperatures": 2,
+            "pure_property_catalog": "",
+            "root": "dataset",
+            "source_filter": ""
+          },
+          "encoder": {
+            "batch_size": 16,
+            "chemical_attention_bias": true,
+            "context_pair_interaction": true,
+            "fusion_mode": "naive",
+            "model_size": "84m",
+            "representation": "multiview",
+            "use_functional_groups": true,
+            "use_rdkit_descriptors": true,
+            "use_unimol": true
+          },
+          "evaluation": {
+            "folds": 5,
+            "mode": "kfold",
+            "test_fraction": 0.15,
+            "validation_fraction": 0.15
+          },
+          "model": {
+            "activity_mode": "excess_gibbs",
+            "chemical_attention_bias": false,
+            "chemical_bias_apply_to": "all",
+            "chemical_bias_bound": 1.0,
+            "chemical_bias_dropout": 0.05,
+            "chemical_bias_functional_group_gate_init": 0.1,
+            "chemical_bias_gate_init": 0.03,
+            "chemical_bias_headwise": true,
+            "chemical_bias_hidden_dim": 48,
+            "chemical_bias_modality_gate_init": 0.95,
+            "chemical_bias_modality_gates": false,
+            "chemical_bias_shared_gate": false,
+            "chemical_bias_warmup_end": 0,
+            "chemical_bias_warmup_start": 0,
+            "context_pair_interaction": false,
+            "decoder_mode": "thermodynamic",
+            "dropout": 0.0,
+            "feature_dim": null,
+            "feedforward_multiplier": 4,
+            "film_scale": 0.1,
+            "functional_group_feature_dim": 0,
+            "fusion_mode": "legacy",
+            "heads": 6,
+            "hidden_dim": 192,
+            "interaction_mode": "full",
+            "layers": 3,
+            "pair_hidden_dim": 192,
+            "pure_hidden_dim": 192,
+            "rdkit_feature_dim": 0,
+            "unimol_feature_dim": 0,
+            "use_composition_context": true,
+            "use_film": true,
+            "use_mixture_token": true,
+            "use_transformer": true
+          },
+          "name": "c2opt_o2_headwise",
+          "runtime": {
+            "device": "auto",
+            "output_dir": "runs/experiments/multiview/chemical_attention/c2_optimization/o2_headwise",
+            "results_file": "experiments/multiview/chemical_attention/c2_optimization/o2_headwise/results.md"
+          },
+          "seed": 0,
+          "training": {
+            "batch_size": 128,
+            "boundary_weight": 0.001,
+            "chemical_bias_weight": 1e-05,
+            "continuity_weight": 1e-05,
+            "early_stopping_patience": 12,
+            "epochs_physics": 0,
+            "epochs_supervised": 80,
+            "gradient_clip": 5.0,
+            "learning_rate": 0.0002,
+            "minimum_physics_epochs": 0,
+            "minimum_supervised_epochs": 10,
+            "physics_learning_rate": 2e-05,
+            "pressure_weight": 1.0,
+            "pure_weight": 0.5,
+            "seed": 0,
+            "solver_batches_per_epoch": 2,
+            "solver_iterations_eval": 48,
+            "solver_iterations_train": 16,
+            "solver_weight": 0.1,
+            "validation_min_delta": 0.0,
+            "weight_decay": 0.0001
+          }
+        },
+        "resolved_sha256": "95defaf81e81996b541c42a28adf284ff218502e5e31a6920f07e68e7bb5618d",
+        "sha256": "41ce5c413826c9843be683e64ae74cd8721f8e8113091af165843ba4c5f03e7e"
+      },
+      "input_manifest_sha256": {
+        "0": "b176b55ac074663d9f1a525fcea655bd5b3bd27335015a22c8985fe3af46469a",
+        "1": "fdc17ecfea4796150e402f2329c1f42cafa5c25ff5b372f12b83000fd23ce3d3",
+        "2": "444c769f2164752c7d003d6cb6bc0b17d87dabafcf7e30dbf78e172563318eed"
+      },
+      "metrics_by_seed": {
+        "path": "results/multiview/chemical_attention/selection/runs/c2opt_o2_headwise.on.overall_binary_ternary/diagnostic_metrics_by_seed.csv",
+        "sha256": "e359137535270e4d903053ec1039465b869eae6d337f8f2e02f5011cd8a16235"
+      }
+    },
+    "o3_headwise_curriculum": {
+      "aggregate_manifest_sha256": "b3573279d746d1bba629afb8eedf0f4f200085bee9d5d41e2317fb1919677794",
+      "config": {
+        "path": "experiments/multiview/chemical_attention/c2_optimization/o3_headwise_curriculum/config.json",
+        "resolved": {
+          "data": {
+            "failed_weight": 0.0,
+            "max_pressure_kpa": 500.0,
+            "minimum_pure_anchor_temperatures": 2,
+            "pure_property_catalog": "",
+            "root": "dataset",
+            "source_filter": ""
+          },
+          "encoder": {
+            "batch_size": 16,
+            "chemical_attention_bias": true,
+            "context_pair_interaction": true,
+            "fusion_mode": "naive",
+            "model_size": "84m",
+            "representation": "multiview",
+            "use_functional_groups": true,
+            "use_rdkit_descriptors": true,
+            "use_unimol": true
+          },
+          "evaluation": {
+            "folds": 5,
+            "mode": "kfold",
+            "test_fraction": 0.15,
+            "validation_fraction": 0.15
+          },
+          "model": {
+            "activity_mode": "excess_gibbs",
+            "chemical_attention_bias": false,
+            "chemical_bias_apply_to": "all",
+            "chemical_bias_bound": 1.0,
+            "chemical_bias_dropout": 0.05,
+            "chemical_bias_functional_group_gate_init": 0.1,
+            "chemical_bias_gate_init": 0.03,
+            "chemical_bias_headwise": true,
+            "chemical_bias_hidden_dim": 96,
+            "chemical_bias_modality_gate_init": 0.95,
+            "chemical_bias_modality_gates": false,
+            "chemical_bias_shared_gate": false,
+            "chemical_bias_warmup_end": 20,
+            "chemical_bias_warmup_start": 5,
+            "context_pair_interaction": false,
+            "decoder_mode": "thermodynamic",
+            "dropout": 0.0,
+            "feature_dim": null,
+            "feedforward_multiplier": 4,
+            "film_scale": 0.1,
+            "functional_group_feature_dim": 0,
+            "fusion_mode": "legacy",
+            "heads": 6,
+            "hidden_dim": 192,
+            "interaction_mode": "full",
+            "layers": 3,
+            "pair_hidden_dim": 192,
+            "pure_hidden_dim": 192,
+            "rdkit_feature_dim": 0,
+            "unimol_feature_dim": 0,
+            "use_composition_context": true,
+            "use_film": true,
+            "use_mixture_token": true,
+            "use_transformer": true
+          },
+          "name": "c2opt_o3_headwise_curriculum",
+          "runtime": {
+            "device": "auto",
+            "output_dir": "runs/experiments/multiview/chemical_attention/c2_optimization/o3_headwise_curriculum",
+            "results_file": "experiments/multiview/chemical_attention/c2_optimization/o3_headwise_curriculum/results.md"
+          },
+          "seed": 0,
+          "training": {
+            "batch_size": 128,
+            "boundary_weight": 0.001,
+            "chemical_bias_weight": 1e-05,
+            "continuity_weight": 1e-05,
+            "early_stopping_patience": 12,
+            "epochs_physics": 0,
+            "epochs_supervised": 80,
+            "gradient_clip": 5.0,
+            "learning_rate": 0.0002,
+            "minimum_physics_epochs": 0,
+            "minimum_supervised_epochs": 10,
+            "physics_learning_rate": 2e-05,
+            "pressure_weight": 1.0,
+            "pure_weight": 0.5,
+            "seed": 0,
+            "solver_batches_per_epoch": 2,
+            "solver_iterations_eval": 48,
+            "solver_iterations_train": 16,
+            "solver_weight": 0.1,
+            "validation_min_delta": 0.0,
+            "weight_decay": 0.0001
+          }
+        },
+        "resolved_sha256": "ff848e78f55a8eb9203f3e1886893357a899dbf9b1521a259abd5f00795d880f",
+        "sha256": "2f0cd762891a2a5643ce04ccd6a70fb5a7c79e21433f82d6b66596f483ecc37c"
+      },
+      "input_manifest_sha256": {
+        "0": "0ef4c18fb8e9d1439eefc552fa0d8e3b51c7675d0cc56ea32d545c815134f706",
+        "1": "e1619b7815163ed4f1f56d4b0dd242107aece69f59ef3085a35922c85491d039",
+        "2": "ec9ad21a170d175b27967f5cf19f983fa5630c72ab305c80b6a5a0a334c28407"
+      },
+      "metrics_by_seed": {
+        "path": "results/multiview/chemical_attention/selection/runs/c2opt_o3_headwise_curriculum.on.overall_binary_ternary/diagnostic_metrics_by_seed.csv",
+        "sha256": "5f999dadd34ef8c2754ed652751c9f377ea83af780e99553d1fe0587d9bd8a0f"
+      }
+    },
+    "o4_headwise_curriculum_modality": {
+      "aggregate_manifest_sha256": "dd88a15fb4fea35fb1054b0adb3f681aa52b28267ef6623dc9b015ef0b8039cf",
+      "config": {
+        "path": "experiments/multiview/chemical_attention/c2_optimization/o4_headwise_curriculum_modality/config.json",
+        "resolved": {
+          "data": {
+            "failed_weight": 0.0,
+            "max_pressure_kpa": 500.0,
+            "minimum_pure_anchor_temperatures": 2,
+            "pure_property_catalog": "",
+            "root": "dataset",
+            "source_filter": ""
+          },
+          "encoder": {
+            "batch_size": 16,
+            "chemical_attention_bias": true,
+            "context_pair_interaction": true,
+            "fusion_mode": "naive",
+            "model_size": "84m",
+            "representation": "multiview",
+            "use_functional_groups": true,
+            "use_rdkit_descriptors": true,
+            "use_unimol": true
+          },
+          "evaluation": {
+            "folds": 5,
+            "mode": "kfold",
+            "test_fraction": 0.15,
+            "validation_fraction": 0.15
+          },
+          "model": {
+            "activity_mode": "excess_gibbs",
+            "chemical_attention_bias": false,
+            "chemical_bias_apply_to": "all",
+            "chemical_bias_bound": 1.0,
+            "chemical_bias_dropout": 0.05,
+            "chemical_bias_functional_group_gate_init": 0.1,
+            "chemical_bias_gate_init": 0.03,
+            "chemical_bias_headwise": true,
+            "chemical_bias_hidden_dim": 96,
+            "chemical_bias_modality_gate_init": 0.95,
+            "chemical_bias_modality_gates": true,
+            "chemical_bias_shared_gate": false,
+            "chemical_bias_warmup_end": 20,
+            "chemical_bias_warmup_start": 5,
+            "context_pair_interaction": false,
+            "decoder_mode": "thermodynamic",
+            "dropout": 0.0,
+            "feature_dim": null,
+            "feedforward_multiplier": 4,
+            "film_scale": 0.1,
+            "functional_group_feature_dim": 0,
+            "fusion_mode": "legacy",
+            "heads": 6,
+            "hidden_dim": 192,
+            "interaction_mode": "full",
+            "layers": 3,
+            "pair_hidden_dim": 192,
+            "pure_hidden_dim": 192,
+            "rdkit_feature_dim": 0,
+            "unimol_feature_dim": 0,
+            "use_composition_context": true,
+            "use_film": true,
+            "use_mixture_token": true,
+            "use_transformer": true
+          },
+          "name": "c2opt_o4_headwise_curriculum_modality",
+          "runtime": {
+            "device": "auto",
+            "output_dir": "runs/experiments/multiview/chemical_attention/c2_optimization/o4_headwise_curriculum_modality",
+            "results_file": "experiments/multiview/chemical_attention/c2_optimization/o4_headwise_curriculum_modality/results.md"
+          },
+          "seed": 0,
+          "training": {
+            "batch_size": 128,
+            "boundary_weight": 0.001,
+            "chemical_bias_weight": 1e-05,
+            "continuity_weight": 1e-05,
+            "early_stopping_patience": 12,
+            "epochs_physics": 0,
+            "epochs_supervised": 80,
+            "gradient_clip": 5.0,
+            "learning_rate": 0.0002,
+            "minimum_physics_epochs": 0,
+            "minimum_supervised_epochs": 10,
+            "physics_learning_rate": 2e-05,
+            "pressure_weight": 1.0,
+            "pure_weight": 0.5,
+            "seed": 0,
+            "solver_batches_per_epoch": 2,
+            "solver_iterations_eval": 48,
+            "solver_iterations_train": 16,
+            "solver_weight": 0.1,
+            "validation_min_delta": 0.0,
+            "weight_decay": 0.0001
+          }
+        },
+        "resolved_sha256": "7a7c35e1cb060233e89ed56b447fc003cb69d8fe07a945169b26491569e3c0d6",
+        "sha256": "9a3c2b43575039e8b258b52ea036471ff500c7de6af8a4f58f97808871ec0b98"
+      },
+      "input_manifest_sha256": {
+        "0": "effb503a20e391002eeee464a9b83aada40882f7d73c42da66c38fb53b135692",
+        "1": "24f5faea3ee1f2988a69da250de5341bc7b83dabadf6578935d47044b3d4e3f8",
+        "2": "d8140153fc2aef2f417dfdb03cab0db959ceb694e286d70477ba3448465e9a87"
+      },
+      "metrics_by_seed": {
+        "path": "results/multiview/chemical_attention/selection/runs/c2opt_o4_headwise_curriculum_modality.on.overall_binary_ternary/diagnostic_metrics_by_seed.csv",
+        "sha256": "6fe8859bf6852981b999b957514eb38386dcbf338988a703a04c0c421c69fcb5"
+      }
+    }
+  },
+  "status": "selected"
+}
