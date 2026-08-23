@@ -173,6 +173,36 @@ class MultiViewRepresentationTests(unittest.TestCase):
         )
         torch.testing.assert_close(without_flag.log_gamma, with_flag.log_gamma)
 
+    @unittest.skipUnless(torch.cuda.is_available(), "CUDA is required")
+    def test_chemical_attention_supports_cuda_higher_order_backward(self) -> None:
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=9,
+                hidden_dim=12,
+                layers=1,
+                heads=3,
+                fusion_mode="naive",
+                rdkit_feature_dim=2,
+                unimol_feature_dim=4,
+                functional_group_feature_dim=3,
+                chemical_attention_bias=True,
+                context_pair_interaction=True,
+            )
+        ).cuda()
+        output = model(
+            torch.randn(2, 3, 9, device="cuda"),
+            torch.full((2, 1), 345.0, device="cuda"),
+            torch.full((2, 1), 120.0, device="cuda"),
+            torch.tensor(
+                [[0.2, 0.3, 0.5], [0.4, 0.6, 0.0]], device="cuda"
+            ),
+            torch.tensor([[1.0, 1.0, 1.0], [1.0, 1.0, 0.0]], device="cuda"),
+        )
+        output.log_gamma.square().mean().backward()
+        self.assertTrue(
+            torch.isfinite(model.chemical_bias_mlp[-1].weight.grad).all()
+        )
+
     def test_rdkit_scaler_uses_train_molecules_only(self) -> None:
         raw = {
             "train-a": np.asarray([0.0, 10.0], dtype=np.float32),

@@ -8,6 +8,7 @@ from typing import Literal
 
 import torch
 from torch import Tensor, nn
+from torch.nn.attention import SDPBackend, sdpa_kernel
 
 
 @dataclass
@@ -226,13 +227,19 @@ class ChemicalBiasedTransformerLayer(nn.Module):
         additive_mask = additive_mask.masked_fill(invalid_keys, float("-inf"))
         additive_mask = additive_mask.reshape(batch * self.heads, length, length)
         normalized = self.norm1(values)
-        attended, _ = self.attention(
-            normalized,
-            normalized,
-            normalized,
-            attn_mask=additive_mask,
-            need_weights=False,
-        )
+        # The thermodynamic decoder differentiates log(gamma) through the
+        # composition derivative of G^E, so training needs a second backward
+        # pass through this composition-conditioned attention operation. CUDA's
+        # flash/efficient SDPA kernels do not implement that derivative; the
+        # math kernel does and preserves the exact same attention equation.
+        with sdpa_kernel(SDPBackend.MATH):
+            attended, _ = self.attention(
+                normalized,
+                normalized,
+                normalized,
+                attn_mask=additive_mask,
+                need_weights=False,
+            )
         values = values + self.dropout1(attended)
         return values + self.feedforward(self.norm2(values))
 
