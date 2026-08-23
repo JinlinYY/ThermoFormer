@@ -24,6 +24,8 @@ class EncoderConfig:
     use_rdkit_descriptors: bool = True
     use_unimol: bool = True
     use_functional_groups: bool = True
+    chemical_attention_bias: bool = False
+    context_pair_interaction: bool = False
 
     def __post_init__(self) -> None:
         allowed = (
@@ -43,7 +45,14 @@ class EncoderConfig:
             self.use_unimol,
             self.use_functional_groups,
         )
-        if any(not isinstance(value, bool) for value in branch_values):
+        if any(
+            not isinstance(value, bool)
+            for value in (
+                *branch_values,
+                self.chemical_attention_bias,
+                self.context_pair_interaction,
+            )
+        ):
             raise ValueError("hybrid encoder branch switches must be boolean")
         if self.fusion_mode not in ("legacy", "naive", "interaction_specific"):
             raise ValueError("encoder.fusion_mode must be legacy, naive, or interaction_specific")
@@ -56,6 +65,14 @@ class EncoderConfig:
             raise ValueError("single-view representations require legacy fusion")
         if self.fusion_mode == "interaction_specific" and not all(branch_values):
             raise ValueError("interaction-specific fusion requires all three molecular views")
+        if self.chemical_attention_bias and (
+            not multiview or not self.use_rdkit_descriptors or not self.use_unimol
+        ):
+            raise ValueError(
+                "Chemical attention bias requires multiview RDKit and Uni-Mol branches"
+            )
+        if self.context_pair_interaction and not multiview:
+            raise ValueError("Context pair interaction requires multiview representation")
 
 
 @dataclass(frozen=True)

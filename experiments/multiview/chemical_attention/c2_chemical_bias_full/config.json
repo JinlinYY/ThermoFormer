@@ -1,0 +1,17 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "c2_chemical_bias_full",
+  "encoder": {
+    "representation": "multiview",
+    "fusion_mode": "naive",
+    "use_rdkit_descriptors": true,
+    "use_unimol": true,
+    "use_functional_groups": true,
+    "chemical_attention_bias": true,
+    "context_pair_interaction": true
+  },
+  "runtime": {
+    "output_dir": "runs/experiments/multiview/chemical_attention/c2_chemical_bias_full",
+    "results_file": "experiments/multiview/chemical_attention/c2_chemical_bias_full/results.md"
+  }
+}

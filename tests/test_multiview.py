@@ -27,6 +27,113 @@ def multiview_model() -> ThermoFormer:
 
 
 class MultiViewRepresentationTests(unittest.TestCase):
+    def test_chemical_attention_bias_is_symmetric_and_permutation_equivariant(self) -> None:
+        torch.manual_seed(17)
+        config = ThermoFormerConfig(
+            feature_dim=10,
+            hidden_dim=12,
+            layers=2,
+            heads=3,
+            fusion_mode="naive",
+            rdkit_feature_dim=2,
+            unimol_feature_dim=5,
+            functional_group_feature_dim=3,
+            chemical_attention_bias=True,
+            context_pair_interaction=True,
+        )
+        model = ThermoFormer(config).eval()
+        molecules = torch.randn(2, 3, 10)
+        temperature = torch.tensor([[330.0], [360.0]])
+        pressure = torch.tensor([[101.325], [150.0]])
+        x = torch.tensor([[0.2, 0.3, 0.5], [0.6, 0.1, 0.3]])
+        mask = torch.ones(2, 3)
+
+        output = model(molecules, temperature, pressure, x, mask)
+        self.assertIsNotNone(output.attention_bias)
+        assert output.attention_bias is not None
+        torch.testing.assert_close(
+            output.attention_bias,
+            output.attention_bias.transpose(1, 2),
+        )
+
+        permutation = torch.tensor([2, 0, 1])
+        permuted = model(
+            molecules[:, permutation],
+            temperature,
+            pressure,
+            x[:, permutation],
+            mask[:, permutation],
+        )
+        torch.testing.assert_close(
+            output.log_gamma[:, permutation], permuted.log_gamma, rtol=2e-5, atol=2e-5
+        )
+        torch.testing.assert_close(
+            output.pair_interactions[:, permutation][:, :, permutation],
+            permuted.pair_interactions,
+            rtol=2e-5,
+            atol=2e-5,
+        )
+
+    def test_context_pair_changes_with_third_component_environment(self) -> None:
+        torch.manual_seed(23)
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=7,
+                hidden_dim=12,
+                layers=1,
+                heads=3,
+                fusion_mode="naive",
+                rdkit_feature_dim=2,
+                unimol_feature_dim=3,
+                functional_group_feature_dim=2,
+                chemical_attention_bias=True,
+                context_pair_interaction=True,
+            )
+        ).eval()
+        ab = torch.randn(1, 2, 7)
+        abc = torch.cat([ab, torch.randn(1, 1, 7)], dim=1)
+        binary = model(
+            ab,
+            torch.tensor([[340.0]]),
+            torch.tensor([[101.325]]),
+            torch.tensor([[0.4, 0.6]]),
+            torch.ones(1, 2),
+        )
+        ternary = model(
+            abc,
+            torch.tensor([[340.0]]),
+            torch.tensor([[101.325]]),
+            torch.tensor([[0.3, 0.45, 0.25]]),
+            torch.ones(1, 3),
+        )
+        self.assertFalse(
+            torch.allclose(binary.pair_interactions[:, 0, 1], ternary.pair_interactions[:, 0, 1])
+        )
+
+    def test_chemical_attention_supports_functional_group_ablation(self) -> None:
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=6,
+                hidden_dim=12,
+                layers=1,
+                heads=3,
+                fusion_mode="naive",
+                rdkit_feature_dim=2,
+                unimol_feature_dim=4,
+                functional_group_feature_dim=0,
+                chemical_attention_bias=True,
+                context_pair_interaction=True,
+            )
+        )
+        output = model(
+            torch.randn(1, 3, 6),
+            torch.tensor([[350.0]]),
+            torch.tensor([[101.325]]),
+            torch.tensor([[0.2, 0.3, 0.5]]),
+            torch.ones(1, 3),
+        )
+        self.assertTrue(torch.isfinite(output.log_gamma).all())
+
     def test_rdkit_scaler_uses_train_molecules_only(self) -> None:
         raw = {
             "train-a": np.asarray([0.0, 10.0], dtype=np.float32),

@@ -411,6 +411,8 @@ def run_paper_experiment(
         functional_group_feature_dim=(
             view_dimensions["functional_groups"] if multiview else 0
         ),
+        chemical_attention_bias=experiment.encoder.chemical_attention_bias,
+        context_pair_interaction=experiment.encoder.context_pair_interaction,
     )
     resolved_experiment = replace(experiment, model=model_config)
     resolved_payload = resolved_experiment.to_dict()

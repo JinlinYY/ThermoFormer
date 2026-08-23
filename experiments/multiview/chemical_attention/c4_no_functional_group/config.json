@@ -1,0 +1,17 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "c4_no_functional_group",
+  "encoder": {
+    "representation": "multiview",
+    "fusion_mode": "naive",
+    "use_rdkit_descriptors": true,
+    "use_unimol": true,
+    "use_functional_groups": false,
+    "chemical_attention_bias": true,
+    "context_pair_interaction": true
+  },
+  "runtime": {
+    "output_dir": "runs/experiments/multiview/chemical_attention/c4_no_functional_group",
+    "results_file": "experiments/multiview/chemical_attention/c4_no_functional_group/results.md"
+  }
+}

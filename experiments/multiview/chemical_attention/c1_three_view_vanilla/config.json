@@ -1,0 +1,17 @@
+{
+  "extends": "../../../baseline/thermoformer_base/config.json",
+  "name": "c1_three_view_vanilla",
+  "encoder": {
+    "representation": "multiview",
+    "fusion_mode": "naive",
+    "use_rdkit_descriptors": true,
+    "use_unimol": true,
+    "use_functional_groups": true,
+    "chemical_attention_bias": false,
+    "context_pair_interaction": false
+  },
+  "runtime": {
+    "output_dir": "runs/experiments/multiview/chemical_attention/c1_three_view_vanilla",
+    "results_file": "experiments/multiview/chemical_attention/c1_three_view_vanilla/results.md"
+  }
+}

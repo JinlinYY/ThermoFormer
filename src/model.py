@@ -19,6 +19,7 @@ class ModelOutputs:
     pair_interactions: Tensor | None = None
     view_weights: Tensor | None = None
     view_interactions: Tensor | None = None
+    attention_bias: Tensor | None = None
 
 
 @dataclass
@@ -52,6 +53,8 @@ class ThermoFormerConfig:
     rdkit_feature_dim: int = 0
     unimol_feature_dim: int = 0
     functional_group_feature_dim: int = 0
+    chemical_attention_bias: bool = False
+    context_pair_interaction: bool = False
 
     def __post_init__(self) -> None:
         integer_values = (
@@ -84,6 +87,8 @@ class ThermoFormerConfig:
                 self.use_mixture_token,
                 self.use_film,
                 self.use_composition_context,
+                self.chemical_attention_bias,
+                self.context_pair_interaction,
             )
         ):
             raise ValueError("ThermoFormer ablation switches must be booleans")
@@ -130,6 +135,18 @@ class ThermoFormerConfig:
             self.functional_group_feature_dim,
         ) < 1:
             raise ValueError("interaction-specific fusion requires all three molecular views")
+        if self.chemical_attention_bias and (
+            self.fusion_mode == "legacy"
+            or self.rdkit_feature_dim < 1
+            or self.unimol_feature_dim < 1
+        ):
+            raise ValueError(
+                "Chemical attention bias requires multiview RDKit and Uni-Mol features"
+            )
+        if self.chemical_attention_bias and not self.use_transformer:
+            raise ValueError("Chemical attention bias requires the Transformer")
+        if self.context_pair_interaction and self.interaction_mode != "full":
+            raise ValueError("Context-conditioned pair interaction requires full interaction mode")
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)
@@ -174,6 +191,75 @@ class ViewProjection(nn.Module):
 
     def forward(self, values: Tensor) -> Tensor:
         return self.network(values)
+
+
+class ChemicalBiasedTransformerLayer(nn.Module):
+    """Pre-norm self-attention layer with a batch-specific additive pair bias."""
+
+    def __init__(
+        self,
+        hidden_dim: int,
+        heads: int,
+        feedforward_dim: int,
+        dropout: float,
+    ) -> None:
+        super().__init__()
+        self.heads = heads
+        self.norm1 = nn.LayerNorm(hidden_dim)
+        self.attention = nn.MultiheadAttention(
+            hidden_dim, heads, dropout=dropout, batch_first=True
+        )
+        self.dropout1 = nn.Dropout(dropout)
+        self.norm2 = nn.LayerNorm(hidden_dim)
+        self.feedforward = nn.Sequential(
+            nn.Linear(hidden_dim, feedforward_dim),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(feedforward_dim, hidden_dim),
+            nn.Dropout(dropout),
+        )
+
+    def forward(self, values: Tensor, bias: Tensor, padding: Tensor) -> Tensor:
+        batch, length, _ = values.shape
+        additive_mask = bias.unsqueeze(1).expand(batch, self.heads, length, length)
+        invalid_keys = padding[:, None, None, :].expand_as(additive_mask)
+        additive_mask = additive_mask.masked_fill(invalid_keys, float("-inf"))
+        additive_mask = additive_mask.reshape(batch * self.heads, length, length)
+        normalized = self.norm1(values)
+        attended, _ = self.attention(
+            normalized,
+            normalized,
+            normalized,
+            attn_mask=additive_mask,
+            need_weights=False,
+        )
+        values = values + self.dropout1(attended)
+        return values + self.feedforward(self.norm2(values))
+
+
+class ChemicalBiasedTransformer(nn.Module):
+    """Stack of Transformer layers sharing a chemically constructed pair bias."""
+
+    def __init__(
+        self,
+        hidden_dim: int,
+        heads: int,
+        feedforward_dim: int,
+        dropout: float,
+        layers: int,
+    ) -> None:
+        super().__init__()
+        self.layers = nn.ModuleList(
+            ChemicalBiasedTransformerLayer(
+                hidden_dim, heads, feedforward_dim, dropout
+            )
+            for _ in range(layers)
+        )
+
+    def forward(self, values: Tensor, bias: Tensor, padding: Tensor) -> Tensor:
+        for layer in self.layers:
+            values = layer(values, bias, padding)
+        return values
 
 
 class FunctionalGroupCrossInteraction(nn.Module):
@@ -292,7 +378,26 @@ class ThermoFormer(nn.Module):
             self.mixture_token = nn.Parameter(torch.zeros(1, 1, hidden_dim))
         else:
             self.register_parameter("mixture_token", None)
-        if full_interaction and config.use_transformer:
+        self.chemical_interaction: ChemicalBiasedTransformer | None = None
+        self.chemical_bias_mlp: nn.Module | None = None
+        if full_interaction and config.use_transformer and config.chemical_attention_bias:
+            chemical_feature_dim = 3 * hidden_dim + 4
+            if config.functional_group_feature_dim:
+                chemical_feature_dim += hidden_dim
+            self.chemical_bias_mlp = nn.Sequential(
+                nn.Linear(chemical_feature_dim, config.pair_hidden_dim or hidden_dim),
+                nn.GELU(),
+                nn.Linear(config.pair_hidden_dim or hidden_dim, 1),
+            )
+            self.chemical_interaction = ChemicalBiasedTransformer(
+                hidden_dim=hidden_dim,
+                heads=config.heads,
+                feedforward_dim=config.feedforward_multiplier * hidden_dim,
+                dropout=config.dropout,
+                layers=config.layers,
+            )
+            self.interaction: nn.Module | None = None
+        elif full_interaction and config.use_transformer:
             layer = nn.TransformerEncoderLayer(
                 d_model=hidden_dim,
                 nhead=config.heads,
@@ -326,6 +431,7 @@ class ThermoFormer(nn.Module):
             )
         pair_hidden_dim = config.pair_hidden_dim or hidden_dim
         self.pair_potential: nn.Module | None = None
+        self.context_pair_potential: nn.Module | None = None
         self.component_potential: nn.Module | None = None
         self.direct_activity_head: nn.Module | None = None
         self.vapor_pressure: PureVaporPressure | None = None
@@ -338,6 +444,12 @@ class ThermoFormer(nn.Module):
             if config.interaction_mode == "independent":
                 self.component_potential = nn.Sequential(
                     nn.Linear(hidden_dim, pair_hidden_dim),
+                    nn.GELU(),
+                    nn.Linear(pair_hidden_dim, 1),
+                )
+            elif config.activity_mode != "direct_gamma" and config.context_pair_interaction:
+                self.context_pair_potential = nn.Sequential(
+                    nn.Linear(4 * hidden_dim + 4, pair_hidden_dim),
                     nn.GELU(),
                     nn.Linear(pair_hidden_dim, 1),
                 )
@@ -424,7 +536,61 @@ class ThermoFormer(nn.Module):
         molecular_tokens, _, _ = self._encode_molecules(molecules)
         return self.vapor_pressure(molecular_tokens, temperature_k)
 
-    def _structural_context(self, molecular_tokens: Tensor, mask: Tensor) -> tuple[Tensor, Tensor]:
+    def _chemical_pair_bias(
+        self,
+        views: dict[str, Tensor],
+        temperature_k: Tensor,
+        pressure_kpa: Tensor,
+        x: Tensor,
+        mask: Tensor,
+    ) -> Tensor:
+        if self.chemical_bias_mlp is None:
+            raise RuntimeError("Chemical interaction-bias MLP is unavailable")
+        rdkit = views["rdkit"]
+        unimol = views["unimol"]
+        functional_group = views.get("functional_group")
+        batch, component_count, _ = rdkit.shape
+        bias = torch.zeros(
+            batch, component_count, component_count, dtype=x.dtype, device=x.device
+        )
+        temperature = (temperature_k - 350.0) / 150.0
+        pressure = torch.log(pressure_kpa.clamp_min(1e-6) / 101.325)
+        for first in range(component_count):
+            for second in range(first + 1, component_count):
+                features = [
+                    rdkit[:, first] + rdkit[:, second],
+                    torch.abs(rdkit[:, first] - rdkit[:, second]),
+                    unimol[:, first] * unimol[:, second],
+                ]
+                if functional_group is not None:
+                    features.append(
+                        functional_group[:, first] * functional_group[:, second]
+                    )
+                features.extend(
+                    [
+                        temperature,
+                        pressure,
+                        (x[:, first] + x[:, second]).unsqueeze(-1),
+                        torch.abs(x[:, first] - x[:, second]).unsqueeze(-1),
+                    ]
+                )
+                pair_mask = mask[:, first] * mask[:, second]
+                value = 4.0 * torch.tanh(
+                    self.chemical_bias_mlp(torch.cat(features, dim=-1)).squeeze(-1)
+                ) * pair_mask
+                bias[:, first, second] = value
+                bias[:, second, first] = value
+        return bias
+
+    def _structural_context(
+        self,
+        molecular_tokens: Tensor,
+        molecular_views: dict[str, Tensor],
+        temperature_k: Tensor,
+        pressure_kpa: Tensor,
+        x: Tensor,
+        mask: Tensor,
+    ) -> tuple[Tensor, Tensor, Tensor | None]:
         batch = molecular_tokens.shape[0]
         masked_mean = (molecular_tokens * mask.unsqueeze(-1)).sum(1, keepdim=True)
         masked_mean = masked_mean / mask.sum(-1, keepdim=True).clamp_min(1.0).unsqueeze(-1)
@@ -433,20 +599,43 @@ class ThermoFormer(nn.Module):
             if self.mixture_token is not None
             else masked_mean
         )
+        if self.chemical_interaction is not None:
+            component_bias = self._chemical_pair_bias(
+                molecular_views, temperature_k, pressure_kpa, x, mask
+            )
+            sequence = torch.cat([learned_mixture, molecular_tokens], dim=1)
+            padding = torch.cat(
+                [torch.zeros(batch, 1, dtype=torch.bool, device=mask.device), ~mask.bool()],
+                dim=1,
+            )
+            sequence_bias = torch.zeros(
+                batch,
+                molecular_tokens.shape[1] + 1,
+                molecular_tokens.shape[1] + 1,
+                dtype=molecular_tokens.dtype,
+                device=molecular_tokens.device,
+            )
+            sequence_bias[:, 1:, 1:] = component_bias
+            interacted = self.chemical_interaction(sequence, sequence_bias, padding)
+            return (
+                interacted[:, 1:] * mask.unsqueeze(-1),
+                interacted[:, :1],
+                component_bias,
+            )
         if self.interaction is None:
-            return molecular_tokens * mask.unsqueeze(-1), learned_mixture
+            return molecular_tokens * mask.unsqueeze(-1), learned_mixture, None
         if self.mixture_token is None:
             interacted = self.interaction(molecular_tokens, src_key_padding_mask=~mask.bool())
             mixture = (interacted * mask.unsqueeze(-1)).sum(1, keepdim=True)
             mixture = mixture / mask.sum(-1, keepdim=True).clamp_min(1.0).unsqueeze(-1)
-            return interacted * mask.unsqueeze(-1), mixture
+            return interacted * mask.unsqueeze(-1), mixture, None
         sequence = torch.cat([learned_mixture, molecular_tokens], dim=1)
         padding = torch.cat(
             [torch.zeros(batch, 1, dtype=torch.bool, device=mask.device), ~mask.bool()],
             dim=1,
         )
         interacted = self.interaction(sequence, src_key_padding_mask=padding)
-        return interacted[:, 1:] * mask.unsqueeze(-1), interacted[:, :1]
+        return interacted[:, 1:] * mask.unsqueeze(-1), interacted[:, :1], None
 
     def _nonideality_tokens(
         self,
@@ -521,6 +710,48 @@ class ThermoFormer(nn.Module):
                     dim=-1,
                 )
                 interaction = self.pair_potential(pair) * pair_mask
+                pair_interactions[:, first, second] = interaction.squeeze(-1)
+                pair_interactions[:, second, first] = interaction.squeeze(-1)
+                total = total + (x[:, first] * x[:, second]).unsqueeze(-1) * interaction
+        return total, pair_interactions
+
+    def _contextual_excess_gibbs(
+        self,
+        tokens: Tensor,
+        mixture: Tensor,
+        temperature_k: Tensor,
+        pressure_kpa: Tensor,
+        x: Tensor,
+        mask: Tensor,
+    ) -> tuple[Tensor, Tensor]:
+        """Symmetric pair potential conditioned on the full mixture environment."""
+        if self.context_pair_potential is None:
+            raise RuntimeError("Context-conditioned pair potential is unavailable")
+        total = torch.zeros(x.shape[0], 1, dtype=x.dtype, device=x.device)
+        component_count = x.shape[1]
+        pair_interactions = torch.zeros(
+            x.shape[0], component_count, component_count, dtype=x.dtype, device=x.device
+        )
+        mixture_context = mixture.squeeze(1)
+        temperature = (temperature_k - 350.0) / 150.0
+        pressure = torch.log(pressure_kpa.clamp_min(1e-6) / 101.325)
+        for first in range(component_count):
+            for second in range(first + 1, component_count):
+                pair_mask = (mask[:, first] * mask[:, second]).unsqueeze(-1)
+                pair_features = torch.cat(
+                    [
+                        tokens[:, first] + tokens[:, second],
+                        torch.abs(tokens[:, first] - tokens[:, second]),
+                        tokens[:, first] * tokens[:, second],
+                        mixture_context,
+                        temperature,
+                        pressure,
+                        (x[:, first] + x[:, second]).unsqueeze(-1),
+                        torch.abs(x[:, first] - x[:, second]).unsqueeze(-1),
+                    ],
+                    dim=-1,
+                )
+                interaction = self.context_pair_potential(pair_features) * pair_mask
                 pair_interactions[:, first, second] = interaction.squeeze(-1)
                 pair_interactions[:, second, first] = interaction.squeeze(-1)
                 total = total + (x[:, first] * x[:, second]).unsqueeze(-1) * interaction
@@ -636,7 +867,14 @@ class ThermoFormer(nn.Module):
         if self.vapor_pressure is None:
             raise RuntimeError("Thermodynamic decoder is unavailable")
         log_psat = self.vapor_pressure(molecular_tokens, temperature_k) * mask
-        components, mixture = self._structural_context(molecular_tokens, mask)
+        components, mixture, attention_bias = self._structural_context(
+            molecular_tokens,
+            molecular_views,
+            temperature_k,
+            pressure_kpa,
+            x,
+            mask,
+        )
 
         if self.config.activity_mode == "ideal":
             return ModelOutputs(
@@ -645,6 +883,7 @@ class ThermoFormer(nn.Module):
                 nonideality_tokens=components,
                 excess_gibbs_rt=torch.zeros(x.shape[0], 1, dtype=x.dtype, device=x.device),
                 pair_interactions=None,
+                attention_bias=attention_bias,
             )
 
         outer_grad_enabled = torch.is_grad_enabled()
@@ -671,7 +910,18 @@ class ThermoFormer(nn.Module):
                 view_weights = None
                 view_interactions = None
             else:
-                if self.config.fusion_mode == "interaction_specific":
+                if self.config.context_pair_interaction:
+                    excess_gibbs, pair_interactions = self._contextual_excess_gibbs(
+                        tokens,
+                        mixture,
+                        temperature_k,
+                        pressure_kpa,
+                        x_variable,
+                        mask,
+                    )
+                    view_weights = None
+                    view_interactions = None
+                elif self.config.fusion_mode == "interaction_specific":
                     if functional_counts is None:
                         raise RuntimeError("Functional-group counts are unavailable")
                     (
@@ -724,6 +974,7 @@ class ThermoFormer(nn.Module):
             pair_interactions=pair_interactions,
             view_weights=view_weights,
             view_interactions=view_interactions,
+            attention_bias=(attention_bias.detach() if attention_bias is not None else None),
         )
 
     def predict_direct(
@@ -743,8 +994,15 @@ class ThermoFormer(nn.Module):
             raise ValueError("direction must be isothermal or isobaric")
         if self.direct_state_head is None or self.direct_y_head is None:
             raise RuntimeError("Direct-VLE heads are unavailable")
-        molecular_tokens, _, _ = self._encode_molecules(molecules)
-        components, mixture = self._structural_context(molecular_tokens, mask)
+        molecular_tokens, molecular_views, _ = self._encode_molecules(molecules)
+        components, mixture, _ = self._structural_context(
+            molecular_tokens,
+            molecular_views,
+            temperature_k,
+            pressure_kpa,
+            x,
+            mask,
+        )
         model_temperature = (
             temperature_k if direction == "isothermal" else torch.full_like(temperature_k, 350.0)
         )

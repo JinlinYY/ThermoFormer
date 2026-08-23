@@ -69,6 +69,29 @@ class ExperimentConfigTests(unittest.TestCase):
         )
         self.assertEqual(encoder.fusion_mode, "interaction_specific")
 
+    def test_chemical_attention_requires_multiview_rdkit_and_unimol(self) -> None:
+        with self.assertRaisesRegex(ValueError, "RDKit and Uni-Mol"):
+            ThermoFormerConfig(
+                feature_dim=3,
+                hidden_dim=12,
+                heads=3,
+                fusion_mode="naive",
+                rdkit_feature_dim=3,
+                chemical_attention_bias=True,
+            )
+        config = ThermoFormerConfig(
+            feature_dim=7,
+            hidden_dim=12,
+            heads=3,
+            fusion_mode="naive",
+            rdkit_feature_dim=3,
+            unimol_feature_dim=4,
+            chemical_attention_bias=True,
+            context_pair_interaction=True,
+        )
+        self.assertTrue(config.chemical_attention_bias)
+        self.assertTrue(config.context_pair_interaction)
+
     def test_repository_configs_construct_thermoformer(self) -> None:
         paths = sorted(self.CONFIG_ROOT.rglob("config.json"))
 
