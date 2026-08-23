@@ -18,7 +18,7 @@ from src.chemical_attention_protocols import (
     CHEMICAL_ATTENTION_VARIANTS,
 )
 from src.config import load_experiment_config
-from src.chemical_attention_outputs import write_pilot_outputs
+from src.chemical_attention_outputs import validate_pilot_report_bundle, write_pilot_outputs
 from src.paper_runner import result_protocol_name, run_paper_experiment
 from src.representation import encoder_cache_filename
 from src.results import aggregate_protocol_results
@@ -55,33 +55,17 @@ def _require_reviewed_pilot(artifact_root: Path) -> None:
     report = artifact_root / "reports" / "chemical_attention_pilot_report.md"
     if not report.is_file():
         raise RuntimeError("Formal stage requires the generated seed-0 pilot report")
-    result_root = (
-        artifact_root
-        / "results"
-        / "multiview"
-        / "chemical_attention"
-        / "pilot"
-        / "runs"
+    validate_pilot_report_bundle(artifact_root)
+
+
+def complete_pilot_matrix(
+    stage: str, variants: tuple[str, ...], protocols: tuple[str, ...]
+) -> bool:
+    return (
+        stage == "pilot"
+        and variants == tuple(CHEMICAL_ATTENTION_VARIANTS)
+        and protocols == CHEMICAL_ATTENTION_PROTOCOLS
     )
-    incomplete: list[str] = []
-    for variant_id in CHEMICAL_ATTENTION_VARIANTS:
-        for protocol in CHEMICAL_ATTENTION_PROTOCOLS:
-            manifest_path = (
-                result_root
-                / f"{variant_id}.on.{protocol}"
-                / "seed_0"
-                / "manifest.json"
-            )
-            if not manifest_path.is_file():
-                incomplete.append(f"{variant_id}/{protocol}")
-                continue
-            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-            if manifest.get("status") != "completed":
-                incomplete.append(f"{variant_id}/{protocol}")
-    if incomplete:
-        raise RuntimeError(
-            "Formal stage requires every completed seed-0 pilot: " + ", ".join(incomplete)
-        )
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -128,7 +112,7 @@ def main(argv: list[str] | None = None) -> None:
                         feature_cache=feature_cache,
                         device_name=args.device,
                         allow_overwrite=args.overwrite,
-                        run_kind="formal",
+                        run_kind="pilot" if args.stage == "pilot" else "formal",
                     )
                 finally:
                     _release_accelerator()
@@ -145,8 +129,10 @@ def main(argv: list[str] | None = None) -> None:
                 expected_seeds=seeds,
                 aggregate_kind="diagnostic" if args.stage == "pilot" else "formal",
             )
-    if args.stage == "pilot":
+    if complete_pilot_matrix(args.stage, variants, protocols):
         write_pilot_outputs(artifact_root)
+    elif args.stage == "pilot":
+        print(json.dumps({"report": "deferred_until_complete_pilot_matrix"}))
 
 
 if __name__ == "__main__":

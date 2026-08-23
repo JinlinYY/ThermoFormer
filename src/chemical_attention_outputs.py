@@ -130,17 +130,35 @@ def _write_csv(path: Path, rows: list[dict[str, object]]) -> None:
             temporary.unlink()
 
 
-def write_pilot_outputs(project_root: Path) -> tuple[Path, Path]:
-    rows = collect_pilot_rows(project_root)
-    csv_path = (
+def _pilot_result_root(project_root: Path) -> Path:
+    return (
         project_root
         / "results"
         / "multiview"
         / "chemical_attention"
         / "pilot"
-        / "pilot_performance.csv"
     )
+
+
+def _aggregate_digests(project_root: Path) -> dict[str, str]:
+    runs = _pilot_result_root(project_root) / "runs"
+    return {
+        f"{variant_id}.on.{protocol}": artifact_sha256(
+            runs
+            / f"{variant_id}.on.{protocol}"
+            / "diagnostic_aggregate_manifest.json"
+        )
+        for variant_id in CHEMICAL_ATTENTION_VARIANTS
+        for protocol in CHEMICAL_ATTENTION_PROTOCOLS
+    }
+
+
+def write_pilot_outputs(project_root: Path) -> tuple[Path, Path, Path]:
+    rows = collect_pilot_rows(project_root)
+    result_root = _pilot_result_root(project_root)
+    csv_path = result_root / "pilot_performance.csv"
     report_path = project_root / "reports" / "chemical_attention_pilot_report.md"
+    review_manifest_path = result_root / "pilot_report_manifest.json"
     _write_csv(csv_path, rows)
 
     lines = [
@@ -248,4 +266,48 @@ def write_pilot_outputs(project_root: Path) -> tuple[Path, Path]:
             / "results.md",
             "\n".join(page),
         )
-    return csv_path, report_path
+    review_manifest = {
+        "status": "ready_for_review",
+        "stage": "pilot",
+        "seeds": [0],
+        "aggregate_manifest_sha256": _aggregate_digests(project_root),
+        "outputs": {
+            "pilot_performance": {
+                "path": "results/multiview/chemical_attention/pilot/pilot_performance.csv",
+                "sha256": artifact_sha256(csv_path),
+            },
+            "report": {
+                "path": "reports/chemical_attention_pilot_report.md",
+                "sha256": artifact_sha256(report_path),
+            },
+        },
+    }
+    _atomic_text(
+        review_manifest_path,
+        json.dumps(review_manifest, indent=2, sort_keys=True) + "\n",
+    )
+    return csv_path, report_path, review_manifest_path
+
+
+def validate_pilot_report_bundle(project_root: Path) -> None:
+    """Validate that the reviewed report is the last product of current aggregates."""
+    collect_pilot_rows(project_root)
+    result_root = _pilot_result_root(project_root)
+    manifest_path = result_root / "pilot_report_manifest.json"
+    if not manifest_path.is_file():
+        raise RuntimeError("Formal stage requires the pilot report manifest")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    report_path = project_root / "reports" / "chemical_attention_pilot_report.md"
+    csv_path = result_root / "pilot_performance.csv"
+    expected_outputs = manifest.get("outputs", {})
+    if (
+        manifest.get("status") != "ready_for_review"
+        or manifest.get("stage") != "pilot"
+        or manifest.get("seeds") != [0]
+        or manifest.get("aggregate_manifest_sha256") != _aggregate_digests(project_root)
+        or expected_outputs.get("report", {}).get("sha256")
+        != artifact_sha256(report_path)
+        or expected_outputs.get("pilot_performance", {}).get("sha256")
+        != artifact_sha256(csv_path)
+    ):
+        raise RuntimeError("Pilot report bundle is stale or invalid")

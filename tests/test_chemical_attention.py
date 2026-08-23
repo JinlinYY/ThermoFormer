@@ -2,8 +2,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.run_chemical_attention_suite import main
-from src.chemical_attention_protocols import CHEMICAL_ATTENTION_VARIANTS
+from scripts.run_chemical_attention_suite import complete_pilot_matrix, main
+from src.chemical_attention_protocols import (
+    CHEMICAL_ATTENTION_PROTOCOLS,
+    CHEMICAL_ATTENTION_VARIANTS,
+)
 from src.config import load_experiment_config
 
 
@@ -40,6 +43,18 @@ class ChemicalAttentionExperimentTests(unittest.TestCase):
                         "--confirm-pilot-reviewed",
                     ]
                 )
+
+    def test_partial_pilot_defers_complete_matrix_report(self) -> None:
+        variants = tuple(CHEMICAL_ATTENTION_VARIANTS)
+        self.assertTrue(
+            complete_pilot_matrix("pilot", variants, CHEMICAL_ATTENTION_PROTOCOLS)
+        )
+        self.assertFalse(
+            complete_pilot_matrix("pilot", variants[:1], CHEMICAL_ATTENTION_PROTOCOLS)
+        )
+        self.assertFalse(
+            complete_pilot_matrix("pilot", variants, CHEMICAL_ATTENTION_PROTOCOLS[:1])
+        )
 
 
 if __name__ == "__main__":

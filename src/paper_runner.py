@@ -288,13 +288,14 @@ def run_paper_experiment(
     run_kind: str = "formal",
 ) -> dict[str, Any]:
     """Train/evaluate one immutable split and export every required artifact."""
-    if run_kind not in {"formal", "smoke"}:
-        raise ValueError("run_kind must be 'formal' or 'smoke'")
+    if run_kind not in {"formal", "pilot", "smoke"}:
+        raise ValueError("run_kind must be 'formal', 'pilot', or 'smoke'")
+    audited_run = run_kind in {"formal", "pilot"}
     git_commit = _git_commit()
     worktree_dirty, git_dirty, dirty_code_paths = _git_state()
-    if run_kind == "formal" and git_dirty:
+    if audited_run and git_dirty:
         raise RuntimeError(
-            "Formal runs require committed code/config/splits; dirty paths: "
+            "Audited runs require committed code/config/splits; dirty paths: "
             + ", ".join(dirty_code_paths[:10])
         )
     experiment = load_experiment_config(config_path, overrides)
@@ -310,7 +311,7 @@ def run_paper_experiment(
 
     data_root = _resolve_data_root(experiment)
     catalog_path = _resolve_catalog(experiment)
-    if run_kind == "formal":
+    if audited_run:
         _validate_formal_inputs(
             config_path,
             split_path,
@@ -333,13 +334,13 @@ def run_paper_experiment(
         raise ValueError(f"Split seed {split.seed} does not match run seed {seed}")
     split_protocol = validate_protocol_name(split.protocol)
     protocol = result_protocol_name(experiment.name, split_protocol)
-    if run_kind == "formal":
+    if audited_run:
         expected_split_path = (
             PROJECT_ROOT / "splits" / split_protocol / f"seed_{seed}.json"
         ).resolve()
         if split_path.resolve() != expected_split_path:
             raise RuntimeError(
-                f"Formal split must use the registered protocol path: {expected_split_path}"
+                f"Audited split must use the registered protocol path: {expected_split_path}"
             )
     run_dir = run_root / protocol / f"seed_{seed}"
     checkpoint_dir = checkpoint_root / protocol / f"seed_{seed}"
@@ -577,7 +578,7 @@ def run_paper_experiment(
         for name, path in artifact_paths.items()
     }
     manifest: dict[str, Any] = {
-        "status": "completed" if run_kind == "formal" else "smoke",
+        "status": "smoke" if run_kind == "smoke" else "completed",
         "protocol": protocol,
         "split_protocol": split_protocol,
         "seed": seed,
