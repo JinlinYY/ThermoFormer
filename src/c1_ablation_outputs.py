@@ -54,10 +54,9 @@ C1_ABLATION_SOURCES = {
     ),
 }
 
-PHYSICS_COMPARISON = (
+PHYSICS_RESULT_DIR = (
     "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/"
-    "c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/"
-    "seed_0/stage_comparison.json"
+    "c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary"
 )
 
 
@@ -150,19 +149,25 @@ def _table(records: list[dict[str, object]], family: str, direction: str) -> lis
     return lines
 
 
-def _physics_rows(project_root: Path) -> tuple[Path, dict[str, object]]:
-    path = project_root / PHYSICS_COMPARISON
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    if payload.get("selection_partition") != "validation" or payload.get("evaluation_partition") != "test":
-        raise RuntimeError("Fugacity fine-tuning comparison has invalid partitions")
-    weights = payload.get("thermodynamic_loss_weights", {})
-    if float(weights.get("teacher_forced_fugacity", 0.0)) != 1.0 or any(
-        float(value) != 0.0
-        for name, value in weights.items()
-        if name != "teacher_forced_fugacity"
+def _physics_rows(project_root: Path) -> tuple[Path, Path, dict[str, object]]:
+    result_dir = project_root / PHYSICS_RESULT_DIR
+    manifest_path = result_dir / "report_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if (
+        manifest.get("status") != "completed"
+        or manifest.get("seeds") != [0, 1, 2, 3, 4]
+        or manifest.get("selection_partition") != "validation"
+        or manifest.get("evaluation_partition") != "test"
     ):
-        raise RuntimeError("Frozen fugacity comparison is not fugacity-only")
-    return path, payload
+        raise RuntimeError("Fugacity five-seed report is incomplete")
+    summary_record = manifest.get("stage_comparison_summary", {})
+    summary_path = project_root / str(summary_record.get("path", ""))
+    if artifact_sha256(summary_path) != summary_record.get("sha256"):
+        raise RuntimeError("Fugacity stage-comparison summary SHA mismatch")
+    payload = json.loads(summary_path.read_text(encoding="utf-8"))
+    if payload.get("seeds") != [0, 1, 2, 3, 4]:
+        raise RuntimeError("Fugacity stage summary has unexpected seeds")
+    return manifest_path, summary_path, payload
 
 
 def write_c1_ablation_outputs(
@@ -172,7 +177,7 @@ def write_c1_ablation_outputs(
     report_path: Path | None = None,
 ) -> tuple[Path, Path, Path]:
     records = collect_c1_ablation_rows(project_root)
-    physics_path, physics = _physics_rows(project_root)
+    physics_manifest_path, physics_path, physics = _physics_rows(project_root)
     output_root = output_root or project_root / "results/c1_ablation"
     report_path = report_path or project_root / "reports/c1_ablation_overall_binary_ternary.md"
     metrics_path = output_root / "overall_binary_ternary_metrics.csv"
@@ -225,36 +230,47 @@ def write_c1_ablation_outputs(
         "C2 chemical-biased Transformer 没有稳定超过 C1；C3 的 T/y 较好但压力明显较差。"
         "综合 P、T、y 和参数复杂度，C1 是当前最均衡的最终结构。",
         "",
-        "## 逸度损失微调消融（seed 0）",
+        "## 逸度损失微调消融（seeds 0--4）",
         "",
         "Stage 1 是 C1 数据监督最佳 checkpoint；Stage 2 保留监督损失并只增加"
-        " teacher-forced 逸度平衡损失，checkpoint 仅由验证集选择。",
+        " teacher-forced 逸度平衡损失并微调10个 epoch，checkpoint 仅由验证集选择。",
         "",
         "| Task output | Stage 1 MAE | Stage 1 RMSE | Stage 1 R² | Fugacity Stage 2 MAE | Fugacity Stage 2 RMSE | Fugacity Stage 2 R² |",
         "|---|---:|---:|---:|---:|---:|---:|",
     ]
     stages = physics["stages"]
+
+    def physics_value(stage: str, direction: str, key: str) -> str:
+        record = stages[stage]["directions"][direction][key]
+        return f"{float(record['mean']):.6f} ± {float(record['std']):.6f}"
+
     for direction, state, prefix, suffix in (
         ("isothermal", "P", "pressure", "_kpa"),
         ("isothermal", "y", "y", ""),
         ("isobaric", "T", "temperature", "_k"),
         ("isobaric", "y", "y", ""),
     ):
-        first = next(row for row in stages["stage1"]["metrics"] if row.get("scope") == "direction" and row.get("direction") == direction)
-        second = next(row for row in stages["stage2"]["metrics"] if row.get("scope") == "direction" and row.get("direction") == direction)
         lines.append(
-            f"| {state}, {direction} | {float(first[prefix + '_mae' + suffix]):.6f} | "
-            f"{float(first[prefix + '_rmse' + suffix]):.6f} | {float(first[prefix + '_r2']):.6f} | "
-            f"{float(second[prefix + '_mae' + suffix]):.6f} | {float(second[prefix + '_rmse' + suffix]):.6f} | "
-            f"{float(second[prefix + '_r2']):.6f} |"
+            f"| {state}, {direction} | {physics_value('stage1', direction, prefix + '_mae' + suffix)} | "
+            f"{physics_value('stage1', direction, prefix + '_rmse' + suffix)} | "
+            f"{physics_value('stage1', direction, prefix + '_r2')} | "
+            f"{physics_value('stage2', direction, prefix + '_mae' + suffix)} | "
+            f"{physics_value('stage2', direction, prefix + '_rmse' + suffix)} | "
+            f"{physics_value('stage2', direction, prefix + '_r2')} |"
         )
+    counts = physics["selected_stage_counts"]
+    fugacity1 = stages["stage1"]["teacher_forced_fugacity"]
+    fugacity2 = stages["stage2"]["teacher_forced_fugacity"]
     lines.extend(
         [
             "",
-            f"验证损失：Stage 1 `{float(stages['stage1']['validation_loss']):.8f}`，"
-            f"Stage 2 `{float(stages['stage2']['validation_loss']):.8f}`；最终选择 **{physics['selected_stage']}**。",
-            "逸度微调改善 P MAE/RMSE 和两种方向的 y MAE，但 T RMSE/R² 及等温 y RMSE/R² 略有退化。"
-            "因此它是验证集支持的 seed-0 改善，不应在缺少多种子结果时宣称全面最优。",
+            f"验证集在 **{int(counts['stage2'])}/5** 个种子选择 Stage 2，在 "
+            f"**{int(counts['stage1'])}/5** 个种子回退 Stage 1。",
+            "测试集 teacher-forced 逸度残差均值由 "
+            f"`{float(fugacity1['mean']):.6g} ± {float(fugacity1['std']):.6g}` 降至 "
+            f"`{float(fugacity2['mean']):.6g} ± {float(fugacity2['std']):.6g}`。",
+            "按五种子均值，12项 P/T/y 指标中10项改善；T RMSE 与 T R²轻微退化。"
+            "因此逸度微调总体有效但不是每个种子都稳定受益，最终流程必须保留验证集 Stage 1 fallback。",
             "",
             "## 最终选择",
             "",
@@ -269,7 +285,7 @@ def write_c1_ablation_outputs(
         "status": "completed",
         "protocol": "overall_binary_ternary",
         "representation_and_interaction_seeds": [0, 1, 2, 3, 4],
-        "physics_finetuning_seed": 0,
+        "physics_finetuning_seeds": [0, 1, 2, 3, 4],
         "inputs": {
             variant_id: {
                 "metrics_summary": {
@@ -290,6 +306,10 @@ def write_c1_ablation_outputs(
         "physics_stage_comparison": {
             "path": physics_path.relative_to(project_root).as_posix(),
             "sha256": artifact_sha256(physics_path),
+        },
+        "physics_report_manifest": {
+            "path": physics_manifest_path.relative_to(project_root).as_posix(),
+            "sha256": artifact_sha256(physics_manifest_path),
         },
         "outputs": {
             "metrics": {"path": recorded_path(metrics_path), "sha256": artifact_sha256(metrics_path)},

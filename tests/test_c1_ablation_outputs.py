@@ -44,6 +44,9 @@ class C1AblationOutputTests(unittest.TestCase):
         self.assertIn("C1 RDKit + Uni-Mol + FG vanilla", written)
         self.assertIn("Fugacity Stage 2", written)
         self.assertIn("overall_binary_ternary", written)
+        self.assertIn("seeds 0--4", written)
+        self.assertIn("3/5", written)
+        self.assertIn("10项改善", written)
 
 
 if __name__ == "__main__":

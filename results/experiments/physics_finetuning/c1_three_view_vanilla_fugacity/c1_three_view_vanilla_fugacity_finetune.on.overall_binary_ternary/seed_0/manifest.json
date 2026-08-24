@@ -1,13 +1,14 @@
 {
+  "analysis_status": "confirmatory",
   "artifact_path_schema": "project-relative-v1",
   "artifacts": {
     "checkpoint": {
       "path": "checkpoints/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/seed_0/best_model.pt",
-      "sha256": "c3b64a83fb3078eacbc6f045e88e9c6c1a4dec9407f4762a040b102fcf5c44b5"
+      "sha256": "30ce29d00140e19cb762613a5b6d39cbb84d122bc1cc7ec3195c3b0839fb595f"
     },
     "history": {
       "path": "runs/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/seed_0/history.json",
-      "sha256": "fcecbfcb3a71d443d66abd4c3eecddefe748371f7a9844239bbac8a8a6fce3b7"
+      "sha256": "4a43900d4265a842d29d76bd709b8758d1d8fb69e9332a11fdc373576ce8a668"
     },
     "metrics": {
       "path": "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/seed_0/metrics.json",
@@ -23,19 +24,19 @@
     },
     "resolved_config": {
       "path": "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/seed_0/resolved_config.json",
-      "sha256": "aa3c19748318c0fb93a45cf5c181dd16f695580cff143fa896c9a72220e06ef6"
+      "sha256": "3e29837852fc9b4b7af8829bb5c85f613826ceff5620fa03f23af2d50a053ce2"
     },
     "stage2_checkpoint": {
       "path": "checkpoints/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/seed_0/stage2_best_model.pt",
-      "sha256": "3b7b0505a0cd0761e7dea13f8f8883501f2aef60d2df52caaa8dd05e953f9f92"
+      "sha256": "b40f778f2f12aa9a6d1868f8714f037381bf224517c31ffb79be7c3c95ebade5"
     },
     "stage_comparison": {
       "path": "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/seed_0/stage_comparison.json",
-      "sha256": "40b335e56f722ebea1b74d7d89e7a1573af244fb91b2145f472f00e6a6292cfb"
+      "sha256": "84c7faf376eee41284a60b3b2c818d28573097c88eaff984156da42460355906"
     },
     "training_curves": {
       "path": "runs/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/seed_0/training_curves.csv",
-      "sha256": "6e2da6cf1362f75a31e42c4e56d6e0c0470cfef158dd16568ef52bd6f11fbd79"
+      "sha256": "bf551870016e9483b3e96132e680f4ec83024cfce47830ff5efb261bfe9bb56d"
     }
   },
   "best_validation_loss": 0.015736596537641732,
@@ -48,9 +49,9 @@
   "feature_definition_sha256": "88a9909a120f1b629664d9c6441f16ce931e70145c180ea9137fb0d8b8bd7553",
   "feature_subset_sha256": "840454f581f535f532b0042c50dcca95c09506895c5cae6a8b1d24c1bd03ada9",
   "functional_group_vocabulary_sha256": "e0aa342568cb26e6ce1f24a3d079a038cf9583d5b936c30d48d7038643fc7c22",
-  "git_commit": "004418102a84e545f0201d7c10297df63d8c11b9",
+  "git_commit": "f1e6ec36c2ac8fef13e775e6cac3d7281c5d374e",
   "git_dirty": false,
-  "git_worktree_dirty": true,
+  "git_worktree_dirty": false,
   "headline_metrics": {
     "attempted_samples": 1676,
     "component_count": null,
@@ -83,8 +84,8 @@
     "y_system_macro_mae": 0.03219516782442092,
     "y_system_macro_rmse": 0.05539917380682466
   },
-  "inference_ms_per_attempt": 22.78278514319809,
-  "inference_seconds": 38.1839479,
+  "inference_ms_per_attempt": 21.718197136038185,
+  "inference_seconds": 36.3996984,
   "initially_trainable_parameters": 2015043,
   "molecular_feature_preprocessing": {
     "block_order": [
@@ -474,8 +475,8 @@
   "protocol": "c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary",
   "rdkit_descriptor_list_sha256": "93bdb416e43cc1336b9823428c86006dd729bf40b6caa2a3924904c6418b8433",
   "rdkit_scaler_sha256": "86bb0332dbba410ed68373a56f5e8832d30fbd3d80e075556fa2e1664f847002",
-  "request_sha256": "1287e63057706e18a38a8015c2da1108861c9c5c9d172f6a20c251455a6f2610",
-  "resolved_config_sha256": "1a64270992f38424f3556233beedc08fa7705eb4afd73d1be907501963c9ad9b",
+  "request_sha256": "1c9e96802966268353fbc844460e9945ed902e58164038c629783b6d68ab0221",
+  "resolved_config_sha256": "2734d9f2686f0b13b19b74c519f702860c17bbd36718568e917faf497a27025d",
   "rows": {
     "evaluated_partition": "test",
     "evaluated_rows": 1670,
@@ -545,6 +546,6 @@
   "status": "completed",
   "total_parameters": 2015043,
   "trainable_parameters": 260355,
-  "training_seconds": 7.417586900000001,
+  "training_seconds": 13.4217446,
   "unimol_cache_sha256": "b535a370dd661eb51a48615c4992ae33c43a7fd9b244753d46713b8fc526ba11"
 }

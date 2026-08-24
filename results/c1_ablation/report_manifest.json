@@ -78,13 +78,23 @@
     },
     "report": {
       "path": "reports/c1_ablation_overall_binary_ternary.md",
-      "sha256": "751f132b731779c033e96cf6c00bc9c5178f508f47d9095e501ee26d4765282b"
+      "sha256": "e2b33b0e86697b7afdeb2dd315e9b96c74b75fb37da4817ccfd46f5aa0b82d4c"
     }
   },
-  "physics_finetuning_seed": 0,
+  "physics_finetuning_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "physics_report_manifest": {
+    "path": "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/report_manifest.json",
+    "sha256": "8cd009ccac857c2c591b38041bcd91327261435aed39035d44955b7bf947a4dc"
+  },
   "physics_stage_comparison": {
-    "path": "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/seed_0/stage_comparison.json",
-    "sha256": "40b335e56f722ebea1b74d7d89e7a1573af244fb91b2145f472f00e6a6292cfb"
+    "path": "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/stage_comparison_summary.json",
+    "sha256": "221b9284d07cde03740cd52f88e79411fba1b7f2c4f44533d4164a13c91bcae5"
   },
   "protocol": "overall_binary_ternary",
   "representation_and_interaction_seeds": [
