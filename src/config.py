@@ -177,8 +177,7 @@ class PhysicsFineTuningConfig:
     vapor_pressure_lr: float = 1e-5
     film_lr: float = 5e-6
     mixture_token_lr: float = 5e-6
-    teacher_forced_fugacity_weight: float | None = None
-    additional_pure_vapor_pressure_anchor_weight: float | None = None
+    teacher_forced_fugacity_weight: float = 1.0
 
     def __post_init__(self) -> None:
         if not isinstance(self.enabled, bool):
@@ -214,7 +213,7 @@ class PhysicsFineTuningConfig:
             for value in learning_rates
         ):
             raise ValueError("physics_finetuning learning rates must be positive and finite")
-        if self.teacher_forced_fugacity_weight is not None and (
+        if (
             not isinstance(self.teacher_forced_fugacity_weight, (int, float))
             or isinstance(self.teacher_forced_fugacity_weight, bool)
             or not math.isfinite(self.teacher_forced_fugacity_weight)
@@ -222,18 +221,6 @@ class PhysicsFineTuningConfig:
         ):
             raise ValueError(
                 "physics_finetuning.teacher_forced_fugacity_weight must be non-negative and finite"
-            )
-        if self.additional_pure_vapor_pressure_anchor_weight is not None and (
-            not isinstance(
-                self.additional_pure_vapor_pressure_anchor_weight, (int, float)
-            )
-            or isinstance(self.additional_pure_vapor_pressure_anchor_weight, bool)
-            or not math.isfinite(self.additional_pure_vapor_pressure_anchor_weight)
-            or self.additional_pure_vapor_pressure_anchor_weight < 0.0
-        ):
-            raise ValueError(
-                "physics_finetuning.additional_pure_vapor_pressure_anchor_weight "
-                "must be non-negative and finite"
             )
 
 
@@ -282,16 +269,6 @@ class ExperimentConfig:
         payload = asdict(self)
         if self.physics_finetuning is None:
             payload.pop("physics_finetuning")
-        else:
-            physics = payload.get("physics_finetuning")
-            if isinstance(physics, dict):
-                optional_fields = (
-                    "teacher_forced_fugacity_weight",
-                    "additional_pure_vapor_pressure_anchor_weight",
-                )
-                for field_name in optional_fields:
-                    if getattr(self.physics_finetuning, field_name) is None:
-                        physics.pop(field_name, None)
         return payload
 
 

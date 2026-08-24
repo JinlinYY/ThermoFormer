@@ -592,16 +592,8 @@ def run_paper_experiment(
             "stage1_checkpoint": portable_artifact_path(stage1_checkpoint),
             "stage1_checkpoint_sha256": stage1_checkpoint_sha256,
             "thermodynamic_loss_weights": {
-                "continuity": training.continuity_weight,
-                "boundary": training.boundary_weight,
-                "solver": training.solver_weight,
                 "teacher_forced_fugacity": (
                     experiment.physics_finetuning.teacher_forced_fugacity_weight
-                    or 0.0
-                ),
-                "additional_pure_vapor_pressure_anchor": (
-                    experiment.physics_finetuning.additional_pure_vapor_pressure_anchor_weight
-                    or 0.0
                 ),
             },
         }

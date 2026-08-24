@@ -59,17 +59,22 @@ class ScalarCheckpointModel(torch.nn.Module):
 
 
 class TrainingSmokeTests(unittest.TestCase):
+    def test_generic_fit_rejects_implicit_physics_stage(self) -> None:
+        model = ScalarCheckpointModel()
+        with self.assertRaisesRegex(ValueError, "supervised-only"):
+            fit_model(
+                model,
+                [],
+                {},
+                TrainingConfig(epochs_supervised=0, epochs_physics=1),
+                torch.device("cpu"),
+            )
+
     def test_seed_setup_configures_deterministic_cublas_before_gpu_work(self) -> None:
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop("CUBLAS_WORKSPACE_CONFIG", None)
             seed_everything(7)
             self.assertEqual(os.environ["CUBLAS_WORKSPACE_CONFIG"], ":4096:8")
-
-    def test_physics_learning_rate_is_validated_independently(self) -> None:
-        config = TrainingConfig(learning_rate=2e-4, physics_learning_rate=2e-5)
-        self.assertAlmostEqual(config.physics_learning_rate, 2e-5)
-        with self.assertRaisesRegex(ValueError, "physics_learning_rate"):
-            TrainingConfig(physics_learning_rate=0.0)
 
     def test_validation_patience_stops_a_non_improving_supervised_stage(self) -> None:
         sample = VLESample(
@@ -86,7 +91,7 @@ class TrainingSmokeTests(unittest.TestCase):
         )
         model = ScalarCheckpointModel()
 
-        def flat_validation(model, loader, device, config, optimizer, physics):
+        def flat_validation(model, loader, device, config, optimizer, *args, **kwargs):
             return {"total": 0.0 if optimizer is not None else 1.0}
 
         with mock.patch("src.training._run_epoch", side_effect=flat_validation):
@@ -107,45 +112,6 @@ class TrainingSmokeTests(unittest.TestCase):
 
         self.assertEqual(len(result.history), 3)
         self.assertTrue(result.history[-1]["early_stopped"])
-
-    def test_physics_stage_is_rejected_when_validation_loss_worsens(self) -> None:
-        sample = VLESample(
-            smiles=("A", "B"),
-            names=("A", "B"),
-            temperature_k=350.0,
-            pressure_kpa=70.0,
-            liquid_composition=(0.4, 0.6),
-            vapor_composition=(0.5, 0.5),
-            quality_weight=1.0,
-            quality_status="passed",
-            source="synthetic.xlsx",
-            doi="stage-selection",
-        )
-        model = ScalarCheckpointModel()
-
-        def controlled_epoch(model, loader, device, config, optimizer, physics):
-            if optimizer is not None:
-                model.value.data.fill_(2.0 if physics else 1.0)
-                return {"total": 0.0}
-            return {"total": 0.20 if physics else 0.10}
-
-        with mock.patch("src.training._run_epoch", side_effect=controlled_epoch):
-            result = fit_model(
-                model,
-                [sample],
-                {"A": np.zeros(1, dtype=np.float32), "B": np.zeros(1, dtype=np.float32)},
-                TrainingConfig(
-                    batch_size=1,
-                    epochs_supervised=1,
-                    epochs_physics=1,
-                ),
-                torch.device("cpu"),
-                validation_samples=[sample],
-            )
-
-        self.assertAlmostEqual(float(model.value.detach()), 1.0)
-        self.assertAlmostEqual(float(result.state_dict["value"]), 1.0)
-        self.assertAlmostEqual(result.best_validation_loss, 0.10)
 
     def test_evaluation_fails_instead_of_reporting_nonfinite_metrics(self) -> None:
         sample = VLESample(
@@ -310,36 +276,21 @@ class TrainingSmokeTests(unittest.TestCase):
         config = TrainingConfig(
             batch_size=4,
             epochs_supervised=1,
-            epochs_physics=1,
+            epochs_physics=0,
             learning_rate=1e-4,
-            boundary_weight=1e-3,
-            solver_weight=0.1,
-            solver_batches_per_epoch=1,
-            solver_iterations_train=1,
         )
 
-        with (
-            mock.patch("src.thermo.solve_isothermal", wraps=solve_isothermal) as isothermal,
-            mock.patch("src.thermo.solve_isobaric", wraps=solve_isobaric) as isobaric,
-            mock.patch.object(
-                model, "set_training_epoch", wraps=model.set_training_epoch
-            ) as set_training_epoch,
-        ):
+        with mock.patch.object(
+            model, "set_training_epoch", wraps=model.set_training_epoch
+        ) as set_training_epoch:
             result = fit_model(model, samples, features, config, torch.device("cpu"))
 
-        self.assertEqual(len(result.history), 2)
-        self.assertEqual([row["stage"] for row in result.history], ["experimental", "physics"])
+        self.assertEqual(len(result.history), 1)
+        self.assertEqual([row["stage"] for row in result.history], ["experimental"])
         self.assertTrue(np.isfinite(result.history[0]["train"]["total"]))
         self.assertTrue(np.isfinite(result.history[0]["train"]["gradient_norm_mean"]))
         self.assertTrue(np.isfinite(result.history[0]["train"]["gradient_norm_max"]))
-        for name in ("boundary", "solver"):
-            self.assertEqual(result.history[0]["train"][name], 0.0)
-            self.assertTrue(np.isfinite(result.history[1]["train"][name]))
-        self.assertIsNone(isothermal.call_args.kwargs.get("initial_pressure_kpa"))
-        self.assertIsNone(isobaric.call_args.kwargs.get("initial_temperature_k"))
-        self.assertEqual(
-            [call.args[0] for call in set_training_epoch.call_args_list], [1, 2]
-        )
+        self.assertEqual([call.args[0] for call in set_training_epoch.call_args_list], [1])
 
 
 if __name__ == "__main__":

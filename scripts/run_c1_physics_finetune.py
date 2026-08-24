@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
 import json
 from pathlib import Path
 import sys
@@ -28,49 +27,14 @@ from src.paper_runner import (
 from src.physics_finetuning import write_physics_finetune_report
 from src.representation import encoder_cache_filename
 
-
-@dataclass(frozen=True)
-class ExperimentVariant:
-    folder: str
-    exploratory: bool = False
-    reference_comparison: str | None = None
-    reference_label: str = "Reference Stage 2"
-    candidate_label: str = "Current Stage 2"
-
-
-EXPERIMENT_VARIANTS = {
-    "fugacity_pure_anchor": ExperimentVariant(
-        "c1_three_view_vanilla_fugacity_pure_anchor",
-        reference_comparison=(
-            "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/"
-            "c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/"
-            "seed_0/stage_comparison.json"
-        ),
-        reference_label="Fugacity only",
-        candidate_label="Fugacity + anchor",
-    ),
-    "pure_anchor": ExperimentVariant("c1_three_view_vanilla_pure_anchor"),
-    "pure_anchor_0p1": ExperimentVariant(
-        "c1_three_view_vanilla_pure_anchor_0p1",
-        exploratory=True,
-        reference_comparison=(
-            "results/experiments/physics_finetuning/c1_three_view_vanilla_pure_anchor/"
-            "c1_pure_anchor_finetune.on.overall_binary_ternary/"
-            "seed_0/stage_comparison.json"
-        ),
-        reference_label="Extra anchor 0.5",
-        candidate_label="Extra anchor 0.1",
-    ),
-    "fugacity": ExperimentVariant("c1_three_view_vanilla_fugacity"),
-    "legacy": ExperimentVariant("c1_three_view_vanilla"),
-}
+EXPERIMENT_FOLDER = "c1_three_view_vanilla_fugacity"
 
 
 def output_roots(
     project_root: Path,
     *,
     smoke: bool,
-    experiment_folder: str = "c1_three_view_vanilla",
+    experiment_folder: str = EXPERIMENT_FOLDER,
 ) -> tuple[Path, Path, Path]:
     root = project_root / "runs/c1_physics_finetune_smoke" if smoke else project_root
     experiment_path = Path("experiments/physics_finetuning") / experiment_folder
@@ -84,12 +48,6 @@ def output_roots(
 def parser() -> argparse.ArgumentParser:
     value = argparse.ArgumentParser(description=__doc__)
     value.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
-    value.add_argument(
-        "--objective",
-        choices=tuple(EXPERIMENT_VARIANTS),
-        default="fugacity",
-        help="Stage-2 thermodynamic objective; fugacity is the current default.",
-    )
     value.add_argument("--smoke", action="store_true")
     value.add_argument("--overwrite", action="store_true")
     return value
@@ -139,8 +97,7 @@ def recover_completed_seed_manifest(
 
 def main(argv: list[str] | None = None) -> None:
     args = parser().parse_args(argv)
-    variant = EXPERIMENT_VARIANTS[args.objective]
-    experiment_folder = variant.folder
+    experiment_folder = EXPERIMENT_FOLDER
     config_path = (
         PROJECT_ROOT
         / "experiments/physics_finetuning"
@@ -164,7 +121,6 @@ def main(argv: list[str] | None = None) -> None:
         (
             "training.epochs_physics=1",
             "training.minimum_physics_epochs=1",
-            "training.solver_iterations_train=2",
             "training.solver_iterations_eval=4",
         )
         if args.smoke
@@ -177,13 +133,7 @@ def main(argv: list[str] | None = None) -> None:
     # process stopped after the seed artifacts committed, rerunning repairs the
     # report bundle without repeating training or requiring --overwrite.
     expected_evaluation_partition = "validation" if args.smoke else "test"
-    analysis_status = (
-        "diagnostic"
-        if args.smoke
-        else "test_exposed_exploratory"
-        if variant.exploratory
-        else "confirmatory"
-    )
+    analysis_status = "diagnostic" if args.smoke else "confirmatory"
     recorded_git_commit = None
     if seed_manifest_path.is_file() and not args.overwrite:
         existing_payload = json.loads(seed_manifest_path.read_text(encoding="utf-8"))
@@ -242,19 +192,7 @@ def main(argv: list[str] | None = None) -> None:
         / experiment_folder
         / "results.md"
     )
-    reference_comparison_path = None
-    if variant.reference_comparison is not None and not args.smoke:
-        reference_comparison_path = PROJECT_ROOT / variant.reference_comparison
-        if not reference_comparison_path.is_file():
-            raise FileNotFoundError("The frozen Stage-2 comparison is required")
-    write_physics_finetune_report(
-        comparison_path,
-        report_path,
-        reference_comparison_path=reference_comparison_path,
-        reference_label=variant.reference_label,
-        candidate_label=variant.candidate_label,
-        exploratory=variant.exploratory,
-    )
+    write_physics_finetune_report(comparison_path, report_path)
     report_manifest = {
         "status": "smoke" if args.smoke else "completed",
         "protocol": protocol,
@@ -276,11 +214,6 @@ def main(argv: list[str] | None = None) -> None:
             "sha256": artifact_sha256(report_path),
         },
     }
-    if reference_comparison_path is not None:
-        report_manifest["reference_stage_comparison"] = {
-            "path": portable_artifact_path(reference_comparison_path),
-            "sha256": artifact_sha256(reference_comparison_path),
-        }
     atomic_write_json(protocol_dir / "report_manifest.json", report_manifest)
     print(json.dumps(report_manifest, indent=2, sort_keys=True))
 

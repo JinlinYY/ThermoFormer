@@ -1,4 +1,4 @@
-"""Run staged multi-view ThermoFormer experiments without touching legacy results."""
+"""Run retained five-seed C1 molecular-view ablations on the joint test."""
 
 from __future__ import annotations
 
@@ -14,15 +14,10 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from src.config import load_experiment_config
 from src.multiview_protocols import (
-    FORMAL_PROTOCOLS,
-    FORMAL_VARIANTS,
     MULTIVIEW_SEEDS,
     MULTIVIEW_VARIANTS,
     PREDICTIVE_PROTOCOLS,
     PREDICTIVE_VARIANTS,
-    SCREENING_PROTOCOLS,
-    SCREENING_VARIANTS,
-    SMOKE_VARIANTS,
 )
 from src.paper_runner import result_protocol_name, run_paper_experiment
 from src.representation import encoder_cache_filename
@@ -43,65 +38,26 @@ def release_accelerator_memory() -> None:
 
 def parser() -> argparse.ArgumentParser:
     value = argparse.ArgumentParser(description=__doc__)
-    value.add_argument(
-        "--stage", choices=("smoke", "screening", "formal", "predictive"), required=True
-    )
     value.add_argument("--variant", action="append", choices=sorted(MULTIVIEW_VARIANTS))
-    value.add_argument("--protocol", action="append")
-    value.add_argument("--seeds", type=int, nargs="+")
     value.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
     value.add_argument("--artifact-root", type=Path, default=PROJECT_ROOT)
     value.add_argument("--overwrite", action="store_true")
-    value.add_argument(
-        "--exploratory", action="store_true",
-        help="Allow an off-matrix diagnostic and isolate it from locked stage artifacts",
-    )
     return value
-
-
-def _matrix(stage: str) -> tuple[tuple[str, ...], tuple[str, ...], tuple[int, ...]]:
-    if stage == "smoke":
-        return SMOKE_VARIANTS, ("overall_binary_ternary",), (0,)
-    if stage == "screening":
-        return SCREENING_VARIANTS, SCREENING_PROTOCOLS, (0,)
-    if stage == "predictive":
-        return PREDICTIVE_VARIANTS, PREDICTIVE_PROTOCOLS, MULTIVIEW_SEEDS
-    return FORMAL_VARIANTS, FORMAL_PROTOCOLS, MULTIVIEW_SEEDS
 
 
 def main(argv: list[str] | None = None) -> None:
     args = parser().parse_args(argv)
-    default_variants, default_protocols, default_seeds = _matrix(args.stage)
-    variants = tuple(args.variant or default_variants)
-    protocols = tuple(args.protocol or default_protocols)
-    seeds = tuple(args.seeds or default_seeds)
-    if len(seeds) != len(set(seeds)) or not set(seeds).issubset(MULTIVIEW_SEEDS):
-        raise ValueError("Multi-view seeds must be a unique subset of 0--4")
-    if not args.exploratory:
-        if not set(variants).issubset(default_variants):
-            raise ValueError(f"{args.stage} variants must stay within the locked stage matrix")
-        if not set(protocols).issubset(default_protocols):
-            raise ValueError(f"{args.stage} protocols must stay within the locked stage matrix")
-        if seeds != default_seeds:
-            raise ValueError(f"{args.stage} seeds must be exactly {default_seeds}")
-    elif args.stage in {"formal", "predictive"}:
-        raise ValueError("Off-matrix experiments cannot use the formal namespace")
+    variants = tuple(args.variant or PREDICTIVE_VARIANTS)
+    protocols = PREDICTIVE_PROTOCOLS
+    seeds = MULTIVIEW_SEEDS
     artifact_root = args.artifact_root.resolve()
-    namespace = f"{args.stage}_exploratory" if args.exploratory else args.stage
+    namespace = "predictive"
     run_root = artifact_root / "runs" / "multiview" / namespace
     checkpoint_root = artifact_root / "checkpoints" / "multiview" / namespace
     results_root = artifact_root / "results" / "multiview" / namespace / "runs"
-    overrides = (
-        "training.epochs_supervised=2",
-        "training.epochs_physics=1",
-        "training.solver_iterations_train=2",
-        "training.solver_iterations_eval=4",
-    ) if args.stage == "smoke" else ()
+    overrides: tuple[str, ...] = ()
     for variant_id in variants:
         variant = MULTIVIEW_VARIANTS[variant_id]
-        if variant.reference:
-            print(json.dumps({"variant": variant_id, "status": "reuses_legacy_reference"}))
-            continue
         config_path = PROJECT_ROOT / variant.config
         experiment = load_experiment_config(config_path, overrides)
         feature_cache = artifact_root / "cache" / encoder_cache_filename(experiment.encoder)
@@ -120,7 +76,7 @@ def main(argv: list[str] | None = None) -> None:
                         device_name=args.device,
                         overrides=overrides,
                         allow_overwrite=args.overwrite,
-                        run_kind="smoke" if args.stage == "smoke" else "formal",
+                        run_kind="formal",
                     )
                 finally:
                     release_accelerator_memory()
@@ -131,11 +87,10 @@ def main(argv: list[str] | None = None) -> None:
                     "status": manifest["status"],
                     "training_seconds": manifest["training_seconds"],
                 }))
-            if args.stage in {"formal", "predictive"}:
-                aggregate_protocol_results(
-                    results_root / protocol,
-                    expected_seeds=MULTIVIEW_SEEDS,
-                )
+            aggregate_protocol_results(
+                results_root / protocol,
+                expected_seeds=MULTIVIEW_SEEDS,
+            )
 
 
 if __name__ == "__main__":

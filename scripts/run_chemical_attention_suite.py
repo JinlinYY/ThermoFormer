@@ -1,4 +1,4 @@
-"""Run locked chemical-attention pilot or five-seed experiments."""
+"""Run the retained five-seed C1 interaction ablations on the joint test."""
 
 from __future__ import annotations
 
@@ -14,12 +14,10 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from src.chemical_attention_protocols import (
     CHEMICAL_ATTENTION_FORMAL_PROTOCOLS,
-    CHEMICAL_ATTENTION_PROTOCOLS,
     CHEMICAL_ATTENTION_SEEDS,
     CHEMICAL_ATTENTION_VARIANTS,
 )
 from src.config import load_experiment_config
-from src.chemical_attention_outputs import validate_pilot_report_bundle, write_pilot_outputs
 from src.paper_runner import result_protocol_name, run_paper_experiment
 from src.representation import encoder_cache_filename
 from src.results import aggregate_protocol_results
@@ -38,64 +36,29 @@ def _release_accelerator() -> None:
 
 def parser() -> argparse.ArgumentParser:
     value = argparse.ArgumentParser(description=__doc__)
-    value.add_argument("--stage", choices=("pilot", "formal"), required=True)
     value.add_argument("--variant", action="append", choices=sorted(CHEMICAL_ATTENTION_VARIANTS))
-    value.add_argument("--protocol", action="append", choices=CHEMICAL_ATTENTION_PROTOCOLS)
     value.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
     value.add_argument("--artifact-root", type=Path, default=PROJECT_ROOT)
     value.add_argument("--overwrite", action="store_true")
-    value.add_argument(
-        "--confirm-pilot-reviewed",
-        action="store_true",
-        help="Required for the five-seed stage after the owner reviews the seed-0 report",
-    )
     return value
-
-
-def _require_reviewed_pilot(artifact_root: Path) -> None:
-    report = artifact_root / "reports" / "chemical_attention_pilot_report.md"
-    if not report.is_file():
-        raise RuntimeError("Formal stage requires the generated seed-0 pilot report")
-    validate_pilot_report_bundle(artifact_root)
-
-
-def complete_pilot_matrix(
-    stage: str, variants: tuple[str, ...], protocols: tuple[str, ...]
-) -> bool:
-    return (
-        stage == "pilot"
-        and variants == tuple(CHEMICAL_ATTENTION_VARIANTS)
-        and protocols == CHEMICAL_ATTENTION_PROTOCOLS
-    )
 
 
 def main(argv: list[str] | None = None) -> None:
     args = parser().parse_args(argv)
     variants = tuple(args.variant or CHEMICAL_ATTENTION_VARIANTS)
-    default_protocols = (
-        CHEMICAL_ATTENTION_FORMAL_PROTOCOLS
-        if args.stage == "formal"
-        else CHEMICAL_ATTENTION_PROTOCOLS
-    )
-    protocols = tuple(args.protocol or default_protocols)
-    seeds = (0,) if args.stage == "pilot" else CHEMICAL_ATTENTION_SEEDS
+    protocols = CHEMICAL_ATTENTION_FORMAL_PROTOCOLS
+    seeds = CHEMICAL_ATTENTION_SEEDS
     artifact_root = args.artifact_root.resolve()
-    if args.stage == "formal":
-        if not args.confirm_pilot_reviewed:
-            raise RuntimeError(
-                "Formal stage is locked until --confirm-pilot-reviewed is explicitly supplied"
-            )
-        _require_reviewed_pilot(artifact_root)
-    run_root = artifact_root / "runs" / "multiview" / "chemical_attention" / args.stage
+    run_root = artifact_root / "runs" / "multiview" / "chemical_attention" / "formal"
     checkpoint_root = (
-        artifact_root / "checkpoints" / "multiview" / "chemical_attention" / args.stage
+        artifact_root / "checkpoints" / "multiview" / "chemical_attention" / "formal"
     )
     results_root = (
         artifact_root
         / "results"
         / "multiview"
         / "chemical_attention"
-        / args.stage
+        / "formal"
         / "runs"
     )
 
@@ -118,7 +81,7 @@ def main(argv: list[str] | None = None) -> None:
                         feature_cache=feature_cache,
                         device_name=args.device,
                         allow_overwrite=args.overwrite,
-                        run_kind="pilot" if args.stage == "pilot" else "formal",
+                        run_kind="formal",
                     )
                 finally:
                     _release_accelerator()
@@ -133,12 +96,8 @@ def main(argv: list[str] | None = None) -> None:
             aggregate_protocol_results(
                 results_root / protocol,
                 expected_seeds=seeds,
-                aggregate_kind="diagnostic" if args.stage == "pilot" else "formal",
+                aggregate_kind="formal",
             )
-    if complete_pilot_matrix(args.stage, variants, protocols):
-        write_pilot_outputs(artifact_root)
-    elif args.stage == "pilot":
-        print(json.dumps({"report": "deferred_until_complete_pilot_matrix"}))
 
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ Protocol: `overall_binary_ternary`; seed: `0`; checkpoint selection: validation 
 | nonphysical rate | 0 | 0 |
 | teacher-forced fugacity-equilibrium residual | 0.00784219 | 0.00820832 |
 
-Thermodynamic loss weights: `boundary=0`, `continuity=0`, `solver=0`, `teacher_forced_fugacity=1`.
+Thermodynamic loss weights: `teacher_forced_fugacity=1`.
 
 Total parameters: **2,015,043**.
 Fine-tuned parameters: **260,355** (**12.921%**).

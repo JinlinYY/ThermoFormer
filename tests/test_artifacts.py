@@ -1,12 +1,10 @@
 import json
-import hashlib
 import tempfile
 import unittest
 from pathlib import Path
 
 from src.artifacts import artifact_sha256, portable_artifact_path, resolve_artifact_path
 from src.results import REQUIRED_ARTIFACTS, _validate_manifest_artifacts
-from scripts.analyze_multiview_gates import _validate_checkpoint_provenance
 
 
 class ArtifactPathTests(unittest.TestCase):
@@ -47,40 +45,6 @@ class ArtifactPathTests(unittest.TestCase):
                 }
             manifest_path = directory / "manifest.json"
             _validate_manifest_artifacts({"artifacts": artifacts}, manifest_path)
-
-    def test_gate_reference_validates_without_screening_run_directory(self) -> None:
-        root = Path(__file__).resolve().parents[1]
-        with tempfile.TemporaryDirectory(dir=root) as temporary:
-            directory = Path(temporary)
-            checkpoint_path = directory / "best_model.pt"
-            checkpoint_path.write_bytes(b"frozen checkpoint fixture")
-            reference_path = directory / "reference.json"
-            relative = portable_artifact_path(checkpoint_path, root)
-            reference_path.write_text(json.dumps({
-                "status": "reference",
-                "protocol": "v6_full_interaction.on.state_composition_interpolation",
-                "split_protocol": "state_composition_interpolation",
-                "seed": 0,
-                "training_git_commit": "abc123",
-                "checkpoint_artifact": {
-                    "path": relative,
-                    "sha256": hashlib.sha256(checkpoint_path.read_bytes()).hexdigest(),
-                },
-            }), encoding="utf-8")
-            checkpoint = {
-                "protocol": "v6_full_interaction.on.state_composition_interpolation",
-                "split_protocol": "state_composition_interpolation",
-                "seed": 0,
-                "git_commit": "abc123",
-            }
-            _validate_checkpoint_provenance(
-                checkpoint_path,
-                checkpoint,
-                reference_path,
-                "state_composition_interpolation",
-                "v6_full_interaction.on.state_composition_interpolation",
-                0,
-            )
 
     def test_text_artifact_digest_is_independent_of_platform_eol(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

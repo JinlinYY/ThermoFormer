@@ -1,6 +1,6 @@
 # ThermoFormer：二元/三元汽液相平衡模型
 
-ThermoFormer 使用可配置分子表征、多组分交互与可微热力学求解器建模低压 VLE。冻结基线仍使用 Uni-Mol v2；新的独立 multi-view campaign 比较 RDKit 2D 描述符、Uni-Mol v2 高阶表示与可审计 SMARTS 官能团交互。当前范围只包括二元和三元体系；LLM-Agent、四元体系与高压气相 EOS 暂不实现。
+ThermoFormer 使用可配置分子表征、多组分交互与可微热力学求解器建模低压 VLE。最终模型固定为 **C1 三视图 vanilla Transformer**：RDKit 2D 描述符、Uni-Mol v2 高阶表示和 SMARTS 官能团特征独立投影后融合，再由普通 Transformer 建模组分交互。Stage 2 只保留 teacher-forced 逸度平衡损失。当前范围只包括二元和三元体系；LLM-Agent、四元体系与高压气相 EOS 暂不实现。
 
 ## 工程结构
 
@@ -13,23 +13,21 @@ scripts/
   validate_splits.py                  # 回读并审计全部划分
   run_paper_experiment.py             # 单协议/单种子论文运行器
   run_paper_suite.py                  # 五种子实验套件
-  run_multiview_suite.py              # multi-view 分阶段实验入口
-  analyze_multiview_gates.py          # 多视角 gate 可解释性统计
+  run_multiview_suite.py              # C1 分子视图消融入口
+  run_chemical_attention_suite.py     # C1 交互模块消融入口
+  run_c1_physics_finetune.py          # C1 逸度损失微调入口
+  build_c1_ablation_report.py         # overall_binary_ternary 消融总报告
   aggregate_results.py                # mean ± std 聚合
   build_paper_outputs.py              # 论文表格、图和诊断报告生成器
 experiments/
   README.md                           # 实验总索引
   baseline/thermoformer_base/         # 完整模型基线
-  ablation/
-    architecture/                     # 正式 A0--A6 架构消融
-    thermodynamic_constraint/         # 正式 P0--P6 约束消融
-    component/                        # 早期诊断模板（不进入正式表）
-    thermodynamic_loss/               # 早期诊断模板（不进入正式表）
   comparison/                         # 对比实验
   interpolation_extrapolation/        # 内插/外推实验设计与后续结果
   explainability/                     # 可解释性实验设计与后续结果
-  multiview/representations/          # V0--V6 multi-view 独立实验
-  physics_finetuning/                 # C1 Stage 2 热力学损失对照
+  multiview/representations/          # RDKit/FG/RDKit+Uni-Mol 表征消融
+  multiview/chemical_attention/       # C0--C3 交互模块消融
+  physics_finetuning/                 # C1 fugacity-only Stage 2
 assets/                               # 冻结的 RDKit 描述符与 SMARTS 词表
 splits/                               # 75 个固定划分 JSON（15 协议 × 5 seeds）
 reports/                              # 实现、数据、划分和训练诊断审计
@@ -91,9 +89,9 @@ python -m unittest discover -s tests -v
 
 神经网络直接输出 `log_gamma`、学习型纯组分 `log_psat`、非理想性 token 和 `g^E/RT`。若配置了可靠 Antoine 或 DIPPR 101 参数且温度处于声明的有效范围，求解器优先使用相关式；否则回退到学习型 `P_i^sat(T)`。热力学求解器进一步输出平衡 `T/P`、`x/y`、`gamma`、`P^sat`、平衡残差、收敛标志与迭代次数。等温模式给定 `T,x` 求 `P,y`；等压模式给定 `P,x` 求 `T,y`。
 
-multi-view 模型不额外叠加 GNN：Uni-Mol v2 已承担冻结的三维高阶结构编码，RDKit 描述符补充显式整体理化量，SMARTS 官能团分支补充局部相互作用位点。V4/V5 先对各视角独立投影，再用 concat-projection 构造 mixture base token；V6 进一步为每个分子对分别计算 RDKit、Uni-Mol 与官能团 cross-attention interaction，并用依赖 mixture context、T/P 与对称组成量的 gate 自适应融合。所有路径仍进入同一个 `G^E/RT → lnγ → VLE solver` 主干。
+最终 C1 不额外叠加 GNN：Uni-Mol v2 承担冻结的三维高阶结构编码，RDKit 描述符补充显式整体理化量，SMARTS 官能团分支补充局部作用位点。三个视角先独立投影，再以 concat-projection 构造 molecular token，并交给 vanilla Transformer。chemical attention bias 与 context pair interaction 仅保留为可复现实验对照，不进入最终模型。所有路径仍进入同一个 `G^E/RT → lnγ → VLE solver` 主干。
 
-RDKit mean/std 只由当前 `split.train` 中出现的分子拟合；held-out molecule 不参与统计。checkpoint 与 manifest 保存描述符词表、scaler、SMARTS vocabulary、Uni-Mol cache 和最终特征摘要。V0 legacy checkpoint 的模块名与旧配置保持兼容。
+RDKit mean/std 只由当前 `split.train` 中出现的分子拟合；held-out molecule 不参与统计。checkpoint 与 manifest 保存描述符词表、scaler、SMARTS vocabulary、Uni-Mol cache 和最终特征摘要。
 
 可选纯物性目录通过 `data.pure_property_catalog` 指定 JSON 文件，键为标准化 SMILES。每项用 `type` 选择 `antoine` 或 `dippr101`，并明确 `pressure_unit`、`temperature_unit`、`minimum_temperature_k` 与 `maximum_temperature_k`。Antoine 采用 `log10(P)=A-B/(C+T)`；DIPPR 101 采用 `ln(P)=A+B/T+C ln(T)+D T^E`。为兼容已有目录，省略 `type` 和单位时按 Antoine、mmHg、°C 解释；默认目录留空，不伪造缺失参数。
 
@@ -106,44 +104,16 @@ conda activate ggnn39
 python scripts/train_thermoformer.py --config experiments/baseline/thermoformer_base/config.json
 ```
 
-当前正式消融由 `scripts/run_ablation_suite.py` 统一运行，完整索引见
-`experiments/ablation/README.md`。A0--A6 比较原有分子表征、多组分交互、条件注入、
-非理想性瓶颈和直接 VLE 回归；P0--P6 区分硬约束与可移除的软物理 loss。
-旧的下列目录仅作为早期诊断模板保留，不进入正式消融表：
-
-- `baseline/thermoformer_base`：完整模型，默认 5 折交叉验证；
-- `ablation/component/no_film`：移除 FiLM 条件调制；
-- `ablation/component/no_transformer`：移除组分交互 Transformer；
-- `ablation/component/no_mixture_token`：移除全局 mixture token；
-- `ablation/thermodynamic_loss/no_continuity_loss`：关闭连续性热力学 loss；
-- `ablation/thermodynamic_loss/no_boundary_loss`：关闭近纯组成边界 loss；
-- `ablation/thermodynamic_loss/no_solver_loss`：关闭可微泡点求解监督；
-- `comparison/ideal_activity`：理想活度系数对比基线。
-
-`interpolation_extrapolation/` 和 `explainability/` 使用独立类别；论文预测性能与泛化协议已经正式完成。正式消融的运行状态以各实验 `results.md` 和 `results/ablation/` 的机器可读表为准。
-
-新的 multi-view 研究完全隔离在 `experiments/multiview/` 与对应的 `runs/results/checkpoints/multiview/`。按顺序运行：
+当前消融只保留与最终 C1 直接相关的三组对照：单/双/三视图表征、vanilla 与 chemical/context-pair 交互模块，以及 Stage 1 与 fugacity-only Stage 2。三组实验全部固定为 `overall_binary_ternary`；不再维护 A0--A6、P0--P6、连续性/边界/solver loss、纯锚定或 C2 调参搜索。
 
 ```powershell
-conda run -n ggnn39 python scripts\run_multiview_suite.py --stage smoke --device cuda
-conda run -n ggnn39 python scripts\run_multiview_suite.py --stage screening --device cuda
-conda run -n ggnn39 python scripts\run_multiview_suite.py --stage formal --device cuda
-conda run -n ggnn39 python scripts\run_multiview_suite.py --stage predictive --device cuda
+conda run -n ggnn39 python scripts\run_multiview_suite.py --device cuda
+conda run -n ggnn39 python scripts\run_chemical_attention_suite.py --device cuda
+conda run -n ggnn39 python scripts\run_c1_physics_finetune.py --device cuda
+conda run -n ggnn39 python scripts\build_c1_ablation_report.py
 ```
 
-Stage A 仅检查 V1/V4/V5/V6 的数值与资源稳定性；Stage B 在固定 split 上做 seed-0 快速筛选；只有通过筛选的 V1/V5/V6 才进入三个核心协议的 seeds 0--4 聚合。由于按本轮约定 Stage B 已查看 held-out test 指标，这组五种子结果属于 **selection-aware evaluation**，不能再表述为未触碰测试集的独立确认性估计。V3 官能团-only 是之后补充的探索性负对照，必须使用 `--exploratory`，产物隔离在 `screening_exploratory`。
-
-最新的表征对比采用 Table-1 风格的主评估，不再以未见组分结果排序：`overall_binary` 给出“二元训练→二元测试”，`overall_binary_ternary` 分别给出“二元+三元训练→二元测试”和“二元+三元训练→三元测试”。每项均以 seeds 0--4 报告等温 P/y 与等压 T/y 的 MAE、RMSE、R²。运行 `scripts\build_representation_outputs.py` 生成统一报告。
-
-运行门控分析时同时加入状态内插的 known-mixture 对照：
-
-```powershell
-conda run -n ggnn39 python scripts\analyze_multiview_gates.py --device cuda --include-known-mixture
-```
-
-正式 multi-view manifest 使用仓库相对路径，并发布其引用的 history 与 training curves；因此换目录或重新 clone 后仍可按 SHA-256 复核、聚合并重算 gate。文本产物的 SHA-256 以 UTF-8、去 BOM、统一 LF 换行后的规范内容计算，二进制产物则按原始字节计算，从而避免 Windows/Linux 换行差异破坏复核。旧 A1 RDKit 消融固定使用 `rdkit_2d_legacy_fixed/scaled24_v1`，不会被新 V1 的训练分区 z-score 语义覆盖。
-
-消融配置通过 `extends` 继承完整基线，只覆盖目标开关、输出目录和结果文件路径。配置 section 或字段拼写错误会直接报错。
+统一结果位于 `reports/c1_ablation_overall_binary_ternary.md`，机器可读表位于 `results/c1_ablation/`。表征和交互结果为 seeds 0--4；逸度微调目前是 seed 0，并明确保留这一证据强度差异。历史预测性能、外推和可解释性结果不并入该消融结论。
 
 每次成功运行会：
 
@@ -156,9 +126,13 @@ conda run -n ggnn39 python scripts\analyze_multiview_gates.py --device cuda --in
 
 默认先按无序化学物系隔离独立测试集，再在其余数据上进行 5 折分组交叉验证，最后用全部 CV 数据重训并仅评价一次测试集。A–B 与 B–A 始终在同一分区，二元和三元体系分别分层，纯端点参考体系仅进入训练侧。
 
-每次拟合分为两阶段：默认先进行 80 个 epoch 的实验数据监督，再从最佳监督模型继续进行 5 个 epoch 的物理微调。物理阶段加入相图连续性、近纯边界，以及每个 epoch 少量批次上的可微泡点求解监督。组分置换等变性由模型结构硬约束并由测试验证，不再用数值近零、无有效梯度的辅助 loss。求解器监督批次数和迭代次数均可通过配置调整，以兼顾物理性与训练速度。
+训练分为两条显式入口。普通 `fit_model` 只进行最多 80 epoch 的数据监督；Stage 2 必须通过 `run_c1_physics_finetune.py` 从 Stage 1 验证集最佳 checkpoint 启动。Stage 2 保留完整监督 loss，并且只额外加入
 
-论文实验将 80/5 视为阶段上限：监督阶段采用验证 patience 12（至少 10 epoch），物理阶段以监督最佳 checkpoint 作为 epoch 0 候选，只有共同实验验证目标改善时才接受微调结果。监督/物理学习率分别为 `2e-4`/`2e-5`，连续性权重为 `1e-5`；这些超参数在正式实验前由独立 pilot 固定，未使用正式测试集调参。训练历史记录预裁剪梯度均值/最大值，正式求解评估使用 48 次迭代并始终报告收敛覆盖率。
+`mean_i[((x_i gamma_i P_i^sat - y_i P) / P)^2]`
+
+这一 teacher-forced 逸度平衡损失。连续性、近纯边界、solver supervision、chemical-bias regularization 和额外纯组分蒸气压锚定均已从活动代码删除。监督目标原有的纯端点 `P_i^sat` 数据项继续保留，用于分离可辨识的 `gamma_i` 与纯组分蒸气压；它不属于 Stage 2 物理 loss。
+
+Stage 2 运行 5 epoch、前 2 epoch 线性 warmup，只解冻 `pair_potential`、`vapor_pressure`、`film` 与 `mixture_token`。Stage 1 checkpoint 是 physics epoch 0 候选，最终选择只使用验证集；测试集仅在选择后评价。正式求解评估仍使用 48 次迭代并报告收敛覆盖率。
 
 固定协议划分先运行：
 
@@ -195,4 +169,4 @@ python scripts/train_thermoformer.py `
   --set evaluation.test_fraction=0.15
 ```
 
-`P_i^sat(T)` 只依赖单分子表示和温度，或来自有效温区内的可靠 Antoine/DIPPR 相关式；`ln(gamma_i)` 由学习到的 `g^E/RT` 对组成求导。等温与等压求解器均保留梯度，并已接入物理微调与模式化评估。求解从固定、与标签无关的状态开始，观测 `P/T` 只用于计算误差；直接代入观测 `T,P,x` 的结果明确标为 `teacher_forced` 诊断。正式指标分别报告等温压力误差、等压温度误差、汽相组成和收敛率。训练 loss、梯度或任一折指标出现 NaN/Inf 时会立即失败，不会污染参数或被静默删除。
+`P_i^sat(T)` 只依赖单分子表示和温度，或来自有效温区内的可靠 Antoine/DIPPR 相关式；`ln(gamma_i)` 由学习到的 `g^E/RT` 对组成求导。等温与等压求解器均保留梯度并用于模式化评估，但不再作为 Stage 2 的额外监督项。求解从固定、与标签无关的状态开始，观测 `P/T` 只用于计算误差；直接代入观测 `T,P,x,y` 的逸度结果明确标为 `teacher_forced`。正式指标分别报告等温压力误差、等压温度误差、两种方向的汽相组成和收敛率。训练 loss、梯度或任一折指标出现 NaN/Inf 时会立即失败，不会污染参数或被静默删除。

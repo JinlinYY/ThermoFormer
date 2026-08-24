@@ -142,22 +142,15 @@ def physics_finetune_objective(
     config: TrainingConfig,
     *,
     physics_scale: float,
-    solver_enabled: bool,
-    teacher_forced_fugacity_weight: float = 0.0,
-    additional_pure_vapor_pressure_anchor_weight: float = 0.0,
+    teacher_forced_fugacity_weight: float,
 ) -> Objective:
-    """Supervised objective plus configured scaled thermodynamic terms."""
+    """Supervised objective plus the scaled teacher-forced fugacity loss."""
     return _objective(
         model,
         batch,
         config,
-        physics=True,
-        solver_enabled=solver_enabled,
         physics_scale=physics_scale,
         teacher_forced_fugacity_weight=teacher_forced_fugacity_weight,
-        additional_pure_vapor_pressure_anchor_weight=(
-            additional_pure_vapor_pressure_anchor_weight
-        ),
     )
 
 
@@ -212,7 +205,7 @@ def fit_physics_stage(
     )
     stage1_state = _cpu_state(model)
     stage1_validation = _run_epoch(
-        model, validation_loader, device, config, None, False
+        model, validation_loader, device, config, None
     )["total"]
     setup = configure_physics_finetuning(model, config, finetuning)
     parameter_summary = setup.record()
@@ -230,17 +223,13 @@ def fit_physics_stage(
             device,
             config,
             setup.optimizer,
-            True,
             physics_scale=scale,
             teacher_forced_fugacity_weight=(
                 finetuning.teacher_forced_fugacity_weight or 0.0
             ),
-            additional_pure_vapor_pressure_anchor_weight=(
-                finetuning.additional_pure_vapor_pressure_anchor_weight or 0.0
-            ),
         )
         validation_metrics = _run_epoch(
-            model, validation_loader, device, config, None, False
+            model, validation_loader, device, config, None
         )
         history.append(
             {
@@ -299,14 +288,7 @@ def evaluate_physics_residuals(
         samples, feature_map, config, False, pure_property_catalog
     )
     model.to(device).eval()
-    totals = {
-        "continuity": 0.0,
-        "boundary": 0.0,
-        "solver": 0.0,
-        "teacher_forced_fugacity": 0.0,
-    }
-    pure_anchor_numerator = 0.0
-    pure_anchor_denominator = 0.0
+    total_fugacity = 0.0
     count = 0
     for host_batch in loader:
         batch = host_batch.to(device)
@@ -316,61 +298,32 @@ def evaluate_physics_residuals(
                 batch,
                 config,
                 physics_scale=1.0,
-                solver_enabled=True,
                 teacher_forced_fugacity_weight=1.0,
             )
         size = batch.x.shape[0]
         count += size
-        totals["continuity"] += float(objective.continuity.detach().cpu()) * size
-        endpoint = (batch.x.max(-1).values >= 0.999).to(batch.x)
-        endpoint_weight = batch.quality_weight.reshape(-1).to(batch.x) * endpoint
-        endpoint_weight_sum = float(endpoint_weight.sum().detach().cpu())
-        pure_anchor_numerator += (
-            float(objective.pure_vapor_pressure.detach().cpu())
-            * endpoint_weight_sum
-        )
-        pure_anchor_denominator += endpoint_weight_sum
-        totals["boundary"] += float(objective.boundary.detach().cpu()) * size
-        totals["solver"] += float(objective.solver.detach().cpu()) * size
-        totals["teacher_forced_fugacity"] += float(
+        total_fugacity += float(
             objective.teacher_forced_fugacity.detach().cpu()
         ) * size
     if count == 0:
         raise ValueError("Physics residual evaluation requires samples")
-    result = {name: value / count for name, value in totals.items()}
-    result["pure_vapor_pressure"] = (
-        pure_anchor_numerator / pure_anchor_denominator
-        if pure_anchor_denominator > 0.0
-        else 0.0
-    )
-    return result
+    return {"teacher_forced_fugacity": total_fugacity / count}
 
 
 def write_physics_finetune_report(
     comparison_path: Path,
     report_path: Path,
-    *,
-    reference_comparison_path: Path | None = None,
-    reference_label: str = "Reference Stage 2",
-    candidate_label: str = "Current Stage 2",
-    exploratory: bool = False,
 ) -> Path:
     """Render the task-resolved Stage 1/Stage 2 comparison atomically."""
     payload = json.loads(comparison_path.read_text(encoding="utf-8"))
     stages = payload["stages"]
-    configured = payload.get("thermodynamic_loss_weights", {})
-    has_pure_anchor = (
-        float(configured.get("additional_pure_vapor_pressure_anchor", 0.0)) > 0.0
-    )
-    has_fugacity = float(configured.get("teacher_forced_fugacity", 0.0)) > 0.0
-    if has_pure_anchor and has_fugacity:
-        report_title = "# C1 fugacity + pure-vapor-pressure-anchor fine-tuning"
-    elif has_pure_anchor:
-        report_title = "# C1 pure-vapor-pressure-anchor fine-tuning"
-    elif has_fugacity:
-        report_title = "# C1 fugacity-equilibrium fine-tuning"
-    else:
-        report_title = "# C1 partial physics fine-tuning"
+    configured_weights = payload.get("thermodynamic_loss_weights", {})
+    configured = {
+        "teacher_forced_fugacity": float(
+            configured_weights.get("teacher_forced_fugacity", 0.0)
+        )
+    }
+    report_title = "# C1 fugacity-equilibrium fine-tuning"
 
     def direction(stage: str, name: str) -> dict[str, object]:
         return next(
@@ -399,14 +352,6 @@ def write_physics_finetune_report(
         "",
         "Protocol: `overall_binary_ternary`; seed: `0`; checkpoint selection: validation only.",
     ]
-    if exploratory:
-        lines.extend(
-            [
-                "",
-                "**Exploratory analysis:** this weight was proposed after prior seed-0 "
-                "test results were inspected and is not independent confirmatory evidence.",
-            ]
-        )
     lines.extend(
         [
         "",
@@ -435,31 +380,12 @@ def write_physics_finetune_report(
         first = next(row for row in stages["stage1"]["metrics"] if row["scope"] == "all")
         second = next(row for row in stages["stage2"]["metrics"] if row["scope"] == "all")
         lines.append(f"| {label} | {float(first[key]):.6g} | {float(second[key]):.6g} |")
-    residual_rows = []
-    for label, key, weight_key in (
-        (
-            "pure-vapor-pressure anchor loss",
-            "pure_vapor_pressure",
-            "additional_pure_vapor_pressure_anchor",
-        ),
-        ("continuity residual", "continuity", "continuity"),
-        ("boundary residual", "boundary", "boundary"),
-        ("solver residual", "solver", "solver"),
-        (
-            "teacher-forced fugacity-equilibrium residual",
-            "teacher_forced_fugacity",
-            "teacher_forced_fugacity",
-        ),
-    ):
-        if key in stages["stage1"]["physics_residuals"] and (
-            not configured or float(configured.get(weight_key, 0.0)) > 0.0
-        ):
-            residual_rows.append((label, key))
-    for label, key in residual_rows:
-        lines.append(
-            f"| {label} | {float(stages['stage1']['physics_residuals'][key]):.6g} | "
-            f"{float(stages['stage2']['physics_residuals'][key]):.6g} |"
-        )
+    key = "teacher_forced_fugacity"
+    lines.append(
+        "| teacher-forced fugacity-equilibrium residual | "
+        f"{float(stages['stage1']['physics_residuals'][key]):.6g} | "
+        f"{float(stages['stage2']['physics_residuals'][key]):.6g} |"
+    )
     if configured:
         lines.extend(
             [
@@ -470,63 +396,6 @@ def write_physics_finetune_report(
                     for name, value in configured.items()
                 )
                 + ".",
-            ]
-        )
-    if reference_comparison_path is not None:
-        reference = json.loads(reference_comparison_path.read_text(encoding="utf-8"))
-        reference_stage = reference["stages"][reference["selected_stage"]]
-
-        def reference_direction(name: str) -> dict[str, object]:
-            return next(
-                row
-                for row in reference_stage["metrics"]
-                if row.get("scope") == "direction" and row.get("direction") == name
-            )
-
-        reference_isothermal = reference_direction("isothermal")
-        reference_isobaric = reference_direction("isobaric")
-        lines.extend(
-            [
-                "",
-                f"## Comparison with {reference_label}",
-                "",
-                f"| task output | metric | {reference_label} | {candidate_label} | delta |",
-                "|---|---|---:|---:|---:|",
-            ]
-        )
-        comparison_metrics = (
-            ("P, isothermal", "MAE", "pressure_mae_kpa", reference_isothermal, stage2_isothermal),
-            ("P, isothermal", "RMSE", "pressure_rmse_kpa", reference_isothermal, stage2_isothermal),
-            ("P, isothermal", "R²", "pressure_r2", reference_isothermal, stage2_isothermal),
-            ("y, isothermal", "MAE", "y_mae", reference_isothermal, stage2_isothermal),
-            ("y, isothermal", "RMSE", "y_rmse", reference_isothermal, stage2_isothermal),
-            ("y, isothermal", "R²", "y_r2", reference_isothermal, stage2_isothermal),
-            ("T, isobaric", "MAE", "temperature_mae_k", reference_isobaric, stage2_isobaric),
-            ("T, isobaric", "RMSE", "temperature_rmse_k", reference_isobaric, stage2_isobaric),
-            ("T, isobaric", "R²", "temperature_r2", reference_isobaric, stage2_isobaric),
-            ("y, isobaric", "MAE", "y_mae", reference_isobaric, stage2_isobaric),
-            ("y, isobaric", "RMSE", "y_rmse", reference_isobaric, stage2_isobaric),
-            ("y, isobaric", "R²", "y_r2", reference_isobaric, stage2_isobaric),
-        )
-        improvements = 0
-        for label, metric_name, key, first, second in comparison_metrics:
-            old_value = float(first[key])
-            new_value = float(second[key])
-            delta = new_value - old_value
-            improved = delta > 0.0 if metric_name == "R²" else delta < 0.0
-            improvements += int(improved)
-            lines.append(
-                f"| {label} | {metric_name} | {old_value:.6f} | "
-                f"{new_value:.6f} | {delta:+.6f} |"
-            )
-        lines.extend(
-            [
-                "",
-                f"Only {improvements} of {len(comparison_metrics)} predictive metrics improve. "
-                "The seed-0 effect is mixed, so the current setting is not a consistent "
-                "predictive improvement over its reference.",
-                "Reference stage-comparison SHA-256: "
-                f"`{artifact_sha256(reference_comparison_path)}`.",
             ]
         )
     summary = payload["parameter_summary"]

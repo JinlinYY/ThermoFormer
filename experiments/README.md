@@ -1,91 +1,37 @@
 # ThermoFormer experiment registry
 
-Concrete experiments must never be placed directly under `experiments/`. They are
-organized first by scientific purpose, then by experiment name.
+The selected model is **C1 three-view vanilla Transformer**:
 
-```text
-experiments/
-  baseline/
-    thermoformer_base/
-  ablation/
-    architecture/                    # formal A0--A6 controls
-    thermodynamic_constraint/        # formal P0--P6 campaign
-    component/
-      no_film/
-      no_transformer/
-      no_mixture_token/
-    thermodynamic_loss/
-      no_continuity_loss/
-      no_boundary_loss/
-      no_solver_loss/
-  comparison/
-    ideal_activity/
-    binary_to_ternary_generalization/
-      zero_shot/
-      scaling/percent_05...percent_100/
-  predictive_performance/
-    overall_binary/
-    overall_binary_ternary/
-  interpolation_extrapolation/
-    state/
-      composition_interpolation/
-      composition_edge_extrapolation/
-      temperature_low_extrapolation/
-      temperature_high_extrapolation/
-      pressure_low_extrapolation/
-      pressure_high_extrapolation/
-    chemical_space/unseen_component/
-  explainability/
-  multiview/
-    representations/v0_legacy_unimol...v6_full_interaction/
-  physics_finetuning/
-    c1_three_view_vanilla/
-    c1_three_view_vanilla_fugacity/
-    c1_three_view_vanilla_fugacity_pure_anchor/
-    c1_three_view_vanilla_pure_anchor/
-    c1_three_view_vanilla_pure_anchor_0p1/ # exploratory, test-exposed weight
+- RDKit descriptors + Uni-Mol v2 + SMARTS functional-group counts;
+- independent view projections followed by concat projection;
+- vanilla component Transformer;
+- `chemical_attention_bias=false`;
+- `context_pair_interaction=false`;
+- the original symmetric `pair_potential` is retained.
+
+The active ablation scope is only `overall_binary_ternary`: binary and ternary
+systems are trained jointly and evaluated on the joint binary/ternary test split.
+
+## Retained ablations
+
+| Family | Retained experiments | Entry point |
+|---|---|---|
+| Molecular representation | RDKit-only, FG-only, RDKit+Uni-Mol, C0 Uni-Mol and full C1 | [`multiview/README.md`](multiview/README.md) |
+| Interaction module | C1 vanilla, C2 chemical-biased, C3 context-pair-only | [`multiview/chemical_attention/README.md`](multiview/chemical_attention/README.md) |
+| Physics fine-tuning | C1 Stage 1 versus fugacity-only Stage 2 | [`physics_finetuning/c1_three_view_vanilla_fugacity/README.md`](physics_finetuning/c1_three_view_vanilla_fugacity/README.md) |
+
+Generate the single consolidated report with:
+
+```powershell
+conda run -n ggnn39 python scripts\build_c1_ablation_report.py
 ```
 
-Every runnable experiment directory contains:
+The report is written to `reports/c1_ablation_overall_binary_ternary.md`, with
+machine-readable rows under `results/c1_ablation/`.
 
-- `config.json`: complete configuration or strict baseline override;
-- `run.md`: exact `ggnn39` command;
-- `results.md`: honest current status, automatically replaced after a successful run.
+The remaining `predictive_performance/`, `comparison/`,
+`interpolation_extrapolation/`, and `explainability/` directories are separate
+historical/generalization studies. They are not part of the retained ablation
+matrix and are not combined with the C1 ablation conclusions.
 
-## Experiment index
-
-The formal paper ablation matrix is indexed in
-[`ablation/README.md`](ablation/README.md). The `component/` and
-`thermodynamic_loss/` rows below are retained preliminary diagnostics and must not
-be mixed with the formal five-seed campaign.
-
-The new interaction-specific molecular representation campaign is isolated under
-[`multiview/`](multiview/README.md) and follows smoke → seed-0 screening →
-five-seed formal evaluation without replacing historical artifacts.
-
-| Category | Experiment | Purpose | Command | Results |
-|---|---|---|---|---|
-| Baseline | `thermoformer_base` | Full model, default 5-fold CV | [run](baseline/thermoformer_base/run.md) | [results](baseline/thermoformer_base/results.md) |
-| Component ablation | `no_film` | Remove FiLM conditioning | [run](ablation/component/no_film/run.md) | [results](ablation/component/no_film/results.md) |
-| Component ablation | `no_transformer` | Remove interaction Transformer | [run](ablation/component/no_transformer/run.md) | [results](ablation/component/no_transformer/results.md) |
-| Component ablation | `no_mixture_token` | Remove global mixture token | [run](ablation/component/no_mixture_token/run.md) | [results](ablation/component/no_mixture_token/results.md) |
-| Thermodynamic-loss ablation | `no_continuity_loss` | Remove local continuity loss | [run](ablation/thermodynamic_loss/no_continuity_loss/run.md) | [results](ablation/thermodynamic_loss/no_continuity_loss/results.md) |
-| Thermodynamic-loss ablation | `no_boundary_loss` | Remove near-pure boundary loss | [run](ablation/thermodynamic_loss/no_boundary_loss/run.md) | [results](ablation/thermodynamic_loss/no_boundary_loss/results.md) |
-| Thermodynamic-loss ablation | `no_solver_loss` | Remove differentiable bubble-solver supervision | [run](ablation/thermodynamic_loss/no_solver_loss/run.md) | [results](ablation/thermodynamic_loss/no_solver_loss/results.md) |
-| Comparison | `ideal_activity` | Ideal activity-coefficient baseline | [run](comparison/ideal_activity/run.md) | [results](comparison/ideal_activity/results.md) |
-| Predictive performance | `overall_binary` | Binary-only grouped 70/15/15 evaluation | [run](predictive_performance/overall_binary/run.md) | [results](predictive_performance/overall_binary/results.md) |
-| Predictive performance | `overall_binary_ternary` | Unified binary/ternary and unseen-mixture evaluation | [run](predictive_performance/overall_binary_ternary/run.md) | [results](predictive_performance/overall_binary_ternary/results.md) |
-| State generalization | six fixed state protocols | Composition interpolation/edge and low/high T/P tails | [index](interpolation_extrapolation/state/README.md) | per-protocol `results.md` |
-| Chemical generalization | `unseen_component` | At-least-one and strict all-component holdouts | [run](interpolation_extrapolation/chemical_space/unseen_component/run.md) | [results](interpolation_extrapolation/chemical_space/unseen_component/results.md) |
-| Binary → ternary | zero-shot + five positive scaling levels | Controlled ternary data-scaling curve and binary-subsystem coverage | [index](comparison/binary_to_ternary_generalization/README.md) | per-protocol `results.md` |
-| Multi-view representation | V0--V6 | Single-view, naive-fusion, and interaction-specific molecular views | [index](multiview/README.md) | per-variant `results.md` |
-| Physics fine-tuning | `c1_three_view_vanilla` | Legacy continuity/boundary/solver Stage 2 | [run](physics_finetuning/c1_three_view_vanilla/run.md) | [results](physics_finetuning/c1_three_view_vanilla/results.md) |
-| Physics fine-tuning | `c1_three_view_vanilla_fugacity` | Teacher-forced fugacity Stage 2 | [run](physics_finetuning/c1_three_view_vanilla_fugacity/run.md) | [results](physics_finetuning/c1_three_view_vanilla_fugacity/results.md) |
-| Physics fine-tuning | `c1_three_view_vanilla_fugacity_pure_anchor` | Fugacity plus stronger pure-vapor-pressure anchoring | [run](physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/run.md) | [results](physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/results.md) |
-| Physics fine-tuning | `c1_three_view_vanilla_pure_anchor` | Pure-vapor-pressure anchor only in Stage 2 | [run](physics_finetuning/c1_three_view_vanilla_pure_anchor/run.md) | [results](physics_finetuning/c1_three_view_vanilla_pure_anchor/results.md) |
-| Physics fine-tuning | `c1_three_view_vanilla_pure_anchor_0p1` | Exploratory lower pure-anchor weight after seed-0 test exposure | [run](physics_finetuning/c1_three_view_vanilla_pure_anchor_0p1/run.md) | [results](physics_finetuning/c1_three_view_vanilla_pure_anchor_0p1/results.md) |
-
-`explainability/` remains a scoped plan and does not claim unrun results. Paper
-checkpoints, curves and predictions are separated into `checkpoints/`, `runs/paper/`
-and `results/`; diagnostic pilots stay under `runs/` and are never promoted to formal
-tables. Pre-reorganization outputs remain isolated under `runs/legacy/`.
+Every runnable leaf experiment keeps `config.json`, `run.md`, and `results.md`.

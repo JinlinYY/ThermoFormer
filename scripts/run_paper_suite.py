@@ -34,7 +34,6 @@ def main() -> None:
         overrides = (
             "training.epochs_supervised=2",
             "training.epochs_physics=1",
-            "training.solver_iterations_train=2",
             "training.solver_iterations_eval=8",
         )
     else:

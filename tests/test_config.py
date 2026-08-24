@@ -103,40 +103,6 @@ class ExperimentConfigTests(unittest.TestCase):
                 model = ThermoFormer(replace(experiment.model, feature_dim=8))
                 self.assertEqual(model.config.feature_dim, 8)
 
-    def test_ablation_configs_inherit_base_and_change_only_named_fields(self) -> None:
-        expected_model_changes = {
-            "no_film": {"use_film": False},
-            "no_transformer": {"layers": 0, "use_transformer": False},
-            "no_mixture_token": {"use_mixture_token": False},
-        }
-        for experiment_name, changes in expected_model_changes.items():
-            with self.subTest(config=experiment_name):
-                self.assert_only_named_config_changes(
-                    self.CONFIG_ROOT
-                    / "ablation"
-                    / "component"
-                    / experiment_name
-                    / "config.json",
-                    {"model": changes},
-                )
-
-    def test_thermodynamic_loss_ablations_change_only_the_named_weight(self) -> None:
-        changes_by_experiment = {
-            "no_continuity_loss": {"continuity_weight": 0.0},
-            "no_boundary_loss": {"boundary_weight": 0.0},
-            "no_solver_loss": {"solver_weight": 0.0},
-        }
-        for experiment_name, changes in changes_by_experiment.items():
-            with self.subTest(experiment=experiment_name):
-                self.assert_only_named_config_changes(
-                    self.CONFIG_ROOT
-                    / "ablation"
-                    / "thermodynamic_loss"
-                    / experiment_name
-                    / "config.json",
-                    {"training": changes},
-                )
-
     def test_comparison_config_is_not_classified_as_an_ablation(self) -> None:
         self.assert_only_named_config_changes(
             self.CONFIG_ROOT / "comparison" / "ideal_activity" / "config.json",
@@ -208,15 +174,11 @@ class ExperimentConfigTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             TrainingConfig(batch_size=0)
         with self.assertRaises(ValueError):
-            TrainingConfig(continuity_weight=-1.0)
-        with self.assertRaises(ValueError):
             TrainingConfig(learning_rate=float("nan"))
         with self.assertRaises(ValueError):
             TrainingConfig(epochs_supervised=1.5)
         with self.assertRaises(ValueError):
             TrainingConfig(solver_iterations_eval=0)
-        with self.assertRaises(ValueError):
-            TrainingConfig(solver_batches_per_epoch=-1)
         with self.assertRaises(ValueError):
             ThermoFormerConfig(film_scale=float("inf"))
         with self.assertRaises(ValueError):

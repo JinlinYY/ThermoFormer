@@ -2,8 +2,11 @@
 
 Status: supervised-only seeds 0--4 completed on `overall_binary_ternary`.
 
-- P MAE/RMSE/R²: 8.20 ± 3.31 kPa / 19.02 ± 7.82 kPa / 0.970 ± 0.019
-- T MAE/RMSE/R²: 2.51 ± 0.37 K / 4.15 ± 0.91 K / 0.979 ± 0.012
-- y MAE/RMSE/R²: 0.0288 ± 0.0050 / 0.0507 ± 0.0099 / 0.974 ± 0.010
+| Task output | MAE | RMSE | R² |
+|---|---:|---:|---:|
+| P, isothermal | 8.205 ± 3.309 kPa | 19.018 ± 7.823 kPa | 0.970 ± 0.019 |
+| y, isothermal | 0.0262 ± 0.0046 | 0.0457 ± 0.0089 | 0.979 ± 0.007 |
+| T, isobaric | 2.513 ± 0.371 K | 4.146 ± 0.911 K | 0.979 ± 0.012 |
+| y, isobaric | 0.0307 ± 0.0051 | 0.0541 ± 0.0102 | 0.969 ± 0.012 |
 
-Balanced selection among the tested variants. See `reports/chemical_attention_supervised_five_seed_report.md`.
+Selected balanced final architecture. See `reports/c1_ablation_overall_binary_ternary.md`.

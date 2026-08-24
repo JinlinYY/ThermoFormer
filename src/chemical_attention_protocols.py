@@ -27,17 +27,8 @@ CHEMICAL_ATTENTION_VARIANTS = {
         "C3 Full model without attention pair bias",
         "experiments/multiview/chemical_attention/c3_no_pair_bias/config.json",
     ),
-    "c4_no_functional_group": ChemicalAttentionVariant(
-        "C4 Full model without functional-group branch",
-        "experiments/multiview/chemical_attention/c4_no_functional_group/config.json",
-    ),
 }
 
-CHEMICAL_ATTENTION_PROTOCOLS = (
-    "overall_binary",
-    "overall_binary_ternary",
-    "unseen_component",
-    "binary_to_ternary_zero_shot",
-)
-CHEMICAL_ATTENTION_FORMAL_PROTOCOLS = ("overall_binary_ternary",)
+CHEMICAL_ATTENTION_PROTOCOLS = ("overall_binary_ternary",)
+CHEMICAL_ATTENTION_FORMAL_PROTOCOLS = CHEMICAL_ATTENTION_PROTOCOLS
 CHEMICAL_ATTENTION_SEEDS = (0, 1, 2, 3, 4)
