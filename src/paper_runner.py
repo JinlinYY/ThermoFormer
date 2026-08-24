@@ -90,6 +90,7 @@ def requested_run_fingerprint(
     evaluation_partition: str = "test",
     stage1_checkpoint: Path | None = None,
     aggregate_expected: bool = True,
+    git_commit_override: str | None = None,
 ) -> str:
     """Hash every cheap-to-check input needed to resume an existing run."""
     experiment = load_experiment_config(config_path, overrides)
@@ -97,7 +98,7 @@ def requested_run_fingerprint(
     runtime = _runtime_context(requested_device)
     return _json_digest(
         {
-            "git_commit": _git_commit(),
+            "git_commit": git_commit_override or _git_commit(),
             "resolved_config_sha256": _normalized_experiment_digest(experiment),
             "split_sha256": _file_digest(split_path),
             "feature_cache_sha256": (

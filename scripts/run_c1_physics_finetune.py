@@ -140,6 +140,12 @@ def main(argv: list[str] | None = None) -> None:
     # process stopped after the seed artifacts committed, rerunning repairs the
     # report bundle without repeating training or requiring --overwrite.
     expected_evaluation_partition = "validation" if args.smoke else "test"
+    recorded_git_commit = None
+    if seed_manifest_path.is_file() and not args.overwrite:
+        existing_payload = json.loads(seed_manifest_path.read_text(encoding="utf-8"))
+        value = existing_payload.get("git_commit")
+        if isinstance(value, str) and value:
+            recorded_git_commit = value
     expected_request_sha256 = requested_run_fingerprint(
         config_path,
         split_path,
@@ -151,6 +157,7 @@ def main(argv: list[str] | None = None) -> None:
         expected_evaluation_partition,
         stage1_checkpoint,
         False,
+        recorded_git_commit,
     )
     existing_manifest = (
         recover_completed_seed_manifest(
