@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 import os
 import random
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from typing import Sequence
 
 import numpy as np
@@ -177,6 +177,7 @@ def _objective(
     solver_enabled: bool,
     physics_scale: float = 1.0,
     teacher_forced_fugacity_weight: float = 0.0,
+    additional_pure_vapor_pressure_anchor_weight: float = 0.0,
 ) -> Objective:
     if getattr(getattr(model, "config", None), "decoder_mode", None) == "direct_vle":
         return direct_vle_objective(
@@ -213,6 +214,16 @@ def _objective(
         batch,
         weight=teacher_forced_fugacity_weight * physics_scale if physics else 0.0,
     )
+    if physics and additional_pure_vapor_pressure_anchor_weight > 0.0:
+        objective = replace(
+            objective,
+            total=(
+                objective.total
+                + physics_scale
+                * additional_pure_vapor_pressure_anchor_weight
+                * objective.pure_vapor_pressure
+            ),
+        )
     objective = with_local_continuity(
         objective,
         state,
@@ -248,6 +259,7 @@ def _run_epoch(
     physics: bool,
     physics_scale: float = 1.0,
     teacher_forced_fugacity_weight: float = 0.0,
+    additional_pure_vapor_pressure_anchor_weight: float = 0.0,
 ) -> dict[str, float]:
     training = optimizer is not None
     model.train(training)
@@ -263,6 +275,7 @@ def _run_epoch(
             objective = _objective(
                 model, batch, config, physics, solver_enabled, physics_scale,
                 teacher_forced_fugacity_weight,
+                additional_pure_vapor_pressure_anchor_weight,
             )
             if not bool(torch.isfinite(objective.total).all()):
                 raise FloatingPointError(
@@ -285,6 +298,7 @@ def _run_epoch(
                 objective = _objective(
                     model, batch, config, physics, solver_enabled, physics_scale,
                     teacher_forced_fugacity_weight,
+                    additional_pure_vapor_pressure_anchor_weight,
                 )
             if not bool(torch.isfinite(objective.total).all()):
                 raise FloatingPointError(

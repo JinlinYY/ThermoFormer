@@ -48,7 +48,7 @@ def parser() -> argparse.ArgumentParser:
     value.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
     value.add_argument(
         "--objective",
-        choices=("fugacity", "legacy"),
+        choices=("fugacity_pure_anchor", "fugacity", "legacy"),
         default="fugacity",
         help="Stage-2 thermodynamic objective; fugacity is the current default.",
     )
@@ -99,11 +99,12 @@ def recover_completed_seed_manifest(
 
 def main(argv: list[str] | None = None) -> None:
     args = parser().parse_args(argv)
-    experiment_folder = (
-        "c1_three_view_vanilla_fugacity"
-        if args.objective == "fugacity"
-        else "c1_three_view_vanilla"
-    )
+    experiment_folders = {
+        "fugacity_pure_anchor": "c1_three_view_vanilla_fugacity_pure_anchor",
+        "fugacity": "c1_three_view_vanilla_fugacity",
+        "legacy": "c1_three_view_vanilla",
+    }
+    experiment_folder = experiment_folders[args.objective]
     config_path = (
         PROJECT_ROOT
         / "experiments/physics_finetuning"

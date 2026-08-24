@@ -144,6 +144,7 @@ def physics_finetune_objective(
     physics_scale: float,
     solver_enabled: bool,
     teacher_forced_fugacity_weight: float = 0.0,
+    additional_pure_vapor_pressure_anchor_weight: float = 0.0,
 ) -> Objective:
     """Supervised objective plus configured scaled thermodynamic terms."""
     return _objective(
@@ -154,6 +155,9 @@ def physics_finetune_objective(
         solver_enabled=solver_enabled,
         physics_scale=physics_scale,
         teacher_forced_fugacity_weight=teacher_forced_fugacity_weight,
+        additional_pure_vapor_pressure_anchor_weight=(
+            additional_pure_vapor_pressure_anchor_weight
+        ),
     )
 
 
@@ -230,6 +234,9 @@ def fit_physics_stage(
             physics_scale=scale,
             teacher_forced_fugacity_weight=(
                 finetuning.teacher_forced_fugacity_weight or 0.0
+            ),
+            additional_pure_vapor_pressure_anchor_weight=(
+                finetuning.additional_pure_vapor_pressure_anchor_weight or 0.0
             ),
         )
         validation_metrics = _run_epoch(

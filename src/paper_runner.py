@@ -587,6 +587,10 @@ def run_paper_experiment(
                     experiment.physics_finetuning.teacher_forced_fugacity_weight
                     or 0.0
                 ),
+                "additional_pure_vapor_pressure_anchor": (
+                    experiment.physics_finetuning.additional_pure_vapor_pressure_anchor_weight
+                    or 0.0
+                ),
             },
         }
         model.load_state_dict(result.state_dict)

@@ -137,6 +137,24 @@ class PhysicsFineTuningTests(unittest.TestCase):
             config.physics_finetuning.teacher_forced_fugacity_weight, 0.0
         )
 
+    def test_fugacity_pure_anchor_variant_only_strengthens_stage2_anchor(self) -> None:
+        config = load_experiment_config(
+            self.ROOT
+            / "experiments/physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/config.json"
+        )
+        self.assertEqual(config.training.pure_weight, 0.5)
+        self.assertEqual(config.training.continuity_weight, 0.0)
+        self.assertEqual(config.training.boundary_weight, 0.0)
+        self.assertEqual(config.training.solver_weight, 0.0)
+        self.assertEqual(config.training.chemical_bias_weight, 0.0)
+        self.assertEqual(
+            config.physics_finetuning.teacher_forced_fugacity_weight, 1.0
+        )
+        self.assertEqual(
+            config.physics_finetuning.additional_pure_vapor_pressure_anchor_weight,
+            0.5,
+        )
+
     def test_partial_optimizer_contains_only_declared_unfrozen_groups(self) -> None:
         model = self.model()
         setup = configure_physics_finetuning(
@@ -245,6 +263,51 @@ class PhysicsFineTuningTests(unittest.TestCase):
             parameter.grad
             for name, parameter in model.named_parameters()
             if name.startswith("pair_potential.") and parameter.grad is not None
+        ]
+        self.assertTrue(gradients)
+        norm = torch.stack([gradient.norm() for gradient in gradients]).sum()
+        self.assertTrue(torch.isfinite(norm))
+        self.assertGreater(float(norm), 0.0)
+
+    def test_additional_pure_anchor_changes_total_and_vapor_pressure_gradient(self) -> None:
+        model = self.model()
+        config = self.config(
+            continuity_weight=0.0,
+            boundary_weight=0.0,
+            solver_weight=0.0,
+        )
+        configure_physics_finetuning(model, config, self.finetuning())
+        endpoint = replace(
+            self.samples()[0],
+            liquid_composition=(1.0, 0.0),
+            vapor_composition=(1.0, 0.0),
+        )
+        batch = next(iter(_loader([endpoint], self.features(), config, shuffle=False)))
+        base = physics_finetune_objective(
+            model,
+            batch,
+            config,
+            physics_scale=0.5,
+            solver_enabled=False,
+        )
+        anchored = physics_finetune_objective(
+            model,
+            batch,
+            config,
+            physics_scale=0.5,
+            solver_enabled=False,
+            additional_pure_vapor_pressure_anchor_weight=0.5,
+        )
+        torch.testing.assert_close(
+            anchored.total,
+            base.total + 0.25 * anchored.pure_vapor_pressure,
+        )
+        self.assertGreater(float(anchored.pure_vapor_pressure.detach()), 0.0)
+        anchored.pure_vapor_pressure.backward()
+        gradients = [
+            parameter.grad
+            for name, parameter in model.named_parameters()
+            if name.startswith("vapor_pressure.") and parameter.grad is not None
         ]
         self.assertTrue(gradients)
         norm = torch.stack([gradient.norm() for gradient in gradients]).sum()
