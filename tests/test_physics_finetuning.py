@@ -17,6 +17,7 @@ from src.data import VLESample
 from src.model import ThermoFormer, ThermoFormerConfig
 from src.physics_finetuning import (
     configure_physics_finetuning,
+    evaluate_physics_residuals,
     fit_physics_stage,
     load_stage1_checkpoint,
     physics_finetune_objective,
@@ -313,6 +314,50 @@ class PhysicsFineTuningTests(unittest.TestCase):
         norm = torch.stack([gradient.norm() for gradient in gradients]).sum()
         self.assertTrue(torch.isfinite(norm))
         self.assertGreater(float(norm), 0.0)
+
+    def test_reported_pure_anchor_loss_is_batch_partition_invariant(self) -> None:
+        model = self.model()
+        samples = [
+            replace(
+                sample,
+                liquid_composition=(1.0, 0.0),
+                vapor_composition=(1.0, 0.0),
+                quality_weight=0.5 + 0.2 * index,
+            )
+            for index, sample in enumerate(self.samples()[:3])
+        ]
+        warm_batch = next(
+            iter(_loader(samples, self.features(), self.config(batch_size=3), False))
+        )
+        physics_finetune_objective(
+            model,
+            warm_batch,
+            self.config(batch_size=3),
+            physics_scale=1.0,
+            solver_enabled=False,
+        )
+        with torch.no_grad():
+            for parameter in model.parameters():
+                parameter.zero_()
+        individual = evaluate_physics_residuals(
+            model,
+            samples,
+            self.features(),
+            self.config(batch_size=1),
+            torch.device("cpu"),
+        )
+        together = evaluate_physics_residuals(
+            model,
+            samples,
+            self.features(),
+            self.config(batch_size=3),
+            torch.device("cpu"),
+        )
+        self.assertAlmostEqual(
+            individual["pure_vapor_pressure"],
+            together["pure_vapor_pressure"],
+            places=5,
+        )
 
     def test_stage2_loads_stage1_checkpoint_and_validation_selects_epoch_zero(self) -> None:
         model = self.model()

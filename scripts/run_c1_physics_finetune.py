@@ -196,7 +196,23 @@ def main(argv: list[str] | None = None) -> None:
         / experiment_folder
         / "results.md"
     )
-    write_physics_finetune_report(comparison_path, report_path)
+    reference_comparison_path = None
+    if args.objective == "fugacity_pure_anchor" and not args.smoke:
+        reference_comparison_path = (
+            PROJECT_ROOT
+            / "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity"
+            / "c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary"
+            / "seed_0/stage_comparison.json"
+        )
+        if not reference_comparison_path.is_file():
+            raise FileNotFoundError(
+                "The frozen fugacity-only Stage-2 comparison is required"
+            )
+    write_physics_finetune_report(
+        comparison_path,
+        report_path,
+        reference_comparison_path=reference_comparison_path,
+    )
     report_manifest = {
         "status": "smoke" if args.smoke else "completed",
         "protocol": protocol,
@@ -217,6 +233,11 @@ def main(argv: list[str] | None = None) -> None:
             "sha256": artifact_sha256(report_path),
         },
     }
+    if reference_comparison_path is not None:
+        report_manifest["reference_stage_comparison"] = {
+            "path": portable_artifact_path(reference_comparison_path),
+            "sha256": artifact_sha256(reference_comparison_path),
+        }
     atomic_write_json(protocol_dir / "report_manifest.json", report_manifest)
     print(json.dumps(report_manifest, indent=2, sort_keys=True))
 

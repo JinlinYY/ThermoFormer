@@ -78,7 +78,7 @@ def experimental_objective(
         - torch.log(observed_pressure_kpa.squeeze(-1).clamp_min(1e-12))
     ) ** 2
     endpoint_weights = quality_weight.reshape(-1).to(state.x) * endpoint
-    pure_loss = torch.sum(pure_error * endpoint_weights) / endpoint_weights.sum().clamp_min(1.0)
+    pure_loss = torch.sum(pure_error * endpoint_weights) / endpoint_weights.sum().clamp_min(1e-12)
 
     zero = state.y.sum() * 0.0
     total = vapor_weight * vapor_loss + pressure_weight * pressure_loss + pure_weight * pure_loss
