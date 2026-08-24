@@ -33,6 +33,7 @@ from src.representation import encoder_cache_filename
 class ExperimentVariant:
     folder: str
     fugacity_reference: bool = False
+    exploratory: bool = False
 
 
 EXPERIMENT_VARIANTS = {
@@ -41,6 +42,10 @@ EXPERIMENT_VARIANTS = {
         fugacity_reference=True,
     ),
     "pure_anchor": ExperimentVariant("c1_three_view_vanilla_pure_anchor"),
+    "pure_anchor_0p1": ExperimentVariant(
+        "c1_three_view_vanilla_pure_anchor_0p1",
+        exploratory=True,
+    ),
     "fugacity": ExperimentVariant("c1_three_view_vanilla_fugacity"),
     "legacy": ExperimentVariant("c1_three_view_vanilla"),
 }
@@ -226,6 +231,7 @@ def main(argv: list[str] | None = None) -> None:
         comparison_path,
         report_path,
         reference_comparison_path=reference_comparison_path,
+        exploratory=variant.exploratory,
     )
     report_manifest = {
         "status": "smoke" if args.smoke else "completed",
@@ -234,6 +240,7 @@ def main(argv: list[str] | None = None) -> None:
         "selection_partition": "validation",
         "evaluation_partition": "validation" if args.smoke else "test",
         "selected_stage": manifest["selected_stage"],
+        "analysis_status": "exploratory" if variant.exploratory else "confirmatory",
         "run_manifest": {
             "path": portable_artifact_path(seed_manifest_path),
             "sha256": artifact_sha256(seed_manifest_path),

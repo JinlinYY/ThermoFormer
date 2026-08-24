@@ -351,6 +351,7 @@ def write_physics_finetune_report(
     report_path: Path,
     *,
     reference_comparison_path: Path | None = None,
+    exploratory: bool = False,
 ) -> Path:
     """Render the task-resolved Stage 1/Stage 2 comparison atomically."""
     payload = json.loads(comparison_path.read_text(encoding="utf-8"))
@@ -395,10 +396,22 @@ def write_physics_finetune_report(
         report_title,
         "",
         "Protocol: `overall_binary_ternary`; seed: `0`; checkpoint selection: validation only.",
+    ]
+    if exploratory:
+        lines.extend(
+            [
+                "",
+                "**Exploratory analysis:** this weight was proposed after prior seed-0 "
+                "test results were inspected and is not independent confirmatory evidence.",
+            ]
+        )
+    lines.extend(
+        [
         "",
         "| task output | Stage 1 MAE | Stage 1 RMSE | Stage 1 R² | Stage 2 MAE | Stage 2 RMSE | Stage 2 R² |",
         "|---|---:|---:|---:|---:|---:|---:|",
-    ]
+        ]
+    )
     for label, key, suffix, first, second in metric_rows:
         lines.append(
             f"| {label} | {metric(first, key + '_mae' + suffix)} | "
