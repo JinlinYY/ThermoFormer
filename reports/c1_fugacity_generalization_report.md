@@ -60,6 +60,8 @@ All values are mean ± standard deviation across seeds 0--4. Checkpoint selectio
 
 Across 15 protocols × 5 seeds, validation retained Stage 1 for **16/75** runs and selected Stage 2 for **59/75** runs. The teacher-forced fugacity residual decreased after Stage 2 in **14/15** protocol means.
 
+As a post-selection descriptive comparison, raw Stage 2 test means improved over raw Stage 1 in **146/180** direction-resolved MAE/RMSE/R² cells. This comparison was not used to tune the loss or select checkpoints.
+
 This is evidence for using validation-gated fugacity fine-tuning, not a claim that Stage 2 uniformly improves every predictive metric or every random seed.
 
 ## Numerical diagnostics

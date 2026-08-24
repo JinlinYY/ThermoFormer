@@ -232,7 +232,13 @@ def _task_table(rows: Iterable[dict[str, Any]]) -> str:
 
 def _stage_summary(project_root: Path) -> tuple[list[dict[str, Any]], dict[str, int]]:
     rows: list[dict[str, Any]] = []
-    totals = {"stage1": 0, "stage2": 0, "residual_improved": 0}
+    totals = {
+        "stage1": 0,
+        "stage2": 0,
+        "residual_improved": 0,
+        "predictive_improved": 0,
+        "predictive_compared": 0,
+    }
     for spec in PROTOCOLS:
         path = _protocol_dir(project_root, spec.name) / "stage_comparison_summary.json"
         payload = _load_json(path)
@@ -242,6 +248,27 @@ def _stage_summary(project_root: Path) -> tuple[list[dict[str, Any]], dict[str, 
         totals["stage1"] += int(counts["stage1"])
         totals["stage2"] += int(counts["stage2"])
         totals["residual_improved"] += int(stage2_residual < stage1_residual)
+        predictive_improved = 0
+        predictive_compared = 0
+        for direction, keys in (
+            (
+                "isothermal",
+                ("pressure_mae_kpa", "pressure_rmse_kpa", "pressure_r2", "y_mae", "y_rmse", "y_r2"),
+            ),
+            (
+                "isobaric",
+                ("temperature_mae_k", "temperature_rmse_k", "temperature_r2", "y_mae", "y_rmse", "y_r2"),
+            ),
+        ):
+            for key in keys:
+                stage1_value = float(payload["stages"]["stage1"]["directions"][direction][key]["mean"])
+                stage2_value = float(payload["stages"]["stage2"]["directions"][direction][key]["mean"])
+                predictive_improved += int(
+                    stage2_value > stage1_value if key.endswith("r2") else stage2_value < stage1_value
+                )
+                predictive_compared += 1
+        totals["predictive_improved"] += predictive_improved
+        totals["predictive_compared"] += predictive_compared
         rows.append(
             {
                 "protocol": spec.name,
@@ -250,6 +277,8 @@ def _stage_summary(project_root: Path) -> tuple[list[dict[str, Any]], dict[str, 
                 "stage2_selected": int(counts["stage2"]),
                 "stage1_teacher_forced_fugacity": stage1_residual,
                 "stage2_teacher_forced_fugacity": stage2_residual,
+                "stage2_predictive_metrics_improved": predictive_improved,
+                "predictive_metrics_compared": predictive_compared,
             }
         )
     return rows, totals
@@ -310,6 +339,11 @@ def write_c1_generalization_outputs(
             f"The teacher-forced fugacity residual decreased after Stage 2 in "
             f"**{totals['residual_improved']}/15** protocol means.",
             "",
+            f"As a post-selection descriptive comparison, raw Stage 2 test means improved over "
+            f"raw Stage 1 in **{totals['predictive_improved']}/{totals['predictive_compared']}** "
+            "direction-resolved MAE/RMSE/R² cells. This comparison was not used to tune the loss "
+            "or select checkpoints.",
+            "",
             "This is evidence for using validation-gated fugacity fine-tuning, not a claim that "
             "Stage 2 uniformly improves every predictive metric or every random seed.",
             "",
@@ -369,4 +403,3 @@ def write_c1_generalization_outputs(
     return {key: value["path"] for key, value in outputs.items()} | {
         "manifest": portable_artifact_path(manifest_path, project_root)
     }
-
