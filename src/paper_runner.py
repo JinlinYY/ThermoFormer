@@ -91,6 +91,7 @@ def requested_run_fingerprint(
     stage1_checkpoint: Path | None = None,
     aggregate_expected: bool = True,
     git_commit_override: str | None = None,
+    analysis_status: str = "confirmatory",
 ) -> str:
     """Hash every cheap-to-check input needed to resume an existing run."""
     experiment = load_experiment_config(config_path, overrides)
@@ -114,6 +115,7 @@ def requested_run_fingerprint(
                 else None
             ),
             "aggregate_expected": aggregate_expected,
+            "analysis_status": analysis_status,
         }
     )
 
@@ -319,12 +321,19 @@ def run_paper_experiment(
     evaluation_partition: str = "test",
     stage1_checkpoint: Path | None = None,
     aggregate_expected: bool = True,
+    analysis_status: str = "confirmatory",
 ) -> dict[str, Any]:
     """Train/evaluate one immutable split and export every required artifact."""
     if run_kind not in {"formal", "pilot", "selection", "smoke"}:
         raise ValueError("run_kind must be formal, pilot, selection, or smoke")
     if evaluation_partition not in {"test", "validation"}:
         raise ValueError("evaluation_partition must be 'test' or 'validation'")
+    if analysis_status not in {
+        "confirmatory",
+        "test_exposed_exploratory",
+        "diagnostic",
+    }:
+        raise ValueError("analysis_status is invalid")
     audited_run = run_kind in {"formal", "pilot", "selection"}
     git_commit = _git_commit()
     worktree_dirty, git_dirty, dirty_code_paths = _git_state()
@@ -396,6 +405,7 @@ def run_paper_experiment(
         "seed": seed,
         "git_commit": git_commit,
         "run_kind": run_kind,
+        "analysis_status": analysis_status,
     }
     invalidated_aggregate = {
             "status": "invalidated",
@@ -468,6 +478,7 @@ def run_paper_experiment(
         evaluation_partition,
         stage1_checkpoint,
         aggregate_expected,
+        analysis_status=analysis_status,
     )
     runtime_context = _runtime_context(requested_device)
     environment_sha256 = _json_digest(runtime_context)
@@ -476,6 +487,7 @@ def run_paper_experiment(
         "split_protocol": split_protocol,
         "seed": seed,
         "split_file": portable_artifact_path(split_path),
+        "analysis_status": analysis_status,
         "dataset_sha256": dataset_digest(samples),
     }
     resolved_payload["molecular_feature_preprocessing"] = prepared_features.metadata
@@ -678,6 +690,7 @@ def run_paper_experiment(
         "git_worktree_dirty": worktree_dirty,
         "dirty_code_paths": dirty_code_paths,
         "run_kind": run_kind,
+        "analysis_status": analysis_status,
         "evaluation_partition": evaluation_partition,
         "best_validation_loss": result.best_validation_loss,
         "stage1_checkpoint_sha256": stage1_checkpoint_sha256,
@@ -738,6 +751,7 @@ def run_paper_experiment(
         "git_worktree_dirty": worktree_dirty,
         "dirty_code_paths": dirty_code_paths,
         "run_kind": run_kind,
+        "analysis_status": analysis_status,
         "evaluation_partition": evaluation_partition,
         "dataset_sha256": dataset_digest(samples),
         "split_sha256": split_sha256,

@@ -160,6 +160,13 @@ def main(argv: list[str] | None = None) -> None:
     # process stopped after the seed artifacts committed, rerunning repairs the
     # report bundle without repeating training or requiring --overwrite.
     expected_evaluation_partition = "validation" if args.smoke else "test"
+    analysis_status = (
+        "diagnostic"
+        if args.smoke
+        else "test_exposed_exploratory"
+        if variant.exploratory
+        else "confirmatory"
+    )
     recorded_git_commit = None
     if seed_manifest_path.is_file() and not args.overwrite:
         existing_payload = json.loads(seed_manifest_path.read_text(encoding="utf-8"))
@@ -178,6 +185,7 @@ def main(argv: list[str] | None = None) -> None:
         stage1_checkpoint,
         False,
         recorded_git_commit,
+        analysis_status,
     )
     existing_manifest = (
         recover_completed_seed_manifest(
@@ -205,6 +213,7 @@ def main(argv: list[str] | None = None) -> None:
         evaluation_partition=expected_evaluation_partition,
         stage1_checkpoint=stage1_checkpoint,
         aggregate_expected=False,
+        analysis_status=analysis_status,
     )
     comparison_path = protocol_dir / "seed_0/stage_comparison.json"
     report_path = (
@@ -240,7 +249,7 @@ def main(argv: list[str] | None = None) -> None:
         "selection_partition": "validation",
         "evaluation_partition": "validation" if args.smoke else "test",
         "selected_stage": manifest["selected_stage"],
-        "analysis_status": "exploratory" if variant.exploratory else "confirmatory",
+        "analysis_status": analysis_status,
         "run_manifest": {
             "path": portable_artifact_path(seed_manifest_path),
             "sha256": artifact_sha256(seed_manifest_path),
