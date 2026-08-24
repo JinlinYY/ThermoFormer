@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 from pathlib import Path
 import sys
 
@@ -13,7 +12,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.artifacts import artifact_sha256, portable_artifact_path
+from src.artifacts import artifact_sha256, atomic_write_json, portable_artifact_path
 from src.config import load_experiment_config
 from src.paper_runner import result_protocol_name, run_paper_experiment
 from src.physics_finetuning import write_physics_finetune_report
@@ -21,12 +20,12 @@ from src.representation import encoder_cache_filename
 
 
 def output_roots(project_root: Path, *, smoke: bool) -> tuple[Path, Path, Path]:
-    namespace = "runs/c1_physics_finetune_smoke" if smoke else ""
-    root = project_root / namespace if namespace else project_root
+    root = project_root / "runs/c1_physics_finetune_smoke" if smoke else project_root
+    experiment_path = Path("experiments/physics_finetuning/c1_three_view_vanilla")
     return (
-        root / "runs/physics_finetuning",
-        root / "checkpoints/physics_finetuning",
-        root / "results/physics_finetuning",
+        root / "runs" / experiment_path,
+        root / "checkpoints" / experiment_path,
+        root / "results" / experiment_path,
     )
 
 
@@ -36,20 +35,6 @@ def parser() -> argparse.ArgumentParser:
     value.add_argument("--smoke", action="store_true")
     value.add_argument("--overwrite", action="store_true")
     return value
-
-
-def _atomic_json(path: Path, payload: object) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
-    try:
-        with temporary.open("w", encoding="utf-8") as handle:
-            json.dump(payload, handle, indent=2, sort_keys=True)
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temporary, path)
-    finally:
-        if temporary.exists():
-            temporary.unlink()
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -79,7 +64,19 @@ def main(argv: list[str] | None = None) -> None:
         if args.smoke
         else ()
     )
-    manifest = run_paper_experiment(
+    protocol = result_protocol_name(experiment.name, "overall_binary_ternary")
+    protocol_dir = results_root / protocol
+    seed_manifest_path = protocol_dir / "seed_0/manifest.json"
+    # The report manifest is the experiment-level completion pointer.  If a
+    # process stopped after the seed artifacts committed, rerunning repairs the
+    # report bundle without repeating training or requiring --overwrite.
+    existing_manifest = None
+    if seed_manifest_path.is_file() and not args.overwrite:
+        candidate = json.loads(seed_manifest_path.read_text(encoding="utf-8"))
+        expected_status = "smoke" if args.smoke else "completed"
+        if candidate.get("status") == expected_status:
+            existing_manifest = candidate
+    manifest = existing_manifest or run_paper_experiment(
         config_path=config_path,
         split_path=split_path,
         seed=0,
@@ -93,9 +90,8 @@ def main(argv: list[str] | None = None) -> None:
         run_kind="smoke" if args.smoke else "formal",
         evaluation_partition="validation" if args.smoke else "test",
         stage1_checkpoint=stage1_checkpoint,
+        aggregate_expected=False,
     )
-    protocol = result_protocol_name(experiment.name, "overall_binary_ternary")
-    protocol_dir = results_root / protocol
     comparison_path = protocol_dir / "seed_0/stage_comparison.json"
     report_path = (
         protocol_dir / "smoke_results.md"
@@ -112,8 +108,8 @@ def main(argv: list[str] | None = None) -> None:
         "evaluation_partition": "validation" if args.smoke else "test",
         "selected_stage": manifest["selected_stage"],
         "run_manifest": {
-            "path": portable_artifact_path(protocol_dir / "seed_0/manifest.json"),
-            "sha256": artifact_sha256(protocol_dir / "seed_0/manifest.json"),
+            "path": portable_artifact_path(seed_manifest_path),
+            "sha256": artifact_sha256(seed_manifest_path),
         },
         "stage_comparison": {
             "path": portable_artifact_path(comparison_path),
@@ -124,7 +120,7 @@ def main(argv: list[str] | None = None) -> None:
             "sha256": artifact_sha256(report_path),
         },
     }
-    _atomic_json(protocol_dir / "report_manifest.json", report_manifest)
+    atomic_write_json(protocol_dir / "report_manifest.json", report_manifest)
     print(json.dumps(report_manifest, indent=2, sort_keys=True))
 
 

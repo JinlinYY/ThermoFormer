@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import math
-import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Sequence
@@ -13,7 +12,7 @@ import numpy as np
 import torch
 from torch import nn
 
-from .artifacts import artifact_sha256
+from .artifacts import artifact_sha256, atomic_write_text
 from .config import PhysicsFineTuningConfig
 from .data import VLEBatch, VLESample
 from .losses import Objective
@@ -156,7 +155,12 @@ def physics_finetune_objective(
     )
 
 
-def load_stage1_checkpoint(model: nn.Module, checkpoint_path: Path) -> str:
+def load_stage1_checkpoint(
+    model: nn.Module,
+    checkpoint_path: Path,
+    *,
+    expected_provenance: dict[str, str] | None = None,
+) -> str:
     """Strictly load the supervised best state and return its artifact digest."""
     payload = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
     if not isinstance(payload, dict) or not isinstance(payload.get("model"), dict):
@@ -169,6 +173,11 @@ def load_stage1_checkpoint(model: nn.Module, checkpoint_path: Path) -> str:
         normalized_checkpoint_config = ThermoFormerConfig(**checkpoint_config).to_dict()
         if normalized_checkpoint_config != model_config:
             raise ValueError("Stage 1 checkpoint model configuration does not match C1")
+    for key, expected in (expected_provenance or {}).items():
+        if payload.get(key) != expected:
+            raise ValueError(
+                f"Stage 1 checkpoint {key} does not match the current formal input"
+            )
     model.load_state_dict(payload["model"], strict=True)
     return artifact_sha256(checkpoint_path)
 
@@ -273,12 +282,12 @@ def evaluate_physics_residuals(
     *,
     pure_property_catalog: PurePropertyCatalog | None = None,
 ) -> dict[str, float]:
-    """Evaluate raw continuity/boundary residuals without updating parameters."""
+    """Evaluate all three raw physics residuals without updating parameters."""
     loader = _loader(
         samples, feature_map, config, False, pure_property_catalog
     )
     model.to(device).eval()
-    totals = {"continuity": 0.0, "boundary": 0.0}
+    totals = {"continuity": 0.0, "boundary": 0.0, "solver": 0.0}
     count = 0
     for host_batch in loader:
         batch = host_batch.to(device)
@@ -288,29 +297,16 @@ def evaluate_physics_residuals(
                 batch,
                 config,
                 physics_scale=1.0,
-                solver_enabled=False,
+                solver_enabled=True,
             )
         size = batch.x.shape[0]
         count += size
         totals["continuity"] += float(objective.continuity.detach().cpu()) * size
         totals["boundary"] += float(objective.boundary.detach().cpu()) * size
+        totals["solver"] += float(objective.solver.detach().cpu()) * size
     if count == 0:
         raise ValueError("Physics residual evaluation requires samples")
     return {name: value / count for name, value in totals.items()}
-
-
-def _atomic_text(path: Path, content: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
-    try:
-        with temporary.open("w", encoding="utf-8", newline="\n") as handle:
-            handle.write(content)
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temporary, path)
-    finally:
-        if temporary.exists():
-            temporary.unlink()
 
 
 def write_physics_finetune_report(
@@ -375,6 +371,7 @@ def write_physics_finetune_report(
     for label, key in (
         ("continuity residual", "continuity"),
         ("boundary residual", "boundary"),
+        ("solver residual", "solver"),
     ):
         lines.append(
             f"| {label} | {float(stages['stage1']['physics_residuals'][key]):.6g} | "
@@ -408,5 +405,5 @@ def write_physics_finetune_report(
             "",
         ]
     )
-    _atomic_text(report_path, "\n".join(lines))
+    atomic_write_text(report_path, "\n".join(lines))
     return report_path

@@ -89,6 +89,7 @@ def requested_run_fingerprint(
     run_kind: str = "formal",
     evaluation_partition: str = "test",
     stage1_checkpoint: Path | None = None,
+    aggregate_expected: bool = True,
 ) -> str:
     """Hash every cheap-to-check input needed to resume an existing run."""
     experiment = load_experiment_config(config_path, overrides)
@@ -111,6 +112,7 @@ def requested_run_fingerprint(
                 if stage1_checkpoint is not None and stage1_checkpoint.is_file()
                 else None
             ),
+            "aggregate_expected": aggregate_expected,
         }
     )
 
@@ -175,6 +177,20 @@ def _require_tracked_file(path: Path, label: str) -> None:
     )
     if completed.returncode != 0:
         raise RuntimeError(f"Formal {label} is not tracked by Git: {resolved}")
+
+
+def _require_committed_file(path: Path, label: str) -> None:
+    """Require an audited input to be tracked and byte-equivalent to HEAD."""
+
+    _require_tracked_file(path, label)
+    relative = path.resolve().relative_to(PROJECT_ROOT.resolve()).as_posix()
+    completed = subprocess.run(
+        ["git", "diff", "--quiet", "HEAD", "--", relative],
+        cwd=PROJECT_ROOT,
+        capture_output=True,
+    )
+    if completed.returncode != 0:
+        raise RuntimeError(f"Formal {label} differs from the committed HEAD version: {path}")
 
 
 def _validate_formal_inputs(
@@ -301,6 +317,7 @@ def run_paper_experiment(
     run_kind: str = "formal",
     evaluation_partition: str = "test",
     stage1_checkpoint: Path | None = None,
+    aggregate_expected: bool = True,
 ) -> dict[str, Any]:
     """Train/evaluate one immutable split and export every required artifact."""
     if run_kind not in {"formal", "pilot", "selection", "smoke"}:
@@ -337,7 +354,7 @@ def run_paper_experiment(
             catalog_path,
         )
         if stage1_checkpoint is not None:
-            _require_tracked_file(stage1_checkpoint, "Stage 1 checkpoint")
+            _require_committed_file(stage1_checkpoint, "Stage 1 checkpoint")
     loaded = load_vle_dataset(
         data_root,
         source_filter=experiment.data.source_filter,
@@ -386,8 +403,9 @@ def run_paper_experiment(
             "git_commit": git_commit,
             "reason": "a seed run started; aggregate is invalid until all formal seeds are revalidated",
     }
-    for marker in ("aggregate_manifest.json", "diagnostic_aggregate_manifest.json"):
-        _atomic_json(result_dir.parent / marker, invalidated_aggregate)
+    if aggregate_expected:
+        for marker in ("aggregate_manifest.json", "diagnostic_aggregate_manifest.json"):
+            _atomic_json(result_dir.parent / marker, invalidated_aggregate)
     # Invalidate every old completion marker before overwriting any artifact.
     # A crash can therefore never leave an old "completed" manifest pointing
     # at a partially replaced checkpoint or CSV.
@@ -448,6 +466,7 @@ def run_paper_experiment(
         run_kind,
         evaluation_partition,
         stage1_checkpoint,
+        aggregate_expected,
     )
     runtime_context = _runtime_context(requested_device)
     environment_sha256 = _json_digest(runtime_context)
@@ -467,9 +486,10 @@ def run_paper_experiment(
     # and a cache miss produce identical ThermoFormer initialization/training.
     seed_everything(seed)
     model = ThermoFormer(model_config)
-    trainable_parameters = sum(
+    initially_trainable_parameters = sum(
         parameter.numel() for parameter in model.parameters() if parameter.requires_grad
     )
+    total_parameters = sum(parameter.numel() for parameter in model.parameters())
     if device.type == "cuda":
         torch.cuda.reset_peak_memory_stats(device)
     started = time.perf_counter()
@@ -492,7 +512,16 @@ def run_paper_experiment(
     else:
         if experiment.physics_finetuning is None:
             raise ValueError("Stage 1 checkpoint requires physics_finetuning configuration")
-        stage1_checkpoint_sha256 = load_stage1_checkpoint(model, stage1_checkpoint)
+        stage1_checkpoint_sha256 = load_stage1_checkpoint(
+            model,
+            stage1_checkpoint,
+            expected_provenance={
+                "dataset_sha256": dataset_digest(samples),
+                "split_sha256": split_sha256,
+                "feature_subset_sha256": feature_subset_sha256,
+                "feature_definition_sha256": feature_definition_sha256,
+            },
+        )
         result = fit_physics_stage(
             model,
             split.train,
@@ -640,6 +669,7 @@ def run_paper_experiment(
         "stage1_checkpoint_sha256": stage1_checkpoint_sha256,
         "selected_stage": getattr(result, "selected_stage", "experimental"),
         "physics_parameter_summary": getattr(result, "parameter_summary", None),
+        "aggregate_expected": aggregate_expected,
         "units": {"temperature": "K", "pressure": "kPa"},
     }
     checkpoint_path = checkpoint_dir / "best_model.pt"
@@ -732,7 +762,13 @@ def run_paper_experiment(
         "inference_seconds": inference_seconds,
         "inference_ms_per_attempt": 1000.0 * inference_seconds / max(1, len(predictions)),
         "peak_gpu_memory_mb": peak_gpu_memory_mb,
-        "trainable_parameters": trainable_parameters,
+        "total_parameters": total_parameters,
+        "initially_trainable_parameters": initially_trainable_parameters,
+        "trainable_parameters": (
+            result.parameter_summary["trainable_parameters"]
+            if getattr(result, "parameter_summary", None) is not None
+            else initially_trainable_parameters
+        ),
         "best_validation_loss": result.best_validation_loss,
         "stage1_checkpoint": (
             portable_artifact_path(stage1_checkpoint)

@@ -140,7 +140,7 @@ class PhysicsFineTuningTests(unittest.TestCase):
         )
         self.assertLess(setup.trainable_parameters, setup.total_parameters)
 
-    def test_frozen_parameters_stay_fixed_and_each_unfrozen_group_has_gradient(self) -> None:
+    def test_frozen_parameters_stay_fixed_after_optimizer_step(self) -> None:
         model = self.model()
         config = self.config()
         setup = configure_physics_finetuning(model, config, self.finetuning())
@@ -149,6 +149,21 @@ class PhysicsFineTuningTests(unittest.TestCase):
             for name, parameter in model.named_parameters()
             if not parameter.requires_grad
         }
+        batch = next(iter(_loader(self.samples(), self.features(), config, shuffle=False)))
+        objective = physics_finetune_objective(
+            model, batch, config, physics_scale=1.0, solver_enabled=True
+        )
+        setup.optimizer.zero_grad(set_to_none=True)
+        objective.total.backward()
+        setup.optimizer.step()
+        for name, parameter in model.named_parameters():
+            if name in frozen_before:
+                torch.testing.assert_close(parameter.detach(), frozen_before[name])
+
+    def test_each_unfrozen_group_has_nonzero_finite_gradient(self) -> None:
+        model = self.model()
+        config = self.config()
+        setup = configure_physics_finetuning(model, config, self.finetuning())
         batch = next(iter(_loader(self.samples(), self.features(), config, shuffle=False)))
         objective = physics_finetune_objective(
             model, batch, config, physics_scale=1.0, solver_enabled=True
@@ -165,10 +180,6 @@ class PhysicsFineTuningTests(unittest.TestCase):
             norm = torch.stack([gradient.norm() for gradient in gradients]).sum()
             self.assertTrue(torch.isfinite(norm), group.name)
             self.assertGreater(float(norm), 0.0, group.name)
-        setup.optimizer.step()
-        for name, parameter in model.named_parameters():
-            if name in frozen_before:
-                torch.testing.assert_close(parameter.detach(), frozen_before[name])
 
     def test_physics_terms_have_real_pair_potential_gradient(self) -> None:
         model = self.model()
@@ -220,12 +231,18 @@ class PhysicsFineTuningTests(unittest.TestCase):
             torch.testing.assert_close(result.stage_states["stage1"][name], stage1[name])
         self.assertNotIn("test", " ".join(result.selection_partitions))
 
-    def test_physics_warmup_and_smoke_output_isolation(self) -> None:
+    def test_physics_warmup_reaches_full_weight_after_two_epochs(self) -> None:
         self.assertEqual([physics_warmup_scale(epoch, 2) for epoch in (1, 2, 3)], [0.5, 1.0, 1.0])
+
+    def test_smoke_output_is_isolated_from_formal_results(self) -> None:
         formal = output_roots(self.ROOT, smoke=False)
         smoke = output_roots(self.ROOT, smoke=True)
         self.assertNotEqual(formal, smoke)
         self.assertIn("smoke", str(smoke[0]))
+        self.assertIn(
+            "runs/experiments/physics_finetuning/c1_three_view_vanilla",
+            formal[0].as_posix(),
+        )
 
 
 if __name__ == "__main__":

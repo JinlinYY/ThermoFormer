@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import hashlib
+import json
+import os
 from pathlib import Path
 
 
@@ -35,3 +37,28 @@ def resolve_artifact_path(value: str, root: Path = PROJECT_ROOT) -> Path:
 
     path = Path(value)
     return path.resolve() if path.is_absolute() else (root / path).resolve()
+
+
+def atomic_write_text(path: Path, content: str) -> None:
+    """Durably replace one UTF-8 text artifact in its destination directory."""
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    try:
+        with temporary.open("w", encoding="utf-8", newline="\n") as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        if temporary.exists():
+            temporary.unlink()
+
+
+def atomic_write_json(path: Path, payload: object) -> None:
+    """Durably replace one canonical human-readable JSON artifact."""
+
+    atomic_write_text(
+        path,
+        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+    )
