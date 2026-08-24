@@ -528,11 +528,18 @@ def _report(
         output: VIEW_LABELS[str(rows.loc[rows["mean"].idxmax(), "view"])]
         for output, rows in global_importance.groupby("output")
     }
+    seed_top = seed_importance.loc[
+        seed_importance.groupby(["seed", "output"])["absolute_shapley_value"].idxmax()
+    ]
+    rdkit_top_counts = seed_top.loc[seed_top["view"].eq("rdkit_2d")].groupby("output").size()
+    seed_state_count = len(shapley[["seed", "sample_id"]].drop_duplicates())
     lines.extend([
         "",
         "按 mean |Shapley|，各输出的最大贡献视图为："
         + "；".join(f"{OUTPUT_LABELS[name]}—**{view}**" for name, view in top_views.items())
         + "。这说明三视图贡献可量化，但不能把归因值解释为因果化学机制。",
+        f"本分析包含 **{seed_state_count}** 个 seed-state 解释实例；RDKit 在四类输出上均为 "
+        f"**{min(int(rdkit_top_counts.get(name, 0)) for name in OUTPUT_LABELS)}/5** 个 seed 的首位视图。",
         f"精确三组 Shapley 的最大加和误差为 `{max_additivity:.3g}`。",
         "",
         "## Pair interaction and thermodynamic sensitivity",
