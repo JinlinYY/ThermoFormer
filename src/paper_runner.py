@@ -29,6 +29,11 @@ from .pure_properties import empty_pure_property_catalog, load_pure_property_cat
 from .representation import build_molecular_encoder, prepare_partition_features
 from .splits import dataset_digest, load_split_assignment, validate_protocol_name
 from .training import fit_model, seed_everything
+from .physics_finetuning import (
+    evaluate_physics_residuals,
+    fit_physics_stage,
+    load_stage1_checkpoint,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -83,6 +88,7 @@ def requested_run_fingerprint(
     overrides: Sequence[str] = (),
     run_kind: str = "formal",
     evaluation_partition: str = "test",
+    stage1_checkpoint: Path | None = None,
 ) -> str:
     """Hash every cheap-to-check input needed to resume an existing run."""
     experiment = load_experiment_config(config_path, overrides)
@@ -100,6 +106,11 @@ def requested_run_fingerprint(
             "runtime": runtime,
             "run_kind": run_kind,
             "evaluation_partition": evaluation_partition,
+            "stage1_checkpoint_sha256": (
+                _file_digest(stage1_checkpoint)
+                if stage1_checkpoint is not None and stage1_checkpoint.is_file()
+                else None
+            ),
         }
     )
 
@@ -289,6 +300,7 @@ def run_paper_experiment(
     allow_overwrite: bool = False,
     run_kind: str = "formal",
     evaluation_partition: str = "test",
+    stage1_checkpoint: Path | None = None,
 ) -> dict[str, Any]:
     """Train/evaluate one immutable split and export every required artifact."""
     if run_kind not in {"formal", "pilot", "selection", "smoke"}:
@@ -324,6 +336,8 @@ def run_paper_experiment(
             experiment.data.source_filter,
             catalog_path,
         )
+        if stage1_checkpoint is not None:
+            _require_tracked_file(stage1_checkpoint, "Stage 1 checkpoint")
     loaded = load_vle_dataset(
         data_root,
         source_filter=experiment.data.source_filter,
@@ -433,6 +447,7 @@ def run_paper_experiment(
         overrides,
         run_kind,
         evaluation_partition,
+        stage1_checkpoint,
     )
     runtime_context = _runtime_context(requested_device)
     environment_sha256 = _json_digest(runtime_context)
@@ -463,15 +478,31 @@ def run_paper_experiment(
         if catalog_path is not None
         else empty_pure_property_catalog()
     )
-    result = fit_model(
-        model,
-        split.train,
-        feature_map,
-        training,
-        device,
-        validation_samples=split.validation,
-        pure_property_catalog=catalog,
-    )
+    stage1_checkpoint_sha256 = None
+    if stage1_checkpoint is None:
+        result = fit_model(
+            model,
+            split.train,
+            feature_map,
+            training,
+            device,
+            validation_samples=split.validation,
+            pure_property_catalog=catalog,
+        )
+    else:
+        if experiment.physics_finetuning is None:
+            raise ValueError("Stage 1 checkpoint requires physics_finetuning configuration")
+        stage1_checkpoint_sha256 = load_stage1_checkpoint(model, stage1_checkpoint)
+        result = fit_physics_stage(
+            model,
+            split.train,
+            feature_map,
+            training,
+            experiment.physics_finetuning,
+            device,
+            validation_samples=split.validation,
+            pure_property_catalog=catalog,
+        )
     training_seconds = time.perf_counter() - started
     peak_gpu_memory_mb = (
         torch.cuda.max_memory_allocated(device) / (1024.0**2)
@@ -482,15 +513,55 @@ def run_paper_experiment(
     evaluation_samples = (
         split.test if evaluation_partition == "test" else split.validation
     )
-    predictions = predict_vle(
-        model,
-        evaluation_samples,
-        feature_map,
-        batch_size=training.batch_size,
-        device=device,
-        solver_iterations=training.solver_iterations_eval,
-        pure_property_catalog=catalog,
-    )
+    stage_comparison: dict[str, object] | None = None
+    stage_predictions: dict[str, list[dict[str, Any]]] = {}
+    if stage1_checkpoint is not None:
+        stage_rows: dict[str, object] = {}
+        for stage_name, stage_state in result.stage_states.items():
+            model.load_state_dict(stage_state)
+            current_predictions = predict_vle(
+                model,
+                evaluation_samples,
+                feature_map,
+                batch_size=training.batch_size,
+                device=device,
+                solver_iterations=training.solver_iterations_eval,
+                pure_property_catalog=catalog,
+            )
+            stage_predictions[stage_name] = current_predictions
+            stage_rows[stage_name] = {
+                "metrics": prediction_metric_rows(current_predictions),
+                "physics_residuals": evaluate_physics_residuals(
+                    model,
+                    evaluation_samples,
+                    feature_map,
+                    training,
+                    device,
+                    pure_property_catalog=catalog,
+                ),
+                "validation_loss": result.stage_validation_losses[stage_name],
+            }
+        stage_comparison = {
+            "selection_partition": "validation",
+            "evaluation_partition": evaluation_partition,
+            "selected_stage": result.selected_stage,
+            "stages": stage_rows,
+            "parameter_summary": result.parameter_summary,
+            "stage1_checkpoint": portable_artifact_path(stage1_checkpoint),
+            "stage1_checkpoint_sha256": stage1_checkpoint_sha256,
+        }
+        model.load_state_dict(result.state_dict)
+        predictions = stage_predictions[result.selected_stage]
+    else:
+        predictions = predict_vle(
+            model,
+            evaluation_samples,
+            feature_map,
+            batch_size=training.batch_size,
+            device=device,
+            solver_iterations=training.solver_iterations_eval,
+            pure_property_catalog=catalog,
+        )
     inference_seconds = time.perf_counter() - inference_started
     if split_protocol.startswith("binary_to_ternary"):
         subsystem_coverage = {
@@ -566,21 +637,37 @@ def run_paper_experiment(
         "run_kind": run_kind,
         "evaluation_partition": evaluation_partition,
         "best_validation_loss": result.best_validation_loss,
+        "stage1_checkpoint_sha256": stage1_checkpoint_sha256,
+        "selected_stage": getattr(result, "selected_stage", "experimental"),
+        "physics_parameter_summary": getattr(result, "parameter_summary", None),
         "units": {"temperature": "K", "pressure": "kPa"},
     }
     checkpoint_path = checkpoint_dir / "best_model.pt"
     _atomic_checkpoint(checkpoint_path, checkpoint_payload)
+    stage2_checkpoint_path = checkpoint_dir / "stage2_best_model.pt"
+    if stage1_checkpoint is not None:
+        stage2_payload = {
+            **checkpoint_payload,
+            "model": result.stage_states["stage2"],
+            "checkpoint_role": "best_physics_epoch_by_validation",
+            "selected_as_final": result.selected_stage == "stage2",
+            "validation_loss": result.stage_validation_losses["stage2"],
+        }
+        _atomic_checkpoint(stage2_checkpoint_path, stage2_payload)
     history_path = run_dir / "history.json"
     curves_path = run_dir / "training_curves.csv"
     predictions_path = result_dir / "predictions.csv"
     metrics_path = result_dir / "metrics.json"
     physical_consistency_path = result_dir / "physical_consistency.json"
+    stage_comparison_path = result_dir / "stage_comparison.json"
     result_config_path = result_dir / "resolved_config.json"
     _atomic_json(history_path, result.history)
     _write_training_curves(curves_path, result.history)
     write_prediction_csv(predictions_path, predictions)
     _atomic_json(metrics_path, metric_rows)
     _atomic_json(physical_consistency_path, physical_consistency)
+    if stage_comparison is not None:
+        _atomic_json(stage_comparison_path, stage_comparison)
     artifact_paths = {
         "checkpoint": checkpoint_path,
         "history": history_path,
@@ -590,6 +677,9 @@ def run_paper_experiment(
         "physical_consistency": physical_consistency_path,
         "resolved_config": result_config_path,
     }
+    if stage_comparison is not None:
+        artifact_paths["stage_comparison"] = stage_comparison_path
+        artifact_paths["stage2_checkpoint"] = stage2_checkpoint_path
     artifacts = {
         name: {"path": portable_artifact_path(path), "sha256": _file_digest(path)}
         for name, path in artifact_paths.items()
@@ -644,6 +734,14 @@ def run_paper_experiment(
         "peak_gpu_memory_mb": peak_gpu_memory_mb,
         "trainable_parameters": trainable_parameters,
         "best_validation_loss": result.best_validation_loss,
+        "stage1_checkpoint": (
+            portable_artifact_path(stage1_checkpoint)
+            if stage1_checkpoint is not None
+            else None
+        ),
+        "stage1_checkpoint_sha256": stage1_checkpoint_sha256,
+        "selected_stage": getattr(result, "selected_stage", "experimental"),
+        "physics_parameter_summary": getattr(result, "parameter_summary", None),
         "checkpoint": portable_artifact_path(checkpoint_path),
         "artifact_path_schema": "project-relative-v1",
         "artifacts": artifacts,

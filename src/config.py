@@ -164,6 +164,57 @@ class RuntimeConfig:
 
 
 @dataclass(frozen=True)
+class PhysicsFineTuningConfig:
+    enabled: bool = True
+    warmup_epochs: int = 2
+    trainable_modules: tuple[str, ...] = (
+        "pair_potential",
+        "vapor_pressure",
+        "film",
+        "mixture_token",
+    )
+    pair_potential_lr: float = 2e-5
+    vapor_pressure_lr: float = 1e-5
+    film_lr: float = 5e-6
+    mixture_token_lr: float = 5e-6
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.enabled, bool):
+            raise ValueError("physics_finetuning.enabled must be boolean")
+        if (
+            not isinstance(self.warmup_epochs, int)
+            or isinstance(self.warmup_epochs, bool)
+            or self.warmup_epochs < 0
+        ):
+            raise ValueError("physics_finetuning.warmup_epochs must be non-negative")
+        allowed = {"pair_potential", "vapor_pressure", "film", "mixture_token"}
+        if not isinstance(self.trainable_modules, (tuple, list)) or any(
+            not isinstance(value, str) or not value for value in self.trainable_modules
+        ):
+            raise ValueError("physics_finetuning.trainable_modules must contain names")
+        unknown = set(self.trainable_modules) - allowed
+        if unknown:
+            raise ValueError(
+                "Unknown physics_finetuning.trainable_modules: "
+                + ", ".join(sorted(unknown))
+            )
+        learning_rates = (
+            self.pair_potential_lr,
+            self.vapor_pressure_lr,
+            self.film_lr,
+            self.mixture_token_lr,
+        )
+        if any(
+            not isinstance(value, (int, float))
+            or isinstance(value, bool)
+            or not math.isfinite(value)
+            or value <= 0.0
+            for value in learning_rates
+        ):
+            raise ValueError("physics_finetuning learning rates must be positive and finite")
+
+
+@dataclass(frozen=True)
 class ExperimentConfig:
     name: str = "thermoformer_base"
     seed: int = 42
@@ -173,6 +224,7 @@ class ExperimentConfig:
     evaluation: EvaluationConfig = field(default_factory=EvaluationConfig)
     training: TrainingConfig = field(default_factory=TrainingConfig)
     runtime: RuntimeConfig = field(default_factory=RuntimeConfig)
+    physics_finetuning: PhysicsFineTuningConfig | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.seed, int) or isinstance(self.seed, bool):
@@ -204,7 +256,10 @@ class ExperimentConfig:
             raise ValueError("Chemical modality gates require the functional-group branch")
 
     def to_dict(self) -> dict[str, object]:
-        return asdict(self)
+        payload = asdict(self)
+        if self.physics_finetuning is None:
+            payload.pop("physics_finetuning")
+        return payload
 
 
 def _parse_override(value: str) -> object:
@@ -224,7 +279,7 @@ def _with_overrides(payload: dict[str, object], overrides: Sequence[str]) -> dic
         if len(path) != 2:
             raise ValueError(f"Override must address one section and field: {dotted_key}")
         section, field_name = path
-        if section not in {"model", "encoder", "data", "evaluation", "training", "runtime"}:
+        if section not in {"model", "encoder", "data", "evaluation", "training", "runtime", "physics_finetuning"}:
             raise ValueError(f"Unknown configuration section: {section}")
         section_payload = updated.setdefault(section, {})
         if not isinstance(section_payload, dict):
@@ -285,7 +340,7 @@ def load_experiment_config(
 ) -> ExperimentConfig:
     payload = _load_payload(path)
     payload = _with_overrides(payload, overrides)
-    allowed_root = {"name", "seed", "model", "encoder", "data", "evaluation", "training", "runtime"}
+    allowed_root = {"name", "seed", "model", "encoder", "data", "evaluation", "training", "runtime", "physics_finetuning"}
     unknown_root = sorted(set(payload) - allowed_root)
     if unknown_root:
         raise ValueError(
@@ -309,4 +364,13 @@ def load_experiment_config(
         evaluation=_section("evaluation", EvaluationConfig, payload.get("evaluation", {})),
         training=_section("training", TrainingConfig, training_payload),
         runtime=_section("runtime", RuntimeConfig, payload.get("runtime", {})),
+        physics_finetuning=(
+            _section(
+                "physics_finetuning",
+                PhysicsFineTuningConfig,
+                payload["physics_finetuning"],
+            )
+            if "physics_finetuning" in payload
+            else None
+        ),
     )

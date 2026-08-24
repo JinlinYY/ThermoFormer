@@ -174,6 +174,7 @@ def _objective(
     config: TrainingConfig,
     physics: bool,
     solver_enabled: bool,
+    physics_scale: float = 1.0,
 ) -> Objective:
     if getattr(getattr(model, "config", None), "decoder_mode", None) == "direct_vle":
         return direct_vle_objective(
@@ -209,19 +210,23 @@ def _objective(
         state,
         model,
         batch,
-        weight=config.continuity_weight if physics else 0.0,
+        weight=config.continuity_weight * physics_scale if physics else 0.0,
     )
     objective = with_pure_boundary(
         objective,
         model,
         batch,
-        weight=config.boundary_weight if physics else 0.0,
+        weight=config.boundary_weight * physics_scale if physics else 0.0,
     )
     return with_solver_supervision(
         objective,
         model,
         batch,
-        weight=config.solver_weight if physics and solver_enabled else 0.0,
+        weight=(
+            config.solver_weight * physics_scale
+            if physics and solver_enabled
+            else 0.0
+        ),
         iterations=config.solver_iterations_train,
     )
 
@@ -233,6 +238,7 @@ def _run_epoch(
     config: TrainingConfig,
     optimizer: torch.optim.Optimizer | None,
     physics: bool,
+    physics_scale: float = 1.0,
 ) -> dict[str, float]:
     training = optimizer is not None
     model.train(training)
@@ -245,7 +251,9 @@ def _run_epoch(
         solver_enabled = batch_index < config.solver_batches_per_epoch
         if training:
             optimizer.zero_grad(set_to_none=True)
-            objective = _objective(model, batch, config, physics, solver_enabled)
+            objective = _objective(
+                model, batch, config, physics, solver_enabled, physics_scale
+            )
             if not bool(torch.isfinite(objective.total).all()):
                 raise FloatingPointError(
                     f"Training produced a non-finite loss in batch {batch_index + 1}"
@@ -264,7 +272,9 @@ def _run_epoch(
             optimizer.step()
         else:
             with torch.no_grad():
-                objective = _objective(model, batch, config, physics, solver_enabled)
+                objective = _objective(
+                    model, batch, config, physics, solver_enabled, physics_scale
+                )
             if not bool(torch.isfinite(objective.total).all()):
                 raise FloatingPointError(
                     f"Validation produced a non-finite loss in batch {batch_index + 1}"
@@ -279,6 +289,8 @@ def _run_epoch(
     if training:
         metrics["gradient_norm_mean"] = gradient_norm_total / sample_count
         metrics["gradient_norm_max"] = gradient_norm_max
+    if physics:
+        metrics["physics_weight_scale"] = physics_scale
     return metrics
 
 
