@@ -29,6 +29,7 @@ experiments/
   interpolation_extrapolation/        # 内插/外推实验设计与后续结果
   explainability/                     # 可解释性实验设计与后续结果
   multiview/representations/          # V0--V6 multi-view 独立实验
+  physics_finetuning/                 # C1 Stage 2 热力学损失对照
 assets/                               # 冻结的 RDKit 描述符与 SMARTS 词表
 splits/                               # 75 个固定划分 JSON（15 协议 × 5 seeds）
 reports/                              # 实现、数据、划分和训练诊断审计

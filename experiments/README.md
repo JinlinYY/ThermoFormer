@@ -38,6 +38,10 @@ experiments/
   explainability/
   multiview/
     representations/v0_legacy_unimol...v6_full_interaction/
+  physics_finetuning/
+    c1_three_view_vanilla/
+    c1_three_view_vanilla_fugacity/
+    c1_three_view_vanilla_fugacity_pure_anchor/
 ```
 
 Every runnable experiment directory contains:
@@ -73,6 +77,9 @@ five-seed formal evaluation without replacing historical artifacts.
 | Chemical generalization | `unseen_component` | At-least-one and strict all-component holdouts | [run](interpolation_extrapolation/chemical_space/unseen_component/run.md) | [results](interpolation_extrapolation/chemical_space/unseen_component/results.md) |
 | Binary → ternary | zero-shot + five positive scaling levels | Controlled ternary data-scaling curve and binary-subsystem coverage | [index](comparison/binary_to_ternary_generalization/README.md) | per-protocol `results.md` |
 | Multi-view representation | V0--V6 | Single-view, naive-fusion, and interaction-specific molecular views | [index](multiview/README.md) | per-variant `results.md` |
+| Physics fine-tuning | `c1_three_view_vanilla` | Legacy continuity/boundary/solver Stage 2 | [run](physics_finetuning/c1_three_view_vanilla/run.md) | [results](physics_finetuning/c1_three_view_vanilla/results.md) |
+| Physics fine-tuning | `c1_three_view_vanilla_fugacity` | Teacher-forced fugacity Stage 2 | [run](physics_finetuning/c1_three_view_vanilla_fugacity/run.md) | [results](physics_finetuning/c1_three_view_vanilla_fugacity/results.md) |
+| Physics fine-tuning | `c1_three_view_vanilla_fugacity_pure_anchor` | Fugacity plus stronger pure-vapor-pressure anchoring | [run](physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/run.md) | [results](physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/results.md) |
 
 `explainability/` remains a scoped plan and does not claim unrun results. Paper
 checkpoints, curves and predictions are separated into `checkpoints/`, `runs/paper/`

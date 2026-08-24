@@ -300,6 +300,7 @@ def evaluate_physics_residuals(
     )
     model.to(device).eval()
     totals = {
+        "pure_vapor_pressure": 0.0,
         "continuity": 0.0,
         "boundary": 0.0,
         "solver": 0.0,
@@ -320,6 +321,9 @@ def evaluate_physics_residuals(
         size = batch.x.shape[0]
         count += size
         totals["continuity"] += float(objective.continuity.detach().cpu()) * size
+        totals["pure_vapor_pressure"] += float(
+            objective.pure_vapor_pressure.detach().cpu()
+        ) * size
         totals["boundary"] += float(objective.boundary.detach().cpu()) * size
         totals["solver"] += float(objective.solver.detach().cpu()) * size
         totals["teacher_forced_fugacity"] += float(
@@ -338,11 +342,12 @@ def write_physics_finetune_report(
     payload = json.loads(comparison_path.read_text(encoding="utf-8"))
     stages = payload["stages"]
     configured = payload.get("thermodynamic_loss_weights", {})
-    report_title = (
-        "# C1 fugacity-equilibrium fine-tuning"
-        if float(configured.get("teacher_forced_fugacity", 0.0)) > 0.0
-        else "# C1 partial physics fine-tuning"
-    )
+    if float(configured.get("additional_pure_vapor_pressure_anchor", 0.0)) > 0.0:
+        report_title = "# C1 fugacity + pure-vapor-pressure-anchor fine-tuning"
+    elif float(configured.get("teacher_forced_fugacity", 0.0)) > 0.0:
+        report_title = "# C1 fugacity-equilibrium fine-tuning"
+    else:
+        report_title = "# C1 partial physics fine-tuning"
 
     def direction(stage: str, name: str) -> dict[str, object]:
         return next(
@@ -396,17 +401,23 @@ def write_physics_finetune_report(
         second = next(row for row in stages["stage2"]["metrics"] if row["scope"] == "all")
         lines.append(f"| {label} | {float(first[key]):.6g} | {float(second[key]):.6g} |")
     residual_rows = []
-    for label, key in (
-        ("continuity residual", "continuity"),
-        ("boundary residual", "boundary"),
-        ("solver residual", "solver"),
+    for label, key, weight_key in (
+        (
+            "pure-vapor-pressure anchor loss",
+            "pure_vapor_pressure",
+            "additional_pure_vapor_pressure_anchor",
+        ),
+        ("continuity residual", "continuity", "continuity"),
+        ("boundary residual", "boundary", "boundary"),
+        ("solver residual", "solver", "solver"),
         (
             "teacher-forced fugacity-equilibrium residual",
+            "teacher_forced_fugacity",
             "teacher_forced_fugacity",
         ),
     ):
         if key in stages["stage1"]["physics_residuals"] and (
-            not configured or float(configured.get(key, 0.0)) > 0.0
+            not configured or float(configured.get(weight_key, 0.0)) > 0.0
         ):
             residual_rows.append((label, key))
     for label, key in residual_rows:
