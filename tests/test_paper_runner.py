@@ -11,9 +11,16 @@ from src.data import load_vle_samples
 from src.paper_runner import result_protocol_name, run_paper_experiment
 from src.splits import DatasetPartitions, save_split_assignment
 from scripts.run_paper_experiment import output_roots, parser
+from scripts.run_paper_suite import smoke_overrides
 
 
 class PaperRunnerTests(unittest.TestCase):
+    def test_paper_suite_smoke_remains_supervised_only(self) -> None:
+        overrides = smoke_overrides()
+        self.assertIn("training.epochs_supervised=2", overrides)
+        self.assertIn("training.epochs_physics=0", overrides)
+        self.assertIn("training.minimum_physics_epochs=0", overrides)
+
     def test_ablation_result_namespace_reuses_split_without_overwriting_reference(self) -> None:
         self.assertEqual(
             result_protocol_name("overall_binary_ternary", "overall_binary_ternary"),

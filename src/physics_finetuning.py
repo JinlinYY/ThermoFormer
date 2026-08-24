@@ -165,6 +165,11 @@ def load_stage1_checkpoint(
     payload = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
     if not isinstance(payload, dict) or not isinstance(payload.get("model"), dict):
         raise ValueError("Stage 1 checkpoint lacks a model state")
+    training_config = payload.get("training_config")
+    if not isinstance(training_config, dict) or int(
+        training_config.get("epochs_physics", -1)
+    ) != 0:
+        raise ValueError("Stage 1 checkpoint is not a supervised-only checkpoint")
     checkpoint_config = payload.get("model_config")
     model_config = getattr(getattr(model, "config", None), "to_dict", lambda: None)()
     if checkpoint_config is not None:
@@ -430,6 +435,7 @@ def write_multiseed_physics_finetune_report(
     *,
     expected_evaluation_partition: str = "test",
     physics_epochs: int,
+    protocol_name: str = "overall_binary_ternary",
 ) -> tuple[Path, dict[str, object]]:
     """Write the paired multi-seed fugacity fine-tuning report atomically."""
     summary = summarize_physics_finetuning(
@@ -455,7 +461,7 @@ def write_multiseed_physics_finetune_report(
     lines = [
         f"# C1 fugacity-equilibrium fine-tuning ({len(seeds)} seed{'s' if len(seeds) != 1 else ''})",
         "",
-        f"Protocol: `overall_binary_ternary`; seeds: `{seed_label}`; "
+        f"Protocol: `{protocol_name}`; seeds: `{seed_label}`; "
         f"physics fine-tuning: `{physics_epochs}` epoch(s); checkpoint selection: validation only.",
         "",
         "| task output | Stage 1 MAE | Stage 1 RMSE | Stage 1 R² | Stage 2 MAE | Stage 2 RMSE | Stage 2 R² |",

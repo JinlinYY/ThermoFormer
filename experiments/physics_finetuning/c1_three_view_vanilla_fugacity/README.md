@@ -14,3 +14,11 @@ ten-epoch budget, partial unfreezing, and validation-only Stage 1 fallback.
 
 The pure-endpoint `P_sat` term in Stage 1 remains part of the supervised data
 objective and is not an additional Stage-2 physics loss.
+
+The same frozen Stage-1/Stage-2 procedure can be applied to any protocol in
+`src/paper_protocols.py`.  Non-overall reports are isolated beside their
+machine artifacts under the corresponding `results/...on.<protocol>/results.md`;
+the original `overall_binary_ternary` report remains at this directory's
+`results.md`.  A protocol must first have a
+committed supervised C1 checkpoint generated from its registered split before
+formal fugacity fine-tuning can start.

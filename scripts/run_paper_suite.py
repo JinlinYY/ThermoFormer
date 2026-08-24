@@ -18,6 +18,17 @@ from src.representation import encoder_cache_filename
 from src.results import aggregate_protocol_results
 
 
+def smoke_overrides() -> tuple[str, ...]:
+    """Keep paper-suite smoke runs on the supervised Stage-1 path."""
+
+    return (
+        "training.epochs_supervised=2",
+        "training.epochs_physics=0",
+        "training.minimum_physics_epochs=0",
+        "training.solver_iterations_eval=8",
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--protocol", action="append", choices=sorted(PROTOCOL_CONFIGS))
@@ -31,11 +42,7 @@ def main() -> None:
         run_root = PROJECT_ROOT / "runs" / "suite_smoke" / "paper"
         checkpoint_root = PROJECT_ROOT / "runs" / "suite_smoke" / "checkpoints"
         results_root = PROJECT_ROOT / "runs" / "suite_smoke" / "results"
-        overrides = (
-            "training.epochs_supervised=2",
-            "training.epochs_physics=1",
-            "training.solver_iterations_eval=8",
-        )
+        overrides = smoke_overrides()
     else:
         run_root = PROJECT_ROOT / "runs" / "paper"
         checkpoint_root = PROJECT_ROOT / "checkpoints"

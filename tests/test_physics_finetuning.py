@@ -6,7 +6,14 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from scripts.run_c1_physics_finetune import output_roots, recover_completed_seed_manifest
+from scripts.run_c1_physics_finetune import (
+    output_roots,
+    parser as physics_runner_parser,
+    physics_report_path,
+    recover_completed_seed_manifest,
+    require_materialized_checkpoint,
+    stage1_checkpoint_path,
+)
 from src.artifacts import artifact_sha256
 from src.config import PhysicsFineTuningConfig, load_experiment_config
 from src.data import VLESample
@@ -175,7 +182,11 @@ class PhysicsFineTuningTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             checkpoint = Path(directory) / "stage1.pt"
             torch.save(
-                {"model": model.state_dict(), "model_config": model.config.to_dict()},
+                {
+                    "model": model.state_dict(),
+                    "model_config": model.config.to_dict(),
+                    "training_config": {"epochs_physics": 0},
+                },
                 checkpoint,
             )
             for parameter in model.parameters():
@@ -197,6 +208,21 @@ class PhysicsFineTuningTests(unittest.TestCase):
             torch.testing.assert_close(result.stage_states["stage1"][name], stage1[name])
         self.assertEqual(result.selection_partitions, ("validation",))
 
+    def test_stage1_loader_rejects_a_physics_trained_checkpoint(self) -> None:
+        model = self.model()
+        with tempfile.TemporaryDirectory() as directory:
+            checkpoint = Path(directory) / "physics.pt"
+            torch.save(
+                {
+                    "model": model.state_dict(),
+                    "model_config": model.config.to_dict(),
+                    "training_config": {"epochs_physics": 5},
+                },
+                checkpoint,
+            )
+            with self.assertRaisesRegex(ValueError, "supervised-only"):
+                load_stage1_checkpoint(model, checkpoint)
+
     def test_warmup_and_smoke_isolation(self) -> None:
         self.assertEqual(
             [physics_warmup_scale(epoch, 2) for epoch in (1, 2, 3)],
@@ -207,6 +233,51 @@ class PhysicsFineTuningTests(unittest.TestCase):
         self.assertNotEqual(formal, smoke)
         self.assertIn("smoke", str(smoke[0]))
         self.assertIn("c1_three_view_vanilla_fugacity", formal[0].as_posix())
+
+    def test_generalization_protocol_selects_its_own_split_and_stage1_checkpoint(self) -> None:
+        args = physics_runner_parser().parse_args(
+            ["--protocol", "unseen_component", "--seeds", "0", "1"]
+        )
+        self.assertEqual(args.protocol, "unseen_component")
+        self.assertEqual(args.seeds, [0, 1])
+        self.assertEqual(
+            stage1_checkpoint_path(self.ROOT, "unseen_component", 3),
+            self.ROOT / "checkpoints/unseen_component/seed_3/best_model.pt",
+        )
+        self.assertIn(
+            "c1_three_view_vanilla.on.overall_binary_ternary",
+            stage1_checkpoint_path(self.ROOT, "overall_binary_ternary", 3).as_posix(),
+        )
+
+    def test_physics_runner_rejects_unregistered_protocol(self) -> None:
+        with self.assertRaises(SystemExit):
+            physics_runner_parser().parse_args(["--protocol", "made_up_protocol"])
+
+    def test_checkpoint_preflight_rejects_an_unhydrated_lfs_pointer(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            checkpoint = Path(directory) / "best_model.pt"
+            checkpoint.write_text(
+                "version https://git-lfs.github.com/spec/v1\n"
+                "oid sha256:" + "0" * 64 + "\nsize 123\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(RuntimeError, "git lfs pull"):
+                require_materialized_checkpoint(checkpoint)
+
+    def test_nonoverall_report_stays_in_the_result_namespace(self) -> None:
+        protocol_dir = self.ROOT / "results/example.on.unseen_component"
+        self.assertEqual(
+            physics_report_path(
+                self.ROOT,
+                protocol_dir,
+                "unseen_component",
+                smoke=False,
+            ),
+            protocol_dir / "results.md",
+        )
+        self.assertNotIn("experiments/", physics_report_path(
+            self.ROOT, protocol_dir, "unseen_component", smoke=False
+        ).as_posix())
 
     def test_multiseed_summary_is_paired_and_seed_aware(self) -> None:
         source = (
