@@ -3,11 +3,11 @@
   "artifacts": {
     "checkpoint": {
       "path": "checkpoints/experiments/physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/c1_fugacity_pure_anchor_finetune.on.overall_binary_ternary/seed_0/best_model.pt",
-      "sha256": "a161af37d69ba651716639e3319bd61997e30155b2d099713e97bf47751ab911"
+      "sha256": "cb160bbde0389e6582e5ef60ab50bd41b6a6f7d80267c8a0782f2a2b43e7c434"
     },
     "history": {
       "path": "runs/experiments/physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/c1_fugacity_pure_anchor_finetune.on.overall_binary_ternary/seed_0/history.json",
-      "sha256": "2f4dcbc0a7b63df2e03d25abb4a35cd27aa21059452ca016113b499f61bef35a"
+      "sha256": "c93fc9baecdb19ba9645b0defabd8979dc5743ac1c985d52cf66f4531e2015df"
     },
     "metrics": {
       "path": "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/c1_fugacity_pure_anchor_finetune.on.overall_binary_ternary/seed_0/metrics.json",
@@ -27,15 +27,15 @@
     },
     "stage2_checkpoint": {
       "path": "checkpoints/experiments/physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/c1_fugacity_pure_anchor_finetune.on.overall_binary_ternary/seed_0/stage2_best_model.pt",
-      "sha256": "f97581a5e2ed4f612d5a2b4828558e51a135ccaed3dcf83d53d0a72b3d12f16b"
+      "sha256": "de3a409064998fbebef30186ec5c08d3eef30ed77a46c8a08514385481919ccf"
     },
     "stage_comparison": {
       "path": "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/c1_fugacity_pure_anchor_finetune.on.overall_binary_ternary/seed_0/stage_comparison.json",
-      "sha256": "f8f217cf0503d11745bbb2246ececc95ddb2e69eec3f16c51e2e4ad3043aaedf"
+      "sha256": "58799e1cbd9f81e857cf215521c2227e2b00bda0a52492051f109d4f240b980f"
     },
     "training_curves": {
       "path": "runs/experiments/physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/c1_fugacity_pure_anchor_finetune.on.overall_binary_ternary/seed_0/training_curves.csv",
-      "sha256": "5faf74290a72bc9c9e79b7ca81eb613daf5224e58c9a3aaaba2357111035668c"
+      "sha256": "c2b1fe48732a1618a52133dd8f7fdd062548c834ff22cd1fbfe8016e6a81999f"
     }
   },
   "best_validation_loss": 0.01571220496602087,
@@ -48,7 +48,7 @@
   "feature_definition_sha256": "88a9909a120f1b629664d9c6441f16ce931e70145c180ea9137fb0d8b8bd7553",
   "feature_subset_sha256": "840454f581f535f532b0042c50dcca95c09506895c5cae6a8b1d24c1bd03ada9",
   "functional_group_vocabulary_sha256": "e0aa342568cb26e6ce1f24a3d079a038cf9583d5b936c30d48d7038643fc7c22",
-  "git_commit": "08f16e9ed448290841f719a49add29d44ce03f06",
+  "git_commit": "9cd905d4235918b502e7023a9421716f3f72f2d5",
   "git_dirty": false,
   "git_worktree_dirty": true,
   "headline_metrics": {
@@ -83,8 +83,8 @@
     "y_system_macro_mae": 0.03226865611411127,
     "y_system_macro_rmse": 0.05542788742254392
   },
-  "inference_ms_per_attempt": 20.868175238663486,
-  "inference_seconds": 34.975061700000005,
+  "inference_ms_per_attempt": 22.044931921241055,
+  "inference_seconds": 36.9473059,
   "initially_trainable_parameters": 2015043,
   "molecular_feature_preprocessing": {
     "block_order": [
@@ -474,7 +474,7 @@
   "protocol": "c1_fugacity_pure_anchor_finetune.on.overall_binary_ternary",
   "rdkit_descriptor_list_sha256": "93bdb416e43cc1336b9823428c86006dd729bf40b6caa2a3924904c6418b8433",
   "rdkit_scaler_sha256": "86bb0332dbba410ed68373a56f5e8832d30fbd3d80e075556fa2e1664f847002",
-  "request_sha256": "58844e19b1e317d3d9b2f91bfc85ad1c629e2360f16077a455ab2d1d89b0376f",
+  "request_sha256": "c6211b16d71bf12e756d44ba486c1fc1ce134aa8b0f5a4f3361f80c5ac55b1ed",
   "resolved_config_sha256": "ab8f739a67414477248cb6140ef9f82626cdfcc2a1ba562582278c98569093df",
   "rows": {
     "evaluated_partition": "test",
@@ -545,6 +545,6 @@
   "status": "completed",
   "total_parameters": 2015043,
   "trainable_parameters": 260355,
-  "training_seconds": 7.555555299999999,
+  "training_seconds": 7.3832608,
   "unimol_cache_sha256": "b535a370dd661eb51a48615c4992ae33c43a7fd9b244753d46713b8fc526ba11"
 }
