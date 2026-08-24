@@ -351,6 +351,8 @@ def write_physics_finetune_report(
     report_path: Path,
     *,
     reference_comparison_path: Path | None = None,
+    reference_label: str = "Reference Stage 2",
+    candidate_label: str = "Current Stage 2",
     exploratory: bool = False,
 ) -> Path:
     """Render the task-resolved Stage 1/Stage 2 comparison atomically."""
@@ -486,9 +488,9 @@ def write_physics_finetune_report(
         lines.extend(
             [
                 "",
-                "## Comparison with fugacity-only Stage 2",
+                f"## Comparison with {reference_label}",
                 "",
-                "| task output | metric | Fugacity only | Fugacity + anchor | delta |",
+                f"| task output | metric | {reference_label} | {candidate_label} | delta |",
                 "|---|---|---:|---:|---:|",
             ]
         )
@@ -521,8 +523,8 @@ def write_physics_finetune_report(
             [
                 "",
                 f"Only {improvements} of {len(comparison_metrics)} predictive metrics improve. "
-                "The seed-0 effect is mixed, so the stronger anchor is not an overall "
-                "predictive improvement over fugacity-only fine-tuning.",
+                "The seed-0 effect is mixed, so the current setting is not a consistent "
+                "predictive improvement over its reference.",
                 "Reference stage-comparison SHA-256: "
                 f"`{artifact_sha256(reference_comparison_path)}`.",
             ]

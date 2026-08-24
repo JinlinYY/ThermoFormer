@@ -32,19 +32,34 @@ from src.representation import encoder_cache_filename
 @dataclass(frozen=True)
 class ExperimentVariant:
     folder: str
-    fugacity_reference: bool = False
     exploratory: bool = False
+    reference_comparison: str | None = None
+    reference_label: str = "Reference Stage 2"
+    candidate_label: str = "Current Stage 2"
 
 
 EXPERIMENT_VARIANTS = {
     "fugacity_pure_anchor": ExperimentVariant(
         "c1_three_view_vanilla_fugacity_pure_anchor",
-        fugacity_reference=True,
+        reference_comparison=(
+            "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/"
+            "c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/"
+            "seed_0/stage_comparison.json"
+        ),
+        reference_label="Fugacity only",
+        candidate_label="Fugacity + anchor",
     ),
     "pure_anchor": ExperimentVariant("c1_three_view_vanilla_pure_anchor"),
     "pure_anchor_0p1": ExperimentVariant(
         "c1_three_view_vanilla_pure_anchor_0p1",
         exploratory=True,
+        reference_comparison=(
+            "results/experiments/physics_finetuning/c1_three_view_vanilla_pure_anchor/"
+            "c1_pure_anchor_finetune.on.overall_binary_ternary/"
+            "seed_0/stage_comparison.json"
+        ),
+        reference_label="Extra anchor 0.5",
+        candidate_label="Extra anchor 0.1",
     ),
     "fugacity": ExperimentVariant("c1_three_view_vanilla_fugacity"),
     "legacy": ExperimentVariant("c1_three_view_vanilla"),
@@ -225,21 +240,16 @@ def main(argv: list[str] | None = None) -> None:
         / "results.md"
     )
     reference_comparison_path = None
-    if variant.fugacity_reference and not args.smoke:
-        reference_comparison_path = (
-            PROJECT_ROOT
-            / "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity"
-            / "c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary"
-            / "seed_0/stage_comparison.json"
-        )
+    if variant.reference_comparison is not None and not args.smoke:
+        reference_comparison_path = PROJECT_ROOT / variant.reference_comparison
         if not reference_comparison_path.is_file():
-            raise FileNotFoundError(
-                "The frozen fugacity-only Stage-2 comparison is required"
-            )
+            raise FileNotFoundError("The frozen Stage-2 comparison is required")
     write_physics_finetune_report(
         comparison_path,
         report_path,
         reference_comparison_path=reference_comparison_path,
+        reference_label=variant.reference_label,
+        candidate_label=variant.candidate_label,
         exploratory=variant.exploratory,
     )
     report_manifest = {
