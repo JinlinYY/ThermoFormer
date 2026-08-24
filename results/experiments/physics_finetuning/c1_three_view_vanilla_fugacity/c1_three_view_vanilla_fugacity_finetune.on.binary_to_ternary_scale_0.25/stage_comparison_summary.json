@@ -1,0 +1,349 @@
+{
+  "inputs": [
+    {
+      "seed": 0,
+      "sha256": "c525a38ba1e49813ea5523b7ee745e2ff85802d4ff60ee25aca1e1197d6301c0"
+    },
+    {
+      "seed": 1,
+      "sha256": "29eb48d096bbd3e1ee6883bb15ffa6396ebfdae433a67869f46e2d6557ce7500"
+    },
+    {
+      "seed": 2,
+      "sha256": "e0516879c8de29d88228966e5508e9f205544a3bf5aec93b97052027fc0868e0"
+    },
+    {
+      "seed": 3,
+      "sha256": "7f54519da852665e1fd9db9f9cb908795cd18390e8b267f13a8bd50e4661ac38"
+    },
+    {
+      "seed": 4,
+      "sha256": "f3581c54d28686820c183ec2951f1c588744dbe98b1d157eddc5c829092c256c"
+    }
+  ],
+  "parameter_summary": {
+    "groups": [
+      {
+        "learning_rate": 2e-05,
+        "name": "pair_potential",
+        "parameter_count": 110977,
+        "parameter_names": [
+          "pair_potential.0.weight",
+          "pair_potential.0.bias",
+          "pair_potential.2.weight",
+          "pair_potential.2.bias"
+        ]
+      },
+      {
+        "learning_rate": 1e-05,
+        "name": "vapor_pressure",
+        "parameter_count": 37442,
+        "parameter_names": [
+          "vapor_pressure.parameter_head.0.weight",
+          "vapor_pressure.parameter_head.0.bias",
+          "vapor_pressure.parameter_head.2.weight",
+          "vapor_pressure.parameter_head.2.bias"
+        ]
+      },
+      {
+        "learning_rate": 5e-06,
+        "name": "film",
+        "parameter_count": 111744,
+        "parameter_names": [
+          "film.0.weight",
+          "film.0.bias",
+          "film.2.weight",
+          "film.2.bias"
+        ]
+      },
+      {
+        "learning_rate": 5e-06,
+        "name": "mixture_token",
+        "parameter_count": 192,
+        "parameter_names": [
+          "mixture_token"
+        ]
+      }
+    ],
+    "total_parameters": 2015043,
+    "trainable_fraction": 0.1292056794817778,
+    "trainable_parameters": 260355
+  },
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "selected_stage_counts": {
+    "stage1": 2,
+    "stage2": 3
+  },
+  "stages": {
+    "selected": {
+      "directions": {
+        "isobaric": {
+          "nonphysical_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "solver_failure_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "temperature_mae_k": {
+            "mean": 1.861975589183863,
+            "std": 1.1815468049147064
+          },
+          "temperature_r2": {
+            "mean": 0.9889873108438966,
+            "std": 0.012589084705158866
+          },
+          "temperature_rmse_k": {
+            "mean": 2.474975145203552,
+            "std": 1.3662626163269675
+          },
+          "valid_coverage": {
+            "mean": 1.0,
+            "std": 0.0
+          },
+          "y_mae": {
+            "mean": 0.07228550661868974,
+            "std": 0.01650322590899985
+          },
+          "y_r2": {
+            "mean": 0.7679664884755708,
+            "std": 0.060438357425634553
+          },
+          "y_rmse": {
+            "mean": 0.1108973401254705,
+            "std": 0.013161910034446618
+          }
+        },
+        "isothermal": {
+          "nonphysical_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "pressure_mae_kpa": {
+            "mean": 1.7960146319405528,
+            "std": 0.6095496078355693
+          },
+          "pressure_r2": {
+            "mean": 0.9641881447543307,
+            "std": 0.02050671131190518
+          },
+          "pressure_rmse_kpa": {
+            "mean": 2.3867860443833226,
+            "std": 0.6482420451483467
+          },
+          "solver_failure_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "valid_coverage": {
+            "mean": 1.0,
+            "std": 0.0
+          },
+          "y_mae": {
+            "mean": 0.01400034776732858,
+            "std": 0.0026006353743196465
+          },
+          "y_r2": {
+            "mean": 0.9915068669937666,
+            "std": 0.004416649408472847
+          },
+          "y_rmse": {
+            "mean": 0.020033547986235033,
+            "std": 0.002711863561773763
+          }
+        }
+      },
+      "teacher_forced_fugacity": {
+        "mean": 0.007622722486954138,
+        "std": 0.0015789355087914509
+      },
+      "validation_loss": {
+        "mean": 0.01192640532165697,
+        "std": 0.008595855435692872
+      }
+    },
+    "stage1": {
+      "directions": {
+        "isobaric": {
+          "nonphysical_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "solver_failure_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "temperature_mae_k": {
+            "mean": 1.744296476841167,
+            "std": 1.13666615583765
+          },
+          "temperature_r2": {
+            "mean": 0.9907417434290977,
+            "std": 0.012410727648675535
+          },
+          "temperature_rmse_k": {
+            "mean": 2.2347528867305284,
+            "std": 1.2468569496014041
+          },
+          "valid_coverage": {
+            "mean": 1.0,
+            "std": 0.0
+          },
+          "y_mae": {
+            "mean": 0.07119783339062133,
+            "std": 0.01629716669022365
+          },
+          "y_r2": {
+            "mean": 0.7700181496074691,
+            "std": 0.05794853453952457
+          },
+          "y_rmse": {
+            "mean": 0.11044889716710185,
+            "std": 0.012616872610653215
+          }
+        },
+        "isothermal": {
+          "nonphysical_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "pressure_mae_kpa": {
+            "mean": 1.9532590962211995,
+            "std": 0.5576399475344472
+          },
+          "pressure_r2": {
+            "mean": 0.9608156609051118,
+            "std": 0.020811625534187875
+          },
+          "pressure_rmse_kpa": {
+            "mean": 2.509560051704031,
+            "std": 0.7223718838350933
+          },
+          "solver_failure_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "valid_coverage": {
+            "mean": 1.0,
+            "std": 0.0
+          },
+          "y_mae": {
+            "mean": 0.014371778211688608,
+            "std": 0.003256293687945031
+          },
+          "y_r2": {
+            "mean": 0.9909807246114527,
+            "std": 0.004727321318471034
+          },
+          "y_rmse": {
+            "mean": 0.020537857225549967,
+            "std": 0.003805860042110066
+          }
+        }
+      },
+      "teacher_forced_fugacity": {
+        "mean": 0.007455379979303444,
+        "std": 0.0015045636426603956
+      },
+      "validation_loss": {
+        "mean": 0.012450069127733613,
+        "std": 0.008120965096639498
+      }
+    },
+    "stage2": {
+      "directions": {
+        "isobaric": {
+          "nonphysical_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "solver_failure_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "temperature_mae_k": {
+            "mean": 1.7610809304541568,
+            "std": 0.9688373661482282
+          },
+          "temperature_r2": {
+            "mean": 0.9904566066508295,
+            "std": 0.009738309644341865
+          },
+          "temperature_rmse_k": {
+            "mean": 2.3844624547551065,
+            "std": 1.1731871047917013
+          },
+          "valid_coverage": {
+            "mean": 1.0,
+            "std": 0.0
+          },
+          "y_mae": {
+            "mean": 0.07200039948635291,
+            "std": 0.016554291388444383
+          },
+          "y_r2": {
+            "mean": 0.7686511273579081,
+            "std": 0.06190657433127349
+          },
+          "y_rmse": {
+            "mean": 0.11062849556459575,
+            "std": 0.01319694576321298
+          }
+        },
+        "isothermal": {
+          "nonphysical_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "pressure_mae_kpa": {
+            "mean": 1.8566313663218625,
+            "std": 0.6788945478481665
+          },
+          "pressure_r2": {
+            "mean": 0.9623475265641265,
+            "std": 0.024028018629966195
+          },
+          "pressure_rmse_kpa": {
+            "mean": 2.414025636008652,
+            "std": 0.6301025471708289
+          },
+          "solver_failure_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "valid_coverage": {
+            "mean": 1.0,
+            "std": 0.0
+          },
+          "y_mae": {
+            "mean": 0.014352124289546752,
+            "std": 0.002207093470172563
+          },
+          "y_r2": {
+            "mean": 0.9915713672877462,
+            "std": 0.0035022529332718044
+          },
+          "y_rmse": {
+            "mean": 0.02023664663842432,
+            "std": 0.0023849165092573233
+          }
+        }
+      },
+      "teacher_forced_fugacity": {
+        "mean": 0.0075040806791778795,
+        "std": 0.0012711572283401074
+      },
+      "validation_loss": {
+        "mean": 0.01222189009974327,
+        "std": 0.008992887479583034
+      }
+    }
+  }
+}

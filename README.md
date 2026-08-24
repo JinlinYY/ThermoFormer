@@ -17,6 +17,7 @@ scripts/
   run_chemical_attention_suite.py     # C1 交互模块消融入口
   run_c1_physics_finetune.py          # C1 逸度损失微调入口
   build_c1_ablation_report.py         # overall_binary_ternary 消融总报告
+  build_c1_generalization_report.py   # 最终 C1 五种子泛化性能报告
   aggregate_results.py                # mean ± std 聚合
   build_paper_outputs.py              # 论文表格、图和诊断报告生成器
 experiments/
@@ -150,14 +151,14 @@ python scripts/run_paper_suite.py --protocol overall_binary_ternary --device cud
 
 每个正式运行保存完整 split 引用、数据 SHA-256、Git commit、解析后的配置、最佳 checkpoint、训练曲线、逐样本预测和点/物系等权指标。代码、配置或划分未提交时，正式运行会拒绝启动；`--smoke` 产物隔离在 `runs/suite_smoke/` 且不会被五种子聚合器当作正式结果。
 
-本轮已完成 15 个协议 × 5 个种子，共 75 次正式训练。所有协议级 `aggregate_manifest.json` 均为 `completed`；汇总结果、论文图和诊断报告可重复生成：
+最终 C1 已在 15 个协议 × 5 个种子上完成监督 Stage 1，并从各协议已提交的验证最佳 checkpoint 继续完成 10 epoch 逸度微调 Stage 2。每个种子的最终 checkpoint 均由验证集在 Stage 1/Stage 2 间选择；所有协议级 `aggregate_manifest.json` 均为 `completed`。最终模型的泛化报告可重复生成：
 
 ```powershell
 conda activate ggnn39
-python scripts/build_paper_outputs.py
+python scripts/build_c1_generalization_report.py
 ```
 
-主要入口为 `reports/predictive_performance_report.md` 与 `reports/first_training_diagnosis.md`；论文表位于 `results/performance/` 和 `results/generalization/`，PDF/SVG/600-dpi PNG 位于 `figures/performance/` 与 `figures/generalization/`。正式性能报告按推理任务拆分：等温 P–x–y 同时报告泡点 P 与 y，等压 T–x–y 同时报告泡点 T 与 y；每个输出均给出 point-wise MAE、RMSE、R² 和可用 seed 数。`*_by_task.csv` 保存同样的方向化结果，原 CSV 继续保留跨方向、system-macro 和 component-macro 汇总。正式结果保留了三元数据规模曲线非单调、未见组分性能明显下降和极少量求解失败等负面结果；当前不包含任何四元实验或四元性能声称。
+主要入口为 `reports/c1_fugacity_generalization_report.md`；方向化机器表为 `results/performance/c1_fugacity_generalization_by_task.csv`，Stage 1/Stage 2 选择与逸度残差为 `results/performance/c1_fugacity_stage_selection.csv`。报告按实际推理任务拆分：等温 P–x–y 同时报告泡点 P 与 y，等压 T–x–y 同时报告泡点 T 与 y；每个输出均给出 point-wise MAE、RMSE、R² 和实际可用 seed 数。旧 `build_paper_outputs.py` 及其报告只作为早期模型结果归档，不代表最终 C1 + fugacity 模型。正式结果保留三元规模曲线非单调、未见组分性能明显下降等负面结果；当前不包含任何四元实验或四元性能声称。
 
 单次训练/验证/测试划分可通过覆盖参数运行：
 

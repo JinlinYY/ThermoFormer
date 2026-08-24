@@ -22,3 +22,11 @@ the original `overall_binary_ternary` report remains at this directory's
 `results.md`.  A protocol must first have a
 committed supervised C1 checkpoint generated from its registered split before
 formal fugacity fine-tuning can start.
+
+The complete confirmatory campaign is now finished for all 15 registered
+protocols and seeds 0--4.  Rebuild the cross-protocol summary with
+`conda run -n ggnn39 python scripts/build_c1_generalization_report.py`.
+The human-readable result is
+`reports/c1_fugacity_generalization_report.md`; its two machine-readable tables
+and SHA-bound report manifest are published beside it under `results/performance`
+and `reports`.

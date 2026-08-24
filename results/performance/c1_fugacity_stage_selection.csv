@@ -1,0 +1,16 @@
+protocol,evaluation_setting,stage1_selected,stage2_selected,stage1_teacher_forced_fugacity,stage2_teacher_forced_fugacity
+overall_binary,Binary train -> binary test,1,4,0.010568547210626852,0.009373590339346417
+overall_binary_ternary,Binary+ternary train -> joint test,2,3,0.009237415319815492,0.008898112367900307
+state_composition_interpolation,Composition interpolation,0,5,0.0012553826403247832,0.0008023774561678503
+state_composition_edge_extrapolation,Composition edge extrapolation,0,5,0.0019214738336444232,0.0013717638691801816
+state_temperature_low_extrapolation,Low-temperature extrapolation,2,3,0.0018664198756006961,0.001834397191061535
+state_temperature_high_extrapolation,High-temperature extrapolation,0,5,0.001844344362574316,0.0014630285322116058
+state_pressure_low_extrapolation,Low-pressure extrapolation,0,5,0.002487955745625964,0.0020304562782497006
+state_pressure_high_extrapolation,High-pressure extrapolation,0,5,0.0015224719079016656,0.001324502542412612
+unseen_component,Unseen component,3,2,7.602145157494488,7.4601429009890525
+binary_to_ternary_zero_shot,0% ternary (zero-shot),1,4,0.007568441712892199,0.0075629157552787344
+binary_to_ternary_scale_0.05,5.56% ternary,2,3,0.007857624779129962,0.007638817346733377
+binary_to_ternary_scale_0.1,10% ternary,2,3,0.007785339581679149,0.0074612205578799716
+binary_to_ternary_scale_0.25,25% ternary,2,3,0.007455379979303444,0.0075040806791778795
+binary_to_ternary_scale_0.5,50% ternary,1,4,0.007450663565422397,0.007321888189314001
+binary_to_ternary_scale_1,100% ternary,0,5,0.00754880469898323,0.007406974477267051
