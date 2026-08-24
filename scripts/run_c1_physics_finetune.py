@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass
 import json
 from pathlib import Path
 import sys
@@ -28,6 +29,23 @@ from src.physics_finetuning import write_physics_finetune_report
 from src.representation import encoder_cache_filename
 
 
+@dataclass(frozen=True)
+class ExperimentVariant:
+    folder: str
+    fugacity_reference: bool = False
+
+
+EXPERIMENT_VARIANTS = {
+    "fugacity_pure_anchor": ExperimentVariant(
+        "c1_three_view_vanilla_fugacity_pure_anchor",
+        fugacity_reference=True,
+    ),
+    "pure_anchor": ExperimentVariant("c1_three_view_vanilla_pure_anchor"),
+    "fugacity": ExperimentVariant("c1_three_view_vanilla_fugacity"),
+    "legacy": ExperimentVariant("c1_three_view_vanilla"),
+}
+
+
 def output_roots(
     project_root: Path,
     *,
@@ -48,7 +66,7 @@ def parser() -> argparse.ArgumentParser:
     value.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
     value.add_argument(
         "--objective",
-        choices=("fugacity_pure_anchor", "pure_anchor", "fugacity", "legacy"),
+        choices=tuple(EXPERIMENT_VARIANTS),
         default="fugacity",
         help="Stage-2 thermodynamic objective; fugacity is the current default.",
     )
@@ -99,13 +117,8 @@ def recover_completed_seed_manifest(
 
 def main(argv: list[str] | None = None) -> None:
     args = parser().parse_args(argv)
-    experiment_folders = {
-        "fugacity_pure_anchor": "c1_three_view_vanilla_fugacity_pure_anchor",
-        "pure_anchor": "c1_three_view_vanilla_pure_anchor",
-        "fugacity": "c1_three_view_vanilla_fugacity",
-        "legacy": "c1_three_view_vanilla",
-    }
-    experiment_folder = experiment_folders[args.objective]
+    variant = EXPERIMENT_VARIANTS[args.objective]
+    experiment_folder = variant.folder
     config_path = (
         PROJECT_ROOT
         / "experiments/physics_finetuning"
@@ -198,7 +211,7 @@ def main(argv: list[str] | None = None) -> None:
         / "results.md"
     )
     reference_comparison_path = None
-    if args.objective == "fugacity_pure_anchor" and not args.smoke:
+    if variant.fugacity_reference and not args.smoke:
         reference_comparison_path = (
             PROJECT_ROOT
             / "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity"
