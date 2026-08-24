@@ -8,6 +8,7 @@ import torch
 
 from src.data import VLESample
 from src.interpretability.core import simplex_response_directions, stable_pca_scores
+from src.interpretability.c1_final import exact_group_shapley
 from src.interpretability.analysis import _add_relative_volatility_fields
 from src.interpretability.runner import _digest
 from src.interpretability.selection import (
@@ -34,6 +35,25 @@ def _sample(smiles: tuple[str, ...]) -> VLESample:
 
 
 class InterpretabilityTests(unittest.TestCase):
+    def test_exact_group_shapley_is_additive_for_three_views(self) -> None:
+        weights = torch.tensor([2.0, -1.0, 0.5])
+        coalitions = {}
+        for mask in range(8):
+            included = tuple(index for index in range(3) if mask & (1 << index))
+            value = torch.tensor([3.0 + sum(float(weights[index]) for index in included)])
+            coalitions[included] = value
+
+        attribution = exact_group_shapley(coalitions, 3)
+
+        torch.testing.assert_close(attribution[0], weights)
+        torch.testing.assert_close(
+            attribution.sum(-1), coalitions[(0, 1, 2)] - coalitions[()]
+        )
+
+    def test_exact_group_shapley_requires_complete_coalitions(self) -> None:
+        with self.assertRaisesRegex(ValueError, "every coalition"):
+            exact_group_shapley({(): torch.zeros(1)}, 3)
+
     def test_simplex_response_directions_preserve_composition_closure(self) -> None:
         composition = torch.tensor([0.2, 0.3, 0.5])
 
