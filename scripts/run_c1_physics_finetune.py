@@ -102,6 +102,7 @@ def recover_completed_seed_manifest(
     expected_protocol: str,
     expected_evaluation_partition: str,
     expected_request_sha256: str,
+    expected_analysis_status: str,
 ) -> dict[str, object] | None:
     """Validate a completed seed bundle before repairing its final report."""
 
@@ -115,6 +116,7 @@ def recover_completed_seed_manifest(
         "seed": 0,
         "evaluation_partition": expected_evaluation_partition,
         "request_sha256": expected_request_sha256,
+        "analysis_status": expected_analysis_status,
     }
     for key, expected in invariants.items():
         if candidate.get(key) != expected:
@@ -209,6 +211,7 @@ def main(argv: list[str] | None = None) -> None:
             expected_protocol=protocol,
             expected_evaluation_partition=expected_evaluation_partition,
             expected_request_sha256=expected_request_sha256,
+            expected_analysis_status=analysis_status,
         )
         if not args.overwrite
         else None

@@ -446,6 +446,7 @@ class PhysicsFineTuningTests(unittest.TestCase):
                 "seed": 0,
                 "evaluation_partition": "test",
                 "request_sha256": "current",
+                "analysis_status": "test_exposed_exploratory",
                 "artifacts": {
                     "metrics": {
                         "path": str(artifact),
@@ -460,6 +461,7 @@ class PhysicsFineTuningTests(unittest.TestCase):
                 expected_protocol="example",
                 expected_evaluation_partition="test",
                 expected_request_sha256="current",
+                expected_analysis_status="test_exposed_exploratory",
             )
             self.assertEqual(recovered["request_sha256"], "current")
             with self.assertRaisesRegex(RuntimeError, "stale request_sha256"):
@@ -469,7 +471,21 @@ class PhysicsFineTuningTests(unittest.TestCase):
                     expected_protocol="example",
                     expected_evaluation_partition="test",
                     expected_request_sha256="changed",
+                    expected_analysis_status="test_exposed_exploratory",
                 )
+            manifest["analysis_status"] = "confirmatory"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            with self.assertRaisesRegex(RuntimeError, "stale analysis_status"):
+                recover_completed_seed_manifest(
+                    manifest_path,
+                    expected_status="completed",
+                    expected_protocol="example",
+                    expected_evaluation_partition="test",
+                    expected_request_sha256="current",
+                    expected_analysis_status="test_exposed_exploratory",
+                )
+            manifest["analysis_status"] = "test_exposed_exploratory"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
             artifact.write_text("corrupt\n", encoding="utf-8")
             with self.assertRaisesRegex(RuntimeError, "failed SHA"):
                 recover_completed_seed_manifest(
@@ -478,6 +494,7 @@ class PhysicsFineTuningTests(unittest.TestCase):
                     expected_protocol="example",
                     expected_evaluation_partition="test",
                     expected_request_sha256="current",
+                    expected_analysis_status="test_exposed_exploratory",
                 )
 
 
