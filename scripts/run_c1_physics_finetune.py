@@ -1,4 +1,4 @@
-"""Run only C1 overall_binary_ternary seed-0 partial physics fine-tuning."""
+"""Run C1 fugacity-only fine-tuning on overall_binary_ternary seeds 0--4."""
 
 from __future__ import annotations
 
@@ -24,8 +24,9 @@ from src.paper_runner import (
     result_protocol_name,
     run_paper_experiment,
 )
-from src.physics_finetuning import write_physics_finetune_report
+from src.physics_finetuning import write_multiseed_physics_finetune_report
 from src.representation import encoder_cache_filename
+from src.results import aggregate_protocol_results
 
 EXPERIMENT_FOLDER = "c1_three_view_vanilla_fugacity"
 
@@ -48,6 +49,7 @@ def output_roots(
 def parser() -> argparse.ArgumentParser:
     value = argparse.ArgumentParser(description=__doc__)
     value.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
+    value.add_argument("--seeds", type=int, nargs="+", default=None)
     value.add_argument("--smoke", action="store_true")
     value.add_argument("--overwrite", action="store_true")
     return value
@@ -58,6 +60,7 @@ def recover_completed_seed_manifest(
     *,
     expected_status: str,
     expected_protocol: str,
+    expected_seed: int,
     expected_evaluation_partition: str,
     expected_request_sha256: str,
     expected_analysis_status: str,
@@ -71,7 +74,7 @@ def recover_completed_seed_manifest(
         return None
     invariants = {
         "protocol": expected_protocol,
-        "seed": 0,
+        "seed": expected_seed,
         "evaluation_partition": expected_evaluation_partition,
         "request_sha256": expected_request_sha256,
         "analysis_status": expected_analysis_status,
@@ -97,18 +100,17 @@ def recover_completed_seed_manifest(
 
 def main(argv: list[str] | None = None) -> None:
     args = parser().parse_args(argv)
+    seeds = tuple(args.seeds or ((0,) if args.smoke else range(5)))
+    if len(seeds) != len(set(seeds)) or not set(seeds).issubset(range(5)):
+        raise ValueError("Seeds must be a unique subset of 0--4")
+    if args.smoke and seeds != (0,):
+        raise ValueError("Smoke mode is restricted to seed 0")
     experiment_folder = EXPERIMENT_FOLDER
     config_path = (
         PROJECT_ROOT
         / "experiments/physics_finetuning"
         / experiment_folder
         / "config.json"
-    )
-    split_path = PROJECT_ROOT / "splits/overall_binary_ternary/seed_0.json"
-    stage1_checkpoint = (
-        PROJECT_ROOT
-        / "checkpoints/multiview/chemical_attention/formal"
-        / "c1_three_view_vanilla.on.overall_binary_ternary/seed_0/best_model.pt"
     )
     experiment = load_experiment_config(config_path)
     feature_cache = PROJECT_ROOT / "cache" / encoder_cache_filename(experiment.encoder)
@@ -128,92 +130,132 @@ def main(argv: list[str] | None = None) -> None:
     )
     protocol = result_protocol_name(experiment.name, "overall_binary_ternary")
     protocol_dir = results_root / protocol
-    seed_manifest_path = protocol_dir / "seed_0/manifest.json"
-    # The report manifest is the experiment-level completion pointer.  If a
-    # process stopped after the seed artifacts committed, rerunning repairs the
-    # report bundle without repeating training or requiring --overwrite.
     expected_evaluation_partition = "validation" if args.smoke else "test"
     analysis_status = "diagnostic" if args.smoke else "confirmatory"
-    recorded_git_commit = None
-    if seed_manifest_path.is_file() and not args.overwrite:
-        existing_payload = json.loads(seed_manifest_path.read_text(encoding="utf-8"))
-        value = existing_payload.get("git_commit")
-        if isinstance(value, str) and value:
-            recorded_git_commit = value
-    expected_request_sha256 = requested_run_fingerprint(
-        config_path,
-        split_path,
-        0,
-        feature_cache,
-        args.device,
-        overrides,
-        "smoke" if args.smoke else "formal",
-        expected_evaluation_partition,
-        stage1_checkpoint,
-        False,
-        recorded_git_commit,
-        analysis_status,
-    )
-    existing_manifest = (
-        recover_completed_seed_manifest(
-            seed_manifest_path,
-            expected_status="smoke" if args.smoke else "completed",
-            expected_protocol=protocol,
-            expected_evaluation_partition=expected_evaluation_partition,
-            expected_request_sha256=expected_request_sha256,
-            expected_analysis_status=analysis_status,
+    manifests: list[tuple[int, Path, dict[str, object]]] = []
+    comparison_paths: list[Path] = []
+    for seed in seeds:
+        split_path = PROJECT_ROOT / f"splits/overall_binary_ternary/seed_{seed}.json"
+        stage1_checkpoint = (
+            PROJECT_ROOT
+            / "checkpoints/multiview/chemical_attention/formal"
+            / f"c1_three_view_vanilla.on.overall_binary_ternary/seed_{seed}/best_model.pt"
         )
-        if not args.overwrite
-        else None
-    )
-    manifest = existing_manifest or run_paper_experiment(
-        config_path=config_path,
-        split_path=split_path,
-        seed=0,
-        run_root=run_root,
-        checkpoint_root=checkpoint_root,
-        results_root=results_root,
-        feature_cache=feature_cache,
-        device_name=args.device,
-        overrides=overrides,
-        allow_overwrite=args.overwrite,
-        run_kind="smoke" if args.smoke else "formal",
-        evaluation_partition=expected_evaluation_partition,
-        stage1_checkpoint=stage1_checkpoint,
-        aggregate_expected=False,
-        analysis_status=analysis_status,
-    )
-    comparison_path = protocol_dir / "seed_0/stage_comparison.json"
+        seed_manifest_path = protocol_dir / f"seed_{seed}/manifest.json"
+        recorded_git_commit = None
+        if seed_manifest_path.is_file() and not args.overwrite:
+            existing_payload = json.loads(seed_manifest_path.read_text(encoding="utf-8"))
+            value = existing_payload.get("git_commit")
+            if isinstance(value, str) and value:
+                recorded_git_commit = value
+        expected_request_sha256 = requested_run_fingerprint(
+            config_path,
+            split_path,
+            seed,
+            feature_cache,
+            args.device,
+            overrides,
+            "smoke" if args.smoke else "formal",
+            expected_evaluation_partition,
+            stage1_checkpoint,
+            not args.smoke,
+            recorded_git_commit,
+            analysis_status,
+        )
+        existing_manifest = (
+            recover_completed_seed_manifest(
+                seed_manifest_path,
+                expected_status="smoke" if args.smoke else "completed",
+                expected_protocol=protocol,
+                expected_seed=seed,
+                expected_evaluation_partition=expected_evaluation_partition,
+                expected_request_sha256=expected_request_sha256,
+                expected_analysis_status=analysis_status,
+            )
+            if not args.overwrite
+            else None
+        )
+        manifest = existing_manifest or run_paper_experiment(
+            config_path=config_path,
+            split_path=split_path,
+            seed=seed,
+            run_root=run_root,
+            checkpoint_root=checkpoint_root,
+            results_root=results_root,
+            feature_cache=feature_cache,
+            device_name=args.device,
+            overrides=overrides,
+            allow_overwrite=args.overwrite,
+            run_kind="smoke" if args.smoke else "formal",
+            evaluation_partition=expected_evaluation_partition,
+            stage1_checkpoint=stage1_checkpoint,
+            aggregate_expected=not args.smoke,
+            analysis_status=analysis_status,
+        )
+        manifests.append((seed, seed_manifest_path, manifest))
+        comparison_paths.append(protocol_dir / f"seed_{seed}/stage_comparison.json")
+
+    complete_campaign = (not args.smoke) and seeds == tuple(range(5))
+    if not args.smoke and not complete_campaign:
+        print(json.dumps({"report": "deferred_until_seeds_0_to_4_complete"}))
+        return
+    if complete_campaign:
+        aggregate_protocol_results(protocol_dir, expected_seeds=tuple(range(5)))
     report_path = (
         protocol_dir / "smoke_results.md"
         if args.smoke
-        else PROJECT_ROOT
-        / "experiments/physics_finetuning"
-        / experiment_folder
-        / "results.md"
+        else PROJECT_ROOT / "experiments/physics_finetuning" / experiment_folder / "results.md"
     )
-    write_physics_finetune_report(comparison_path, report_path)
+    _, summary = write_multiseed_physics_finetune_report(
+        comparison_paths,
+        report_path,
+        expected_evaluation_partition=expected_evaluation_partition,
+    )
+    summary_path = protocol_dir / (
+        "smoke_stage_comparison_summary.json"
+        if args.smoke
+        else "stage_comparison_summary.json"
+    )
+    atomic_write_json(summary_path, summary)
     report_manifest = {
         "status": "smoke" if args.smoke else "completed",
         "protocol": protocol,
-        "seed": 0,
+        "seeds": list(seeds),
         "selection_partition": "validation",
         "evaluation_partition": "validation" if args.smoke else "test",
-        "selected_stage": manifest["selected_stage"],
+        "selected_stage_counts": summary["selected_stage_counts"],
         "analysis_status": analysis_status,
-        "run_manifest": {
-            "path": portable_artifact_path(seed_manifest_path),
-            "sha256": artifact_sha256(seed_manifest_path),
-        },
-        "stage_comparison": {
-            "path": portable_artifact_path(comparison_path),
-            "sha256": artifact_sha256(comparison_path),
+        "run_manifests": [
+            {
+                "seed": seed,
+                "path": portable_artifact_path(path),
+                "sha256": artifact_sha256(path),
+            }
+            for seed, path, _ in manifests
+        ],
+        "stage_comparisons": [
+            {
+                "seed": seed,
+                "path": portable_artifact_path(path),
+                "sha256": artifact_sha256(path),
+            }
+            for seed, path in zip(seeds, comparison_paths)
+        ],
+        "stage_comparison_summary": {
+            "path": portable_artifact_path(summary_path),
+            "sha256": artifact_sha256(summary_path),
         },
         "report": {
             "path": portable_artifact_path(report_path),
             "sha256": artifact_sha256(report_path),
         },
     }
+    if complete_campaign:
+        aggregate_manifest = protocol_dir / "aggregate_manifest.json"
+        report_manifest["aggregate_manifest"] = {
+            "path": portable_artifact_path(aggregate_manifest),
+            "sha256": artifact_sha256(aggregate_manifest),
+        }
     atomic_write_json(protocol_dir / "report_manifest.json", report_manifest)
     print(json.dumps(report_manifest, indent=2, sort_keys=True))
 

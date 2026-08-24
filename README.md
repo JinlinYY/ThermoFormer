@@ -113,7 +113,7 @@ conda run -n ggnn39 python scripts\run_c1_physics_finetune.py --device cuda
 conda run -n ggnn39 python scripts\build_c1_ablation_report.py
 ```
 
-统一结果位于 `reports/c1_ablation_overall_binary_ternary.md`，机器可读表位于 `results/c1_ablation/`。表征和交互结果为 seeds 0--4；逸度微调目前是 seed 0，并明确保留这一证据强度差异。历史预测性能、外推和可解释性结果不并入该消融结论。
+统一结果位于 `reports/c1_ablation_overall_binary_ternary.md`，机器可读表位于 `results/c1_ablation/`。表征、交互和逸度微调均固定为 seeds 0--4；历史预测性能、外推和可解释性结果不并入该消融结论。
 
 每次成功运行会：
 
@@ -132,7 +132,7 @@ conda run -n ggnn39 python scripts\build_c1_ablation_report.py
 
 这一 teacher-forced 逸度平衡损失。连续性、近纯边界、solver supervision、chemical-bias regularization 和额外纯组分蒸气压锚定均已从活动代码删除。监督目标原有的纯端点 `P_i^sat` 数据项继续保留，用于分离可辨识的 `gamma_i` 与纯组分蒸气压；它不属于 Stage 2 物理 loss。
 
-Stage 2 运行 5 epoch、前 2 epoch 线性 warmup，只解冻 `pair_potential`、`vapor_pressure`、`film` 与 `mixture_token`。Stage 1 checkpoint 是 physics epoch 0 候选，最终选择只使用验证集；测试集仅在选择后评价。正式求解评估仍使用 48 次迭代并报告收敛覆盖率。
+Stage 2 运行 10 epoch、前 2 epoch 线性 warmup，只解冻 `pair_potential`、`vapor_pressure`、`film` 与 `mixture_token`。Stage 1 checkpoint 是 physics epoch 0 候选，最终选择只使用验证集；测试集仅在选择后评价。正式求解评估仍使用 48 次迭代并报告收敛覆盖率。
 
 固定协议划分先运行：
 

@@ -6,6 +6,7 @@ import json
 import math
 from dataclasses import dataclass
 from pathlib import Path
+from statistics import fmean, stdev
 from typing import Sequence
 
 import numpy as np
@@ -428,3 +429,163 @@ def write_physics_finetune_report(
     )
     atomic_write_text(report_path, "\n".join(lines))
     return report_path
+
+
+def summarize_physics_finetuning(
+    comparison_paths: Sequence[Path],
+    *,
+    expected_evaluation_partition: str = "test",
+) -> dict[str, object]:
+    """Aggregate paired Stage-1/Stage-2 evidence over fixed random seeds."""
+    if not comparison_paths:
+        raise ValueError("At least one stage comparison is required")
+    payloads: list[tuple[int, dict[str, object]]] = []
+    for path in comparison_paths:
+        seed_label = path.parent.name
+        if not seed_label.startswith("seed_"):
+            raise ValueError(f"Cannot infer seed from {path}")
+        seed = int(seed_label.removeprefix("seed_"))
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if (
+            payload.get("selection_partition") != "validation"
+            or payload.get("evaluation_partition") != expected_evaluation_partition
+        ):
+            raise RuntimeError(f"Invalid selection/evaluation partition for seed {seed}")
+        weights = payload.get("thermodynamic_loss_weights", {})
+        if float(weights.get("teacher_forced_fugacity", 0.0)) != 1.0 or any(
+            float(value) != 0.0
+            for name, value in weights.items()
+            if name != "teacher_forced_fugacity"
+        ):
+            raise RuntimeError(f"Seed {seed} is not fugacity-only")
+        payloads.append((seed, payload))
+    payloads.sort(key=lambda item: item[0])
+    seeds = [seed for seed, _ in payloads]
+    if len(seeds) != len(set(seeds)):
+        raise ValueError("Stage comparisons contain duplicate seeds")
+
+    def stats(values: Sequence[float]) -> dict[str, float]:
+        return {
+            "mean": fmean(values),
+            "std": stdev(values) if len(values) > 1 else 0.0,
+        }
+
+    def optional_stats(values: Sequence[object]) -> dict[str, float | None]:
+        available = [float(value) for value in values if value is not None]
+        return stats(available) if available else {"mean": None, "std": None}
+
+    def direction(payload: dict[str, object], stage: str, name: str) -> dict[str, object]:
+        return next(
+            row
+            for row in payload["stages"][stage]["metrics"]
+            if row.get("scope") == "direction" and row.get("direction") == name
+        )
+
+    metric_keys = {
+        "isothermal": (
+            "pressure_mae_kpa", "pressure_rmse_kpa", "pressure_r2",
+            "y_mae", "y_rmse", "y_r2", "valid_coverage",
+            "solver_failure_rate", "nonphysical_rate",
+        ),
+        "isobaric": (
+            "temperature_mae_k", "temperature_rmse_k", "temperature_r2",
+            "y_mae", "y_rmse", "y_r2", "valid_coverage",
+            "solver_failure_rate", "nonphysical_rate",
+        ),
+    }
+    stages: dict[str, object] = {}
+    for stage in ("stage1", "stage2"):
+        directions: dict[str, object] = {}
+        for name, keys in metric_keys.items():
+            directions[name] = {
+                key: optional_stats(
+                    [direction(payload, stage, name).get(key) for _, payload in payloads]
+                )
+                for key in keys
+            }
+        stages[stage] = {
+            "validation_loss": stats(
+                [float(payload["stages"][stage]["validation_loss"]) for _, payload in payloads]
+            ),
+            "teacher_forced_fugacity": stats(
+                [
+                    float(payload["stages"][stage]["physics_residuals"]["teacher_forced_fugacity"])
+                    for _, payload in payloads
+                ]
+            ),
+            "directions": directions,
+        }
+    selected_counts = {
+        stage: sum(payload["selected_stage"] == stage for _, payload in payloads)
+        for stage in ("stage1", "stage2")
+    }
+    parameter_summary = payloads[0][1]["parameter_summary"]
+    if any(payload["parameter_summary"] != parameter_summary for _, payload in payloads[1:]):
+        raise RuntimeError("Fine-tuning parameter summaries differ across seeds")
+    return {
+        "seeds": seeds,
+        "selected_stage_counts": selected_counts,
+        "parameter_summary": parameter_summary,
+        "stages": stages,
+        "inputs": [
+            {"seed": seed, "sha256": artifact_sha256(path)}
+            for (seed, _), path in zip(payloads, sorted(comparison_paths, key=lambda p: int(p.parent.name.removeprefix('seed_'))))
+        ],
+    }
+
+
+def write_multiseed_physics_finetune_report(
+    comparison_paths: Sequence[Path],
+    report_path: Path,
+    *,
+    expected_evaluation_partition: str = "test",
+) -> tuple[Path, dict[str, object]]:
+    """Write the paired multi-seed fugacity fine-tuning report atomically."""
+    summary = summarize_physics_finetuning(
+        comparison_paths,
+        expected_evaluation_partition=expected_evaluation_partition,
+    )
+    stages = summary["stages"]
+
+    def value(stage: str, direction_name: str, key: str) -> str:
+        record = stages[stage]["directions"][direction_name][key]
+        if record["mean"] is None:
+            return "N/A"
+        return f"{record['mean']:.6f} ± {record['std']:.6f}"
+
+    rows = (
+        ("P, isothermal", "isothermal", "pressure_mae_kpa", "pressure_rmse_kpa", "pressure_r2"),
+        ("y, isothermal", "isothermal", "y_mae", "y_rmse", "y_r2"),
+        ("T, isobaric", "isobaric", "temperature_mae_k", "temperature_rmse_k", "temperature_r2"),
+        ("y, isobaric", "isobaric", "y_mae", "y_rmse", "y_r2"),
+    )
+    lines = [
+        "# C1 fugacity-equilibrium fine-tuning (five seeds)",
+        "",
+        "Protocol: `overall_binary_ternary`; seeds: `0--4`; checkpoint selection: validation only.",
+        "",
+        "| task output | Stage 1 MAE | Stage 1 RMSE | Stage 1 R² | Stage 2 MAE | Stage 2 RMSE | Stage 2 R² |",
+        "|---|---:|---:|---:|---:|---:|---:|",
+    ]
+    for label, direction_name, mae, rmse, r2 in rows:
+        lines.append(
+            f"| {label} | {value('stage1', direction_name, mae)} | "
+            f"{value('stage1', direction_name, rmse)} | {value('stage1', direction_name, r2)} | "
+            f"{value('stage2', direction_name, mae)} | {value('stage2', direction_name, rmse)} | "
+            f"{value('stage2', direction_name, r2)} |"
+        )
+    counts = summary["selected_stage_counts"]
+    residual1 = stages["stage1"]["teacher_forced_fugacity"]
+    residual2 = stages["stage2"]["teacher_forced_fugacity"]
+    lines.extend(
+        [
+            "",
+            f"Validation selected Stage 2 for **{counts['stage2']}/5** seeds and Stage 1 for **{counts['stage1']}/5** seeds.",
+            "Teacher-forced fugacity residual: "
+            f"Stage 1 `{residual1['mean']:.6g} ± {residual1['std']:.6g}`; "
+            f"Stage 2 `{residual2['mean']:.6g} ± {residual2['std']:.6g}`.",
+            "",
+        ]
+    )
+    atomic_write_text(report_path, "\n".join(lines))
+    return report_path, summary

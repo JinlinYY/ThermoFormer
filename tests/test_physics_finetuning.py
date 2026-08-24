@@ -17,6 +17,7 @@ from src.physics_finetuning import (
     load_stage1_checkpoint,
     physics_finetune_objective,
     physics_warmup_scale,
+    summarize_physics_finetuning,
 )
 from src.training import TrainingConfig, _loader
 
@@ -95,7 +96,8 @@ class PhysicsFineTuningTests(unittest.TestCase):
         self.assertEqual(config.encoder.fusion_mode, "naive")
         self.assertFalse(config.encoder.chemical_attention_bias)
         self.assertFalse(config.encoder.context_pair_interaction)
-        self.assertEqual(config.training.epochs_physics, 5)
+        self.assertEqual(config.training.epochs_physics, 10)
+        self.assertEqual(config.training.minimum_physics_epochs, 10)
         self.assertEqual(config.physics_finetuning.teacher_forced_fugacity_weight, 1.0)
 
     def test_partial_optimizer_contains_only_declared_unfrozen_groups(self) -> None:
@@ -205,6 +207,30 @@ class PhysicsFineTuningTests(unittest.TestCase):
         self.assertIn("smoke", str(smoke[0]))
         self.assertIn("c1_three_view_vanilla_fugacity", formal[0].as_posix())
 
+    def test_multiseed_summary_is_paired_and_seed_aware(self) -> None:
+        source = (
+            self.ROOT
+            / "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity"
+            / "c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary"
+            / "seed_0/stage_comparison.json"
+        )
+        payload = json.loads(source.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            paths = []
+            for seed in (0, 1):
+                path = root / f"seed_{seed}/stage_comparison.json"
+                path.parent.mkdir(parents=True)
+                candidate = json.loads(json.dumps(payload))
+                candidate["selected_stage"] = "stage2" if seed == 0 else "stage1"
+                candidate["stages"]["stage2"]["validation_loss"] += 0.01 * seed
+                path.write_text(json.dumps(candidate), encoding="utf-8")
+                paths.append(path)
+            summary = summarize_physics_finetuning(paths)
+        self.assertEqual(summary["seeds"], [0, 1])
+        self.assertEqual(summary["selected_stage_counts"], {"stage1": 1, "stage2": 1})
+        self.assertGreater(summary["stages"]["stage2"]["validation_loss"]["std"], 0.0)
+
     def test_report_recovery_rejects_stale_status_or_corrupt_artifact(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -230,6 +256,7 @@ class PhysicsFineTuningTests(unittest.TestCase):
                 manifest_path,
                 expected_status="completed",
                 expected_protocol="example",
+                expected_seed=0,
                 expected_evaluation_partition="test",
                 expected_request_sha256="current",
                 expected_analysis_status="confirmatory",
@@ -242,6 +269,7 @@ class PhysicsFineTuningTests(unittest.TestCase):
                     manifest_path,
                     expected_status="completed",
                     expected_protocol="example",
+                    expected_seed=0,
                     expected_evaluation_partition="test",
                     expected_request_sha256="current",
                     expected_analysis_status="confirmatory",
@@ -254,6 +282,7 @@ class PhysicsFineTuningTests(unittest.TestCase):
                     manifest_path,
                     expected_status="completed",
                     expected_protocol="example",
+                    expected_seed=0,
                     expected_evaluation_partition="test",
                     expected_request_sha256="current",
                     expected_analysis_status="confirmatory",
