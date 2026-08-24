@@ -634,6 +634,7 @@ def run_c1_final_interpretability(
             context.checkpoint,
             context.split_path,
             project_root / FINAL_RESULT_ROOT / f"seed_{context.seed}/manifest.json",
+            project_root / FINAL_RESULT_ROOT / f"seed_{context.seed}/stage_comparison.json",
         ])
     inputs.extend(sorted((project_root / "dataset").glob("*.xlsx")))
     inputs.extend([
@@ -644,7 +645,13 @@ def run_c1_final_interpretability(
         project_root / "assets/functional_groups.json",
         project_root / "experiments/explainability/c1_final/config.json",
     ])
+    if experiment_results is None and output_root == formal_output_root.resolve():
+        experiment_results = project_root / "experiments/explainability/c1_final/results.md"
+    if experiment_results is not None:
+        atomic_write_text(experiment_results, report_path.read_text(encoding="utf-8"))
     artifacts = [*result_paths.values(), *figure_paths, report_path]
+    if experiment_results is not None:
+        artifacts.append(experiment_results)
     git_commit = subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=project_root, text=True
     ).strip()
@@ -698,8 +705,4 @@ def run_c1_final_interpretability(
     }
     manifest_path = output_root / "reports/analysis_manifest.json"
     atomic_write_json(manifest_path, manifest)
-    if experiment_results is None and output_root == formal_output_root.resolve():
-        experiment_results = project_root / "experiments/explainability/c1_final/results.md"
-    if experiment_results is not None:
-        atomic_write_text(experiment_results, report_path.read_text(encoding="utf-8"))
     return {**manifest, "manifest": manifest_path.relative_to(project_root).as_posix()}
