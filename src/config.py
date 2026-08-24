@@ -177,6 +177,7 @@ class PhysicsFineTuningConfig:
     vapor_pressure_lr: float = 1e-5
     film_lr: float = 5e-6
     mixture_token_lr: float = 5e-6
+    teacher_forced_fugacity_weight: float | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.enabled, bool):
@@ -212,6 +213,15 @@ class PhysicsFineTuningConfig:
             for value in learning_rates
         ):
             raise ValueError("physics_finetuning learning rates must be positive and finite")
+        if self.teacher_forced_fugacity_weight is not None and (
+            not isinstance(self.teacher_forced_fugacity_weight, (int, float))
+            or isinstance(self.teacher_forced_fugacity_weight, bool)
+            or not math.isfinite(self.teacher_forced_fugacity_weight)
+            or self.teacher_forced_fugacity_weight < 0.0
+        ):
+            raise ValueError(
+                "physics_finetuning.teacher_forced_fugacity_weight must be non-negative and finite"
+            )
 
 
 @dataclass(frozen=True)
@@ -259,6 +269,10 @@ class ExperimentConfig:
         payload = asdict(self)
         if self.physics_finetuning is None:
             payload.pop("physics_finetuning")
+        elif self.physics_finetuning.teacher_forced_fugacity_weight is None:
+            physics = payload.get("physics_finetuning")
+            if isinstance(physics, dict):
+                physics.pop("teacher_forced_fugacity_weight", None)
         return payload
 
 

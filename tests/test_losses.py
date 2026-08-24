@@ -3,7 +3,11 @@ import unittest
 import torch
 
 from src.data import VLEBatch
-from src.losses import direct_vle_objective, experimental_objective
+from src.losses import (
+    direct_vle_objective,
+    experimental_objective,
+    with_teacher_forced_fugacity_equilibrium,
+)
 from src.model import ModelOutputs, ThermoFormer, ThermoFormerConfig
 from src.pure_properties import CORRELATION_PARAMETER_COUNT
 from src.thermo import equilibrium_at_tp
@@ -52,6 +56,47 @@ class ExperimentalObjectiveTests(unittest.TestCase):
         )
 
         self.assertGreater(objective.pressure.item(), 0.1)
+
+    def test_fugacity_equilibrium_loss_distinguishes_balanced_and_unbalanced_states(self) -> None:
+        pressure = torch.tensor([[70.0]])
+        equilibrium_y = torch.tensor([[4.0 / 7.0, 3.0 / 7.0]])
+        state = equilibrium_at_tp(
+            self.model, self.molecules, self.temperature, pressure, self.x, self.mask
+        )
+        base = experimental_objective(
+            state,
+            observed_y=equilibrium_y,
+            observed_pressure_kpa=pressure,
+            quality_weight=torch.ones(1, 1),
+            mask=self.mask,
+        )
+
+        def batch(y: torch.Tensor) -> VLEBatch:
+            return VLEBatch(
+                molecules=self.molecules,
+                temperature_k=self.temperature,
+                pressure_kpa=pressure,
+                x=self.x,
+                y=y,
+                mask=self.mask,
+                quality_weight=torch.ones(1, 1),
+                experiment_mode=torch.tensor([0]),
+                pure_property_parameters=torch.zeros(
+                    1, 2, CORRELATION_PARAMETER_COUNT
+                ),
+            )
+
+        balanced = with_teacher_forced_fugacity_equilibrium(
+            base, state, batch(equilibrium_y), 1.0
+        )
+        unbalanced = with_teacher_forced_fugacity_equilibrium(
+            base, state, batch(torch.tensor([[0.5, 0.5]])), 1.0
+        )
+
+        self.assertAlmostEqual(
+            balanced.teacher_forced_fugacity.item(), 0.0, places=6
+        )
+        self.assertGreater(unbalanced.teacher_forced_fugacity.item(), 1e-3)
 
     def test_direct_vle_objective_trains_both_inference_directions(self) -> None:
         model = ThermoFormer(

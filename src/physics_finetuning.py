@@ -143,8 +143,9 @@ def physics_finetune_objective(
     *,
     physics_scale: float,
     solver_enabled: bool,
+    teacher_forced_fugacity_weight: float = 0.0,
 ) -> Objective:
-    """Supervised objective plus the three scaled physics terms."""
+    """Supervised objective plus configured scaled thermodynamic terms."""
     return _objective(
         model,
         batch,
@@ -152,6 +153,7 @@ def physics_finetune_objective(
         physics=True,
         solver_enabled=solver_enabled,
         physics_scale=physics_scale,
+        teacher_forced_fugacity_weight=teacher_forced_fugacity_weight,
     )
 
 
@@ -226,6 +228,9 @@ def fit_physics_stage(
             setup.optimizer,
             True,
             physics_scale=scale,
+            teacher_forced_fugacity_weight=(
+                finetuning.teacher_forced_fugacity_weight or 0.0
+            ),
         )
         validation_metrics = _run_epoch(
             model, validation_loader, device, config, None, False
@@ -282,12 +287,17 @@ def evaluate_physics_residuals(
     *,
     pure_property_catalog: PurePropertyCatalog | None = None,
 ) -> dict[str, float]:
-    """Evaluate all three raw physics residuals without updating parameters."""
+    """Evaluate raw thermodynamic residuals without updating parameters."""
     loader = _loader(
         samples, feature_map, config, False, pure_property_catalog
     )
     model.to(device).eval()
-    totals = {"continuity": 0.0, "boundary": 0.0, "solver": 0.0}
+    totals = {
+        "continuity": 0.0,
+        "boundary": 0.0,
+        "solver": 0.0,
+        "teacher_forced_fugacity": 0.0,
+    }
     count = 0
     for host_batch in loader:
         batch = host_batch.to(device)
@@ -298,12 +308,16 @@ def evaluate_physics_residuals(
                 config,
                 physics_scale=1.0,
                 solver_enabled=True,
+                teacher_forced_fugacity_weight=1.0,
             )
         size = batch.x.shape[0]
         count += size
         totals["continuity"] += float(objective.continuity.detach().cpu()) * size
         totals["boundary"] += float(objective.boundary.detach().cpu()) * size
         totals["solver"] += float(objective.solver.detach().cpu()) * size
+        totals["teacher_forced_fugacity"] += float(
+            objective.teacher_forced_fugacity.detach().cpu()
+        ) * size
     if count == 0:
         raise ValueError("Physics residual evaluation requires samples")
     return {name: value / count for name, value in totals.items()}
@@ -316,6 +330,12 @@ def write_physics_finetune_report(
     """Render the task-resolved Stage 1/Stage 2 comparison atomically."""
     payload = json.loads(comparison_path.read_text(encoding="utf-8"))
     stages = payload["stages"]
+    configured = payload.get("thermodynamic_loss_weights", {})
+    report_title = (
+        "# C1 fugacity-equilibrium fine-tuning"
+        if float(configured.get("teacher_forced_fugacity", 0.0)) > 0.0
+        else "# C1 partial physics fine-tuning"
+    )
 
     def direction(stage: str, name: str) -> dict[str, object]:
         return next(
@@ -340,7 +360,7 @@ def write_physics_finetune_report(
         ("y, isobaric", "y", "", stage1_isobaric, stage2_isobaric),
     )
     lines = [
-        "# C1 partial physics fine-tuning",
+        report_title,
         "",
         "Protocol: `overall_binary_ternary`; seed: `0`; checkpoint selection: validation only.",
         "",
@@ -368,14 +388,36 @@ def write_physics_finetune_report(
         first = next(row for row in stages["stage1"]["metrics"] if row["scope"] == "all")
         second = next(row for row in stages["stage2"]["metrics"] if row["scope"] == "all")
         lines.append(f"| {label} | {float(first[key]):.6g} | {float(second[key]):.6g} |")
+    residual_rows = []
     for label, key in (
         ("continuity residual", "continuity"),
         ("boundary residual", "boundary"),
         ("solver residual", "solver"),
+        (
+            "teacher-forced fugacity-equilibrium residual",
+            "teacher_forced_fugacity",
+        ),
     ):
+        if key in stages["stage1"]["physics_residuals"] and (
+            not configured or float(configured.get(key, 0.0)) > 0.0
+        ):
+            residual_rows.append((label, key))
+    for label, key in residual_rows:
         lines.append(
             f"| {label} | {float(stages['stage1']['physics_residuals'][key]):.6g} | "
             f"{float(stages['stage2']['physics_residuals'][key]):.6g} |"
+        )
+    if configured:
+        lines.extend(
+            [
+                "",
+                "Thermodynamic loss weights: "
+                + ", ".join(
+                    f"`{name}={float(value):g}`"
+                    for name, value in configured.items()
+                )
+                + ".",
+            ]
         )
     summary = payload["parameter_summary"]
     lines.extend(

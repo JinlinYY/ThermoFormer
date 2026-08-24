@@ -1,0 +1,17 @@
+{
+  "extends": "../c1_three_view_vanilla/config.json",
+  "name": "c1_three_view_vanilla_fugacity_finetune",
+  "training": {
+    "continuity_weight": 0.0,
+    "boundary_weight": 0.0,
+    "solver_weight": 0.0,
+    "chemical_bias_weight": 0.0
+  },
+  "physics_finetuning": {
+    "teacher_forced_fugacity_weight": 1.0
+  },
+  "runtime": {
+    "output_dir": "runs/experiments/physics_finetuning/c1_three_view_vanilla_fugacity",
+    "results_file": "experiments/physics_finetuning/c1_three_view_vanilla_fugacity/results.md"
+  }
+}

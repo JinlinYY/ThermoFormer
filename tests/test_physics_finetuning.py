@@ -1,3 +1,4 @@
+import json
 import tempfile
 import unittest
 from dataclasses import replace
@@ -6,7 +7,11 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from scripts.run_c1_physics_finetune import output_roots
+from scripts.run_c1_physics_finetune import (
+    output_roots,
+    recover_completed_seed_manifest,
+)
+from src.artifacts import artifact_sha256
 from src.config import PhysicsFineTuningConfig, load_experiment_config
 from src.data import VLESample
 from src.model import ThermoFormer, ThermoFormerConfig
@@ -119,6 +124,19 @@ class PhysicsFineTuningTests(unittest.TestCase):
         self.assertIsNotNone(model.pair_potential)
         self.assertIsNone(model.context_pair_potential)
 
+    def test_fugacity_variant_disables_every_legacy_physics_loss(self) -> None:
+        config = load_experiment_config(
+            self.ROOT
+            / "experiments/physics_finetuning/c1_three_view_vanilla_fugacity/config.json"
+        )
+        self.assertEqual(config.training.continuity_weight, 0.0)
+        self.assertEqual(config.training.boundary_weight, 0.0)
+        self.assertEqual(config.training.solver_weight, 0.0)
+        self.assertEqual(config.training.chemical_bias_weight, 0.0)
+        self.assertGreater(
+            config.physics_finetuning.teacher_forced_fugacity_weight, 0.0
+        )
+
     def test_partial_optimizer_contains_only_declared_unfrozen_groups(self) -> None:
         model = self.model()
         setup = configure_physics_finetuning(
@@ -205,6 +223,34 @@ class PhysicsFineTuningTests(unittest.TestCase):
         self.assertTrue(torch.isfinite(total))
         self.assertGreater(float(total), 0.0)
 
+    def test_fugacity_only_objective_has_pair_potential_gradient(self) -> None:
+        model = self.model()
+        config = self.config(
+            continuity_weight=0.0,
+            boundary_weight=0.0,
+            solver_weight=0.0,
+        )
+        configure_physics_finetuning(model, config, self.finetuning())
+        batch = next(iter(_loader(self.samples(), self.features(), config, shuffle=False)))
+        objective = physics_finetune_objective(
+            model,
+            batch,
+            config,
+            physics_scale=1.0,
+            solver_enabled=False,
+            teacher_forced_fugacity_weight=1.0,
+        )
+        objective.teacher_forced_fugacity.backward()
+        gradients = [
+            parameter.grad
+            for name, parameter in model.named_parameters()
+            if name.startswith("pair_potential.") and parameter.grad is not None
+        ]
+        self.assertTrue(gradients)
+        norm = torch.stack([gradient.norm() for gradient in gradients]).sum()
+        self.assertTrue(torch.isfinite(norm))
+        self.assertGreater(float(norm), 0.0)
+
     def test_stage2_loads_stage1_checkpoint_and_validation_selects_epoch_zero(self) -> None:
         model = self.model()
         config = self.config(continuity_weight=0.0, boundary_weight=0.0, solver_weight=0.0)
@@ -243,6 +289,52 @@ class PhysicsFineTuningTests(unittest.TestCase):
             "runs/experiments/physics_finetuning/c1_three_view_vanilla",
             formal[0].as_posix(),
         )
+
+    def test_report_recovery_rejects_stale_or_corrupt_seed_artifacts(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            artifact = root / "metrics.json"
+            artifact.write_text("{}\n", encoding="utf-8")
+            manifest_path = root / "manifest.json"
+            manifest = {
+                "status": "completed",
+                "protocol": "example",
+                "seed": 0,
+                "evaluation_partition": "test",
+                "request_sha256": "current",
+                "artifacts": {
+                    "metrics": {
+                        "path": str(artifact),
+                        "sha256": artifact_sha256(artifact),
+                    }
+                },
+            }
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            recovered = recover_completed_seed_manifest(
+                manifest_path,
+                expected_status="completed",
+                expected_protocol="example",
+                expected_evaluation_partition="test",
+                expected_request_sha256="current",
+            )
+            self.assertEqual(recovered["request_sha256"], "current")
+            with self.assertRaisesRegex(RuntimeError, "stale request_sha256"):
+                recover_completed_seed_manifest(
+                    manifest_path,
+                    expected_status="completed",
+                    expected_protocol="example",
+                    expected_evaluation_partition="test",
+                    expected_request_sha256="changed",
+                )
+            artifact.write_text("corrupt\n", encoding="utf-8")
+            with self.assertRaisesRegex(RuntimeError, "failed SHA"):
+                recover_completed_seed_manifest(
+                    manifest_path,
+                    expected_status="completed",
+                    expected_protocol="example",
+                    expected_evaluation_partition="test",
+                    expected_request_sha256="current",
+                )
 
 
 if __name__ == "__main__":

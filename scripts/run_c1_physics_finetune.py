@@ -12,16 +12,30 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.artifacts import artifact_sha256, atomic_write_json, portable_artifact_path
+from src.artifacts import (
+    artifact_sha256,
+    atomic_write_json,
+    portable_artifact_path,
+    resolve_artifact_path,
+)
 from src.config import load_experiment_config
-from src.paper_runner import result_protocol_name, run_paper_experiment
+from src.paper_runner import (
+    requested_run_fingerprint,
+    result_protocol_name,
+    run_paper_experiment,
+)
 from src.physics_finetuning import write_physics_finetune_report
 from src.representation import encoder_cache_filename
 
 
-def output_roots(project_root: Path, *, smoke: bool) -> tuple[Path, Path, Path]:
+def output_roots(
+    project_root: Path,
+    *,
+    smoke: bool,
+    experiment_folder: str = "c1_three_view_vanilla",
+) -> tuple[Path, Path, Path]:
     root = project_root / "runs/c1_physics_finetune_smoke" if smoke else project_root
-    experiment_path = Path("experiments/physics_finetuning/c1_three_view_vanilla")
+    experiment_path = Path("experiments/physics_finetuning") / experiment_folder
     return (
         root / "runs" / experiment_path,
         root / "checkpoints" / experiment_path,
@@ -32,16 +46,69 @@ def output_roots(project_root: Path, *, smoke: bool) -> tuple[Path, Path, Path]:
 def parser() -> argparse.ArgumentParser:
     value = argparse.ArgumentParser(description=__doc__)
     value.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
+    value.add_argument(
+        "--objective",
+        choices=("fugacity", "legacy"),
+        default="fugacity",
+        help="Stage-2 thermodynamic objective; fugacity is the current default.",
+    )
     value.add_argument("--smoke", action="store_true")
     value.add_argument("--overwrite", action="store_true")
     return value
 
 
+def recover_completed_seed_manifest(
+    path: Path,
+    *,
+    expected_status: str,
+    expected_protocol: str,
+    expected_evaluation_partition: str,
+    expected_request_sha256: str,
+) -> dict[str, object] | None:
+    """Validate a completed seed bundle before repairing its final report."""
+
+    if not path.is_file():
+        return None
+    candidate = json.loads(path.read_text(encoding="utf-8"))
+    if candidate.get("status") != expected_status:
+        return None
+    invariants = {
+        "protocol": expected_protocol,
+        "seed": 0,
+        "evaluation_partition": expected_evaluation_partition,
+        "request_sha256": expected_request_sha256,
+    }
+    for key, expected in invariants.items():
+        if candidate.get(key) != expected:
+            raise RuntimeError(
+                f"Existing completed seed has stale {key}; use --overwrite to rerun"
+            )
+    artifacts = candidate.get("artifacts")
+    if not isinstance(artifacts, dict) or not artifacts:
+        raise RuntimeError("Existing completed seed has no auditable artifacts")
+    for name, record in artifacts.items():
+        if not isinstance(record, dict):
+            raise RuntimeError(f"Malformed artifact record: {name}")
+        artifact_path = resolve_artifact_path(str(record.get("path", "")))
+        if not artifact_path.is_file() or artifact_sha256(artifact_path) != record.get(
+            "sha256"
+        ):
+            raise RuntimeError(f"Existing completed seed artifact failed SHA validation: {name}")
+    return candidate
+
+
 def main(argv: list[str] | None = None) -> None:
     args = parser().parse_args(argv)
+    experiment_folder = (
+        "c1_three_view_vanilla_fugacity"
+        if args.objective == "fugacity"
+        else "c1_three_view_vanilla"
+    )
     config_path = (
         PROJECT_ROOT
-        / "experiments/physics_finetuning/c1_three_view_vanilla/config.json"
+        / "experiments/physics_finetuning"
+        / experiment_folder
+        / "config.json"
     )
     split_path = PROJECT_ROOT / "splits/overall_binary_ternary/seed_0.json"
     stage1_checkpoint = (
@@ -52,7 +119,9 @@ def main(argv: list[str] | None = None) -> None:
     experiment = load_experiment_config(config_path)
     feature_cache = PROJECT_ROOT / "cache" / encoder_cache_filename(experiment.encoder)
     run_root, checkpoint_root, results_root = output_roots(
-        PROJECT_ROOT, smoke=args.smoke
+        PROJECT_ROOT,
+        smoke=args.smoke,
+        experiment_folder=experiment_folder,
     )
     overrides = (
         (
@@ -70,12 +139,30 @@ def main(argv: list[str] | None = None) -> None:
     # The report manifest is the experiment-level completion pointer.  If a
     # process stopped after the seed artifacts committed, rerunning repairs the
     # report bundle without repeating training or requiring --overwrite.
-    existing_manifest = None
-    if seed_manifest_path.is_file() and not args.overwrite:
-        candidate = json.loads(seed_manifest_path.read_text(encoding="utf-8"))
-        expected_status = "smoke" if args.smoke else "completed"
-        if candidate.get("status") == expected_status:
-            existing_manifest = candidate
+    expected_evaluation_partition = "validation" if args.smoke else "test"
+    expected_request_sha256 = requested_run_fingerprint(
+        config_path,
+        split_path,
+        0,
+        feature_cache,
+        args.device,
+        overrides,
+        "smoke" if args.smoke else "formal",
+        expected_evaluation_partition,
+        stage1_checkpoint,
+        False,
+    )
+    existing_manifest = (
+        recover_completed_seed_manifest(
+            seed_manifest_path,
+            expected_status="smoke" if args.smoke else "completed",
+            expected_protocol=protocol,
+            expected_evaluation_partition=expected_evaluation_partition,
+            expected_request_sha256=expected_request_sha256,
+        )
+        if not args.overwrite
+        else None
+    )
     manifest = existing_manifest or run_paper_experiment(
         config_path=config_path,
         split_path=split_path,
@@ -88,7 +175,7 @@ def main(argv: list[str] | None = None) -> None:
         overrides=overrides,
         allow_overwrite=args.overwrite,
         run_kind="smoke" if args.smoke else "formal",
-        evaluation_partition="validation" if args.smoke else "test",
+        evaluation_partition=expected_evaluation_partition,
         stage1_checkpoint=stage1_checkpoint,
         aggregate_expected=False,
     )
@@ -97,7 +184,9 @@ def main(argv: list[str] | None = None) -> None:
         protocol_dir / "smoke_results.md"
         if args.smoke
         else PROJECT_ROOT
-        / "experiments/physics_finetuning/c1_three_view_vanilla/results.md"
+        / "experiments/physics_finetuning"
+        / experiment_folder
+        / "results.md"
     )
     write_physics_finetune_report(comparison_path, report_path)
     report_manifest = {

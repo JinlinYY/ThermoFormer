@@ -24,6 +24,7 @@ class Objective:
     continuity: Tensor
     boundary: Tensor
     solver: Tensor
+    teacher_forced_fugacity: Tensor
     chemical_bias: Tensor
 
     def detached(self) -> dict[str, float]:
@@ -36,6 +37,9 @@ class Objective:
             "continuity": float(self.continuity.detach().cpu()),
             "boundary": float(self.boundary.detach().cpu()),
             "solver": float(self.solver.detach().cpu()),
+            "teacher_forced_fugacity": float(
+                self.teacher_forced_fugacity.detach().cpu()
+            ),
             "chemical_bias": float(self.chemical_bias.detach().cpu()),
         }
 
@@ -87,6 +91,7 @@ def experimental_objective(
         continuity=zero,
         boundary=zero,
         solver=zero,
+        teacher_forced_fugacity=zero,
         chemical_bias=zero,
     )
 
@@ -169,7 +174,38 @@ def direct_vle_objective(
         continuity=zero,
         boundary=zero,
         solver=zero,
+        teacher_forced_fugacity=zero,
         chemical_bias=zero,
+    )
+
+
+def with_teacher_forced_fugacity_equilibrium(
+    objective: Objective,
+    state: EquilibriumState,
+    batch: "VLEBatch",
+    weight: float,
+) -> Objective:
+    """Penalize component fugacity imbalance at the observed T-P-x-y state.
+
+    The low-pressure vapor phase is treated as ideal, so the component balance
+    is x_i gamma_i Psat_i = y_i P.  Dividing by P makes the residual
+    dimensionless and stable at zero-composition endpoints.
+    """
+
+    if weight <= 0.0:
+        return objective
+    liquid_fugacity_kpa = state.x * state.gamma * state.psat_kpa
+    vapor_fugacity_kpa = batch.y * batch.pressure_kpa
+    normalized_residual = (
+        liquid_fugacity_kpa - vapor_fugacity_kpa
+    ) / batch.pressure_kpa.clamp_min(1e-12)
+    component_count = batch.mask.sum(-1).clamp_min(1.0)
+    per_sample = (normalized_residual.square() * batch.mask).sum(-1) / component_count
+    fugacity = _weighted_mean(per_sample, batch.quality_weight)
+    return replace(
+        objective,
+        total=objective.total + weight * fugacity,
+        teacher_forced_fugacity=fugacity,
     )
 
 

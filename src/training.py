@@ -20,6 +20,7 @@ from .losses import (
     experimental_objective,
     with_local_continuity,
     with_chemical_bias_regularization,
+    with_teacher_forced_fugacity_equilibrium,
     with_pure_boundary,
     with_solver_supervision,
 )
@@ -175,6 +176,7 @@ def _objective(
     physics: bool,
     solver_enabled: bool,
     physics_scale: float = 1.0,
+    teacher_forced_fugacity_weight: float = 0.0,
 ) -> Objective:
     if getattr(getattr(model, "config", None), "decoder_mode", None) == "direct_vle":
         return direct_vle_objective(
@@ -204,6 +206,12 @@ def _objective(
         objective,
         state,
         weight=config.chemical_bias_weight,
+    )
+    objective = with_teacher_forced_fugacity_equilibrium(
+        objective,
+        state,
+        batch,
+        weight=teacher_forced_fugacity_weight * physics_scale if physics else 0.0,
     )
     objective = with_local_continuity(
         objective,
@@ -239,6 +247,7 @@ def _run_epoch(
     optimizer: torch.optim.Optimizer | None,
     physics: bool,
     physics_scale: float = 1.0,
+    teacher_forced_fugacity_weight: float = 0.0,
 ) -> dict[str, float]:
     training = optimizer is not None
     model.train(training)
@@ -252,7 +261,8 @@ def _run_epoch(
         if training:
             optimizer.zero_grad(set_to_none=True)
             objective = _objective(
-                model, batch, config, physics, solver_enabled, physics_scale
+                model, batch, config, physics, solver_enabled, physics_scale,
+                teacher_forced_fugacity_weight,
             )
             if not bool(torch.isfinite(objective.total).all()):
                 raise FloatingPointError(
@@ -273,7 +283,8 @@ def _run_epoch(
         else:
             with torch.no_grad():
                 objective = _objective(
-                    model, batch, config, physics, solver_enabled, physics_scale
+                    model, batch, config, physics, solver_enabled, physics_scale,
+                    teacher_forced_fugacity_weight,
                 )
             if not bool(torch.isfinite(objective.total).all()):
                 raise FloatingPointError(

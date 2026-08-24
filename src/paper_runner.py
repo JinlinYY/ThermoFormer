@@ -578,6 +578,15 @@ def run_paper_experiment(
             "parameter_summary": result.parameter_summary,
             "stage1_checkpoint": portable_artifact_path(stage1_checkpoint),
             "stage1_checkpoint_sha256": stage1_checkpoint_sha256,
+            "thermodynamic_loss_weights": {
+                "continuity": training.continuity_weight,
+                "boundary": training.boundary_weight,
+                "solver": training.solver_weight,
+                "teacher_forced_fugacity": (
+                    experiment.physics_finetuning.teacher_forced_fugacity_weight
+                    or 0.0
+                ),
+            },
         }
         model.load_state_dict(result.state_dict)
         predictions = stage_predictions[result.selected_stage]
