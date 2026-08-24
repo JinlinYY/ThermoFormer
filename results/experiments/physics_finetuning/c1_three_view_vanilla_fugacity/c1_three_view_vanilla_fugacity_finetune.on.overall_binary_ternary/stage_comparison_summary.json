@@ -81,6 +81,94 @@
     "stage2": 3
   },
   "stages": {
+    "selected": {
+      "directions": {
+        "isobaric": {
+          "nonphysical_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "solver_failure_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "temperature_mae_k": {
+            "mean": 2.3768941954483593,
+            "std": 0.3254600840706607
+          },
+          "temperature_r2": {
+            "mean": 0.9794931874781089,
+            "std": 0.010318992720461
+          },
+          "temperature_rmse_k": {
+            "mean": 4.122366067287225,
+            "std": 0.8315898693906499
+          },
+          "valid_coverage": {
+            "mean": 1.0,
+            "std": 0.0
+          },
+          "y_mae": {
+            "mean": 0.02994474035833796,
+            "std": 0.006003722319472448
+          },
+          "y_r2": {
+            "mean": 0.9696507384987253,
+            "std": 0.012326490433309918
+          },
+          "y_rmse": {
+            "mean": 0.053197980855574555,
+            "std": 0.010742027860081332
+          }
+        },
+        "isothermal": {
+          "nonphysical_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "pressure_mae_kpa": {
+            "mean": 7.74784115869075,
+            "std": 3.5520328518166275
+          },
+          "pressure_r2": {
+            "mean": 0.9722846329727046,
+            "std": 0.021808060057063493
+          },
+          "pressure_rmse_kpa": {
+            "mean": 18.175083385807522,
+            "std": 8.83691131105589
+          },
+          "solver_failure_rate": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "valid_coverage": {
+            "mean": 1.0,
+            "std": 0.0
+          },
+          "y_mae": {
+            "mean": 0.025054291482350312,
+            "std": 0.005593725647957322
+          },
+          "y_r2": {
+            "mean": 0.9803536948584238,
+            "std": 0.008572998455459915
+          },
+          "y_rmse": {
+            "mean": 0.04436547484381141,
+            "std": 0.010718756298071012
+          }
+        }
+      },
+      "teacher_forced_fugacity": {
+        "mean": 0.008883249675675019,
+        "std": 0.0032903423599854906
+      },
+      "validation_loss": {
+        "mean": 0.015429445606478683,
+        "std": 0.0033575493294409177
+      }
+    },
     "stage1": {
       "directions": {
         "isobaric": {
