@@ -18,6 +18,7 @@ from src.physics_finetuning import (
     physics_finetune_objective,
     physics_warmup_scale,
     summarize_physics_finetuning,
+    write_multiseed_physics_finetune_report,
 )
 from src.training import TrainingConfig, _loader
 
@@ -230,6 +231,36 @@ class PhysicsFineTuningTests(unittest.TestCase):
         self.assertEqual(summary["seeds"], [0, 1])
         self.assertEqual(summary["selected_stage_counts"], {"stage1": 1, "stage2": 1})
         self.assertGreater(summary["stages"]["stage2"]["validation_loss"]["std"], 0.0)
+        expected_pressure = (
+            payload["stages"]["stage2"]["metrics"][2]["pressure_mae_kpa"]
+            + payload["stages"]["stage1"]["metrics"][2]["pressure_mae_kpa"]
+        ) / 2.0
+        self.assertAlmostEqual(
+            summary["stages"]["selected"]["directions"]["isothermal"][
+                "pressure_mae_kpa"
+            ]["mean"],
+            expected_pressure,
+        )
+
+    def test_multiseed_report_includes_final_metrics_and_parameter_audit(self) -> None:
+        result_root = (
+            self.ROOT
+            / "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity"
+            / "c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary"
+        )
+        paths = [result_root / f"seed_{seed}/stage_comparison.json" for seed in range(5)]
+        with tempfile.TemporaryDirectory() as directory:
+            report, _ = write_multiseed_physics_finetune_report(
+                paths,
+                Path(directory) / "results.md",
+                physics_epochs=10,
+            )
+            text = report.read_text(encoding="utf-8")
+        self.assertIn("Validation-selected final test metrics", text)
+        self.assertIn("physics fine-tuning: `10` epoch", text)
+        self.assertIn("Total parameters: `2,015,043`", text)
+        self.assertIn("solver failure", text)
+        self.assertIn("pair_potential", text)
 
     def test_report_recovery_rejects_stale_status_or_corrupt_artifact(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

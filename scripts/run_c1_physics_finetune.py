@@ -210,6 +210,7 @@ def main(argv: list[str] | None = None) -> None:
         comparison_paths,
         report_path,
         expected_evaluation_partition=expected_evaluation_partition,
+        physics_epochs=1 if args.smoke else experiment.training.epochs_physics,
     )
     summary_path = protocol_dir / (
         "smoke_stage_comparison_summary.json"

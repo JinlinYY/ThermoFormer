@@ -354,10 +354,13 @@ def summarize_physics_finetuning(
         available = [float(value) for value in values if value is not None]
         return stats(available) if available else {"mean": None, "std": None}
 
+    def resolved_stage(payload: dict[str, object], stage: str) -> str:
+        return str(payload["selected_stage"]) if stage == "selected" else stage
+
     def direction(payload: dict[str, object], stage: str, name: str) -> dict[str, object]:
         return next(
             row
-            for row in payload["stages"][stage]["metrics"]
+            for row in payload["stages"][resolved_stage(payload, stage)]["metrics"]
             if row.get("scope") == "direction" and row.get("direction") == name
         )
 
@@ -374,7 +377,7 @@ def summarize_physics_finetuning(
         ),
     }
     stages: dict[str, object] = {}
-    for stage in ("stage1", "stage2"):
+    for stage in ("stage1", "stage2", "selected"):
         directions: dict[str, object] = {}
         for name, keys in metric_keys.items():
             directions[name] = {
@@ -385,11 +388,18 @@ def summarize_physics_finetuning(
             }
         stages[stage] = {
             "validation_loss": stats(
-                [float(payload["stages"][stage]["validation_loss"]) for _, payload in payloads]
+                [
+                    float(payload["stages"][resolved_stage(payload, stage)]["validation_loss"])
+                    for _, payload in payloads
+                ]
             ),
             "teacher_forced_fugacity": stats(
                 [
-                    float(payload["stages"][stage]["physics_residuals"]["teacher_forced_fugacity"])
+                    float(
+                        payload["stages"][resolved_stage(payload, stage)][
+                            "physics_residuals"
+                        ]["teacher_forced_fugacity"]
+                    )
                     for _, payload in payloads
                 ]
             ),
@@ -419,6 +429,7 @@ def write_multiseed_physics_finetune_report(
     report_path: Path,
     *,
     expected_evaluation_partition: str = "test",
+    physics_epochs: int,
 ) -> tuple[Path, dict[str, object]]:
     """Write the paired multi-seed fugacity fine-tuning report atomically."""
     summary = summarize_physics_finetuning(
@@ -439,10 +450,13 @@ def write_multiseed_physics_finetune_report(
         ("T, isobaric", "isobaric", "temperature_mae_k", "temperature_rmse_k", "temperature_r2"),
         ("y, isobaric", "isobaric", "y_mae", "y_rmse", "y_r2"),
     )
+    seeds = summary["seeds"]
+    seed_label = ", ".join(str(seed) for seed in seeds)
     lines = [
-        "# C1 fugacity-equilibrium fine-tuning (five seeds)",
+        f"# C1 fugacity-equilibrium fine-tuning ({len(seeds)} seed{'s' if len(seeds) != 1 else ''})",
         "",
-        "Protocol: `overall_binary_ternary`; seeds: `0--4`; checkpoint selection: validation only.",
+        f"Protocol: `overall_binary_ternary`; seeds: `{seed_label}`; "
+        f"physics fine-tuning: `{physics_epochs}` epoch(s); checkpoint selection: validation only.",
         "",
         "| task output | Stage 1 MAE | Stage 1 RMSE | Stage 1 R² | Stage 2 MAE | Stage 2 RMSE | Stage 2 R² |",
         "|---|---:|---:|---:|---:|---:|---:|",
@@ -460,12 +474,51 @@ def write_multiseed_physics_finetune_report(
     lines.extend(
         [
             "",
-            f"Validation selected Stage 2 for **{counts['stage2']}/5** seeds and Stage 1 for **{counts['stage1']}/5** seeds.",
+            f"Validation selected Stage 2 for **{counts['stage2']}/{len(seeds)}** seeds and "
+            f"Stage 1 for **{counts['stage1']}/{len(seeds)}** seeds.",
             "Teacher-forced fugacity residual: "
             f"Stage 1 `{residual1['mean']:.6g} ± {residual1['std']:.6g}`; "
             f"Stage 2 `{residual2['mean']:.6g} ± {residual2['std']:.6g}`.",
             "",
+            "## Validation-selected final test metrics",
+            "",
+            "Each seed contributes the checkpoint selected on validation; test data are not used for selection.",
+            "",
+            "| task output | MAE | RMSE | R² | solver failure | nonphysical | coverage |",
+            "|---|---:|---:|---:|---:|---:|---:|",
         ]
     )
+    for label, direction_name, mae, rmse, r2 in rows:
+        direction = stages["selected"]["directions"][direction_name]
+        lines.append(
+            f"| {label} | {value('selected', direction_name, mae)} | "
+            f"{value('selected', direction_name, rmse)} | {value('selected', direction_name, r2)} | "
+            f"{float(direction['solver_failure_rate']['mean']):.6f} ± "
+            f"{float(direction['solver_failure_rate']['std']):.6f} | "
+            f"{float(direction['nonphysical_rate']['mean']):.6f} ± "
+            f"{float(direction['nonphysical_rate']['std']):.6f} | "
+            f"{float(direction['valid_coverage']['mean']):.6f} ± "
+            f"{float(direction['valid_coverage']['std']):.6f} |"
+        )
+    parameters = summary["parameter_summary"]
+    lines.extend(
+        [
+            "",
+            "## Fine-tuned parameters",
+            "",
+            f"Total parameters: `{int(parameters['total_parameters']):,}`; fine-tuned: "
+            f"`{int(parameters['trainable_parameters']):,}` "
+            f"(`{100.0 * float(parameters['trainable_fraction']):.2f}%`).",
+            "",
+            "| parameter group | parameters | learning rate |",
+            "|---|---:|---:|",
+        ]
+    )
+    for group in parameters["groups"]:
+        lines.append(
+            f"| {group['name']} | {int(group['parameter_count']):,} | "
+            f"{float(group['learning_rate']):.2e} |"
+        )
+    lines.append("")
     atomic_write_text(report_path, "\n".join(lines))
     return report_path, summary
