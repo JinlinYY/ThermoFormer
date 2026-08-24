@@ -356,9 +356,15 @@ def write_physics_finetune_report(
     payload = json.loads(comparison_path.read_text(encoding="utf-8"))
     stages = payload["stages"]
     configured = payload.get("thermodynamic_loss_weights", {})
-    if float(configured.get("additional_pure_vapor_pressure_anchor", 0.0)) > 0.0:
+    has_pure_anchor = (
+        float(configured.get("additional_pure_vapor_pressure_anchor", 0.0)) > 0.0
+    )
+    has_fugacity = float(configured.get("teacher_forced_fugacity", 0.0)) > 0.0
+    if has_pure_anchor and has_fugacity:
         report_title = "# C1 fugacity + pure-vapor-pressure-anchor fine-tuning"
-    elif float(configured.get("teacher_forced_fugacity", 0.0)) > 0.0:
+    elif has_pure_anchor:
+        report_title = "# C1 pure-vapor-pressure-anchor fine-tuning"
+    elif has_fugacity:
         report_title = "# C1 fugacity-equilibrium fine-tuning"
     else:
         report_title = "# C1 partial physics fine-tuning"

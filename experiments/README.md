@@ -42,6 +42,7 @@ experiments/
     c1_three_view_vanilla/
     c1_three_view_vanilla_fugacity/
     c1_three_view_vanilla_fugacity_pure_anchor/
+    c1_three_view_vanilla_pure_anchor/
 ```
 
 Every runnable experiment directory contains:
@@ -80,6 +81,7 @@ five-seed formal evaluation without replacing historical artifacts.
 | Physics fine-tuning | `c1_three_view_vanilla` | Legacy continuity/boundary/solver Stage 2 | [run](physics_finetuning/c1_three_view_vanilla/run.md) | [results](physics_finetuning/c1_three_view_vanilla/results.md) |
 | Physics fine-tuning | `c1_three_view_vanilla_fugacity` | Teacher-forced fugacity Stage 2 | [run](physics_finetuning/c1_three_view_vanilla_fugacity/run.md) | [results](physics_finetuning/c1_three_view_vanilla_fugacity/results.md) |
 | Physics fine-tuning | `c1_three_view_vanilla_fugacity_pure_anchor` | Fugacity plus stronger pure-vapor-pressure anchoring | [run](physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/run.md) | [results](physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/results.md) |
+| Physics fine-tuning | `c1_three_view_vanilla_pure_anchor` | Pure-vapor-pressure anchor only in Stage 2 | [run](physics_finetuning/c1_three_view_vanilla_pure_anchor/run.md) | [results](physics_finetuning/c1_three_view_vanilla_pure_anchor/results.md) |
 
 `explainability/` remains a scoped plan and does not claim unrun results. Paper
 checkpoints, curves and predictions are separated into `checkpoints/`, `runs/paper/`

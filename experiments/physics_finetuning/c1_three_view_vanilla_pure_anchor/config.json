@@ -1,0 +1,11 @@
+{
+  "extends": "../c1_three_view_vanilla_fugacity_pure_anchor/config.json",
+  "name": "c1_pure_anchor_finetune",
+  "physics_finetuning": {
+    "teacher_forced_fugacity_weight": 0.0
+  },
+  "runtime": {
+    "output_dir": "runs/experiments/physics_finetuning/c1_three_view_vanilla_pure_anchor",
+    "results_file": "experiments/physics_finetuning/c1_three_view_vanilla_pure_anchor/results.md"
+  }
+}

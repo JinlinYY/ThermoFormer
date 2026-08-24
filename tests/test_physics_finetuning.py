@@ -156,6 +156,24 @@ class PhysicsFineTuningTests(unittest.TestCase):
             0.5,
         )
 
+    def test_pure_anchor_only_variant_disables_all_other_physics_losses(self) -> None:
+        config = load_experiment_config(
+            self.ROOT
+            / "experiments/physics_finetuning/c1_three_view_vanilla_pure_anchor/config.json"
+        )
+        self.assertEqual(config.training.pure_weight, 0.5)
+        self.assertEqual(config.training.continuity_weight, 0.0)
+        self.assertEqual(config.training.boundary_weight, 0.0)
+        self.assertEqual(config.training.solver_weight, 0.0)
+        self.assertEqual(config.training.chemical_bias_weight, 0.0)
+        self.assertEqual(
+            config.physics_finetuning.teacher_forced_fugacity_weight, 0.0
+        )
+        self.assertEqual(
+            config.physics_finetuning.additional_pure_vapor_pressure_anchor_weight,
+            0.5,
+        )
+
     def test_partial_optimizer_contains_only_declared_unfrozen_groups(self) -> None:
         model = self.model()
         setup = configure_physics_finetuning(
