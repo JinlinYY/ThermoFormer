@@ -1,173 +1,148 @@
-# ThermoFormer：二元/三元汽液相平衡模型
+# ThermoFormer
 
-ThermoFormer 使用可配置分子表征、多组分交互与可微热力学求解器建模低压 VLE。最终模型固定为 **C1 三视图 vanilla Transformer**：RDKit 2D 描述符、Uni-Mol v2 高阶表示和 SMARTS 官能团特征独立投影后融合，再由普通 Transformer 建模组分交互。Stage 2 只保留 teacher-forced 逸度平衡损失。当前范围只包括二元和三元体系；LLM-Agent、四元体系与高压气相 EOS 暂不实现。
+ThermoFormer is a thermodynamically structured neural model for low-pressure
+binary and ternary vapor--liquid equilibrium (VLE). The reported model combines
+RDKit descriptors, Uni-Mol v2 embeddings, and SMARTS functional-group features
+with a permutation-equivariant vanilla Transformer. Activity coefficients are
+obtained by differentiating a learned excess Gibbs energy, pure-component vapor
+pressures are modeled separately, and differentiable isothermal and isobaric
+solvers reconstruct equilibrium states.
 
-## 工程结构
+## Scientific scope
+
+- Binary and ternary mixtures at pressures up to 500 kPa.
+- Isothermal P--x--y inference: molecules, temperature, and liquid composition
+  are provided; bubble pressure and vapor composition are predicted.
+- Isobaric T--x--y inference: molecules, pressure, and liquid composition are
+  provided; bubble temperature and vapor composition are predicted.
+- Supervised training followed by optional validation-gated, fugacity-equilibrium
+  fine-tuning.
+- Registered evaluation protocols for within-system state generalization,
+  system-disjoint prediction, unseen components, and binary-to-ternary transfer.
+
+High-pressure vapor-phase equations of state, mixtures with more than three
+components, and autonomous separation design are outside the validated scope.
+
+## Final model
+
+The manuscript model is the C1 three-view vanilla Transformer:
+
+1. 24 standardized RDKit descriptors, a 768-dimensional Uni-Mol v2 embedding,
+   and 28 SMARTS functional-group counts are projected independently.
+2. The projected views are fused into one molecular token per component.
+3. A vanilla Transformer exchanges information among component tokens.
+4. A symmetric pair potential produces the interaction terms in
+   `gE/RT = sum_(i<j) x_i x_j I_ij`.
+5. Automatic differentiation of `gE/RT` yields `ln(gamma_i)`.
+6. A separate temperature-dependent branch predicts pure-component vapor
+   pressure when a valid Antoine or DIPPR 101 correlation is unavailable.
+7. Differentiable VLE solvers reconstruct pressure or temperature together with
+   vapor composition.
+
+The final model sets `chemical_attention_bias=false` and
+`context_pair_interaction=false`. These modules are retained only for the
+interaction-architecture ablation.
+
+## Repository structure
 
 ```text
-src/                                  # 模型、数据、训练及热力学求解器
-scripts/
-  train_thermoformer.py               # 统一实验运行源码
-  audit_dataset.py                    # 数据审计与三元子体系覆盖
-  generate_splits.py                  # 生成固定、带数据摘要的协议划分
-  validate_splits.py                  # 回读并审计全部划分
-  run_paper_experiment.py             # 单协议/单种子论文运行器
-  run_paper_suite.py                  # 五种子实验套件
-  run_multiview_suite.py              # C1 分子视图消融入口
-  run_chemical_attention_suite.py     # C1 交互模块消融入口
-  run_c1_physics_finetune.py          # C1 逸度损失微调入口
-  build_c1_ablation_report.py         # overall_binary_ternary 消融总报告
-  build_c1_generalization_report.py   # 最终 C1 五种子泛化性能报告
-  aggregate_results.py                # mean ± std 聚合
-  build_paper_outputs.py              # 论文表格、图和诊断报告生成器
-experiments/
-  README.md                           # 实验总索引
-  baseline/thermoformer_base/         # 完整模型基线
-  comparison/                         # 对比实验
-  interpolation_extrapolation/        # 内插/外推实验设计与后续结果
-  explainability/                     # 可解释性实验设计与后续结果
-  multiview/representations/          # RDKit/FG/RDKit+Uni-Mol 表征消融
-  multiview/chemical_attention/       # C0--C3 交互模块消融
-  physics_finetuning/                 # C1 fugacity-only Stage 2
-assets/                               # 冻结的 RDKit 描述符与 SMARTS 词表
-splits/                               # 75 个固定划分 JSON（15 协议 × 5 seeds）
-reports/                              # 实现、数据、划分和训练诊断审计
-results/                              # 逐种子预测 CSV 与指标 JSON/CSV
-figures/                              # 由结果脚本生成的 PDF/PNG 图
-checkpoints/                          # 正式最佳模型（*.pt 默认不入 Git）
-configs/experiments/                  # 正式配置入口与冻结快照说明
-dataset/
-  binary_vle_english.xlsx             # 二元 VLE 数据
-  ternary_vle_english.xlsx            # 三元 VLE 数据
-tests/                                # 回归与端到端测试
-runs/experiments/                     # checkpoint、历史和机器可读结果
-runs/legacy/                          # 整理前的旧运行，仅归档
-environment-ggnn39.yml                # 项目 Conda 环境声明
+src/thermoformer/       Stable scientific interface organized by manuscript method
+src/                    Model, thermodynamics, training, and research workflows
+scripts/                Reproducible training, evaluation, and report entry points
+experiments/            Configurations, commands, and results for each experiment
+experiments/paper/      Paper-section navigation for the experiment registry
+configs/                Shared configuration and frozen reference declarations
+dataset/                Two English VLE workbooks used by the model
+assets/                 Frozen RDKit descriptor and SMARTS definitions
+splits/                 Registered protocol assignments
+results/                Machine-readable predictions, metrics, and manifests
+checkpoints/            Git-LFS model checkpoints
+reports/                Validated aggregate reports
+analysis/               Dataset and interpretability analyses
+archive/legacy_code/    Preserved code excluded from active scientific workflows
+tests/                  Unit, integration, provenance, and scientific-invariant tests
+docs/                   Model, training, reproduction, and paper-to-code documentation
 ```
 
-`dataset/` 只保留模型实际使用的两个工作簿。训练源码与实验记录分离：可执行 Python 源码放在 `scripts/`；每个具体实验按“实验类别/子类别/实验名”组织，并在最终实验目录内保存 `config.json`、`run.md` 和 `results.md`。具体实验不得直接放在 `experiments/` 根目录。
+The public research interface is documented in
+[`docs/model_architecture.md`](docs/model_architecture.md).
 
-## 开发环境
+## Environment
 
-项目统一使用本地 Conda 环境 `ggnn39`：
+All reported experiments use the `ggnn39` Conda environment:
 
 ```powershell
-conda activate ggnn39
-python -V
-python -m unittest discover -s tests -v
+conda env update -n ggnn39 -f environment-ggnn39.yml
+conda run -n ggnn39 python -m unittest discover -s tests
 ```
 
-已验证的核心版本包括 Python 3.9.25、PyTorch 2.6.0+cu126、NumPy 1.26.4、Pandas 1.5.3、OpenPyXL 3.1.5、RDKit 和 `unimol-tools` 0.1.4.post1。当前 Uni-Mol 安装支持 `model_name="unimolv2"`、84M 权重和 `cls_repr` 输出。
+The validated environment includes Python 3.9, PyTorch 2.6 with CUDA 12.6,
+NumPy 1.26, pandas 1.5, RDKit, OpenPyXL, and `unimol-tools` with the Uni-Mol v2
+84M encoder.
 
-## 数据集
+## Data
 
-- `dataset/binary_vle_english.xlsx`：23,061 条二元 VLE 原始记录；
-- `dataset/ternary_vle_english.xlsx`：5,229 条三元 VLE 原始记录。
+`dataset/` contains only:
 
-工作簿使用英文字段、工作表名和数据字典；实验值、SMILES、分子式、质量码和 DOI 保持原始含义。化学名称保留数据源写法并明确标为 `original_name`，模型以 SMILES 识别分子。
+- `binary_vle_english.xlsx`
+- `ternary_vle_english.xlsx`
 
-默认加载规则包括：
+The loader converts degrees Celsius to kelvin and mmHg to kPa, audits quality
+flags, excludes failed records, downweights indeterminate records, removes
+duplicates, infers experiment direction when required, and records every
+filtering decision. Pure-component endpoint systems are protected on the
+training side to separate activity-coefficient learning from vapor-pressure
+learning. See [`docs/data.md`](docs/data.md).
 
-- °C 转换为 K，mmHg 转换为 kPa；
-- 质量码 `1=通过、0=失败、-1=无法判定`；
-- 失败记录默认排除，无法判定记录权重为 0.5；
-- 默认只保留不高于 500 kPa 的记录，使当前修正 Raoult 方程保持在低压使用范围；
-- 训练分区要求纯组分端点温度锚定。
+## Training
 
-加载器会把原始行、质量失败、SMILES 缺失、非法状态、压力过滤、去重和纯端点过滤分别计数，并写入每次运行的 `dataset_manifest.json` 与 `results.md`。若数据提供显式 `experiment_mode`，加载器优先采用；否则按同一物系、DOI 和来源内重复的温度/压力条件推断等温、等压或完整状态，并记录逐行置信度。缺少 DOI 或温度/压力证据冲突的行保守回退为 `full_state`。
+Stage 1 minimizes supervised pressure, temperature, vapor composition, and
+pure-component endpoint losses. Stage 2 reloads the best Stage-1 validation
+checkpoint, retains the supervised objective, and adds only the teacher-forced
+fugacity-equilibrium loss
 
-## 模型输入与输出
-
-| 输入 | 形状 | 含义 |
-|---|---:|---|
-| `molecules` | `[B, 3, D_mol]` | 按配置使用 Uni-Mol、训练分区标准化的 24 维 RDKit 描述符、官能团计数或其多视角组合；二元体系第三项补零 |
-| `temperature_k` | `[B, 1]` | 温度，K |
-| `pressure_kpa` | `[B, 1]` | 压力，kPa |
-| `x` | `[B, 3]` | 液相摩尔分数 |
-| `mask` | `[B, 3]` | 真实组分为 1，padding 为 0 |
-| `experiment_mode` | `[B]` | 等温、等压或完整状态，用于选择泡点求解方向 |
-| `pure_property_parameters` | `[B, 3, 11]` | 可选纯物性相关式类型、系数、单位换算、有效温区和可用标志 |
-
-神经网络直接输出 `log_gamma`、学习型纯组分 `log_psat`、非理想性 token 和 `g^E/RT`。若配置了可靠 Antoine 或 DIPPR 101 参数且温度处于声明的有效范围，求解器优先使用相关式；否则回退到学习型 `P_i^sat(T)`。热力学求解器进一步输出平衡 `T/P`、`x/y`、`gamma`、`P^sat`、平衡残差、收敛标志与迭代次数。等温模式给定 `T,x` 求 `P,y`；等压模式给定 `P,x` 求 `T,y`。
-
-最终 C1 不额外叠加 GNN：Uni-Mol v2 承担冻结的三维高阶结构编码，RDKit 描述符补充显式整体理化量，SMARTS 官能团分支补充局部作用位点。三个视角先独立投影，再以 concat-projection 构造 molecular token，并交给 vanilla Transformer。chemical attention bias 与 context pair interaction 仅保留为可复现实验对照，不进入最终模型。所有路径仍进入同一个 `G^E/RT → lnγ → VLE solver` 主干。
-
-RDKit mean/std 只由当前 `split.train` 中出现的分子拟合；held-out molecule 不参与统计。checkpoint 与 manifest 保存描述符词表、scaler、SMARTS vocabulary、Uni-Mol cache 和最终特征摘要。
-
-可选纯物性目录通过 `data.pure_property_catalog` 指定 JSON 文件，键为标准化 SMILES。每项用 `type` 选择 `antoine` 或 `dippr101`，并明确 `pressure_unit`、`temperature_unit`、`minimum_temperature_k` 与 `maximum_temperature_k`。Antoine 采用 `log10(P)=A-B/(C+T)`；DIPPR 101 采用 `ln(P)=A+B/T+C ln(T)+D T^E`。为兼容已有目录，省略 `type` 和单位时按 Antoine、mmHg、°C 解释；默认目录留空，不伪造缺失参数。
-
-## 实验运行与结果
-
-实验总表位于 `experiments/README.md`。完整模型命令记录在 `experiments/baseline/thermoformer_base/run.md`，实际运行源码始终是 `scripts/train_thermoformer.py`：
-
-```powershell
-conda activate ggnn39
-python scripts/train_thermoformer.py --config experiments/baseline/thermoformer_base/config.json
+```text
+x_i gamma_i P_i^sat(T) = y_i P.
 ```
 
-当前消融只保留与最终 C1 直接相关的三组对照：单/双/三视图表征、vanilla 与 chemical/context-pair 交互模块，以及 Stage 1 与 fugacity-only Stage 2。三组实验全部固定为 `overall_binary_ternary`；不再维护 A0--A6、P0--P6、连续性/边界/solver loss、纯锚定或 C2 调参搜索。
+Stage 2 runs for 10 epochs with a two-epoch warmup. Only `pair_potential`,
+`vapor_pressure`, `film`, and `mixture_token` are optimized. The Stage-1
+checkpoint remains epoch zero of model selection; test data are evaluated only
+after validation selects Stage 1 or Stage 2. See [`docs/training.md`](docs/training.md).
+
+## Reproducing experiments
+
+The experiment registry is [`experiments/README.md`](experiments/README.md), and
+the manuscript-oriented index is [`experiments/paper/README.md`](experiments/paper/README.md).
+Each runnable experiment leaf contains `config.json`, `run.md`, and `results.md`.
+
+Generate the final five-seed generalization report:
 
 ```powershell
-conda run -n ggnn39 python scripts\run_multiview_suite.py --device cuda
-conda run -n ggnn39 python scripts\run_chemical_attention_suite.py --device cuda
-conda run -n ggnn39 python scripts\run_c1_physics_finetune.py --device cuda
+conda run -n ggnn39 python scripts\build_c1_generalization_report.py
+```
+
+Generate the retained C1 ablation report:
+
+```powershell
 conda run -n ggnn39 python scripts\build_c1_ablation_report.py
 ```
 
-统一结果位于 `reports/c1_ablation_overall_binary_ternary.md`，机器可读表位于 `results/c1_ablation/`。表征、交互和逸度微调均固定为 seeds 0--4；历史预测性能、外推和可解释性结果不并入该消融结论。
+The principal reports are:
 
-每次成功运行会：
+- [`reports/c1_fugacity_generalization_report.md`](reports/c1_fugacity_generalization_report.md)
+- [`reports/c1_ablation_overall_binary_ternary.md`](reports/c1_ablation_overall_binary_ternary.md)
+- [`analysis/interpretability/reports/interpretability_report.md`](analysis/interpretability/reports/interpretability_report.md)
 
-1. 将 checkpoint、训练历史、数据 manifest 和完整指标写入与实验层级一致的 `runs/experiments/<category>/.../<experiment>/`；
-2. 自动更新 `experiments/<category>/.../<experiment>/results.md`，记录最终测试指标与交叉验证均值/标准差。
+Detailed commands, artifact conventions, and Git-LFS requirements are described
+in [`docs/reproduction.md`](docs/reproduction.md).
 
-结果摘要使用同目录临时文件完成后再原子替换，写入中断不会破坏上一次结果。`--skip-validation` 会把 checkpoint、history、manifest 和 `smoke_results.md` 全部隔离到正式输出目录下的 `smoke/` 子目录；RDKit raw、Uni-Mol、官能团与组合特征缓存按表示签名隔离，split-specific RDKit scaler 不共享。整理前生成的旧运行已隔离至 `runs/legacy/`，不得与当前配置结果混用。
+## Scientific provenance
 
-## 训练、验证与测试划分
+Reported values are linked to fixed code, configuration, data, feature, split,
+prediction, and checkpoint identities. Full verification details are provided in
+[`docs/reproduction.md`](docs/reproduction.md).
 
-默认先按无序化学物系隔离独立测试集，再在其余数据上进行 5 折分组交叉验证，最后用全部 CV 数据重训并仅评价一次测试集。A–B 与 B–A 始终在同一分区，二元和三元体系分别分层，纯端点参考体系仅进入训练侧。
-
-训练分为两条显式入口。普通 `fit_model` 只进行最多 80 epoch 的数据监督；Stage 2 必须通过 `run_c1_physics_finetune.py` 从 Stage 1 验证集最佳 checkpoint 启动。Stage 2 保留完整监督 loss，并且只额外加入
-
-`mean_i[((x_i gamma_i P_i^sat - y_i P) / P)^2]`
-
-这一 teacher-forced 逸度平衡损失。连续性、近纯边界、solver supervision、chemical-bias regularization 和额外纯组分蒸气压锚定均已从活动代码删除。监督目标原有的纯端点 `P_i^sat` 数据项继续保留，用于分离可辨识的 `gamma_i` 与纯组分蒸气压；它不属于 Stage 2 物理 loss。
-
-Stage 2 运行 10 epoch、前 2 epoch 线性 warmup，只解冻 `pair_potential`、`vapor_pressure`、`film` 与 `mixture_token`。Stage 1 checkpoint 是 physics epoch 0 候选，最终选择只使用验证集；测试集仅在选择后评价。正式求解评估仍使用 48 次迭代并报告收敛覆盖率。
-
-固定协议划分先运行：
-
-```powershell
-python scripts/audit_dataset.py
-python scripts/generate_splits.py
-python scripts/validate_splits.py
-```
-
-随后可按协议执行 seeds 0–4，例如：
-
-```powershell
-python scripts/run_paper_suite.py --protocol overall_binary_ternary --device cuda
-```
-
-每个正式运行保存完整 split 引用、数据 SHA-256、Git commit、解析后的配置、最佳 checkpoint、训练曲线、逐样本预测和点/物系等权指标。代码、配置或划分未提交时，正式运行会拒绝启动；`--smoke` 产物隔离在 `runs/suite_smoke/` 且不会被五种子聚合器当作正式结果。
-
-最终 C1 已在 15 个协议 × 5 个种子上完成监督 Stage 1，并从各协议已提交的验证最佳 checkpoint 继续完成 10 epoch 逸度微调 Stage 2。每个种子的最终 checkpoint 均由验证集在 Stage 1/Stage 2 间选择；所有协议级 `aggregate_manifest.json` 均为 `completed`。最终模型的泛化报告可重复生成：
-
-```powershell
-conda activate ggnn39
-python scripts/build_c1_generalization_report.py
-```
-
-中文完整报告入口为 `reports/c1_fugacity_complete_performance_report_zh.md`，英文精简报告为 `reports/c1_fugacity_generalization_report.md`；方向化机器表为 `results/performance/c1_fugacity_generalization_by_task.csv`，Stage 1/Stage 2 选择与逸度残差为 `results/performance/c1_fugacity_stage_selection.csv`。报告按实际推理任务拆分：等温 P–x–y 同时报告泡点 P 与 y，等压 T–x–y 同时报告泡点 T 与 y；每个输出均给出 point-wise MAE、RMSE、R² 和实际可用 seed 数。旧 `build_paper_outputs.py` 及其报告只作为早期模型结果归档，不代表最终 C1 + fugacity 模型。正式结果保留三元规模曲线非单调、未见组分性能明显下降等负面结果；当前不包含任何四元实验或四元性能声称。
-
-单次训练/验证/测试划分可通过覆盖参数运行：
-
-```powershell
-python scripts/train_thermoformer.py `
-  --config experiments/baseline/thermoformer_base/config.json `
-  --evaluation-mode holdout `
-  --set evaluation.validation_fraction=0.15 `
-  --set evaluation.test_fraction=0.15
-```
-
-`P_i^sat(T)` 只依赖单分子表示和温度，或来自有效温区内的可靠 Antoine/DIPPR 相关式；`ln(gamma_i)` 由学习到的 `g^E/RT` 对组成求导。等温与等压求解器均保留梯度并用于模式化评估，但不再作为 Stage 2 的额外监督项。求解从固定、与标签无关的状态开始，观测 `P/T` 只用于计算误差；直接代入观测 `T,P,x,y` 的逸度结果明确标为 `teacher_forced`。正式指标分别报告等温压力误差、等压温度误差、两种方向的汽相组成和收敛率。训练 loss、梯度或任一折指标出现 NaN/Inf 时会立即失败，不会污染参数或被静默删除。
+Historical source-processing programs and early report generators are preserved
+under [`archive/legacy_code/`](archive/legacy_code/) and are not imported by the
+active training or evaluation paths.

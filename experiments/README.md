@@ -1,37 +1,46 @@
 # ThermoFormer experiment registry
 
-The selected model is **C1 three-view vanilla Transformer**:
+This registry contains the configurations, commands, and validated outputs used
+to evaluate the manuscript model. Every runnable leaf contains `config.json`,
+`run.md`, and `results.md`.
 
-- RDKit descriptors + Uni-Mol v2 + SMARTS functional-group counts;
-- independent view projections followed by concat projection;
-- vanilla component Transformer;
-- `chemical_attention_bias=false`;
-- `context_pair_interaction=false`;
-- the original symmetric `pair_potential` is retained.
+The paper-oriented navigation layer is
+[`paper/README.md`](paper/README.md). It maps the scientific questions in the
+Results section to the existing provenance-preserving experiment paths.
 
-The active ablation scope is only `overall_binary_ternary`: binary and ternary
-systems are trained jointly and evaluated on the joint binary/ternary test split.
+## Predictive performance and generalization
 
-## Retained ablations
+| Scientific question | Experiment family |
+|---|---|
+| Binary and joint binary/ternary performance | [`predictive_performance/`](predictive_performance/README.md) |
+| Thermodynamic-state interpolation and extrapolation | [`interpolation_extrapolation/state/`](interpolation_extrapolation/state/README.md) |
+| Unseen-component generalization | [`interpolation_extrapolation/chemical_space/`](interpolation_extrapolation/chemical_space/README.md) |
+| Binary-to-ternary transfer | [`comparison/binary_to_ternary_generalization/`](comparison/binary_to_ternary_generalization/README.md) |
 
-| Family | Retained experiments | Entry point |
-|---|---|---|
-| Molecular representation | RDKit-only, FG-only, RDKit+Uni-Mol, C0 Uni-Mol and full C1 | [`multiview/README.md`](multiview/README.md) |
-| Interaction module | C1 vanilla, C2 chemical-biased, C3 context-pair-only | [`multiview/chemical_attention/README.md`](multiview/chemical_attention/README.md) |
-| Physics fine-tuning | C1 Stage 1 versus fugacity-only Stage 2 | [`physics_finetuning/c1_three_view_vanilla_fugacity/README.md`](physics_finetuning/c1_three_view_vanilla_fugacity/README.md) |
-| Explainability | Five-seed grouped Shapley, pair interaction and thermodynamic sensitivity for final C1 | [`explainability/c1_final/README.md`](explainability/c1_final/README.md) |
+## Ablation analysis
 
-Generate the single consolidated report with:
+All retained ablations use `overall_binary_ternary` with seeds 0--4.
 
-```powershell
-conda run -n ggnn39 python scripts\build_c1_ablation_report.py
-```
+| Scientific question | Experiment family |
+|---|---|
+| Molecular representation | [`multiview/representations/`](multiview/README.md) |
+| Multicomponent interaction architecture | [`multiview/chemical_attention/`](multiview/chemical_attention/README.md) |
+| Fugacity-constrained fine-tuning | [`physics_finetuning/c1_three_view_vanilla_fugacity/`](physics_finetuning/c1_three_view_vanilla_fugacity/README.md) |
 
-The report is written to `reports/c1_ablation_overall_binary_ternary.md`, with
-machine-readable rows under `results/c1_ablation/`.
+The consolidated result is
+[`../reports/c1_ablation_overall_binary_ternary.md`](../reports/c1_ablation_overall_binary_ternary.md).
 
-The remaining `predictive_performance/`, `comparison/`, and
-`interpolation_extrapolation/` directories are separate historical/generalization
-studies. They are not part of the retained ablation matrix.
+## Interpretability
 
-Every runnable leaf experiment keeps `config.json`, `run.md`, and `results.md`.
+The final C1 interpretation study is registered under
+[`explainability/c1_final/`](explainability/c1_final/README.md). It includes
+grouped molecular-view attribution, pair-interaction analysis, and
+thermodynamic sensitivity.
+
+## Model comparisons and separation design
+
+The ideal-activity reference is retained under
+[`comparison/ideal_activity/`](comparison/ideal_activity/). Additional machine-
+learning baselines, established thermodynamic-model comparisons, and autonomous
+separation design have not been evaluated and therefore have no reported
+performance values.
