@@ -19,19 +19,17 @@ class OutputLifecycleTests(unittest.TestCase):
         self.assertEqual(
             arguments.config,
             PROJECT_ROOT
-            / "experiments"
-            / "baseline"
-            / "thermoformer_base"
-            / "config.json",
+            / "configs"
+            / "training"
+            / "supervised.yaml",
         )
         self.assertEqual(_project_path("dataset"), PROJECT_ROOT / "dataset")
         self.assertEqual(
-            _project_path("runs/experiments/baseline/thermoformer_base"),
+            _project_path("runs/public/c1_supervised"),
             PROJECT_ROOT
             / "runs"
-            / "experiments"
-            / "baseline"
-            / "thermoformer_base",
+            / "public"
+            / "c1_supervised",
         )
 
     def test_stale_training_outputs_are_removed_but_unimolv2_cache_is_kept(self) -> None:

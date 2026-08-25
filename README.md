@@ -48,8 +48,7 @@ interaction-architecture ablation.
 ```text
 src/thermoformer/       Active implementation organized by manuscript method
 scripts/                Train, evaluate, reproduce, and report entry points
-experiments/            Configurations, commands, and results for each experiment
-experiments/paper/      Paper-section navigation for the experiment registry
+experiments/            Experiments aligned to the manuscript Results section
 configs/                Shared configuration and frozen reference declarations
 dataset/                Two English VLE workbooks used by the model
 assets/                 Frozen RDKit descriptor and SMARTS definitions
@@ -111,8 +110,8 @@ after validation selects Stage 1 or Stage 2. See [`docs/training.md`](docs/train
 
 ## Reproducing experiments
 
-The experiment registry is [`experiments/README.md`](experiments/README.md), and
-the manuscript-oriented index is [`experiments/paper/README.md`](experiments/paper/README.md).
+The manuscript experiment registry is [`experiments/README.md`](experiments/README.md),
+and the exact figure/table mapping is [`docs/paper_code_map.md`](docs/paper_code_map.md).
 Each runnable experiment leaf contains `config.json` or `config.yaml`, together
 with `run.md` and `results.md`.
 
@@ -130,9 +129,10 @@ conda run -n ggnn39 python scripts\build_c1_ablation_report.py
 
 The principal reports are:
 
+- [`analysis/dataset_distribution/figures/Figure_dataset_overview_v3.png`](analysis/dataset_distribution/figures/Figure_dataset_overview_v3.png)
 - [`reports/c1_fugacity_generalization_report.md`](reports/c1_fugacity_generalization_report.md)
 - [`reports/c1_ablation_overall_binary_ternary.md`](reports/c1_ablation_overall_binary_ternary.md)
-- [`analysis/interpretability/reports/interpretability_report.md`](analysis/interpretability/reports/interpretability_report.md)
+- [`analysis/manuscript_figures/Figure_2_interpretability.png`](analysis/manuscript_figures/Figure_2_interpretability.png)
 
 Detailed commands, artifact conventions, and Git-LFS requirements are described
 in [`docs/reproduction.md`](docs/reproduction.md).

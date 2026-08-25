@@ -22,7 +22,7 @@ def parser() -> argparse.ArgumentParser:
     value.add_argument(
         "--config",
         type=Path,
-        default=PROJECT_ROOT / "experiments" / "baseline" / "thermoformer_base" / "config.json",
+        default=PROJECT_ROOT / "configs" / "training" / "supervised.yaml",
     )
     value.add_argument("--seed", type=int, required=True)
     value.add_argument("--set", dest="overrides", action="append", default=[])

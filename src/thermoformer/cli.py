@@ -79,12 +79,11 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=(
             PROJECT_ROOT
-            / "experiments"
-            / "baseline"
-            / "thermoformer_base"
-            / "config.json"
+            / "configs"
+            / "training"
+            / "supervised.yaml"
         ),
-        help="JSON experiment configuration",
+        help="JSON or YAML experiment configuration",
     )
     parser.add_argument(
         "--set",

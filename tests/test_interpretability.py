@@ -8,9 +8,6 @@ import torch
 
 from src.data import VLESample
 from src.interpretability.core import simplex_response_directions, stable_pca_scores
-from src.interpretability.c1_final import exact_group_shapley
-from src.interpretability.analysis import _add_relative_volatility_fields
-from src.interpretability.runner import _digest
 from src.interpretability.selection import (
     eligible_ternary_systems,
     select_best_validation_seed,
@@ -35,25 +32,6 @@ def _sample(smiles: tuple[str, ...]) -> VLESample:
 
 
 class InterpretabilityTests(unittest.TestCase):
-    def test_exact_group_shapley_is_additive_for_three_views(self) -> None:
-        weights = torch.tensor([2.0, -1.0, 0.5])
-        coalitions = {}
-        for mask in range(8):
-            included = tuple(index for index in range(3) if mask & (1 << index))
-            value = torch.tensor([3.0 + sum(float(weights[index]) for index in included)])
-            coalitions[included] = value
-
-        attribution = exact_group_shapley(coalitions, 3)
-
-        torch.testing.assert_close(attribution[0], weights)
-        torch.testing.assert_close(
-            attribution.sum(-1), coalitions[(0, 1, 2)] - coalitions[()]
-        )
-
-    def test_exact_group_shapley_requires_complete_coalitions(self) -> None:
-        with self.assertRaisesRegex(ValueError, "every coalition"):
-            exact_group_shapley({(): torch.zeros(1)}, 3)
-
     def test_simplex_response_directions_preserve_composition_closure(self) -> None:
         composition = torch.tensor([0.2, 0.3, 0.5])
 
@@ -127,28 +105,6 @@ class InterpretabilityTests(unittest.TestCase):
         np.testing.assert_allclose(first_scores.mean(axis=0), np.zeros(2), atol=1e-12)
         self.assertTrue(np.all(first_explained >= 0.0))
         self.assertLessEqual(float(first_explained.sum()), 1.0 + 1e-12)
-
-    def test_all_ternary_relative_volatility_pairs_are_exported(self) -> None:
-        record = {}
-
-        _add_relative_volatility_fields(record, [6.0, 3.0, 2.0], [3.0, 2.0, 1.0])
-
-        self.assertEqual(record["alpha_12_full"], 2.0)
-        self.assertEqual(record["alpha_13_full"], 3.0)
-        self.assertEqual(record["alpha_23_full"], 1.5)
-        self.assertAlmostEqual(
-            record["delta_log_alpha_13_full_minus_pairwise"], np.log(3.0) - np.log(3.0)
-        )
-
-    def test_text_digest_is_independent_of_platform_line_endings(self) -> None:
-        with TemporaryDirectory() as temporary_directory:
-            lf_path = Path(temporary_directory) / "lf.csv"
-            crlf_path = Path(temporary_directory) / "crlf.csv"
-            lf_path.write_bytes(b"a,b\n1,2\n")
-            crlf_path.write_bytes(b"a,b\r\n1,2\r\n")
-
-            self.assertEqual(_digest(lf_path), _digest(crlf_path))
-
 
 if __name__ == "__main__":
     unittest.main()

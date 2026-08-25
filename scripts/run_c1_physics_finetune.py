@@ -102,8 +102,7 @@ def physics_report_path(
     if split_protocol == DEFAULT_PROTOCOL:
         return (
             project_root
-            / "experiments/physics_finetuning"
-            / EXPERIMENT_FOLDER
+            / "experiments/ablations/fugacity_finetuning"
             / "results.md"
         )
     return protocol_dir / "results.md"
@@ -163,9 +162,7 @@ def main(argv: list[str] | None = None) -> None:
     experiment_folder = EXPERIMENT_FOLDER
     config_path = (
         PROJECT_ROOT
-        / "experiments/physics_finetuning"
-        / experiment_folder
-        / "config.json"
+        / "experiments/ablations/fugacity_finetuning/config.yaml"
     )
     experiment = load_experiment_config(config_path)
     feature_cache = PROJECT_ROOT / "cache" / encoder_cache_filename(experiment.encoder)

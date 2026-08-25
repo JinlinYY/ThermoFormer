@@ -14,7 +14,7 @@ class FinalExperimentScopeTests(unittest.TestCase):
     def test_final_c1_configuration_is_three_view_vanilla(self) -> None:
         config = load_experiment_config(
             self.ROOT
-            / "experiments/physics_finetuning/c1_three_view_vanilla_fugacity/config.json"
+            / "experiments/ablations/fugacity_finetuning/config.yaml"
         )
         self.assertEqual(config.encoder.representation, "multiview")
         self.assertEqual(config.encoder.fusion_mode, "naive")
@@ -49,9 +49,10 @@ class FinalExperimentScopeTests(unittest.TestCase):
         self.assertEqual(PREDICTIVE_PROTOCOLS, ("overall_binary_ternary",))
 
     def test_only_fugacity_physics_experiment_remains(self) -> None:
-        root = self.ROOT / "experiments/physics_finetuning"
-        directories = sorted(path.name for path in root.iterdir() if path.is_dir())
-        self.assertEqual(directories, ["c1_three_view_vanilla_fugacity"])
+        self.assertFalse((self.ROOT / "experiments/physics_finetuning").exists())
+        self.assertTrue(
+            (self.ROOT / "experiments/ablations/fugacity_finetuning/config.yaml").is_file()
+        )
 
 
 if __name__ == "__main__":

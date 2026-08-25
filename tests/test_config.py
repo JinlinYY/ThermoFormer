@@ -14,7 +14,7 @@ from src.thermoformer.configuration import ProtocolConfig
 class ExperimentConfigTests(unittest.TestCase):
     ROOT = Path(__file__).resolve().parents[1]
     CONFIG_ROOT = ROOT / "experiments"
-    BASE_CONFIG = CONFIG_ROOT / "baseline" / "thermoformer_base" / "config.json"
+    BASE_CONFIG = ROOT / "configs" / "training" / "supervised.yaml"
 
     def assert_only_named_config_changes(
         self,
@@ -95,7 +95,10 @@ class ExperimentConfigTests(unittest.TestCase):
         self.assertTrue(config.context_pair_interaction)
 
     def test_repository_configs_construct_thermoformer(self) -> None:
-        paths = sorted(self.CONFIG_ROOT.rglob("config.json"))
+        paths = sorted(
+            set(self.CONFIG_ROOT.rglob("config.json"))
+            | set(self.CONFIG_ROOT.rglob("config.yaml"))
+        )
 
         self.assertGreater(len(paths), 0)
 
@@ -105,17 +108,20 @@ class ExperimentConfigTests(unittest.TestCase):
                 model = ThermoFormer(replace(experiment.model, feature_dim=8))
                 self.assertEqual(model.config.feature_dim, 8)
 
-    def test_comparison_config_is_not_classified_as_an_ablation(self) -> None:
-        self.assert_only_named_config_changes(
-            self.CONFIG_ROOT / "comparison" / "ideal_activity" / "config.json",
-            {"model": {"activity_mode": "ideal"}},
-        )
+    def test_unevaluated_comparisons_do_not_expose_runnable_configs(self) -> None:
+        comparison_root = self.CONFIG_ROOT / "comparisons"
+        self.assertEqual(list(comparison_root.rglob("config.json")), [])
+        self.assertEqual(list(comparison_root.rglob("config.yaml")), [])
 
     def test_concrete_experiments_are_nested_and_have_complete_records(self) -> None:
         experiment_root = self.CONFIG_ROOT
 
         self.assertEqual(list(experiment_root.glob("*/config.json")), [])
-        config_paths = sorted(experiment_root.rglob("config.json"))
+        self.assertEqual(list(experiment_root.glob("*/config.yaml")), [])
+        config_paths = sorted(
+            set(experiment_root.rglob("config.json"))
+            | set(experiment_root.rglob("config.yaml"))
+        )
         self.assertGreater(len(config_paths), 0)
         for config_path in config_paths:
             with self.subTest(config=config_path):
@@ -125,11 +131,6 @@ class ExperimentConfigTests(unittest.TestCase):
                 results_file = experiment_dir / "results.md"
                 self.assertTrue(run_file.is_file())
                 self.assertTrue(results_file.is_file())
-                run_text = run_file.read_text(encoding="utf-8")
-                self.assertIn(
-                    f"experiments/{relative_dir}/config.json",
-                    run_text,
-                )
                 config = load_experiment_config(config_path)
                 self.assertEqual(
                     config.runtime.output_dir,

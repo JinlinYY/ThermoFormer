@@ -1,4 +1,6 @@
+import hashlib
 import io
+import json
 from pathlib import Path
 import re
 import tokenize
@@ -22,13 +24,13 @@ class RepositoryLayoutTests(unittest.TestCase):
         )
 
     def test_active_source_paths_are_ascii(self) -> None:
-        for root_name in ("src", "scripts", "tests", "configs", "experiments"):
+        for root_name in ("analysis", "src", "scripts", "tests", "configs", "experiments"):
             for path in (PROJECT_ROOT / root_name).rglob("*"):
                 relative = path.relative_to(PROJECT_ROOT).as_posix()
                 self.assertTrue(relative.isascii(), relative)
 
     def test_active_python_comments_are_english(self) -> None:
-        for root_name in ("src", "scripts", "tests"):
+        for root_name in ("analysis", "src", "scripts", "tests"):
             for path in (PROJECT_ROOT / root_name).rglob("*.py"):
                 source = path.read_text(encoding="utf-8-sig")
                 tokens = tokenize.generate_tokens(io.StringIO(source).readline)
@@ -48,12 +50,91 @@ class RepositoryLayoutTests(unittest.TestCase):
                 self.assertNotIn("archive/legacy_code", source)
 
     def test_paper_navigation_declares_incomplete_studies(self) -> None:
-        paper_map = (PROJECT_ROOT / "experiments" / "paper" / "README.md").read_text(
+        paper_map = (PROJECT_ROOT / "docs" / "paper_code_map.md").read_text(
             encoding="utf-8"
         )
-        self.assertIn("Machine-learning comparison", paper_map)
+        self.assertIn("Machine-learning and thermodynamic-model comparison", paper_map)
         self.assertIn("Autonomous separation design", paper_map)
-        self.assertIn("Not evaluated", paper_map)
+        self.assertIn("not evaluated", paper_map.lower())
+
+    def test_active_experiments_match_manuscript_results_sections(self) -> None:
+        active = {
+            path.name
+            for path in (PROJECT_ROOT / "experiments").iterdir()
+            if path.is_dir() and any(path.rglob("*"))
+        }
+        self.assertEqual(
+            active,
+            {
+                "ablations",
+                "comparisons",
+                "interpretability",
+                "predictive_performance",
+                "separation_design",
+            },
+        )
+        representation_variants = {
+            path.name
+            for path in (
+                PROJECT_ROOT / "experiments" / "ablations" / "molecular_representation"
+            ).iterdir()
+            if path.is_dir()
+        }
+        self.assertEqual(
+            representation_variants,
+            {
+                "unimol_v2_only",
+                "rdkit_only",
+                "functional_groups_only",
+                "rdkit_unimol",
+                "full_three_view",
+            },
+        )
+        interaction_variants = {
+            path.name
+            for path in (
+                PROJECT_ROOT / "experiments" / "ablations" / "interaction_architecture"
+            ).iterdir()
+            if path.is_dir()
+        }
+        self.assertEqual(
+            interaction_variants,
+            {
+                "vanilla_transformer",
+                "chemical_interaction_bias",
+                "context_pair_without_attention_bias",
+            },
+        )
+
+    def test_manuscript_figures_have_single_active_sources(self) -> None:
+        dataset_figures = PROJECT_ROOT / "analysis" / "dataset_distribution" / "figures"
+        self.assertEqual(
+            {path.name for path in dataset_figures.glob("Figure_dataset_overview*.png")},
+            {"Figure_dataset_overview_v3.png"},
+        )
+        figure_1 = dataset_figures / "Figure_dataset_overview_v3.png"
+        figure_1_source = json.loads(
+            (dataset_figures / "Figure_dataset_overview_v3.source.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(
+            hashlib.sha256(figure_1.read_bytes()).hexdigest(),
+            figure_1_source["artifact_sha256"],
+        )
+        self.assertTrue(figure_1_source["rgb_pixels_match_manuscript"])
+        figure_2_root = PROJECT_ROOT / "analysis" / "manuscript_figures"
+        figure_2 = figure_2_root / "Figure_2_interpretability.png"
+        source = json.loads(
+            (figure_2_root / "Figure_2_interpretability.source.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(
+            hashlib.sha256(figure_2.read_bytes()).hexdigest(),
+            source["artifact_sha256"],
+        )
+        self.assertEqual(source["dimensions_pixels"], [3157, 2878])
 
     def test_active_implementation_uses_manuscript_subpackages(self) -> None:
         expected = {

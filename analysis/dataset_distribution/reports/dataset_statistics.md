@@ -27,6 +27,36 @@
 | 丁烷 / 乙醇 | 122 | 3 |
 | 1-十一醇 / 二氧化碳 | 120 | 1 |
 
+## Top 10 binary component-family pair incidences
+
+| family_pair | unique_systems | total_data_points | median_points_per_system |
+| --- | --- | --- | --- |
+| halogenated + hydrocarbon | 55 | 2548 | 40 |
+| alcohol + ester | 39 | 1302 | 22 |
+| halogenated + halogenated | 38 | 1929 | 40 |
+| alcohol + ether | 36 | 1080 | 26.5 |
+| alcohol + hydrocarbon | 34 | 1368 | 27 |
+| alcohol + alcohol | 33 | 722 | 20 |
+| ester + hydrocarbon | 30 | 957 | 27 |
+| hydrocarbon + sulfur-containing | 30 | 676 | 18 |
+| alcohol + other | 29 | 945 | 27 |
+| ether + halogenated | 27 | 1021 | 33 |
+
+## Top 10 binary system-family combinations
+
+| system_family_class | unique_systems | system_share_pct | total_data_points | median_points_per_system |
+| --- | --- | --- | --- | --- |
+| halogenated + hydrocarbon | 55 | 7.857 | 2548 | 40 |
+| alcohol + ester | 39 | 5.571 | 1302 | 22 |
+| halogenated + halogenated | 38 | 5.429 | 1929 | 40 |
+| alcohol + ether | 36 | 5.143 | 1080 | 26.5 |
+| alcohol + hydrocarbon | 34 | 4.857 | 1368 | 27 |
+| alcohol + alcohol | 33 | 4.714 | 722 | 20 |
+| ester + hydrocarbon | 30 | 4.286 | 957 | 27 |
+| hydrocarbon + sulfur-containing | 30 | 4.286 | 676 | 18 |
+| alcohol + other | 29 | 4.143 | 945 | 27 |
+| ether + halogenated | 27 | 3.857 | 1021 | 33 |
+
 ## Top 10 ternary systems by data-point count
 
 | system_label | data_points | references |
@@ -41,6 +71,36 @@
 | 乙醇 / 乙基-1,1-二甲基丙基醚 / 水 | 94 | 1 |
 | 4-甲基-2-戊酮 / 2-丙醇 / 二异丙醚 | 90 | 1 |
 | 4-甲基-2-戊酮 / 异辛烷 / 2-甲基-1-丙醇 | 85 | 1 |
+
+## Top 10 ternary component-family pair incidences
+
+| family_pair | unique_systems | total_data_points | median_points_per_system |
+| --- | --- | --- | --- |
+| alcohol + unresolved | 48 | 1919 | 39.5 |
+| alcohol + ester | 25 | 1202 | 33 |
+| alcohol + water | 24 | 1226 | 45 |
+| unresolved + water | 19 | 745 | 36 |
+| other + unresolved | 18 | 585 | 31.5 |
+| alcohol + ketone | 16 | 857 | 48.5 |
+| alcohol + other | 13 | 427 | 35 |
+| alcohol + hydrocarbon | 12 | 843 | 59.5 |
+| alcohol + ether | 12 | 726 | 53.5 |
+| ester + unresolved | 12 | 399 | 33 |
+
+## Top 10 ternary system-family combinations
+
+| system_family_class | unique_systems | system_share_pct | total_data_points | median_points_per_system |
+| --- | --- | --- | --- | --- |
+| alcohol + unresolved + water | 12 | 9.524 | 550 | 43.5 |
+| alcohol + other + unresolved | 10 | 7.937 | 368 | 36 |
+| alcohol + ester + unresolved | 10 | 7.937 | 334 | 33 |
+| alcohol + ketone + unresolved | 8 | 6.349 | 285 | 41 |
+| alcohol + hydrocarbon + ketone | 5 | 3.968 | 320 | 64 |
+| alcohol + ether + water | 4 | 3.175 | 335 | 89.5 |
+| other + unresolved + water | 4 | 3.175 | 112 | 25.5 |
+| amine + hydrocarbon + water | 4 | 3.175 | 79 | 19.5 |
+| alcohol + ester + hydrocarbon | 3 | 2.381 | 364 | 120 |
+| alcohol + aromatic + unresolved | 3 | 2.381 | 169 | 57 |
 
 ## Ternary-to-binary subsystem coverage
 

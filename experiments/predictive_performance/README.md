@@ -1,3 +1,12 @@
 # Predictive-performance experiments
 
-This category contains the two headline system-disjoint tasks: a binary-only model and one unified binary/ternary model. Both use fixed digest-checked 70/15/15-style grouped assignments for seeds 0–4. The combined task is also the unseen-mixture experiment because every test system is absent from training.
+This category contains every row of manuscript Table 1:
+
+- `overall_binary/`: binary training to binary test;
+- `overall_binary_ternary/`: joint binary/ternary training with binary and ternary test subsets;
+- `state_generalization/`: six within-system interpolation and extrapolation protocols;
+- `unseen_components/`: system-disjoint unseen-component evaluation;
+- `binary_to_ternary/`: zero-shot and five ternary-data fractions.
+
+All reported values use seeds 0--4 and validation-only checkpoint selection. The
+machine-readable source is `results/performance/c1_fugacity_generalization_by_task.csv`.

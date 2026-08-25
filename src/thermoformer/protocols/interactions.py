@@ -13,19 +13,19 @@ class ChemicalAttentionVariant(NamedTuple):
 CHEMICAL_ATTENTION_VARIANTS = {
     "c0_current_vanilla": ChemicalAttentionVariant(
         "C0 Current Uni-Mol vanilla Transformer",
-        "experiments/multiview/chemical_attention/c0_current_vanilla/config.json",
+        "experiments/ablations/molecular_representation/unimol_v2_only/config.yaml",
     ),
     "c1_three_view_vanilla": ChemicalAttentionVariant(
         "C1 RDKit + Uni-Mol + FG, vanilla Transformer",
-        "experiments/multiview/chemical_attention/c1_three_view_vanilla/config.json",
+        "experiments/ablations/interaction_architecture/vanilla_transformer/config.yaml",
     ),
     "c2_chemical_bias_full": ChemicalAttentionVariant(
         "C2 Three-view chemical-biased Transformer",
-        "experiments/multiview/chemical_attention/c2_chemical_bias_full/config.json",
+        "experiments/ablations/interaction_architecture/chemical_interaction_bias/config.yaml",
     ),
     "c3_no_pair_bias": ChemicalAttentionVariant(
         "C3 Full model without attention pair bias",
-        "experiments/multiview/chemical_attention/c3_no_pair_bias/config.json",
+        "experiments/ablations/interaction_architecture/context_pair_without_attention_bias/config.yaml",
     ),
 }
 

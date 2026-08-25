@@ -31,6 +31,8 @@ Reproducible analysis seed: `42`. Software: Python 3.9.25, pandas 1.5.3, RDKit 2
 - Molecules projected by Morgan-UMAP: **309**; disconnected fingerprint-graph vertices retained outside the 2D map: **9**
 - Ternary-only identities without a resolvable structure: **33** (therefore no ternary-only point can be placed in the molecular projection)
 - Ternary systems with 3/2/1/0 known binary subsystems: **30/22/69/5**
+- Distinct system-family combinations: **79 binary** and **49 ternary**
+- Most frequent binary class: **halogenated + hydrocarbon** (55 systems); most frequent ternary class: **alcohol + unresolved + water** (12 systems)
 
 ## Data-quality findings
 
@@ -55,6 +57,7 @@ For ternary rows, `x3` and `y3` are not independent workbook fields: they are re
 3. Morgan fingerprints resolve 318 unique molecules; 309 form the connected UMAP projection and 9 isolated fingerprints are retained but not assigned finite 2D coordinates. All 33 ternary-only identities lack a resolvable structure, so the map cannot establish the extent of ternary-exclusive chemical space; unresolved or isolated identities must not be interpreted as absent chemistry.
 4. Binary-to-ternary transfer is directly supported for 30 ternary systems with all three constituent binary pairs, while systems with partial or zero pair coverage provide progressively harder compositional generalization tests.
 5. Both datasets are long-tailed: 31.7% of binary and 19.0% of ternary systems contain fewer than 20 points. Sparse systems, high-pressure regions, unresolved molecular identities, and ternary simplex regions without complete binary-subsystem support are the most demanding generalization regimes.
+6. System chemistry is diverse rather than concentrated in one family combination: the leading binary and ternary classes account for only 7.9% and 9.5% of their respective systems. The full class table should therefore be used when constructing chemistry-stratified splits.
 
 ## Reproducibility
 

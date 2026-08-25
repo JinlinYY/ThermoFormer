@@ -469,6 +469,12 @@ def _write_generalization_leaf_records(
     """Write manuscript experiment leaves from the generated task table."""
     specifications = (
         (
+            "experiments/predictive_performance/overall_binary/results.md",
+            "Final C1 binary-only evaluation",
+            [row for row in rows if row["protocol"] == "overall_binary"],
+            "The binary-only C1 model provides the first overall-performance row of manuscript Table 1.",
+        ),
+        (
             "experiments/predictive_performance/overall_binary_ternary/results.md",
             "Final C1 overall binary/ternary evaluation",
             [row for row in rows if row["protocol"] == "overall_binary_ternary"],
@@ -527,7 +533,11 @@ def write_c1_generalization_outputs(
     project_root = project_root.resolve()
     publish_canonical_leaves = report_path is None and table_path is None
     report_path = report_path or project_root / "reports/c1_fugacity_generalization_report.md"
-    complete_report_path = project_root / "reports/c1_fugacity_complete_performance_report_zh.md"
+    complete_report_path = (
+        project_root / "reports/c1_fugacity_complete_performance_report_zh.md"
+        if publish_canonical_leaves
+        else report_path.with_name(f"{report_path.stem}_complete_zh.md")
+    )
     table_path = table_path or project_root / "results/performance/c1_fugacity_generalization_by_task.csv"
     stage_table_path = table_path.with_name("c1_fugacity_stage_selection.csv")
     manifest_path = report_path.with_name("c1_fugacity_generalization_report_manifest.json")
@@ -622,6 +632,7 @@ def write_c1_generalization_outputs(
     }
     if publish_canonical_leaves:
         leaf_paths = [
+            project_root / "experiments/predictive_performance/overall_binary/results.md",
             project_root / "experiments/predictive_performance/overall_binary_ternary/results.md",
             project_root / "experiments/predictive_performance/state_generalization/results.md",
             project_root / "experiments/predictive_performance/unseen_components/results.md",

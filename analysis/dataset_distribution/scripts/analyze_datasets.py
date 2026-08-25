@@ -213,6 +213,110 @@ def dataset_summary(
     return pd.DataFrame(rows).sort_values("component_count")
 
 
+def system_class_statistics(
+    systems: pd.DataFrame,
+    molecular: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Classify unordered systems from RDKit-derived component families."""
+    indexed = molecular.set_index("component_id")
+    family_by_id = indexed["primary_functional_family"].to_dict()
+    formula_by_id = indexed["representative_formula"].to_dict()
+    rows: list[dict[str, Any]] = []
+    for _, system in systems.iterrows():
+        component_ids = str(system["system_id"]).split(" || ")
+        families = sorted(
+            str(family_by_id.get(component_id, "unresolved"))
+            for component_id in component_ids
+        )
+        formulas = []
+        for component_id in component_ids:
+            formula = formula_by_id.get(component_id, "unknown")
+            formulas.append(
+                "unknown" if pd.isna(formula) or not str(formula).strip() else str(formula)
+            )
+        row = system.to_dict()
+        row.update(
+            {
+                "system_family_class": " + ".join(families),
+                "system_formula_label": " / ".join(formulas),
+                "component_families": ";".join(families),
+            }
+        )
+        rows.append(row)
+    by_system = pd.DataFrame(rows)
+    by_class = (
+        by_system.groupby(["dataset", "system_family_class"], sort=False)
+        .agg(
+            unique_systems=("system_id", "size"),
+            total_data_points=("data_points", "sum"),
+            mean_points_per_system=("data_points", "mean"),
+            median_points_per_system=("data_points", "median"),
+            min_points_per_system=("data_points", "min"),
+            max_points_per_system=("data_points", "max"),
+        )
+        .reset_index()
+    )
+    totals = by_class.groupby("dataset").agg(
+        all_systems=("unique_systems", "sum"),
+        all_data_points=("total_data_points", "sum"),
+    )
+    by_class = by_class.join(totals, on="dataset")
+    by_class["system_share_pct"] = (
+        100.0 * by_class["unique_systems"] / by_class["all_systems"]
+    )
+    by_class["data_point_share_pct"] = (
+        100.0 * by_class["total_data_points"] / by_class["all_data_points"]
+    )
+    by_class = by_class.sort_values(
+        ["dataset", "unique_systems", "total_data_points"],
+        ascending=[True, False, False],
+    )
+    by_class["class_rank"] = by_class.groupby("dataset").cumcount() + 1
+    return by_system, by_class
+
+
+def system_family_pair_statistics(
+    classified_systems: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Count unique systems containing each unordered component-family pair."""
+    rows: list[dict[str, Any]] = []
+    for _, system in classified_systems.iterrows():
+        families = str(system["component_families"]).split(";")
+        pair_classes = {
+            tuple(sorted((families[left], families[right])))
+            for left in range(len(families))
+            for right in range(left + 1, len(families))
+        }
+        for family_1, family_2 in sorted(pair_classes):
+            rows.append(
+                {
+                    "dataset": system["dataset"],
+                    "system_id": system["system_id"],
+                    "system_formula_label": system["system_formula_label"],
+                    "family_1": family_1,
+                    "family_2": family_2,
+                    "family_pair": f"{family_1} + {family_2}",
+                    "data_points": int(system["data_points"]),
+                }
+            )
+    by_system_pair = pd.DataFrame(rows)
+    pair_summary = (
+        by_system_pair.groupby(["dataset", "family_1", "family_2", "family_pair"])
+        .agg(
+            unique_systems=("system_id", "nunique"),
+            total_data_points=("data_points", "sum"),
+            median_points_per_system=("data_points", "median"),
+        )
+        .reset_index()
+        .sort_values(
+            ["dataset", "unique_systems", "total_data_points"],
+            ascending=[True, False, False],
+        )
+    )
+    pair_summary["pair_rank"] = pair_summary.groupby("dataset").cumcount() + 1
+    return by_system_pair, pair_summary
+
+
 def quality_issues(data: UnifiedData, systems: pd.DataFrame) -> pd.DataFrame:
     records = data.records
     occurrences = data.occurrences
@@ -395,6 +499,8 @@ def _statistics_report(
     summary: pd.DataFrame,
     systems: pd.DataFrame,
     coverage: pd.DataFrame,
+    system_classes: pd.DataFrame,
+    family_pairs: pd.DataFrame,
 ) -> str:
     compact = summary[
         [
@@ -444,6 +550,47 @@ def _statistics_report(
                 "",
             ]
         )
+        top_pairs = family_pairs.loc[
+            (family_pairs["dataset"] == dataset) & (family_pairs["pair_rank"] <= 10)
+        ]
+        sections.extend(
+            [
+                f"## Top 10 {dataset.lower()} component-family pair incidences",
+                "",
+                markdown_table(
+                    top_pairs[
+                        [
+                            "family_pair",
+                            "unique_systems",
+                            "total_data_points",
+                            "median_points_per_system",
+                        ]
+                    ]
+                ),
+                "",
+            ]
+        )
+        top_classes = system_classes.loc[
+            (system_classes["dataset"] == dataset) & (system_classes["class_rank"] <= 10)
+        ]
+        sections.extend(
+            [
+                f"## Top 10 {dataset.lower()} system-family combinations",
+                "",
+                markdown_table(
+                    top_classes[
+                        [
+                            "system_family_class",
+                            "unique_systems",
+                            "system_share_pct",
+                            "total_data_points",
+                            "median_points_per_system",
+                        ]
+                    ]
+                ),
+                "",
+            ]
+        )
     coverage_counts = (
         coverage["available_binary_subsystems"].value_counts().reindex([3, 2, 1, 0], fill_value=0)
     )
@@ -469,6 +616,7 @@ def _distribution_report(
     coverage: pd.DataFrame,
     issues: pd.DataFrame,
     records: pd.DataFrame,
+    system_classes: pd.DataFrame,
 ) -> str:
     binary = summary.loc[summary["dataset"] == "Binary"].iloc[0]
     ternary = summary.loc[summary["dataset"] == "Ternary"].iloc[0]
@@ -505,6 +653,10 @@ def _distribution_report(
             np.abs(ternary_y.sum(axis=1) - 1.0).max(),
         )
     )
+    binary_classes = system_classes.loc[system_classes["dataset"] == "Binary"]
+    ternary_classes = system_classes.loc[system_classes["dataset"] == "Ternary"]
+    binary_top_class = binary_classes.nsmallest(1, "class_rank").iloc[0]
+    ternary_top_class = ternary_classes.nsmallest(1, "class_rank").iloc[0]
     lines = [
         "# VLE dataset distribution report",
         "",
@@ -539,6 +691,8 @@ def _distribution_report(
         f"- Molecules projected by Morgan-UMAP: **{projected}**; disconnected fingerprint-graph vertices retained outside the 2D map: **{disconnected}**",
         f"- Ternary-only identities without a resolvable structure: **{ternary_only_unresolved}** (therefore no ternary-only point can be placed in the molecular projection)",
         f"- Ternary systems with 3/2/1/0 known binary subsystems: **{coverage_counts[3]}/{coverage_counts[2]}/{coverage_counts[1]}/{coverage_counts[0]}**",
+        f"- Distinct system-family combinations: **{len(binary_classes)} binary** and **{len(ternary_classes)} ternary**",
+        f"- Most frequent binary class: **{binary_top_class['system_family_class']}** ({int(binary_top_class['unique_systems'])} systems); most frequent ternary class: **{ternary_top_class['system_family_class']}** ({int(ternary_top_class['unique_systems'])} systems)",
         "",
         "## Data-quality findings",
         "",
@@ -557,6 +711,7 @@ def _distribution_report(
         f"3. Morgan fingerprints resolve {parseable} unique molecules; {projected} form the connected UMAP projection and {disconnected} isolated fingerprints are retained but not assigned finite 2D coordinates. All {ternary_only_unresolved} ternary-only identities lack a resolvable structure, so the map cannot establish the extent of ternary-exclusive chemical space; unresolved or isolated identities must not be interpreted as absent chemistry.",
         f"4. Binary-to-ternary transfer is directly supported for {coverage_counts[3]} ternary systems with all three constituent binary pairs, while systems with partial or zero pair coverage provide progressively harder compositional generalization tests.",
         f"5. Both datasets are long-tailed: {binary['systems_lt_20_points_pct']:.1f}% of binary and {ternary['systems_lt_20_points_pct']:.1f}% of ternary systems contain fewer than 20 points. Sparse systems, high-pressure regions, unresolved molecular identities, and ternary simplex regions without complete binary-subsystem support are the most demanding generalization regimes.",
+        f"6. System chemistry is diverse rather than concentrated in one family combination: the leading binary and ternary classes account for only {binary_top_class['system_share_pct']:.1f}% and {ternary_top_class['system_share_pct']:.1f}% of their respective systems. The full class table should therefore be used when constructing chemistry-stratified splits.",
         "",
         "## Reproducibility",
         "",
@@ -577,11 +732,24 @@ def _caption() -> str:
 
 ## English
 
-**Figure 1 | Statistical overview of the vapor–liquid equilibrium datasets.** **a,** Numbers of experimental state points, unique unordered chemical systems and unique molecular components in the binary and ternary datasets. **b,** Experimental temperature–pressure coverage, with pressure shown on a logarithmic scale and contours denoting the two datasets. **c,** Composition-space coverage represented by the binary liquid–vapor map and the ternary liquid-composition simplex; the third ternary fraction is reconstructed by closure. **d,** Molecular chemical space obtained from UMAP projection of radius-2, 2,048-bit Morgan fingerprints, colored by dataset membership; legend values give projected and total molecule counts. **e,** Rank–frequency distributions of experimental points per unordered system. **f,** Availability of the three constituent binary subsystems for each unique ternary system. Counts use canonicalized, order-invariant component identities; unresolved structures and graph-isolated fingerprints are not assigned UMAP coordinates.
+**Figure 1 | Statistical overview of the vapor–liquid equilibrium datasets.** **a,** Exact numbers of experimental state points, unique unordered chemical systems and molecular components in the binary and ternary datasets. **b,** Experimental temperature–pressure coverage. The main axis magnifies the densely sampled region at 140–650 K, while the broken high-temperature axis retains all 25 observations above 650 K; pressure is logarithmic and contours delineate high-density regions. **c,** Binary family-pair distribution constructed from RDKit/SMARTS component families. Each unordered family pair appears once in the upper-triangular matrix; the number and bubble area represent unique binary systems, and color represents total experimental points. **d,** All 49 complete ternary family triplets in ordered categorical three-dimensional coordinates. After canonical ordering, each axis contains only the families observed at that triplet position and spaces them uniformly (8, 13 and 14 categories for Family 1–3, respectively). The number and bubble area represent unique ternary systems, and color represents total experimental points. All system identities are canonicalized and invariant to component order.
 
 ## 中文
 
-**图 1 | 汽液相平衡数据集的统计总览。** **a，** 二元和三元数据集中实验状态点、无序化学物系及唯一分子组分的数量。**b，** 实验温度–压力覆盖范围；压力采用对数坐标，等高线区分两个数据集。**c，** 二元液相–汽相组成映射与三元液相组成单纯形；三元第三组分由组成闭合关系重建。**d，** 基于半径 2、2,048 位 Morgan 指纹并经 UMAP 降维得到的分子化学空间；图例数字依次为已投影/总分子数。**e，** 每个无序物系实验点数的秩–频分布。**f，** 每个唯一三元体系的三个组成二元子体系在二元数据集中的可用情况。所有计数采用规范化且与组分顺序无关的身份；未解析结构和指纹图孤立点不分配 UMAP 坐标。
+**图 1 | 汽液相平衡数据集的统计总览。** **a，** 直接列出二元和三元数据集中实验状态点、无序化学体系及分子组分的准确数量。**b，** 实验温度–压力覆盖；主坐标放大 140–650 K 的密集采样区，断开的高温坐标保留全部 25 个高于 650 K 的观测点；压力为对数坐标，等高线表示高密度区域。**c，** 基于 RDKit/SMARTS 组分类别构建的二元 family-pair 分布。每个无序 family pair 仅在上三角矩阵中出现一次；气泡内数字和面积均表示唯一二元体系数量，颜色表示实验点总数。**d，** 采用有序类别三维坐标展示全部 49 种完整三元 family triplet。规范排序后，每个坐标轴仅保留该位置实际出现的组分类别并等距排列，Family 1–3 分别包含 8、13 和 14 个类别；气泡内数字和面积均表示唯一三元体系数量，颜色表示实验点总数。所有体系身份均已规范化且不受组分顺序影响。
+"""
+
+
+def _caption_v2() -> str:
+    return """# Figure dataset overview v2 caption
+
+## English
+
+**Figure 1 | Coverage and chemical composition of the vapor–liquid equilibrium datasets.** **a,** Numbers of experimental state points, unique unordered systems and molecular components in the binary and ternary datasets. **b,** Temperature–pressure coverage; pressure is displayed on a logarithmic scale, density contours summarize the main sampling regions and the broken axis retains the 25 observations above 650 K. **c,** Binary chemical-family pairs classified using RDKit/SMARTS. Bubble area denotes unique systems and color denotes experimental VLE points; numbers are shown for pairs containing at least three systems. **d,** Binary liquid–vapor composition density relative to the y=x line and ternary liquid-composition coverage in the recorded component-order simplex. **e,** Molecular chemical space from radius-2, 2,048-bit Morgan fingerprints projected by UMAP (random state 42), colored by dataset membership; unresolved structures are excluded from the projection. **f,** Ternary systems grouped by how many of their three constituent binary subsystems occur in the binary dataset. System identities are invariant to component order.
+
+## 中文
+
+**图 1 | 汽液相平衡数据集的覆盖范围与化学组成。** **a，** 二元和三元数据集中的实验状态点、唯一无序体系及分子组分数量。**b，** 温度–压力覆盖；压力采用对数坐标，密度等高线概括主要采样区域，断轴保留 25 个高于 650 K 的观测。**c，** 基于 RDKit/SMARTS 分类的二元化学 family pair；气泡面积表示唯一体系数，颜色表示实验 VLE 点数，仅对包含至少三个体系的组合标注数字。**d，** 二元液相–气相组成相对于 y=x 参考线的密度，以及按源数据组分顺序绘制的三元液相组成单纯形覆盖。**e，** 采用半径 2、2,048 位 Morgan 指纹并以 UMAP（随机种子 42）投影的分子化学空间，颜色表示数据集归属；无法解析结构的组分不进入投影。**f，** 按三个组成二元子体系中已有多少出现在二元数据集内，对三元体系进行分组。体系身份不受组分顺序影响。
 """
 
 
@@ -630,13 +798,23 @@ def write_outputs(dataset_root: Path, analysis_root: Path) -> dict[str, Any]:
     )
 
     molecular, families = analyze_molecular_space(components, results_dir)
+    classified_systems, system_classes = system_class_statistics(systems, molecular)
+    classified_systems.to_csv(results_dir / "system_class_by_system.csv", index=False)
+    system_classes.to_csv(results_dir / "system_class_statistics.csv", index=False)
+    system_classes.loc[system_classes["dataset"] == "Ternary"].to_csv(
+        results_dir / "ternary_family_triplets.csv", index=False
+    )
+    pair_by_system, family_pairs = system_family_pair_statistics(classified_systems)
+    pair_by_system.to_csv(results_dir / "system_family_pair_by_system.csv", index=False)
+    family_pairs.to_csv(results_dir / "system_family_pair_statistics.csv", index=False)
     schema_text = _schema_report(data)
     (reports_dir / "dataset_schema_audit.md").write_text(schema_text, encoding="utf-8")
     project_reports = dataset_root.parent / "reports"
     project_reports.mkdir(parents=True, exist_ok=True)
     (project_reports / "dataset_schema_audit.md").write_text(schema_text, encoding="utf-8")
     (reports_dir / "dataset_statistics.md").write_text(
-        _statistics_report(summary, systems, coverage), encoding="utf-8"
+        _statistics_report(summary, systems, coverage, system_classes, family_pairs),
+        encoding="utf-8",
     )
     (reports_dir / "dataset_distribution_report.md").write_text(
         _distribution_report(
@@ -648,11 +826,17 @@ def write_outputs(dataset_root: Path, analysis_root: Path) -> dict[str, Any]:
             coverage,
             issues,
             data.records,
+            system_classes,
         ),
         encoding="utf-8",
     )
-    (reports_dir / "Figure_dataset_overview_caption.md").write_text(
+    archived_reports_dir = reports_dir / "archive"
+    archived_reports_dir.mkdir(parents=True, exist_ok=True)
+    (archived_reports_dir / "Figure_dataset_overview_v1_caption.md").write_text(
         _caption(), encoding="utf-8"
+    )
+    (archived_reports_dir / "Figure_dataset_overview_v2_caption.md").write_text(
+        _caption_v2(), encoding="utf-8"
     )
     return {
         "summary": summary.to_dict(orient="records"),
@@ -660,6 +844,10 @@ def write_outputs(dataset_root: Path, analysis_root: Path) -> dict[str, Any]:
         "molecular_embeddings": int(molecular["umap_1"].notna().sum()),
         "quality_issue_rows": len(issues),
         "coverage": coverage["available_binary_subsystems"].value_counts().sort_index().to_dict(),
+        "system_classes": system_classes.groupby("dataset")[
+            "system_family_class"
+        ].nunique().to_dict(),
+        "family_pair_classes": family_pairs.groupby("dataset")["family_pair"].nunique().to_dict(),
     }
 
 

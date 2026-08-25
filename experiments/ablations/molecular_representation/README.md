@@ -1,4 +1,12 @@
 # Molecular-representation ablation
 
-Each child directory is a runnable `overall_binary_ternary` representation
-variant with a corresponding five-seed result record.
+These five variants correspond exactly to the molecular-representation block in
+manuscript Table 2:
+
+- `unimol_v2_only/`
+- `rdkit_only/`
+- `functional_groups_only/`
+- `rdkit_unimol/`
+- `full_three_view/`
+
+Every variant uses the fixed `overall_binary_ternary` split and seeds 0--4.

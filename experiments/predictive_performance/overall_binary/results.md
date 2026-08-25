@@ -1,42 +1,12 @@
-# overall_binary
+# Final C1 binary-only evaluation
 
-Status: **completed formal five-seed experiment**.
+All values are mean ± standard deviation across seeds 0--4. Checkpoint selection uses validation only; test data are evaluated afterward.
 
-- Seeds: `0,1,2,3,4`
+| Evaluation setting | subset | task | State MAE | State RMSE | State R² | y MAE | y RMSE | y R² | n |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|
+| Binary train -> binary test | all | isobaric (molecules,P,x → T,y) | 2.45 ± 0.15 K | 4.29 ± 0.52 K | 0.979 ± 0.008 | 0.0284 ± 0.0043 | 0.0499 ± 0.0058 | 0.975 ± 0.005 | 5 |
+| Binary train -> binary test | all | isothermal (molecules,T,x → P,y) | 8.98 ± 5.20 kPa | 20.58 ± 11.95 kPa | 0.968 ± 0.027 | 0.0262 ± 0.0056 | 0.0476 ± 0.0120 | 0.978 ± 0.010 | 5 |
 
-## Task-resolved predictive performance
+The binary-only C1 model provides the first overall-performance row of manuscript Table 1.
 
-### overall_binary — Isothermal P–x–y
-
-- Known inputs: **Molecules, T, x**.
-- Joint prediction: **Bubble pressure P and vapor composition y**.
-
-| Predicted quantity | MAE | RMSE | R² |
-|---|---:|---:|---:|
-| Bubble pressure P (kPa) | 17.26 ± 8.42 (n=5) | 35.13 ± 14.93 (n=5) | 0.911 ± 0.051 (n=5) |
-| Vapor composition y | 0.0681 ± 0.0146 (n=5) | 0.1023 ± 0.0231 (n=5) | 0.898 ± 0.049 (n=5) |
-
-Valid coverage: 1.0000 ± 0.0000.
-
-### overall_binary — Isobaric T–x–y
-
-- Known inputs: **Molecules, P, x**.
-- Joint prediction: **Bubble temperature T and vapor composition y**.
-
-| Predicted quantity | MAE | RMSE | R² |
-|---|---:|---:|---:|
-| Bubble temperature T (K) | 5.75 ± 1.61 (n=5) | 8.09 ± 2.50 (n=5) | 0.920 ± 0.052 (n=5) |
-| Vapor composition y | 0.0638 ± 0.0217 (n=5) | 0.0917 ± 0.0270 (n=5) | 0.908 ± 0.058 (n=5) |
-
-Valid coverage: 1.0000 ± 0.0000.
-
-## Provenance and pooled diagnostics
-
-- Pooled solver failure rate: 0.00000 ± 0.00000
-- Pooled nonphysical rate: 0.00000 ± 0.00000
-- Training commit: `8c41a1b46d217f5b9714bd5179fe28224b86408c`
-- Aggregation commit: `704458163ee2afd9e2c0a681ea4a670a287b6778`
-- Formal summary: `results/overall_binary/metrics_summary.csv`
-- Per-seed predictions: `results/overall_binary/seed_*/predictions.csv`
-
-These values are generated from committed fixed splits and should not be replaced by smoke or diagnostic runs.
+Machine-readable source: `results/performance/c1_fugacity_generalization_by_task.csv` (SHA-256 `2aebedb9798f5556b5480bd69d06752bf6a48cfc335d46fcd61b2a7649c1452c`).

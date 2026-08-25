@@ -61,7 +61,7 @@ PHYSICS_RESULT_DIR = (
 
 ABLATION_LEAVES = {
     "c0_unimol": (
-        "experiments/ablations/interaction_architecture/current_vanilla/results.md",
+        "experiments/ablations/molecular_representation/unimol_v2_only/results.md",
         "Uni-Mol vanilla baseline",
         "The three-view C1 model substantially reduces all four prediction errors relative to this Uni-Mol-only vanilla baseline.",
     ),
@@ -81,22 +81,22 @@ ABLATION_LEAVES = {
         "Adding the functional-group view to this two-view model improves pressure and isobaric-temperature MAE, while vapor-composition changes are small.",
     ),
     "c1_final": (
-        "experiments/ablations/molecular_representation/three_view_vanilla/results.md",
+        "experiments/ablations/molecular_representation/full_three_view/results.md",
         "Three-view vanilla representation",
         "The three complementary molecular views give the most balanced representation result and define the final C1 architecture.",
     ),
     "c1_final_interaction": (
-        "experiments/ablations/interaction_architecture/three_view_vanilla/results.md",
+        "experiments/ablations/interaction_architecture/vanilla_transformer/results.md",
         "Three-view vanilla Transformer",
         "C1 is the selected interaction architecture because it balances pressure, temperature, vapor-composition accuracy, and model complexity.",
     ),
     "c2_chemical_bias": (
-        "experiments/ablations/interaction_architecture/chemical_bias/results.md",
+        "experiments/ablations/interaction_architecture/chemical_interaction_bias/results.md",
         "Chemical-interaction-biased Transformer",
         "The chemical-attention bias does not consistently improve the three-view vanilla model and is not retained in the final architecture.",
     ),
     "c3_context_pair": (
-        "experiments/ablations/interaction_architecture/no_pair_bias/results.md",
+        "experiments/ablations/interaction_architecture/context_pair_without_attention_bias/results.md",
         "Context pair without attention bias",
         "The context-pair variant improves several vapor-composition metrics but has a larger pressure error than C1, so it is not selected as the balanced final model.",
     ),

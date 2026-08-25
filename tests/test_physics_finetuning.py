@@ -98,7 +98,7 @@ class PhysicsFineTuningTests(unittest.TestCase):
     def test_final_configuration_is_c1_with_fugacity_only(self) -> None:
         config = load_experiment_config(
             self.ROOT
-            / "experiments/physics_finetuning/c1_three_view_vanilla_fugacity/config.json"
+            / "experiments/ablations/fugacity_finetuning/config.yaml"
         )
         self.assertEqual(config.encoder.representation, "multiview")
         self.assertEqual(config.encoder.fusion_mode, "naive")

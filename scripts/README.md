@@ -23,7 +23,8 @@ implementation belongs in `src/`; scripts expose those methods to experiments.
 
 - `run_multiview_suite.py`: molecular-representation ablations.
 - `run_chemical_attention_suite.py`: interaction-architecture ablations.
-- `run_interpretability.py`: final C1 interpretation analyses.
+- The exact published Figure 2 is retained under `analysis/manuscript_figures/`;
+  earlier interpretability runners are preserved under `archive/legacy_code/`.
 
 ## Report generation
 

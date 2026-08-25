@@ -131,6 +131,10 @@ def analyze_molecular_space(
             "projected",
             "disconnected",
         )
+    # Publication-facing aliases retain the requested column names while the
+    # snake-case columns remain available to existing analysis code.
+    molecular["UMAP1"] = molecular["umap_1"]
+    molecular["UMAP2"] = molecular["umap_2"]
     molecular.to_csv(results_dir / "molecular_space.csv", index=False)
 
     families = (
