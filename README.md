@@ -158,7 +158,7 @@ conda activate ggnn39
 python scripts/build_c1_generalization_report.py
 ```
 
-主要入口为 `reports/c1_fugacity_generalization_report.md`；方向化机器表为 `results/performance/c1_fugacity_generalization_by_task.csv`，Stage 1/Stage 2 选择与逸度残差为 `results/performance/c1_fugacity_stage_selection.csv`。报告按实际推理任务拆分：等温 P–x–y 同时报告泡点 P 与 y，等压 T–x–y 同时报告泡点 T 与 y；每个输出均给出 point-wise MAE、RMSE、R² 和实际可用 seed 数。旧 `build_paper_outputs.py` 及其报告只作为早期模型结果归档，不代表最终 C1 + fugacity 模型。正式结果保留三元规模曲线非单调、未见组分性能明显下降等负面结果；当前不包含任何四元实验或四元性能声称。
+中文完整报告入口为 `reports/c1_fugacity_complete_performance_report_zh.md`，英文精简报告为 `reports/c1_fugacity_generalization_report.md`；方向化机器表为 `results/performance/c1_fugacity_generalization_by_task.csv`，Stage 1/Stage 2 选择与逸度残差为 `results/performance/c1_fugacity_stage_selection.csv`。报告按实际推理任务拆分：等温 P–x–y 同时报告泡点 P 与 y，等压 T–x–y 同时报告泡点 T 与 y；每个输出均给出 point-wise MAE、RMSE、R² 和实际可用 seed 数。旧 `build_paper_outputs.py` 及其报告只作为早期模型结果归档，不代表最终 C1 + fugacity 模型。正式结果保留三元规模曲线非单调、未见组分性能明显下降等负面结果；当前不包含任何四元实验或四元性能声称。
 
 单次训练/验证/测试划分可通过覆盖参数运行：
 
