@@ -46,9 +46,8 @@ interaction-architecture ablation.
 ## Repository structure
 
 ```text
-src/thermoformer/       Stable scientific interface organized by manuscript method
-src/                    Model, thermodynamics, training, and research workflows
-scripts/                Reproducible training, evaluation, and report entry points
+src/thermoformer/       Active implementation organized by manuscript method
+scripts/                Train, evaluate, reproduce, and report entry points
 experiments/            Configurations, commands, and results for each experiment
 experiments/paper/      Paper-section navigation for the experiment registry
 configs/                Shared configuration and frozen reference declarations
@@ -64,7 +63,7 @@ tests/                  Unit, integration, provenance, and scientific-invariant 
 docs/                   Model, training, reproduction, and paper-to-code documentation
 ```
 
-The public research interface is documented in
+The active implementation and public research interface are documented in
 [`docs/model_architecture.md`](docs/model_architecture.md).
 
 ## Environment
@@ -92,7 +91,7 @@ flags, excludes failed records, downweights indeterminate records, removes
 duplicates, infers experiment direction when required, and records every
 filtering decision. Pure-component endpoint systems are protected on the
 training side to separate activity-coefficient learning from vapor-pressure
-learning. See [`docs/data.md`](docs/data.md).
+learning. See [`docs/dataset.md`](docs/dataset.md).
 
 ## Training
 
@@ -114,7 +113,8 @@ after validation selects Stage 1 or Stage 2. See [`docs/training.md`](docs/train
 
 The experiment registry is [`experiments/README.md`](experiments/README.md), and
 the manuscript-oriented index is [`experiments/paper/README.md`](experiments/paper/README.md).
-Each runnable experiment leaf contains `config.json`, `run.md`, and `results.md`.
+Each runnable experiment leaf contains `config.json` or `config.yaml`, together
+with `run.md` and `results.md`.
 
 Generate the final five-seed generalization report:
 
@@ -136,6 +136,14 @@ The principal reports are:
 
 Detailed commands, artifact conventions, and Git-LFS requirements are described
 in [`docs/reproduction.md`](docs/reproduction.md).
+
+The principal public commands are:
+
+```powershell
+conda run -n ggnn39 python scripts\train.py --config configs\training\supervised.yaml
+conda run -n ggnn39 python scripts\run_experiment.py --config configs\protocols\overall_binary_ternary.yaml --split splits\overall_binary_ternary\seed_0.json --seed 0
+conda run -n ggnn39 python scripts\build_reports.py all
+```
 
 ## Scientific provenance
 

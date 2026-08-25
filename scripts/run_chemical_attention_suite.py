@@ -17,10 +17,10 @@ from src.chemical_attention_protocols import (
     CHEMICAL_ATTENTION_SEEDS,
     CHEMICAL_ATTENTION_VARIANTS,
 )
-from src.config import load_experiment_config
-from src.paper_runner import result_protocol_name, run_paper_experiment
-from src.representation import encoder_cache_filename
-from src.results import aggregate_protocol_results
+from src.thermoformer.configuration import load_experiment_config
+from src.thermoformer.protocols.runner import result_protocol_name, run_paper_experiment
+from src.thermoformer.features import encoder_cache_filename
+from src.thermoformer.reporting.aggregation import aggregate_protocol_results
 
 
 def _release_accelerator() -> None:

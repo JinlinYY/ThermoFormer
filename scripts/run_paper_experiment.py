@@ -11,9 +11,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.paper_runner import run_paper_experiment
-from src.config import load_experiment_config
-from src.representation import encoder_cache_filename
+from src.thermoformer.configuration import load_experiment_config
+from src.thermoformer.features import encoder_cache_filename
+from src.thermoformer.protocols.runner import run_paper_experiment
 
 
 def parser() -> argparse.ArgumentParser:

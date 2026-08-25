@@ -5,10 +5,11 @@ ThermoFormer workflow.
 
 | Directory | Contents | Active replacement |
 |---|---|---|
-| `data_preparation/` | One-time acquisition, workbook formatting, consistency checking, validation, and repair programs used before the English release dataset was frozen | `dataset/*.xlsx`, `scripts/audit_dataset.py`, and `src/data.py` |
+| `data_preparation/` | One-time acquisition, workbook formatting, consistency checking, validation, and repair programs used before the English release dataset was frozen | `dataset/*.xlsx`, `scripts/data/prepare_dataset.py`, and `src.thermoformer.data` |
 | `reporting/` | Report generator for an earlier model and its command-line entry point | `scripts/build_c1_generalization_report.py` and `scripts/build_c1_ablation_report.py` |
-| `diagnostics/` | One-off solver-iteration study | Formal evaluation through `src.thermoformer.evaluation` and `src/evaluation/__init__.py` |
+| `diagnostics/` | One-off solver-iteration study | Formal evaluation through `src.thermoformer.evaluation` |
 | `tests/` | Tests coupled to archived report-generation code | Active tests under `tests/` |
+| `experiment_records/` | Superseded configurations, commands, and result records | Manuscript-aligned leaves under `experiments/` |
 
 Historical data-preparation programs preserve original workbook field names and
 literal paths because translating those values would alter their behavior. The

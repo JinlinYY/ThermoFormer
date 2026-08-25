@@ -1,6 +1,6 @@
-"""Dataset loading, validation, batching, and group-disjoint splitting."""
+"""Dataset schema, loading, auditing, and registered split assignments."""
 
-from ..data import (
+from .loading import (
     DatasetAudit,
     DatasetLoadResult,
     FoldSplit,
@@ -14,6 +14,7 @@ from ..data import (
     grouped_holdout_and_folds,
     load_vle_dataset,
     load_vle_samples,
+    pure_anchor_temperatures,
     retain_pure_anchored_systems,
 )
 
@@ -31,5 +32,6 @@ __all__ = [
     "grouped_holdout_and_folds",
     "load_vle_dataset",
     "load_vle_samples",
+    "pure_anchor_temperatures",
     "retain_pure_anchored_systems",
 ]

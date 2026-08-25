@@ -39,5 +39,13 @@ this scalar. Pure-component vapor pressure depends only on the molecular
 representation and temperature, unless a valid Antoine or DIPPR 101 correlation
 is supplied.
 
-The curated Python interface is `src.thermoformer`. Repository-level `src.*`
-imports remain compatible with committed checkpoints and experiment programs.
+The active implementation is organized as follows:
+
+| Scientific responsibility | Module |
+|---|---|
+| Dataset schema, loading, and split logic | `src.thermoformer.data` |
+| RDKit, Uni-Mol v2, functional groups, and fusion | `src.thermoformer.features` |
+| Molecular interaction and vapor-pressure heads | `src.thermoformer.models` |
+| Activity coefficients and differentiable VLE solvers | `src.thermoformer.thermodynamics` |
+| Supervised and fugacity-constrained optimization | `src.thermoformer.training` |
+| Prediction metrics and consistency analysis | `src.thermoformer.evaluation` |

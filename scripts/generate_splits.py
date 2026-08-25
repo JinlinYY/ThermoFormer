@@ -10,8 +10,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.data import load_vle_dataset, retain_pure_anchored_systems
-from src.protocols import (
+from src.thermoformer.data import load_vle_dataset, retain_pure_anchored_systems
+from src.thermoformer.protocols.generalization import (
     binary_to_ternary_split,
     composition_edge_split,
     composition_interpolation_split,
@@ -20,8 +20,8 @@ from src.protocols import (
     state_extreme_split,
     unseen_component_split,
 )
-from src.paper_protocols import PAPER_SEEDS
-from src.splits import DatasetPartitions, load_split_assignment, save_split_assignment
+from src.thermoformer.protocols.registry import PAPER_SEEDS
+from src.thermoformer.data.splitting import DatasetPartitions, load_split_assignment, save_split_assignment
 
 
 SEEDS = PAPER_SEEDS

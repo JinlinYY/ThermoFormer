@@ -11,11 +11,11 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.paper_runner import requested_run_fingerprint, run_paper_experiment
-from src.paper_protocols import PAPER_SEEDS, PROTOCOL_CONFIGS
-from src.config import load_experiment_config
-from src.representation import encoder_cache_filename
-from src.results import aggregate_protocol_results
+from src.thermoformer.protocols.runner import requested_run_fingerprint, run_paper_experiment
+from src.thermoformer.protocols.registry import PAPER_SEEDS, PROTOCOL_CONFIGS
+from src.thermoformer.configuration import load_experiment_config
+from src.thermoformer.features import encoder_cache_filename
+from src.thermoformer.reporting.aggregation import aggregate_protocol_results
 
 
 def smoke_overrides() -> tuple[str, ...]:

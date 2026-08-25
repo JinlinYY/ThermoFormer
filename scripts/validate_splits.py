@@ -13,10 +13,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.data import load_vle_samples, pure_anchor_temperatures, retain_pure_anchored_systems
+from src.thermoformer.data import load_vle_samples, pure_anchor_temperatures, retain_pure_anchored_systems
 from src.auditing import ternary_subsystem_rows
-from src.paper_protocols import PAPER_SEEDS, PROTOCOL_CONFIGS
-from src.splits import canonical_smiles, load_split_assignment, sample_id, system_id
+from src.thermoformer.protocols.registry import PAPER_SEEDS, PROTOCOL_CONFIGS
+from src.thermoformer.data.splitting import canonical_smiles, load_split_assignment, sample_id, system_id
 
 
 def _composition_edge_score(row) -> float:

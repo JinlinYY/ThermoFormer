@@ -12,16 +12,16 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.config import load_experiment_config
+from src.thermoformer.configuration import load_experiment_config
 from src.multiview_protocols import (
     MULTIVIEW_SEEDS,
     MULTIVIEW_VARIANTS,
     PREDICTIVE_PROTOCOLS,
     PREDICTIVE_VARIANTS,
 )
-from src.paper_runner import result_protocol_name, run_paper_experiment
-from src.representation import encoder_cache_filename
-from src.results import aggregate_protocol_results
+from src.thermoformer.protocols.runner import result_protocol_name, run_paper_experiment
+from src.thermoformer.features import encoder_cache_filename
+from src.thermoformer.reporting.aggregation import aggregate_protocol_results
 
 
 def release_accelerator_memory() -> None:

@@ -1,12 +1,13 @@
-"""Pure-component properties, activity coefficients, and differentiable VLE."""
+"""Pure properties, activity coefficients, and differentiable VLE solvers."""
 
-from ..pure_properties import (
+from .activity_coefficients import activity_coefficients_from_excess_gibbs
+from .vapor_pressure import (
     AntoineParameters,
     DIPPR101Parameters,
     PurePropertyCatalog,
     load_pure_property_catalog,
 )
-from ..thermo import (
+from .vle_solver import (
     ConvergenceError,
     EquilibriumState,
     ModeEquilibria,
@@ -23,6 +24,7 @@ __all__ = [
     "EquilibriumState",
     "ModeEquilibria",
     "PurePropertyCatalog",
+    "activity_coefficients_from_excess_gibbs",
     "equilibrium_at_tp",
     "load_pure_property_catalog",
     "solve_batch_modes",

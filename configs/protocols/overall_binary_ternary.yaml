@@ -1,0 +1,14 @@
+{
+  "extends": "../training/fugacity_finetuning.yaml",
+  "name": "c1_fugacity_overall_binary_ternary",
+  "seed": 0,
+  "protocol": {
+    "registered_splits": ["overall_binary_ternary"],
+    "seeds": [0, 1, 2, 3, 4],
+    "evaluation_partition": "test"
+  },
+  "runtime": {
+    "output_dir": "runs/experiments/predictive_performance/overall_binary_ternary",
+    "results_file": "experiments/predictive_performance/overall_binary_ternary/results.md"
+  }
+}

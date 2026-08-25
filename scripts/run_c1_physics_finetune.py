@@ -12,22 +12,22 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.artifacts import (
+from src.thermoformer.reporting.artifacts import (
     artifact_sha256,
     atomic_write_json,
     portable_artifact_path,
     resolve_artifact_path,
 )
-from src.config import load_experiment_config
-from src.paper_runner import (
+from src.thermoformer.configuration import load_experiment_config
+from src.thermoformer.protocols.runner import (
     requested_run_fingerprint,
     result_protocol_name,
     run_paper_experiment,
 )
-from src.paper_protocols import PROTOCOL_CONFIGS
-from src.physics_finetuning import write_multiseed_physics_finetune_report
-from src.representation import encoder_cache_filename
-from src.results import aggregate_protocol_results
+from src.thermoformer.protocols.registry import PROTOCOL_CONFIGS
+from src.thermoformer.training.fugacity_finetuning import write_multiseed_physics_finetune_report
+from src.thermoformer.features import encoder_cache_filename
+from src.thermoformer.reporting.aggregation import aggregate_protocol_results
 
 EXPERIMENT_FOLDER = "c1_three_view_vanilla_fugacity"
 DEFAULT_PROTOCOL = "overall_binary_ternary"

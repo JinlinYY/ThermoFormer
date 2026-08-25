@@ -11,7 +11,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.auditing import write_data_audit_report, write_ternary_subsystem_csv
-from src.data import load_vle_dataset, retain_pure_anchored_systems
+from src.thermoformer.data import load_vle_dataset, retain_pure_anchored_systems
 
 
 def main() -> None:

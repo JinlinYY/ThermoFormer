@@ -11,10 +11,11 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.c1_generalization_outputs import write_c1_generalization_outputs
+from src.thermoformer.reporting.c1_generalization import write_c1_generalization_outputs
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """Build the validated final-model generalization report."""
     print(
         json.dumps(
             write_c1_generalization_outputs(PROJECT_ROOT),
@@ -22,4 +23,8 @@ if __name__ == "__main__":
             indent=2,
         )
     )
+
+
+if __name__ == "__main__":
+    main()
 

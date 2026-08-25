@@ -11,7 +11,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.results import aggregate_protocol_results
+from src.thermoformer.reporting.aggregation import aggregate_protocol_results
 
 
 def main() -> None:

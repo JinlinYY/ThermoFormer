@@ -1,0 +1,14 @@
+extends: ../../experiments/baseline/thermoformer_base/config.json
+name: c1_three_view_vanilla
+encoder:
+  representation: multiview
+  fusion_mode: naive
+  use_rdkit_descriptors: true
+  use_unimol: true
+  use_functional_groups: true
+  chemical_attention_bias: false
+  context_pair_interaction: false
+model:
+  use_transformer: true
+  interaction_mode: full
+  activity_mode: excess_gibbs

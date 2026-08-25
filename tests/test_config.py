@@ -7,6 +7,8 @@ from pathlib import Path
 from src.config import DataConfig, EncoderConfig, load_experiment_config
 from src.model import ThermoFormer, ThermoFormerConfig
 from src.training import TrainingConfig
+from src.thermoformer.cli import validate_generic_training_config
+from src.thermoformer.configuration import ProtocolConfig
 
 
 class ExperimentConfigTests(unittest.TestCase):
@@ -201,6 +203,41 @@ class ExperimentConfigTests(unittest.TestCase):
             ThermoFormerConfig(interaction_mode="implicit")
         with self.assertRaises(ValueError):
             ThermoFormerConfig(decoder_mode="black_box")
+
+    def test_protocol_config_rejects_undeclared_requests(self) -> None:
+        protocol = ProtocolConfig(
+            registered_splits=("overall_binary_ternary",),
+            seeds=(0, 1),
+            evaluation_partition="test",
+        )
+        protocol.validate_request("overall_binary_ternary", 0, "test")
+        with self.assertRaisesRegex(ValueError, "not declared"):
+            protocol.validate_request("unseen_component", 0, "test")
+        with self.assertRaisesRegex(ValueError, "Seed 2"):
+            protocol.validate_request("overall_binary_ternary", 2, "test")
+        with self.assertRaisesRegex(ValueError, "partition"):
+            protocol.validate_request("overall_binary_ternary", 0, "validation")
+
+    def test_generic_trainer_rejects_registered_and_physics_configs(self) -> None:
+        supervised = load_experiment_config(
+            self.ROOT / "configs" / "training" / "supervised.yaml"
+        )
+        validate_generic_training_config(supervised)
+        with self.assertRaisesRegex(ValueError, "Stage-1 supervised"):
+            validate_generic_training_config(
+                load_experiment_config(
+                    self.ROOT / "configs" / "training" / "fugacity_finetuning.yaml"
+                )
+            )
+        with self.assertRaisesRegex(ValueError, "Stage-1 supervised"):
+            validate_generic_training_config(
+                load_experiment_config(
+                    self.ROOT
+                    / "configs"
+                    / "protocols"
+                    / "overall_binary_ternary.yaml"
+                )
+            )
 
 
 if __name__ == "__main__":

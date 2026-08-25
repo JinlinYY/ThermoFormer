@@ -1,17 +1,10 @@
-"""ThermoFormer architecture and the manuscript model preset."""
+"""ThermoFormer molecular-interaction architecture."""
 
-from __future__ import annotations
-
-from ..model import DirectVLEOutputs, ModelOutputs, ThermoFormer, ThermoFormerConfig
+from .thermoformer import DirectVLEOutputs, ModelOutputs, ThermoFormer, ThermoFormerConfig
 
 
 def final_model_config() -> ThermoFormerConfig:
-    """Return the C1 three-view vanilla Transformer architecture.
-
-    The feature dimensions match the frozen RDKit, Uni-Mol v2, and functional-
-    group definitions used for the reported experiments. Training settings and
-    molecular preprocessing are configured separately.
-    """
+    """Return the C1 three-view vanilla architecture used in the manuscript."""
 
     return ThermoFormerConfig(
         feature_dim=820,

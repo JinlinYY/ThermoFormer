@@ -134,6 +134,7 @@ class PaperRunnerTests(unittest.TestCase):
             self.assertRegex(manifest["resolved_config_sha256"], r"^[0-9a-f]{64}$")
             self.assertRegex(manifest["feature_cache_sha256"], r"^[0-9a-f]{64}$")
             self.assertRegex(manifest["feature_subset_sha256"], r"^[0-9a-f]{64}$")
+            self.assertIsNone(manifest["pure_property_catalog_sha256"])
             self.assertRegex(manifest["environment_sha256"], r"^[0-9a-f]{64}$")
             self.assertIn("numpy", manifest["runtime"])
             self.assertIn("rdkit", manifest["runtime"])

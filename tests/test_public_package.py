@@ -58,6 +58,30 @@ class PublicPackageTests(unittest.TestCase):
         self.assertTrue(callable(features.build_molecular_encoder))
         self.assertTrue(callable(training.fit_physics_stage))
 
+    def test_protocol_evaluation_is_not_a_row_prediction_alias(self) -> None:
+        from src.thermoformer.evaluation import evaluate_protocol, predict_vle
+
+        self.assertIsNot(evaluate_protocol, predict_vle)
+        self.assertIn("split", evaluate_protocol.__annotations__)
+
+    def test_method_classes_are_owned_by_their_scientific_modules(self) -> None:
+        from src.thermoformer.features.functional_groups import FunctionalGroupEncoder
+        from src.thermoformer.features.rdkit_descriptors import RDKit2DEncoder
+        from src.thermoformer.features.unimol_v2 import UniMolV2Encoder
+        from src.thermoformer.models.interaction import ChemicalBiasedTransformer
+        from src.thermoformer.models.vapor_pressure import PureVaporPressure
+
+        classes = (
+            FunctionalGroupEncoder,
+            RDKit2DEncoder,
+            UniMolV2Encoder,
+            ChemicalBiasedTransformer,
+            PureVaporPressure,
+        )
+        for value in classes:
+            self.assertFalse(value.__module__.endswith(".features.fusion"))
+            self.assertFalse(value.__module__.endswith(".models.thermoformer"))
+
 
 if __name__ == "__main__":
     unittest.main()
