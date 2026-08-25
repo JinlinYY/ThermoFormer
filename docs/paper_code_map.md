@@ -33,3 +33,6 @@ binary/ternary prediction, six state-generalization protocols, unseen-component
 prediction, and six binary-to-ternary settings. Table 2 contains five molecular
 representations, three interaction architectures, and the supervised/raw
 fine-tuned/validation-selected fugacity comparison.
+
+The exact checkpoint-to-result correspondence, including the validation-selected
+stage for every protocol and seed, is documented in `checkpoints/README.md`.

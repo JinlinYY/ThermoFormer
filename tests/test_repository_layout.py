@@ -171,6 +171,88 @@ class RepositoryLayoutTests(unittest.TestCase):
         self.assertEqual(configs[-1].protocol.registered_splits, ("overall_binary_ternary",))
         self.assertEqual(configs[-1].protocol.seeds, (0, 1, 2, 3, 4))
 
+    def test_checkpoint_documentation_matches_manuscript_artifacts(self) -> None:
+        readme = (PROJECT_ROOT / "checkpoints" / "README.md").read_text(
+            encoding="utf-8"
+        )
+        documented_stages = {}
+        for line in readme.splitlines():
+            cells = [cell.strip() for cell in line.split("|")]
+            if len(cells) != 5 or not cells[2].startswith("`"):
+                continue
+            if not cells[3].startswith(("S1", "S2")):
+                continue
+            protocol = cells[2].strip("`")
+            documented_stages[protocol] = cells[3].split(", ")
+
+        result_root = (
+            PROJECT_ROOT
+            / "results"
+            / "experiments"
+            / "physics_finetuning"
+            / "c1_three_view_vanilla_fugacity"
+        )
+        checkpoint_root = (
+            PROJECT_ROOT
+            / "checkpoints"
+            / "experiments"
+            / "physics_finetuning"
+            / "c1_three_view_vanilla_fugacity"
+        )
+        actual_stages = {}
+        for protocol_dir in sorted(result_root.iterdir()):
+            if not protocol_dir.is_dir():
+                continue
+            protocol = protocol_dir.name.removeprefix(
+                "c1_three_view_vanilla_fugacity_finetune.on."
+            )
+            stages = []
+            for seed in range(5):
+                seed_dir = protocol_dir / f"seed_{seed}"
+                comparison = json.loads(
+                    (seed_dir / "stage_comparison.json").read_text(encoding="utf-8")
+                )
+                stages.append(comparison["selected_stage"].upper().replace("STAGE", "S"))
+                self.assertTrue((seed_dir / "manifest.json").is_file())
+                weight_dir = checkpoint_root / protocol_dir.name / f"seed_{seed}"
+                self.assertTrue((weight_dir / "best_model.pt").is_file())
+                self.assertTrue((weight_dir / "stage2_best_model.pt").is_file())
+                self.assertTrue(
+                    (PROJECT_ROOT / comparison["stage1_checkpoint"]).is_file()
+                )
+            actual_stages[protocol] = stages
+        self.assertEqual(documented_stages, actual_stages)
+
+        ablation_roots = (
+            "checkpoints/multiview/chemical_attention/formal/"
+            "c0_current_vanilla.on.overall_binary_ternary",
+            "checkpoints/multiview/formal/"
+            "v1_rdkit_only.on.overall_binary_ternary",
+            "checkpoints/multiview/predictive/"
+            "v3_functional_group_only.on.overall_binary_ternary",
+            "checkpoints/multiview/predictive/"
+            "v4_rdkit_unimol_naive.on.overall_binary_ternary",
+            "checkpoints/multiview/chemical_attention/formal/"
+            "c1_three_view_vanilla.on.overall_binary_ternary",
+            "checkpoints/multiview/chemical_attention/formal/"
+            "c2_chemical_bias_full.on.overall_binary_ternary",
+            "checkpoints/multiview/chemical_attention/formal/"
+            "c3_no_pair_bias.on.overall_binary_ternary",
+        )
+        for relative_root in ablation_roots:
+            self.assertIn(relative_root, readme)
+            for seed in range(5):
+                self.assertTrue(
+                    (
+                        PROJECT_ROOT
+                        / relative_root
+                        / f"seed_{seed}"
+                        / "best_model.pt"
+                    ).is_file()
+                )
+
+        self.assertRegex(readme, r"no\s+seed-specific checkpoint is claimed")
+
 
 if __name__ == "__main__":
     unittest.main()
