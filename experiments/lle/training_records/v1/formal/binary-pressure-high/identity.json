@@ -1,0 +1,52 @@
+{
+  "config": {
+    "output": "D:\\VLE\\VLE\\thermoformer_project\\runs\\phase_equilibrium\\v1\\lle\\formal\\binary-pressure-high",
+    "dataset": "D:\\VLE\\VLE\\thermoformer_project\\datasets/lle",
+    "protocol": "binary-pressure-high",
+    "epochs": 160,
+    "lr": 0.001,
+    "batch_size": 64,
+    "validation_every": 10,
+    "min_epochs": 80,
+    "patience": 4,
+    "curve_points": 24,
+    "solver_iterations": 28,
+    "grid_resolution": 18,
+    "device": "cuda",
+    "check_splits_only": false
+  },
+  "data": {
+    "D:\\VLE\\VLE\\thermoformer_project\\datasets/lle\\binary_lle.xlsx": "2379fc57b16c6a95de7f658173ea368da7a083f80b7ac9d0e6ec8d1f55a98f59",
+    "D:\\VLE\\VLE\\thermoformer_project\\datasets/lle\\ternary_lle.xlsx": "412f631a94e28802bb73b7175692695bdf9ecdd54a6326392c9550bf5f2b8b5c"
+  },
+  "source_hashes": {
+    "binodal_campaign.py": "5eec3d12cd763d877c0bc0783399eb564a77b520c955e4df19d9a69fbf68cba3",
+    "binodal_model.py": "40c0f2faec3332a3fe3db6b4a1672920c49dfb0d68aa58b053d9a3ddc62a48b0",
+    "campaign.py": "939b0c9e7f0d35ba0e96dc2e358ec831f56ea28fb3c1ff484cec1fc617c9292c",
+    "checkpoint_model.py": "9951cb2bc1b67d06c63be8d62edd048af5dc461fa102946491ab5c5ffd0c80b5",
+    "checkpoint_model_v2.py": "b1f66d1ca1b60d970e7295ed66d45f46d235f49ee3d58e0dc2a7480c9910eb4c",
+    "closed_loop.py": "f3315356de107221669551e76357fd3a0faee8e63defa9ba251c226397d69989",
+    "data.py": "24f857024df7cb7f7ab7f0ec5f368731c53094b4198921f95abed2009a39202d",
+    "generalization.py": "78836ee2a528a44c6e1190bb4520f61603904faa7382869ce6ec813151509f7f",
+    "hybrid_binodal_model.py": "c5fed88e3f5ac57669b87502c4a443dcf37e9d8f0135aaecc2bb2f629a844933",
+    "implicit_roots.py": "cdc9918474b8aa83ba9c419a7a5245492b51613563771ffbbc3e9ca2c574ac2f",
+    "metrics.py": "f55b51baf18eb56dbde023ec09fb1ec27e5908718d41ccf3453e3980ecc707d3",
+    "model.py": "65f95c025887e7c84583399a6ac37f16006fa156cc1312582bee4d834ee4baab",
+    "predict.py": "c46e66e6f91cd369d3bbaa9b5ddfa311b6a6084a53d94347400b138d1ab66a83",
+    "predict_final.py": "623afd01381a9d243fb43e79c61438c110f4018ade93fec7bb65fcda8d9ec9ac",
+    "predict_repaired.py": "4902c764fcaa6bfcda8ede893d2d36562475cb4f44e5ca21fca8de24857528f5",
+    "predict_verified.py": "8d274a46319034a3b8765d744763c122d07515b344e9b50ac7bb98039c0b7575",
+    "repair_campaign.py": "a3e61c744e2faf991502375ec9ae1c7afea6815e7489121e7c8513ec9d02049e",
+    "repair_implicit_campaign.py": "bad5234b4869d5084e14874b4226fb5871f9ec35357138f227da40a5546ccf9b",
+    "solver.py": "4c13c059c4a5c55e127f83554a910a7f6f39c0bb8838ec1d845cf099d0a4e1d0",
+    "solver_batch.py": "8516c158c79f5848a43ed5515673cd98a0277d59fbb709f241c127617552784b",
+    "solver_cached.py": "981e9f86f35ccd15ec619b7c31509f013598caaf7c9db86fa850ef3377a1872a",
+    "solver_certified.py": "126e88dff6bec2c2054b0c2d72cd820ad1465b2eb361a324b1ebbc81fd8b5a09",
+    "verified_campaign.py": "9f005d9b66e38ae8645a85e798e6ce9efe45a521a09c39e3c0fb4fd292b5589b",
+    "verified_fast_campaign.py": "34a13f7756dc54b333125a37d34c47fef2c401855318d27e4c7ebb16d4809d95",
+    "__init__.py": "3c4fc3a7090425ee5aca6a1571b5c9330feddb328c3ba771e39016e4bb505097"
+  },
+  "model_prior": "binary RK plus continuous parallel ternary tie lines; LLE-only",
+  "solver_engine": "deterministic per-condition double precision certification; activity RMS <= 0.001; finite-grid TPD >= -0.0001",
+  "initialization": "newly initialized network; pretrained molecular features only"
+}

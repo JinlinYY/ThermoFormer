@@ -1,0 +1,56 @@
+{
+  "task": "all",
+  "seeds": [
+    0
+  ],
+  "smoke": true,
+  "check_splits_only": false,
+  "jobs": [
+    {
+      "name": "vle_vle_overall_binary",
+      "status": "complete",
+      "command": [
+        "E:\\anaconda\\envs\\ggnn39\\python.exe",
+        "scripts/run_vle_benchmarks.py",
+        "--protocol",
+        "vle_overall_binary",
+        "--seeds",
+        "0",
+        "--output",
+        "D:\\VLE\\VLE\\thermoformer_project\\runs\\phase_equilibrium\\smoke_v1",
+        "--device",
+        "cuda",
+        "--smoke"
+      ],
+      "log": "D:\\VLE\\VLE\\thermoformer_project\\runs\\phase_equilibrium\\smoke_v1\\logs\\vle_vle_overall_binary.log",
+      "returncode": 0
+    },
+    {
+      "name": "lle_binary-random",
+      "status": "complete",
+      "command": [
+        "E:\\anaconda\\envs\\ggnn39\\python.exe",
+        "-m",
+        "src.thermoformer.lle_tp.verified_fast_campaign",
+        "--output",
+        "D:\\VLE\\VLE\\thermoformer_project\\runs\\phase_equilibrium\\smoke_v1\\lle\\smoke\\binary-random",
+        "--dataset",
+        "D:\\VLE\\VLE\\thermoformer_project\\datasets/lle",
+        "--protocol",
+        "binary-random",
+        "--seeds",
+        "0",
+        "--device",
+        "cuda",
+        "--epochs",
+        "3",
+        "--min-epochs",
+        "1",
+        "--validation-every",
+        "1"
+      ],
+      "log": "D:\\VLE\\VLE\\thermoformer_project\\runs\\phase_equilibrium\\smoke_v1\\logs\\lle_binary-random.log",
+      "returncode": 0
+    }
+  ]
+}

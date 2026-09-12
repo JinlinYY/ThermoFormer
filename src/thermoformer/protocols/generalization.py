@@ -593,6 +593,67 @@ def unseen_component_split(
     )
 
 
+def _rename_binary_protocol(
+    split: DatasetPartitions,
+    protocol: str,
+) -> DatasetPartitions:
+    return DatasetPartitions(
+        train=split.train,
+        validation=split.validation,
+        test=split.test,
+        protocol=protocol,
+        seed=split.seed,
+        metadata={
+            **split.metadata,
+            "source_protocol": split.protocol,
+            "component_counts": [2],
+            "data_scope": "binary train, binary validation, binary test",
+        },
+    )
+
+
+def binary_generalization_splits(
+    samples: Sequence[VLESample],
+    seed: int,
+    minimum_anchor_temperatures: int = 2,
+) -> tuple[DatasetPartitions, ...]:
+    """Build binary-only state-space and unseen-component protocols."""
+    binary = tuple(sample for sample in samples if sample.component_count == 2)
+    if not binary:
+        raise ValueError("Binary generalization protocols require binary samples")
+    state_splits = (
+        composition_interpolation_split(binary, seed),
+        composition_edge_split(binary, seed),
+        state_extreme_split(binary, "temperature", "low", seed),
+        state_extreme_split(binary, "temperature", "high", seed),
+        state_extreme_split(binary, "pressure", "low", seed),
+        state_extreme_split(binary, "pressure", "high", seed),
+    )
+    components = {smiles for sample in binary for smiles in sample.smiles}
+    protected = (
+        protect_pure_reference_systems(
+            binary,
+            split,
+            minimum_temperatures=minimum_anchor_temperatures,
+            allowed_components=components,
+            required_components=components,
+        )
+        for split in state_splits
+    )
+    unseen = unseen_component_split(
+        binary,
+        seed,
+        minimum_anchor_temperatures=minimum_anchor_temperatures,
+    )
+    return (
+        *(
+            _rename_binary_protocol(split, f"binary_{split.protocol}")
+            for split in protected
+        ),
+        _rename_binary_protocol(unseen, "binary_unseen_component"),
+    )
+
+
 def binary_to_ternary_split(
     samples: Sequence[VLESample],
     seed: int,

@@ -98,7 +98,7 @@ class PhysicsFineTuningTests(unittest.TestCase):
     def test_final_configuration_is_c1_with_fugacity_only(self) -> None:
         config = load_experiment_config(
             self.ROOT
-            / "experiments/ablations/fugacity_finetuning/config.yaml"
+            / "configs/vle/ablation/studies/fugacity_finetuning/config.yaml"
         )
         self.assertEqual(config.encoder.representation, "multiview")
         self.assertEqual(config.encoder.fusion_mode, "naive")
@@ -122,6 +122,96 @@ class PhysicsFineTuningTests(unittest.TestCase):
             self.assertEqual(parameter.requires_grad, expected, name)
             self.assertEqual(id(parameter) in optimizer_ids, expected, name)
         self.assertLess(setup.trainable_parameters, setup.total_parameters)
+
+    def test_c1_keeps_pair_potential_group_and_learning_rate(self) -> None:
+        finetuning = self.finetuning()
+        setup = configure_physics_finetuning(self.model(), self.config(), finetuning)
+
+        self.assertEqual(
+            [group.name for group in setup.groups],
+            ["pair_potential", "vapor_pressure", "film", "mixture_token"],
+        )
+        self.assertEqual(setup.groups[0].learning_rate, finetuning.pair_potential_lr)
+        self.assertTrue(
+            all(name.startswith("pair_potential.") for name in setup.groups[0].parameter_names)
+        )
+
+    def test_context_pair_variants_resolve_the_interaction_group(self) -> None:
+        finetuning = self.finetuning()
+        base = dict(
+            feature_dim=6,
+            hidden_dim=8,
+            layers=1,
+            heads=2,
+            pair_hidden_dim=8,
+            pure_hidden_dim=8,
+            fusion_mode="naive",
+            rdkit_feature_dim=2,
+            unimol_feature_dim=2,
+            functional_group_feature_dim=2,
+            context_pair_interaction=True,
+        )
+        for variant_name, chemical_attention_bias in (
+            ("c2_chemical_bias_full", True),
+            ("c3_no_pair_bias", False),
+        ):
+            with self.subTest(variant=variant_name):
+                model = ThermoFormer(
+                    ThermoFormerConfig(
+                        **base,
+                        chemical_attention_bias=chemical_attention_bias,
+                    )
+                )
+                self.assertIsNone(model.pair_potential)
+                self.assertIsNotNone(model.context_pair_potential)
+
+                setup = configure_physics_finetuning(model, self.config(), finetuning)
+                context_group = next(
+                    group
+                    for group in setup.groups
+                    if group.name == "context_pair_potential"
+                )
+                self.assertEqual(context_group.learning_rate, finetuning.pair_potential_lr)
+                self.assertTrue(context_group.parameter_names)
+                self.assertTrue(
+                    all(
+                        name.startswith("context_pair_potential.")
+                        for name in context_group.parameter_names
+                    )
+                )
+                optimized = {
+                    id(parameter)
+                    for optimizer_group in setup.optimizer.param_groups
+                    for parameter in optimizer_group["params"]
+                }
+                for name, parameter in model.named_parameters():
+                    if name.startswith("context_pair_potential."):
+                        self.assertTrue(parameter.requires_grad, name)
+                        self.assertIn(id(parameter), optimized)
+
+    def test_missing_interaction_potential_fails_clearly(self) -> None:
+        model = ThermoFormer(
+            ThermoFormerConfig(
+                feature_dim=6,
+                hidden_dim=8,
+                layers=1,
+                heads=2,
+                pair_hidden_dim=8,
+                pure_hidden_dim=8,
+                fusion_mode="naive",
+                rdkit_feature_dim=2,
+                unimol_feature_dim=2,
+                functional_group_feature_dim=2,
+                interaction_mode="independent",
+            )
+        )
+        self.assertIsNone(model.pair_potential)
+        self.assertIsNone(model.context_pair_potential)
+        with self.assertRaisesRegex(
+            ValueError,
+            "interaction-potential.*pair_potential.*context_pair_potential",
+        ):
+            configure_physics_finetuning(model, self.config(), self.finetuning())
 
     def test_frozen_parameters_stay_fixed_and_unfrozen_groups_receive_gradients(self) -> None:
         model = self.model()
@@ -242,7 +332,7 @@ class PhysicsFineTuningTests(unittest.TestCase):
         self.assertEqual(args.seeds, [0, 1])
         self.assertEqual(
             stage1_checkpoint_path(self.ROOT, "unseen_component", 3),
-            self.ROOT / "checkpoints/unseen_component/seed_3/best_model.pt",
+            self.ROOT / "models/vle/unseen_component/seed_3/best_model.pt",
         )
         self.assertIn(
             "c1_three_view_vanilla.on.overall_binary_ternary",
@@ -265,7 +355,7 @@ class PhysicsFineTuningTests(unittest.TestCase):
                 require_materialized_checkpoint(checkpoint)
 
     def test_nonoverall_report_stays_in_the_result_namespace(self) -> None:
-        protocol_dir = self.ROOT / "results/example.on.unseen_component"
+        protocol_dir = self.ROOT / "experiments/reference_results/example.on.unseen_component"
         self.assertEqual(
             physics_report_path(
                 self.ROOT,
@@ -275,16 +365,14 @@ class PhysicsFineTuningTests(unittest.TestCase):
             ),
             protocol_dir / "results.md",
         )
-        self.assertNotIn("experiments/", physics_report_path(
+        self.assertIn("experiments/", physics_report_path(
             self.ROOT, protocol_dir, "unseen_component", smoke=False
         ).as_posix())
 
     def test_multiseed_summary_is_paired_and_seed_aware(self) -> None:
         source = (
             self.ROOT
-            / "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity"
-            / "c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary"
-            / "seed_0/stage_comparison.json"
+            / 'experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/seed_0/stage_comparison.json'
         )
         payload = json.loads(source.read_text(encoding="utf-8"))
         with tempfile.TemporaryDirectory() as directory:
@@ -316,8 +404,7 @@ class PhysicsFineTuningTests(unittest.TestCase):
     def test_multiseed_report_includes_final_metrics_and_parameter_audit(self) -> None:
         result_root = (
             self.ROOT
-            / "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity"
-            / "c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary"
+            / 'experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary'
         )
         paths = [result_root / f"seed_{seed}/stage_comparison.json" for seed in range(5)]
         with tempfile.TemporaryDirectory() as directory:

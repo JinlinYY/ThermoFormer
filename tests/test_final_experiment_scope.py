@@ -2,9 +2,7 @@ import unittest
 from dataclasses import fields
 from pathlib import Path
 
-from src.chemical_attention_protocols import CHEMICAL_ATTENTION_FORMAL_PROTOCOLS
 from src.config import PhysicsFineTuningConfig, load_experiment_config
-from src.multiview_protocols import PREDICTIVE_PROTOCOLS
 from src.training import TrainingConfig
 
 
@@ -14,7 +12,7 @@ class FinalExperimentScopeTests(unittest.TestCase):
     def test_final_c1_configuration_is_three_view_vanilla(self) -> None:
         config = load_experiment_config(
             self.ROOT
-            / "experiments/ablations/fugacity_finetuning/config.yaml"
+            / "configs/vle/ablation/studies/fugacity_finetuning/config.yaml"
         )
         self.assertEqual(config.encoder.representation, "multiview")
         self.assertEqual(config.encoder.fusion_mode, "naive")
@@ -42,16 +40,21 @@ class FinalExperimentScopeTests(unittest.TestCase):
             "additional_pure_vapor_pressure_anchor_weight", finetuning_fields
         )
 
-    def test_ablation_protocols_are_joint_binary_ternary_only(self) -> None:
-        self.assertEqual(
-            CHEMICAL_ATTENTION_FORMAL_PROTOCOLS, ("overall_binary_ternary",)
+    def test_canonical_ablation_campaign_is_binary_only(self) -> None:
+        config = load_experiment_config(
+            self.ROOT
+            / "configs/vle/ablation/studies/overall_binary_three_stage/three_stage_base.yaml"
         )
-        self.assertEqual(PREDICTIVE_PROTOCOLS, ("overall_binary_ternary",))
+        self.assertEqual(config.protocol.registered_splits, ("overall_binary",))
+        self.assertEqual(config.protocol.seeds, tuple(range(5)))
+        self.assertEqual(config.direct_ge_supervision.pretrain_epochs, 20)
+        self.assertEqual(config.training.epochs_supervised, 80)
+        self.assertEqual(config.direct_ge_supervision.fugacity_epochs, 10)
 
     def test_only_fugacity_physics_experiment_remains(self) -> None:
         self.assertFalse((self.ROOT / "experiments/physics_finetuning").exists())
         self.assertTrue(
-            (self.ROOT / "experiments/ablations/fugacity_finetuning/config.yaml").is_file()
+            (self.ROOT / "configs/vle/ablation/studies/fugacity_finetuning/config.yaml").is_file()
         )
 
 

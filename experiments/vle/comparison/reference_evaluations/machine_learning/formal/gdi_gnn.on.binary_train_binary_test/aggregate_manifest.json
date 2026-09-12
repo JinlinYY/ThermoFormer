@@ -1,0 +1,82 @@
+{
+  "analysis_status": "confirmatory",
+  "baseline": "gdi_gnn",
+  "benchmark": "binary_train_binary_test",
+  "input_manifests": {
+    "0": {
+      "path": "experiments/vle/comparison/reference_evaluations/machine_learning/formal/gdi_gnn.on.binary_train_binary_test/seed_0/manifest.json",
+      "sha256": "59c1bb60056712e34c97dce0c4161ae60804355c4832a2b05d178307d7bb7526"
+    },
+    "1": {
+      "path": "experiments/vle/comparison/reference_evaluations/machine_learning/formal/gdi_gnn.on.binary_train_binary_test/seed_1/manifest.json",
+      "sha256": "787e0d04dd71bfbe059d0cb0fa7b62a97f3ce9f79c1ccadd9404ba29b488f7af"
+    },
+    "2": {
+      "path": "experiments/vle/comparison/reference_evaluations/machine_learning/formal/gdi_gnn.on.binary_train_binary_test/seed_2/manifest.json",
+      "sha256": "5b9880ba05dd0a7880ebe5eb427aa3fbd8e3bb4b0028bc6532a92b35b87b67ee"
+    },
+    "3": {
+      "path": "experiments/vle/comparison/reference_evaluations/machine_learning/formal/gdi_gnn.on.binary_train_binary_test/seed_3/manifest.json",
+      "sha256": "8f445892bf018819c596bc8c31a9472aeeb74db6732f2e6abe1deeafcea131cf"
+    },
+    "4": {
+      "path": "experiments/vle/comparison/reference_evaluations/machine_learning/formal/gdi_gnn.on.binary_train_binary_test/seed_4/manifest.json",
+      "sha256": "5e92eae942df1c6c0b4d58ded9d7be0f493060997e21aa65e1cb03b33d98a1ab"
+    }
+  },
+  "output": {
+    "path": "metrics_summary.csv",
+    "sha256": "83a607324db078092972a4a75a11f57e781c0b252b68bb86188fb4a064a6181e"
+  },
+  "provenance": {
+    "config": {
+      "device": "cuda",
+      "epochs": 200,
+      "fixed_temperature_tolerance_k": 0.5,
+      "gdi_weight": 0.01,
+      "learning_rate": 0.001,
+      "mc_dropout_samples": 32,
+      "minimum_composition": 1e-05,
+      "patience": 25
+    },
+    "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+    "environment": {
+      "path": "environment.yml",
+      "sha256": "505e06ece39ae0a83e1bc217ba357cb6b6c816a2d3d5ffa3ce93bb0a90c282af"
+    },
+    "feature_cache": {
+      "policy": "deterministic_on_the_fly_from_registered_rows",
+      "used": false
+    },
+    "feature_definitions": {
+      "src/thermoformer/baselines/machine_learning/formal.py": "b77952c9e33da0ec3d27bfcdcfd3313c430f0056d0afafa2fc1d23113b20bd85",
+      "src/thermoformer/baselines/machine_learning/models.py": "85bea39c337386776bc745a7d07d69952b0fc215e3024f3dece6a81d1c285a34",
+      "src/thermoformer/baselines/machine_learning/smoke.py": "e84b0d51be5cb2d90832c8057da96cc8a461de8a974c18ddb0d7cb47d1cdbad2"
+    },
+    "git_commit": "909cc20f0ba4150b3551b8dbf23b2b9e03c0489e",
+    "runtime": {
+      "cuda": "12.6",
+      "cudnn": "90501",
+      "device": "cuda",
+      "gpu": "NVIDIA GeForce RTX 3090 Ti",
+      "numpy": "1.26.4",
+      "python": "3.9.25",
+      "torch": "2.6.0+cu126"
+    },
+    "settings_sha256": "df3f3da3ab4c73f8ff9172ed63b0d4473a44841b79c66c379ff7e0ea1210099d",
+    "source_workbooks": {
+      "datasets/vle_reference/binary_vle_english.xlsx": "d122177fe42b5b41ca2e782cc77b3e6a7a0ebf922bb0e589f18edde622bf3efc",
+      "datasets/vle_reference/ternary_vle_english.xlsx": "52fe356da44cc5e78f32b881a614ac95ea98e55002aaba464cfcf35069764c67"
+    },
+    "split_protocol": "overall_binary"
+  },
+  "schema_version": 1,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "status": "completed"
+}

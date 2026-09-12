@@ -80,7 +80,7 @@ class EncoderConfig:
 
 @dataclass(frozen=True)
 class DataConfig:
-    root: str = "dataset"
+    root: str = "datasets/vle_reference"
     pure_property_catalog: str = ""
     source_filter: str = ""
     failed_weight: float = 0.0
@@ -151,7 +151,7 @@ class EvaluationConfig:
 
 @dataclass(frozen=True)
 class RuntimeConfig:
-    output_dir: str = "runs/thermoformer"
+    output_dir: str = "experiments/run_records/thermoformer"
     device: Literal["auto", "cpu", "cuda"] = "auto"
     results_file: str | None = None
 
@@ -228,6 +228,90 @@ class PhysicsFineTuningConfig:
 
 
 @dataclass(frozen=True)
+class DirectGESupervisionConfig:
+    """Hyperparameters for staged direct excess-Gibbs supervision."""
+
+    enabled: bool = True
+    pretrain_epochs: int = 20
+    pretrain_learning_rate: float = 2e-4
+    fugacity_epochs: int = 10
+    excess_gibbs_weight: float = 1.0
+    activity_coefficient_weight: float = 0.5
+    vle_weight: float = 1.0
+    fugacity_weight: float = 0.01
+    minimum_fraction: float = 1e-4
+    warmup_epochs: int = 2
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.enabled, bool):
+            raise ValueError("direct_ge_supervision.enabled must be boolean")
+        for name in ("pretrain_epochs", "fugacity_epochs", "warmup_epochs"):
+            value = getattr(self, name)
+            if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+                raise ValueError(
+                    f"direct_ge_supervision.{name} must be a non-negative integer"
+                )
+        for name in ("pretrain_learning_rate", "minimum_fraction"):
+            value = getattr(self, name)
+            if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value) or value <= 0.0:
+                raise ValueError(f"direct_ge_supervision.{name} must be positive and finite")
+        for name in (
+            "excess_gibbs_weight",
+            "activity_coefficient_weight",
+            "vle_weight",
+            "fugacity_weight",
+        ):
+            value = getattr(self, name)
+            if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value) or value < 0.0:
+                raise ValueError(f"direct_ge_supervision.{name} must be non-negative and finite")
+        if self.minimum_fraction >= 0.5:
+            raise ValueError("direct_ge_supervision.minimum_fraction must be below 0.5")
+
+
+@dataclass(frozen=True)
+class LLEConfig:
+    """Data, solver, and refinement settings for a standalone LLE task."""
+
+    binary_workbook: str = "binary_lle_english.xlsx"
+    ternary_workbook: str = "ternary_lle_english.xlsx"
+    component_count: Literal[2, 3] = 3
+    stage1_checkpoint_template: str = ""
+    composition_weight: float = 1.0
+    fugacity_weight: float = 0.01
+    x_min: float = 1e-4
+    multistarts: int = 8
+    train_iterations: int = 24
+    eval_iterations: int = 64
+    step_size: float = 0.2
+    phase_tol: float = 1e-3
+    equilibrium_tolerance: float = 1e-4
+    tpd_tolerance: float = 1e-4
+
+    def __post_init__(self) -> None:
+        if self.component_count not in (2, 3):
+            raise ValueError("lle.component_count must be 2 or 3")
+        if not isinstance(self.stage1_checkpoint_template, str):
+            raise ValueError("lle.stage1_checkpoint_template must be a string")
+        for name in ("binary_workbook", "ternary_workbook"):
+            value = getattr(self, name)
+            if not isinstance(value, str) or not value.strip():
+                raise ValueError(f"lle.{name} must be a non-empty string")
+        for name in ("multistarts", "train_iterations", "eval_iterations"):
+            value = getattr(self, name)
+            if not isinstance(value, int) or isinstance(value, bool) or value < 1:
+                raise ValueError(f"lle.{name} must be a positive integer")
+        for name in ("composition_weight", "fugacity_weight", "x_min", "step_size", "phase_tol", "equilibrium_tolerance", "tpd_tolerance"):
+            value = getattr(self, name)
+            if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value):
+                raise ValueError(f"lle.{name} must be finite")
+            if value < 0.0:
+                raise ValueError(f"lle.{name} must be non-negative")
+        if self.x_min <= 0.0 or self.x_min >= 0.5 or self.step_size <= 0.0:
+            raise ValueError("lle.x_min must lie in (0, 0.5) and lle.step_size must be positive")
+        if self.train_iterations > self.eval_iterations:
+            raise ValueError("lle.train_iterations cannot exceed lle.eval_iterations")
+
+@dataclass(frozen=True)
 class ProtocolConfig:
     """Registered split family and random seeds represented by a configuration."""
 
@@ -270,6 +354,7 @@ class ProtocolConfig:
 class ExperimentConfig:
     name: str = "thermoformer_base"
     seed: int = 42
+    task_mode: Literal["vle", "lle"] = "vle"
     model: ThermoFormerConfig = field(default_factory=ThermoFormerConfig)
     encoder: EncoderConfig = field(default_factory=EncoderConfig)
     data: DataConfig = field(default_factory=DataConfig)
@@ -278,10 +363,18 @@ class ExperimentConfig:
     runtime: RuntimeConfig = field(default_factory=RuntimeConfig)
     protocol: ProtocolConfig | None = None
     physics_finetuning: PhysicsFineTuningConfig | None = None
+    direct_ge_supervision: DirectGESupervisionConfig | None = None
+    lle: LLEConfig | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.seed, int) or isinstance(self.seed, bool):
             raise ValueError("experiment seed must be an integer")
+        if self.task_mode not in ("vle", "lle"):
+            raise ValueError("task_mode must be vle or lle; joint mode is unsupported")
+        if self.task_mode == "lle" and self.lle is None:
+            raise ValueError("task_mode=lle requires an lle configuration section")
+        if self.task_mode == "lle" and self.training.epochs_supervised > 80:
+            raise ValueError("LLE Stage 2 training.epochs_supervised cannot exceed 80")
         if (
             self.model.chemical_attention_bias
             and not self.encoder.chemical_attention_bias
@@ -312,6 +405,10 @@ class ExperimentConfig:
         payload = asdict(self)
         if self.physics_finetuning is None:
             payload.pop("physics_finetuning")
+        if self.direct_ge_supervision is None:
+            payload.pop("direct_ge_supervision")
+        if self.lle is None:
+            payload.pop("lle")
         if self.protocol is None:
             payload.pop("protocol")
         return payload
@@ -334,7 +431,7 @@ def _with_overrides(payload: dict[str, object], overrides: Sequence[str]) -> dic
         if len(path) != 2:
             raise ValueError(f"Override must address one section and field: {dotted_key}")
         section, field_name = path
-        if section not in {"model", "encoder", "data", "evaluation", "training", "runtime", "protocol", "physics_finetuning"}:
+        if section not in {"model", "encoder", "data", "evaluation", "training", "runtime", "protocol", "physics_finetuning", "direct_ge_supervision", "lle"}:
             raise ValueError(f"Unknown configuration section: {section}")
         section_payload = updated.setdefault(section, {})
         if not isinstance(section_payload, dict):
@@ -399,7 +496,7 @@ def load_experiment_config(
 ) -> ExperimentConfig:
     payload = _load_payload(path)
     payload = _with_overrides(payload, overrides)
-    allowed_root = {"name", "seed", "model", "encoder", "data", "evaluation", "training", "runtime", "protocol", "physics_finetuning"}
+    allowed_root = {"name", "seed", "task_mode", "model", "encoder", "data", "evaluation", "training", "runtime", "protocol", "physics_finetuning", "direct_ge_supervision", "lle"}
     unknown_root = sorted(set(payload) - allowed_root)
     if unknown_root:
         raise ValueError(
@@ -417,6 +514,7 @@ def load_experiment_config(
     return ExperimentConfig(
         name=str(payload.get("name", "thermoformer_base")),
         seed=seed,
+        task_mode=str(payload.get("task_mode", "vle")),
         model=_section("model", ThermoFormerConfig, payload.get("model", {})),
         encoder=_section("encoder", EncoderConfig, payload.get("encoder", {})),
         data=_section("data", DataConfig, payload.get("data", {})),
@@ -435,6 +533,20 @@ def load_experiment_config(
                 payload["physics_finetuning"],
             )
             if "physics_finetuning" in payload
+            else None
+        ),
+        direct_ge_supervision=(
+            _section(
+                "direct_ge_supervision",
+                DirectGESupervisionConfig,
+                payload["direct_ge_supervision"],
+            )
+            if "direct_ge_supervision" in payload
+            else None
+        ),
+        lle=(
+            _section("lle", LLEConfig, payload["lle"])
+            if "lle" in payload
             else None
         ),
     )

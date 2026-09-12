@@ -252,6 +252,65 @@ class ResultAggregationTests(unittest.TestCase):
                     root, expected_seeds=(0, 1), aggregate_kind="diagnostic"
                 )
 
+    def test_explicitly_approved_equivalent_commits_preserve_seed_provenance(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for seed, commit in ((0, "commit-a"), (1, "commit-b")):
+                seed_dir = root / f"seed_{seed}"
+                seed_dir.mkdir()
+                (seed_dir / "manifest.json").write_text(
+                    json.dumps(self.manifest(seed, seed_dir, git_commit=commit)),
+                    encoding="utf-8",
+                )
+                (seed_dir / "metrics.json").write_text(
+                    json.dumps(
+                        [
+                            {
+                                "scope": "all",
+                                "direction": None,
+                                "component_count": None,
+                                "subgroup": None,
+                                "y_mae": 0.1 + seed,
+                            }
+                        ]
+                    ),
+                    encoding="utf-8",
+                )
+
+            with self.assertRaisesRegex(ValueError, "provenance"):
+                aggregate_protocol_results(
+                    root, expected_seeds=(0, 1), aggregate_kind="diagnostic"
+                )
+
+            with patch(
+                "src.results._git_aggregate_state",
+                return_value=("aggregate-commit", False, []),
+            ):
+                aggregate_protocol_results(
+                    root,
+                    expected_seeds=(0, 1),
+                    aggregate_kind="diagnostic",
+                    compatible_training_git_commits=("commit-a", "commit-b"),
+                    mixed_commit_justification="Only progress logging changed.",
+                )
+
+            manifest = json.loads(
+                (root / "diagnostic_aggregate_manifest.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(
+                manifest["training_git_commits"], ["commit-a", "commit-b"]
+            )
+            self.assertEqual(
+                manifest["training_git_commits_by_seed"],
+                {"0": "commit-a", "1": "commit-b"},
+            )
+            self.assertEqual(
+                manifest["mixed_commit_justification"],
+                "Only progress logging changed.",
+            )
+
     def test_validation_failure_preserves_existing_aggregate_files(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

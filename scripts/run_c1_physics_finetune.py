@@ -39,12 +39,12 @@ def output_roots(
     smoke: bool,
     experiment_folder: str = EXPERIMENT_FOLDER,
 ) -> tuple[Path, Path, Path]:
-    root = project_root / "runs/c1_physics_finetune_smoke" if smoke else project_root
+    root = project_root / "experiments/run_records/c1_physics_finetune_smoke" if smoke else project_root
     experiment_path = Path("experiments/physics_finetuning") / experiment_folder
     return (
-        root / "runs" / experiment_path,
-        root / "checkpoints" / experiment_path,
-        root / "results" / experiment_path,
+        root / 'experiments/run_records' / experiment_path,
+        root / 'models/vle' / experiment_path,
+        root / 'experiments/reference_results' / experiment_path,
     )
 
 
@@ -68,10 +68,10 @@ def stage1_checkpoint_path(project_root: Path, protocol: str, seed: int) -> Path
     if protocol == DEFAULT_PROTOCOL:
         return (
             project_root
-            / "checkpoints/multiview/chemical_attention/formal"
+            / "models/vle/multiview/chemical_attention/formal"
             / f"c1_three_view_vanilla.on.{protocol}/seed_{seed}/best_model.pt"
         )
-    return project_root / f"checkpoints/{protocol}/seed_{seed}/best_model.pt"
+    return project_root / f"models/vle/{protocol}/seed_{seed}/best_model.pt"
 
 
 def require_materialized_checkpoint(path: Path) -> None:
@@ -102,8 +102,7 @@ def physics_report_path(
     if split_protocol == DEFAULT_PROTOCOL:
         return (
             project_root
-            / "experiments/ablations/fugacity_finetuning"
-            / "results.md"
+            / 'experiments/vle/ablation/study_records/fugacity_finetuning/results.md'
         )
     return protocol_dir / "results.md"
 
@@ -162,7 +161,7 @@ def main(argv: list[str] | None = None) -> None:
     experiment_folder = EXPERIMENT_FOLDER
     config_path = (
         PROJECT_ROOT
-        / "experiments/ablations/fugacity_finetuning/config.yaml"
+        / "configs/vle/ablation/studies/fugacity_finetuning/config.yaml"
     )
     experiment = load_experiment_config(config_path)
     feature_cache = PROJECT_ROOT / "cache" / encoder_cache_filename(experiment.encoder)
@@ -187,7 +186,7 @@ def main(argv: list[str] | None = None) -> None:
     manifests: list[tuple[int, Path, dict[str, object]]] = []
     comparison_paths: list[Path] = []
     for seed in seeds:
-        split_path = PROJECT_ROOT / f"splits/{split_protocol}/seed_{seed}.json"
+        split_path = PROJECT_ROOT / f"datasets/splits/vle/{split_protocol}/seed_{seed}.json"
         stage1_checkpoint = stage1_checkpoint_path(PROJECT_ROOT, split_protocol, seed)
         require_materialized_checkpoint(stage1_checkpoint)
         seed_manifest_path = protocol_dir / f"seed_{seed}/manifest.json"

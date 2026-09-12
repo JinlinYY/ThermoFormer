@@ -31,13 +31,7 @@ class PublicPackageTests(unittest.TestCase):
 
         resolved_path = (
             PROJECT_ROOT
-            / "results"
-            / "experiments"
-            / "physics_finetuning"
-            / "c1_three_view_vanilla_fugacity"
-            / "c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary"
-            / "seed_0"
-            / "resolved_config.json"
+            / 'experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/seed_0/resolved_config.json'
         )
         payload = json.loads(resolved_path.read_text(encoding="utf-8"))
         formal_config = ThermoFormerConfig(**payload["model"])

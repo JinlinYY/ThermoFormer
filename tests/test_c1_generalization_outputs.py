@@ -48,11 +48,8 @@ class C1GeneralizationOutputTests(unittest.TestCase):
             self.assertIn("molecules,P,x -> T,y", text)
             self.assertIn("validation retained Stage 1", text)
             self.assertIn("manifest", outputs)
-            complete_report = self.ROOT / outputs["complete_chinese_report"]
-            self.assertTrue(complete_report.is_file())
-            complete_text = complete_report.read_text(encoding="utf-8")
-            self.assertIn("未见组分是当前模型最明显的能力边界", complete_text)
-            self.assertIn("146/180", complete_text)
+            self.assertNotIn("complete_chinese_report", outputs)
+            self.assertIn("146/180", text)
 
 
 if __name__ == "__main__":

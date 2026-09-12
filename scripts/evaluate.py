@@ -40,7 +40,7 @@ def parser() -> argparse.ArgumentParser:
     value.add_argument("--partition", choices=("validation", "test"), default="test")
     value.add_argument("--feature-cache", type=Path, default=None)
     value.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
-    value.add_argument("--output-dir", type=Path, default=PROJECT_ROOT / "runs" / "evaluation")
+    value.add_argument("--output-dir", type=Path, default=PROJECT_ROOT / 'experiments/run_records/evaluation')
     value.add_argument("--overwrite", action="store_true")
     return value
 

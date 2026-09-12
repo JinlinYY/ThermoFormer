@@ -2,6 +2,7 @@ import unittest
 
 from src.data import VLESample
 from src.protocols import (
+    binary_generalization_splits,
     binary_to_ternary_split,
     composition_interpolation_split,
     overall_system_split,
@@ -51,6 +52,41 @@ def dataset():
 
 
 class ProtocolSplitTests(unittest.TestCase):
+    def test_binary_generalization_protocols_use_only_binary_rows(self) -> None:
+        splits = {
+            split.protocol: split
+            for split in binary_generalization_splits(
+                dataset(), seed=2, minimum_anchor_temperatures=0
+            )
+        }
+        self.assertEqual(
+            set(splits),
+            {
+                "binary_state_composition_interpolation",
+                "binary_state_composition_edge_extrapolation",
+                "binary_state_temperature_low_extrapolation",
+                "binary_state_temperature_high_extrapolation",
+                "binary_state_pressure_low_extrapolation",
+                "binary_state_pressure_high_extrapolation",
+                "binary_unseen_component",
+            },
+        )
+        for split in splits.values():
+            self.assertTrue(
+                all(
+                    sample.component_count == 2
+                    for partition in (split.train, split.validation, split.test)
+                    for sample in partition
+                )
+            )
+            self.assertEqual(split.metadata["component_counts"], [2])
+        unseen = splits["binary_unseen_component"]
+        held_out = set(unseen.metadata["held_out_components"])
+        training_components = {
+            smiles for sample in unseen.train for smiles in sample.smiles
+        }
+        self.assertTrue(held_out.isdisjoint(training_components))
+
     def test_pure_reference_rows_are_moved_to_train_without_row_overlap(self) -> None:
         anchors = [
             row(("C", "O"), index, x=composition)

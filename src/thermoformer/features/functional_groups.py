@@ -13,7 +13,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
 def functional_group_vocabulary_path() -> Path:
-    return PROJECT_ROOT / "assets" / "functional_groups.json"
+    return PROJECT_ROOT / 'datasets/molecular_features/functional_groups.json'
 
 
 def _sha256(path: Path) -> str:

@@ -1,0 +1,36 @@
+{
+  "status": "completed",
+  "baseline": "tennet_sac_binary_adapted",
+  "benchmark": "binary_train_binary_test",
+  "seed": 4,
+  "selection_partition": "validation",
+  "evaluation_partition": "test",
+  "test_labels_used_for_selection": false,
+  "config": {
+    "hidden_dimension": 32,
+    "dropout": 0.05,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "batch_size": 256,
+    "epochs": 100,
+    "patience": 15,
+    "minimum_composition": 1e-05
+  },
+  "train_rows": 6159,
+  "validation_rows": 1380,
+  "vapor_pressure_calibration": {
+    "partition": "registered_training_only",
+    "eligible_rows": "near-pure endpoints with x >= 0.999",
+    "calibration_rows_scanned": 6965,
+    "binary_mixture_activity_labels_used": false
+  },
+  "base_predictions_cached": 78250,
+  "source_commit": "44b121cdb16ffee0488553f7fa04b9d4068211fc",
+  "dataset_sha256": "fdffa94af2bf19c58cfc78b43528fc8d79035e94926f4e25806547572007fea0",
+  "split_protocol": "vle_overall_binary",
+  "split_sha256": "3a53ac3aafcc1e341226dda66e419a09d9ab6a0272194c76dc9f827d24bf55f5",
+  "checkpoint": {
+    "path": "models/vle/comparison/v1/machine_learning/tennet_sac_binary_adapted.on.binary_train_binary_test/seed_4/best_model.pt",
+    "sha256": "0a6a0a741d62179aa885e596aded4bb849088de68e91498fe2eb987c9ebe5398"
+  }
+}

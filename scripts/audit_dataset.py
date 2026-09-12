@@ -15,7 +15,7 @@ from src.thermoformer.data import load_vle_dataset, retain_pure_anchored_systems
 
 
 def main() -> None:
-    dataset_root = PROJECT_ROOT / "dataset"
+    dataset_root = PROJECT_ROOT / 'datasets/vle_reference'
     reports = PROJECT_ROOT / "reports"
     combined = load_vle_dataset(dataset_root, failed_weight=0.0, max_pressure_kpa=500.0)
     per_workbook = {

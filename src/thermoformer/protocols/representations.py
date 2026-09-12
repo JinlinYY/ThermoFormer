@@ -13,15 +13,15 @@ class MultiViewVariant(NamedTuple):
 MULTIVIEW_VARIANTS = {
     "v1_rdkit_only": MultiViewVariant(
         "V1 RDKit descriptors only",
-        "experiments/ablations/molecular_representation/rdkit_only/config.yaml",
+        "configs/vle/ablation/studies/molecular_representation/rdkit_only/config.yaml",
     ),
     "v3_functional_group_only": MultiViewVariant(
         "V3 Functional groups only",
-        "experiments/ablations/molecular_representation/functional_groups_only/config.yaml",
+        "configs/vle/ablation/studies/molecular_representation/functional_groups_only/config.yaml",
     ),
     "v4_rdkit_unimol_naive": MultiViewVariant(
         "V4 RDKit + Uni-Mol naive fusion",
-        "experiments/ablations/molecular_representation/rdkit_unimol/config.yaml",
+        "configs/vle/ablation/studies/molecular_representation/rdkit_unimol/config.yaml",
     ),
 }
 

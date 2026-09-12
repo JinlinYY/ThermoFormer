@@ -1,0 +1,34 @@
+\subsection{Phase-equilibrium dataset construction and coverage}
+\label{sec:si_dataset}
+
+Experimental vapor--liquid equilibrium (VLE) and liquid--liquid equilibrium (LLE) data were extracted from the NIST ThermoML archive using \texttt{thermoml-io} and processed through a common standardization pipeline. Temperature and pressure were converted to K and kPa, dependent mole fractions were reconstructed by composition closure, molecular structures were canonicalized with RDKit, and unordered component sets defined system identities. Prioritized SMARTS rules were used to assign the chemical families shown in the coverage maps.
+
+\subsubsection{Vapor--liquid equilibrium dataset}
+
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=\textwidth]{Figure/vle_dataset_overview.png}
+\caption{\textbf{Scale and coverage of the VLE dataset.} \textbf{a}, Numbers of experimental points, unique unordered systems, and molecular components for binary and ternary mixtures. \textbf{b}, Temperature--pressure distribution of the experimental states; pressure is logarithmic and the broken temperature axis retains the high-temperature tail. \textbf{c}, Chemical-family coverage; marker area represents distinct systems and color intensity represents experimental points. \textbf{d}, Binary liquid--vapor composition density and separate ternary liquid- and vapor-composition densities. \textbf{e}, Availability of the three constituent binary subsystems associated with each ternary system.}
+\label{fig:vle_dataset_overview_si}
+\end{figure*}
+
+The VLE dataset contains 27,304 experimental points, comprising 22,760 binary observations from 693 systems and 4,544 ternary observations from 107 systems (Supplementary Fig.~\ref{fig:vle_dataset_overview_si}a). The binary and ternary subsets involve 328 and 111 distinct canonical components, respectively. Sampling is concentrated in conventional liquid-phase temperature and pressure ranges, with sparse high-temperature and high-pressure tails (Supplementary Fig.~\ref{fig:vle_dataset_overview_si}b). This nonuniform state coverage supports evaluation in both densely sampled regions and more demanding extrapolative regimes.
+
+The binary subset covers 71 unordered chemical-family pairs, whereas the ternary subset spans 54 family triplets (Supplementary Fig.~\ref{fig:vle_dataset_overview_si}c). Alcohol-, hydrocarbon-, halogenated-, ester-, ether-, and aromatic-containing systems remain prominent, but the distribution is strongly long-tailed. Liquid and vapor compositions cover the interior and near-boundary regions of the binary and ternary composition domains (Supplementary Fig.~\ref{fig:vle_dataset_overview_si}d).
+
+Constituent-binary coverage is incomplete for most ternary systems (Supplementary Fig.~\ref{fig:vle_dataset_overview_si}e). Of the 107 ternary systems, 26 (24.3\%) have all three constituent binary subsystems represented, 18 (16.8\%) have two, 58 (54.2\%) have one, and 5 (4.7\%) have none. Thus, 58.9\% of ternary VLE systems have at most one observed constituent binary subsystem.
+
+\subsubsection{Liquid--liquid equilibrium dataset}
+
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=\textwidth]{Figure/lle_dataset_overview.png}
+\caption{\textbf{Scale and coverage of the LLE dataset.} \textbf{a}, Numbers of experimental points, unique unordered systems, and molecular components for binary and ternary mixtures. \textbf{b}, Temperature--pressure distribution of the experimental states; pressure is logarithmic, and the 11 records reported at zero pressure are shown at the lower plotting floor. \textbf{c}, Chemical-family coverage; marker area represents distinct systems and color intensity represents experimental points. \textbf{d}, Composition coverage of the two coexisting liquid phases for binary and ternary mixtures. \textbf{e}, Availability of the three constituent binary subsystems associated with each ternary system.}
+\label{fig:lle_dataset_overview_si}
+\end{figure*}
+
+The LLE dataset contains 19,844 experimental points, including 5,983 binary observations from 394 systems and 13,861 ternary observations from 986 systems (Supplementary Fig.~\ref{fig:lle_dataset_overview_si}a). The binary and ternary subsets contain 252 and 345 distinct canonical components, respectively. Ternary observations account for 69.8\% of the LLE records, making multicomponent phase separation the dominant part of this collection.
+
+The state distribution is highly nonuniform: most LLE observations cluster near a relatively narrow pressure band, while isolated high-pressure and temperature-tail measurements broaden the formal range (Supplementary Fig.~\ref{fig:lle_dataset_overview_si}b). The binary subset covers 45 unordered family pairs and the ternary subset contains 116 family triplets (Supplementary Fig.~\ref{fig:lle_dataset_overview_si}c). The coexisting phases span weakly and strongly separated binary endpoints and broad regions of both ternary composition simplexes (Supplementary Fig.~\ref{fig:lle_dataset_overview_si}d).
+
+Binary-subsystem support is especially limited for ternary LLE (Supplementary Fig.~\ref{fig:lle_dataset_overview_si}e). Only 1 of the 986 ternary systems (0.1\%) has all three constituent binary subsystems represented; 103 (10.4\%) have two, 427 (43.3\%) have one, and 455 (46.1\%) have none. Consequently, 89.5\% of ternary LLE systems contain at most one observed constituent binary subsystem, providing a stringent test of mixture-aware multicomponent prediction.

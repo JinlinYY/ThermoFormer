@@ -1,8 +1,0 @@
-extends: ../../../../configs/training/supervised.yaml
-name: c3_no_pair_bias
-encoder:
-  chemical_attention_bias: false
-  context_pair_interaction: true
-runtime:
-  output_dir: runs/experiments/ablations/interaction_architecture/context_pair_without_attention_bias
-  results_file: experiments/ablations/interaction_architecture/context_pair_without_attention_bias/results.md

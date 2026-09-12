@@ -1,0 +1,32 @@
+# Reference metric view
+
+Copied without recalculation from the registered five-seed result table.
+Mean ± sample SD; valid_seeds is the original report count.
+Source: experiments/summary/aggregate_metrics.csv; SHA-256: 796c4400a21c49e5917965b5cbed48cecb36c4b8f1fdbc63af40bf84865030e4.
+
+| Protocol | Subset | Direction | Target | Metric | Mean | Sample SD | n |
+|---|---|---|---|---|---:|---:|---:|
+| vle_binary_unseen_component | 2 | isobaric | T | mae | 36.5479578901973 | 0.9145420777690472 | 5 |
+| vle_binary_unseen_component | 2 | isobaric | T | r2 | 0.40642489888557254 | 0.02374463776239376 | 5 |
+| vle_binary_unseen_component | 2 | isobaric | T | rmse | 47.58819917726439 | 0.959642910730483 | 5 |
+| vle_binary_unseen_component | 2 | isobaric | y | mae | 0.11887862162553527 | 0.006759633390170718 | 5 |
+| vle_binary_unseen_component | 2 | isobaric | y | r2 | 0.8083477799848373 | 0.022244775033713204 | 5 |
+| vle_binary_unseen_component | 2 | isobaric | y | rmse | 0.16310413748682828 | 0.009405241210560345 | 5 |
+| vle_binary_unseen_component | 2 | isothermal | P | mae | 14.493608676198946 | 1.3059151799772466 | 5 |
+| vle_binary_unseen_component | 2 | isothermal | P | r2 | 0.8200406063146076 | 0.028227182074080533 | 5 |
+| vle_binary_unseen_component | 2 | isothermal | P | rmse | 43.51255952044744 | 3.3855183386016727 | 5 |
+| vle_binary_unseen_component | 2 | isothermal | y | mae | 0.048544569313287336 | 0.004507603793091257 | 5 |
+| vle_binary_unseen_component | 2 | isothermal | y | r2 | 0.9535392292026721 | 0.009450356409050668 | 5 |
+| vle_binary_unseen_component | 2 | isothermal | y | rmse | 0.07878186034888095 | 0.008083691903927607 | 5 |
+| vle_binary_unseen_component | all | isobaric | T | mae | 36.5479578901973 | 0.9145420777690472 | 5 |
+| vle_binary_unseen_component | all | isobaric | T | r2 | 0.40642489888557254 | 0.02374463776239376 | 5 |
+| vle_binary_unseen_component | all | isobaric | T | rmse | 47.58819917726439 | 0.959642910730483 | 5 |
+| vle_binary_unseen_component | all | isobaric | y | mae | 0.11887862162553527 | 0.006759633390170718 | 5 |
+| vle_binary_unseen_component | all | isobaric | y | r2 | 0.8083477799848373 | 0.022244775033713204 | 5 |
+| vle_binary_unseen_component | all | isobaric | y | rmse | 0.16310413748682828 | 0.009405241210560345 | 5 |
+| vle_binary_unseen_component | all | isothermal | P | mae | 14.493608676198946 | 1.3059151799772466 | 5 |
+| vle_binary_unseen_component | all | isothermal | P | r2 | 0.8200406063146076 | 0.028227182074080533 | 5 |
+| vle_binary_unseen_component | all | isothermal | P | rmse | 43.51255952044744 | 3.3855183386016727 | 5 |
+| vle_binary_unseen_component | all | isothermal | y | mae | 0.048544569313287336 | 0.004507603793091257 | 5 |
+| vle_binary_unseen_component | all | isothermal | y | r2 | 0.9535392292026721 | 0.009450356409050668 | 5 |
+| vle_binary_unseen_component | all | isothermal | y | rmse | 0.07878186034888095 | 0.008083691903927607 | 5 |

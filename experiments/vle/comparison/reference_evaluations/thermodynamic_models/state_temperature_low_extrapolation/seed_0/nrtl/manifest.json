@@ -1,0 +1,104 @@
+{
+  "artifacts": {
+    "metrics": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_low_extrapolation/seed_0/nrtl/metrics.json",
+      "sha256": "a9eda10aacc91e169b4a466aae63989d86e953fb60cc6c84a13ddb47500248be"
+    },
+    "parameters": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_low_extrapolation/seed_0/nrtl/parameters.json",
+      "sha256": "f080d19b09003094d167aa7fa972fa2505353bdf3c6029e6f05616f073e38c19"
+    },
+    "predictions": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_low_extrapolation/seed_0/nrtl/predictions.csv",
+      "sha256": "6751aef878d9f801f3c19c3c64aa9ed611a178cb20a34a071e8c183ae6bfb67e"
+    },
+    "vapor_pressure_fits": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_low_extrapolation/seed_0/vapor_pressure_fits.json",
+      "sha256": "ce1b868ff0f2124989b021db6765adffdec5aa3353282ddb8dfc8718c6dd3410"
+    }
+  },
+  "config_sources": [
+    {
+      "path": "configs/model/c1_three_view_vanilla.yaml",
+      "sha256": "b49471ea53d6222c65c8e89b59095d09f827978b025c49a508c1e0bf849ee6d7"
+    },
+    {
+      "path": "configs/training/supervised.yaml",
+      "sha256": "7acefbcf4da404b4cbbe4e09c8bc3cc21c5bebe509b624c3cb981b8509184e71"
+    },
+    {
+      "path": "configs/training/fugacity_finetuning.yaml",
+      "sha256": "eaf09983d015da25b7979adb585c3a6ef8070e83bb32164f560ef21eea138aaf"
+    },
+    {
+      "path": "configs/protocols/state_generalization.yaml",
+      "sha256": "9b6493d4673a8e150b992d51328a2a7918d662e5c7d1d4af2370e9063541ed6e"
+    },
+    {
+      "path": "configs/vle/comparison/studies/thermodynamic_models/config.json",
+      "sha256": "d1f2aeefcba75779d5f615f336197486233ab67e7bd93bdccf07607e17edd78a"
+    }
+  ],
+  "counts": {
+    "fitted_systems": 139,
+    "parameter_coverage_by_component_count": {
+      "2": {
+        "attempted_systems": 118,
+        "coverage": 1.0,
+        "fitted_systems": 118
+      },
+      "3": {
+        "attempted_systems": 21,
+        "coverage": 1.0,
+        "fitted_systems": 21
+      }
+    },
+    "requested_systems": 139,
+    "system_parameter_coverage": 1.0,
+    "test_rows": 821,
+    "training_rows": 8548,
+    "validation_rows": 804
+  },
+  "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+  "dataset_workbooks": [
+    {
+      "path": "datasets/vle_reference/binary_vle_english.xlsx",
+      "sha256": "d122177fe42b5b41ca2e782cc77b3e6a7a0ebf922bb0e589f18edde622bf3efc"
+    },
+    {
+      "path": "datasets/vle_reference/ternary_vle_english.xlsx",
+      "sha256": "52fe356da44cc5e78f32b881a614ac95ea98e55002aaba464cfcf35069764c67"
+    }
+  ],
+  "elapsed_seconds": 6.629397869110107,
+  "evaluation_partition": "test",
+  "experiment": "thermodynamic_model_state_generalization",
+  "git_commit": "fbc03969621d4cfec0f4cf26377643874e2b3978",
+  "model": "nrtl",
+  "protocol": "state_temperature_low_extrapolation",
+  "resolved_config_sha256": "15cf42b0a5bd46fa7b4309d7876d5e7f8efbc8bd90fb7efaa3119a136bad6fdd",
+  "run_kind": "formal",
+  "runtime": {
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "scipy": "1.13.1",
+    "thermo": "0.6.0"
+  },
+  "schema_version": 1,
+  "seed": 0,
+  "selection_partition": "train",
+  "settings_sha256": "0d451968bcf82c7115fc8d1af1629199b60a453f5b0223faf2b57cea7b8ca60f",
+  "split": {
+    "path": "datasets/splits/vle/state_temperature_low_extrapolation/seed_0.json",
+    "sha256": "770d389d2fded281a00931e9d17923e5f8436a24773139fb9a6e17ed70d4bf74"
+  },
+  "split_sha256": "770d389d2fded281a00931e9d17923e5f8436a24773139fb9a6e17ed70d4bf74",
+  "status": "completed",
+  "temperature_solver_bounds_k": [
+    150.0,
+    859.01
+  ],
+  "test_labels_used_for_case_selection": false,
+  "test_labels_used_for_fitting": false,
+  "vapor_pressure_fits_sha256": "ce1b868ff0f2124989b021db6765adffdec5aa3353282ddb8dfc8718c6dd3410"
+}

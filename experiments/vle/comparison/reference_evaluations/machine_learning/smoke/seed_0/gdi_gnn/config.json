@@ -1,0 +1,32 @@
+{
+  "capability": {
+    "adaptation_label": "pytorch_port",
+    "citation": "Rittig et al., Digital Discovery (2023)",
+    "display_name": "GDI-GNN",
+    "external_assets_required": false,
+    "implementation_source": "official_port",
+    "key": "gdi_gnn",
+    "native_component_counts": [
+      2
+    ],
+    "native_directions": [
+      "isothermal"
+    ],
+    "notes": "",
+    "prediction_target": "log_gamma",
+    "reference_parameter_note": "",
+    "reference_trainable_parameters": null,
+    "source_revision": "6383142",
+    "source_url": "https://git.rwth-aachen.de/avt-svt/public/GDI-NN",
+    "temperature_mode": "fixed_298k"
+  },
+  "smoke": {
+    "asset_root": "datasets/molecular_features/upstream_baselines",
+    "epochs": 1,
+    "learning_rate": 0.001,
+    "max_train_rows": 8,
+    "max_validation_rows": 8,
+    "seed": 0,
+    "settings_sha256": "87f91d3132a02bab604a23101a8d52e5cfc7b93a5967d0a2c7e1db0c1e450ab3"
+  }
+}

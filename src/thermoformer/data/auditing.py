@@ -235,7 +235,7 @@ Coverage is computed by canonical molecular identity. Each ternary system is ass
 |---|---:|
 {coverage_lines}
 
-The row-level mapping is saved as `reports/ternary_binary_subsystem_coverage.csv` and is suitable for stratified binary-to-ternary evaluation.
+The row-level mapping is saved as `experiments/data_quality/reports/ternary_binary_subsystem_coverage.csv` and is suitable for stratified binary-to-ternary evaluation.
 
 ## Leakage and identifiability audit
 
@@ -251,7 +251,7 @@ The row-level mapping is saved as `reports/ternary_binary_subsystem_coverage.csv
 - Modeling-set SHA-256: `{modeled['dataset_sha256']}`
 - Stable component identities use RDKit canonical isomeric SMILES; split files store hashed state IDs plus the complete modeling-set digest.
 
-Machine-readable audit details are saved in `reports/data_audit.json`.
+Machine-readable audit details are saved in `experiments/data_quality/reports/data_audit.json`.
 """
     path.write_text(text, encoding="utf-8")
     json_path = path.with_suffix(".json")

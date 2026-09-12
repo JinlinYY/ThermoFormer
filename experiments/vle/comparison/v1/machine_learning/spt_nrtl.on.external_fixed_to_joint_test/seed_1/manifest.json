@@ -1,0 +1,1709 @@
+{
+  "analysis_status": "external_pretrained_overlap_unknown",
+  "artifacts": {
+    "checkpoint": {
+      "path": "models/vle/comparison/v1/machine_learning/spt_nrtl.on.external_fixed_to_joint_test/seed_1/best_model.pt",
+      "sha256": "4c6d0206bb132b870d535de78043b4a01fa8109fcd3b964260e816d9b6da75cf"
+    },
+    "history": {
+      "path": "history.csv",
+      "sha256": "551e1c75457ee37d99a6e41bbb961e01249e235c3fae09bab4361b5eea746022"
+    },
+    "metrics": {
+      "path": "metrics.csv",
+      "sha256": "00c4dbba24a1fd62400794ace987db808ec7d64b7727205c82122c6c1b0f0c9a"
+    },
+    "predictions": {
+      "path": "predictions.csv",
+      "sha256": "1f5a11de42b69a650edc69f6ba38ede114fc81abc164376a20f8dd38c301a1f5"
+    }
+  },
+  "baseline": "spt_nrtl",
+  "benchmark": "external_fixed_to_joint_test",
+  "config": {
+    "device": "cuda",
+    "epochs": 200,
+    "fixed_temperature_tolerance_k": 0.5,
+    "gdi_weight": 0.01,
+    "learning_rate": 0.001,
+    "mc_dropout_samples": 32,
+    "minimum_composition": 1e-05,
+    "patience": 25,
+    "spt_adapted_attention_heads": 4,
+    "spt_adapted_batch_size": 32,
+    "spt_adapted_dropout": 0.1,
+    "spt_adapted_embedding_dimension": 128,
+    "spt_adapted_epochs": 300,
+    "spt_adapted_feedforward_dimension": 256,
+    "spt_adapted_label_fit_evaluations": 250,
+    "spt_adapted_label_regularization": 0.001,
+    "spt_adapted_learning_rate": 0.0003,
+    "spt_adapted_max_sequence_length": 128,
+    "spt_adapted_minimum_pair_rows": 5,
+    "spt_adapted_patience": 30,
+    "spt_adapted_transformer_layers": 2
+  },
+  "dataset_sha256": "fdffa94af2bf19c58cfc78b43528fc8d79035e94926f4e25806547572007fea0",
+  "environment": {
+    "path": "environment.yml",
+    "requirements_path": "requirements.txt",
+    "requirements_sha256": "ed875989e22267f49b631924cdda980bbabec68917b1f1d56eae574855a8b0f5",
+    "sha256": "88f063806981a4025837ea6048b50a372c816796340ca2d46e92c22fe9c322b7"
+  },
+  "evaluation_partition": "test",
+  "feature_cache": {
+    "policy": "deterministic_on_the_fly_from_registered_rows",
+    "used": false
+  },
+  "feature_definitions": {
+    "src/thermoformer/baselines/machine_learning/external_activity.py": "b762fc6d13ecac71987325c967c41e4f8d833dc830c0b14603fcf18553a18738",
+    "src/thermoformer/baselines/machine_learning/formal.py": "39945745fd2f26f6507283c60a0b57a5b42d6ee3f005e360f2178016a320be0c",
+    "src/thermoformer/baselines/machine_learning/models.py": "1aec963e87371a1a3300b6c0e8f3eff17b6c3cf98d87298093ecbb544daaa3f7",
+    "src/thermoformer/baselines/machine_learning/smoke.py": "7a26bcaf8f20a297373c81998e58d120cdb7fdc33d6cc554bf7d4187c62ff834",
+    "src/thermoformer/baselines/machine_learning/spt_nrtl.py": "e8f70460be95ce5fb8c00017e9b416b061913b860e058c2c234190ab323d8c75"
+  },
+  "git_commit": "44b121cdb16ffee0488553f7fa04b9d4068211fc",
+  "model_assets": {
+    "database_download_attempts": 4,
+    "database_license": "not_declared_at_fixed_revision_publication_use_requires_review",
+    "database_pair_audit": {
+      "C1CCCCC1|Nc1ccccc1": {
+        "alpha": [
+          0.269624,
+          0.000211
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "C1CCCCC1",
+          "Nc1ccccc1"
+        ],
+        "selected_row_sha256": "b392303abec5c5caa2b4ec9cf78c0c715d14acfaae9f0a3e99b4edb7e1b2b77b",
+        "source_sha256": "d3e40b06017a2490c711077526b553e3d3321961a95a816a3c8935356d2ccadd",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/8/C1CCCCC1.csv",
+        "tau_ij": [
+          15.995667,
+          739.642578,
+          -3.108528,
+          0.004656
+        ],
+        "tau_ji": [
+          11.79245,
+          121.607422,
+          -2.121735,
+          0.004253
+        ]
+      },
+      "C1CCOC1|CO": {
+        "alpha": [
+          0.246477,
+          0.000188
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "C1CCOC1",
+          "CO"
+        ],
+        "selected_row_sha256": "a0aed2c3540a914d41e1f51ff529b9f65ea44a8751e3935c928eea05e3c119d4",
+        "source_sha256": "365646565ccf8dfae81ad753e44fea9a3d16b48d3c0e2e77d8c228d7988e56d2",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/C1CCOC1.csv",
+        "tau_ij": [
+          17.764404,
+          -314.617188,
+          -3.12278,
+          0.00469
+        ],
+        "tau_ji": [
+          14.869171,
+          -680.947266,
+          -2.280113,
+          0.001827
+        ]
+      },
+      "C1CCOCC1|CC(C)CCl": {
+        "alpha": [
+          0.265679,
+          0.000231
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "C1CCOCC1",
+          "CC(C)CCl"
+        ],
+        "selected_row_sha256": "a28f31ce9f8e5fad6289508d65f6e0b824655124928572102c88c1d15316d52a",
+        "source_sha256": "a93a8699c6daa06842bd18ff57f7748a03adfb3277bd1e8f3a35d971ac7cfc7e",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/8/C1CCOCC1.csv",
+        "tau_ij": [
+          17.182373,
+          -422.867188,
+          -3.086006,
+          0.005625
+        ],
+        "tau_ji": [
+          16.723694,
+          -620.09375,
+          -2.627136,
+          0.001405
+        ]
+      },
+      "C1CCOCC1|CCC(C)Cl": {
+        "alpha": [
+          0.26544,
+          0.000231
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "C1CCOCC1",
+          "CCC(C)Cl"
+        ],
+        "selected_row_sha256": "2272ba17ccba30f2deb6e03ab30755c98a8bbff279fc19f0adc6e004330e7b79",
+        "source_sha256": "a93a8699c6daa06842bd18ff57f7748a03adfb3277bd1e8f3a35d971ac7cfc7e",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/8/C1CCOCC1.csv",
+        "tau_ij": [
+          17.235443,
+          -426.496094,
+          -3.091354,
+          0.00559
+        ],
+        "tau_ji": [
+          16.83078,
+          -638.859375,
+          -2.639694,
+          0.001405
+        ]
+      },
+      "C1COCCO1|CC(C)CO": {
+        "alpha": [
+          0.256018,
+          0.000206
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "C1COCCO1",
+          "CC(C)CO"
+        ],
+        "selected_row_sha256": "e10a51da4940d46999cae9a949217671ad5e8c490baaeb6b0cfd2b554e66d4ca",
+        "source_sha256": "c1305fbfed3015bbc3be3858ffcde1dca7b7c9fb96fb5d3a89e9b32e2ad0af6a",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/8/C1COCCO1.csv",
+        "tau_ij": [
+          16.667603,
+          -200.763672,
+          -2.909935,
+          0.004655
+        ],
+        "tau_ji": [
+          14.71109,
+          -523.945312,
+          -2.408066,
+          0.002098
+        ]
+      },
+      "CC#N|CO": {
+        "alpha": [
+          0.256876,
+          0.00021
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC#N",
+          "CO"
+        ],
+        "selected_row_sha256": "79c8e460ff0f2885bb4d39251be120b7d2ed27242e9036e762b81a47b9894ea1",
+        "source_sha256": "d73e2fe9f8157f4b34af73a5eba0db347032d47f3114f372154d4228b659965f",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/4/CC%23N.csv",
+        "tau_ij": [
+          16.854187,
+          78.744141,
+          -3.124481,
+          0.005431
+        ],
+        "tau_ji": [
+          15.675873,
+          -382.40625,
+          -2.608574,
+          0.002966
+        ]
+      },
+      "CC#N|O": {
+        "alpha": [
+          0.240424,
+          0.000168
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC#N",
+          "O"
+        ],
+        "selected_row_sha256": "5e056ebc15ef382754d9a784241ae02e0392051aa67250ff4a1c0ecf14896365",
+        "source_sha256": "d73e2fe9f8157f4b34af73a5eba0db347032d47f3114f372154d4228b659965f",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/4/CC%23N.csv",
+        "tau_ij": [
+          16.358276,
+          60.882812,
+          -2.960709,
+          0.00496
+        ],
+        "tau_ji": [
+          15.596222,
+          -407.683594,
+          -2.380135,
+          0.002167
+        ]
+      },
+      "CC(=O)OCC(C)C|CCCCCCO": {
+        "alpha": [
+          0.257806,
+          0.000215
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(=O)OCC(C)C",
+          "CCCCCCO"
+        ],
+        "selected_row_sha256": "982e3105497e796768527c0c68701301aad66b500536607866d9e5c785234b91",
+        "source_sha256": "4d6a410d47bf3beb8124877d1b986ea4298dcc6e9619f24ad73b262d104b59df",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/13/CC%28%3DO%29OCC%28C%29C.csv",
+        "tau_ij": [
+          17.609863,
+          -72.382812,
+          -3.185028,
+          0.005142
+        ],
+        "tau_ji": [
+          15.977783,
+          -550.191406,
+          -2.580589,
+          0.002507
+        ]
+      },
+      "CC(=O)O|CC(=O)N(C)C": {
+        "alpha": [
+          0.18332,
+          5.9e-05
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(=O)O",
+          "CC(=O)N(C)C"
+        ],
+        "selected_row_sha256": "2416d7fa8bcec8a9bf1665ac36b7a3e51ab9c8f6b7f8207e8eff490d24168b99",
+        "source_sha256": "0131177e54790f99ecd9d3e3e44d8a555d27ada8aea433d85047a6615903cd8f",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/CC%28%3DO%29O.csv",
+        "tau_ij": [
+          19.826141,
+          -1256.224609,
+          -3.213097,
+          0.004183
+        ],
+        "tau_ji": [
+          12.919922,
+          -1291.347656,
+          -1.978149,
+          0.000135
+        ]
+      },
+      "CC(=O)O|CS(C)=O": {
+        "alpha": [
+          0.183291,
+          5.9e-05
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(=O)O",
+          "CS(C)=O"
+        ],
+        "selected_row_sha256": "3682a25c76dc63493c503cf6e6c314c4fc89f91be4a1b090195d1a4cc30eee9b",
+        "source_sha256": "0131177e54790f99ecd9d3e3e44d8a555d27ada8aea433d85047a6615903cd8f",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/CC%28%3DO%29O.csv",
+        "tau_ij": [
+          20.35965,
+          -1209.90625,
+          -3.395424,
+          0.004436
+        ],
+        "tau_ji": [
+          13.652954,
+          -1308.251953,
+          -2.017708,
+          0.000218
+        ]
+      },
+      "CC(=O)O|O": {
+        "alpha": [
+          0.225789,
+          0.000138
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(=O)O",
+          "O"
+        ],
+        "selected_row_sha256": "95d0db7dfe139f7b625dcee1fc373bff457dda68bbed7d850716fb176d10283e",
+        "source_sha256": "0131177e54790f99ecd9d3e3e44d8a555d27ada8aea433d85047a6615903cd8f",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/CC%28%3DO%29O.csv",
+        "tau_ij": [
+          16.249268,
+          -387.59375,
+          -2.974792,
+          0.005314
+        ],
+        "tau_ji": [
+          15.273102,
+          -701.654297,
+          -2.191574,
+          0.001264
+        ]
+      },
+      "CC(C)=O|CO": {
+        "alpha": [
+          0.252552,
+          0.000198
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)=O",
+          "CO"
+        ],
+        "selected_row_sha256": "28e19794a40128440fd098d7760268dff77e1b8ac292a8b147f8351510acfad3",
+        "source_sha256": "6b61dc306414c5c7ec79ddcbd3a29d5e897d9ed443b587b0e434327a958c91f3",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/CC%28C%29%3DO.csv",
+        "tau_ij": [
+          17.237366,
+          -146.169922,
+          -3.135605,
+          0.005258
+        ],
+        "tau_ji": [
+          15.258331,
+          -592.115234,
+          -2.403664,
+          0.002356
+        ]
+      },
+      "CC(C)C(C)C|CC(=O)C(C)C": {
+        "alpha": [
+          0.265742,
+          0.00022
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)C(C)C",
+          "CC(=O)C(C)C"
+        ],
+        "selected_row_sha256": "115307a38b9bac04224f008c4f9884b582456c920009c0f6dcc1d7b7f58fea5d",
+        "source_sha256": "0317a588780f459ba102b760798382c7973b8f9da7a5905ffbf16b1f92382fd9",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/10/CC%28C%29C%28C%29C.csv",
+        "tau_ij": [
+          17.857178,
+          -88.423828,
+          -3.20977,
+          0.005122
+        ],
+        "tau_ji": [
+          14.283112,
+          -411.699219,
+          -2.280876,
+          0.002029
+        ]
+      },
+      "CC(C)C(C)C|CC(C)OC(C)C": {
+        "alpha": [
+          0.262421,
+          0.000225
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)C(C)C",
+          "CC(C)OC(C)C"
+        ],
+        "selected_row_sha256": "2a37efeeccf1de3881d86479b56cffbd584aed399c028816eb39b0e40f0f3a72",
+        "source_sha256": "0317a588780f459ba102b760798382c7973b8f9da7a5905ffbf16b1f92382fd9",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/10/CC%28C%29C%28C%29C.csv",
+        "tau_ij": [
+          17.93399,
+          -344.730469,
+          -3.208031,
+          0.005326
+        ],
+        "tau_ji": [
+          16.569855,
+          -686.041016,
+          -2.585297,
+          0.001806
+        ]
+      },
+      "CC(C)CC(C)(C)C|CCCCO": {
+        "alpha": [
+          0.282256,
+          0.000241
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)CC(C)(C)C",
+          "CCCCO"
+        ],
+        "selected_row_sha256": "f342b0e1f846095646b97878fe57e07be71e92531311f7c751fbe60f7f5ed8dc",
+        "source_sha256": "68e933bef77c350e38ec94b58f854c325db91f186fa93e813c8df32044313ad2",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/14/CC%28C%29CC%28C%29%28C%29C.csv",
+        "tau_ij": [
+          15.326324,
+          933.642578,
+          -3.028885,
+          0.004324
+        ],
+        "tau_ji": [
+          11.263885,
+          206.591797,
+          -2.22139,
+          0.005282
+        ]
+      },
+      "CC(C)CO|CC(=O)OCC(C)C": {
+        "alpha": [
+          0.266163,
+          0.000224
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)CO",
+          "CC(=O)OCC(C)C"
+        ],
+        "selected_row_sha256": "2fa093c70fc0f8c3b8217f35f4fc0daca73f021613bbb3a99a011e73ed2ecbae",
+        "source_sha256": "751cf3a857ff9d902ff5d46321e1991739f6a65ebc4508cc50d0116dca836106",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/CC%28C%29CO.csv",
+        "tau_ij": [
+          15.815002,
+          -279.558594,
+          -2.853172,
+          0.005618
+        ],
+        "tau_ji": [
+          16.215393,
+          -238.810547,
+          -2.661461,
+          0.001562
+        ]
+      },
+      "CC(C)CO|CCCCCCO": {
+        "alpha": [
+          0.257977,
+          0.000214
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)CO",
+          "CCCCCCO"
+        ],
+        "selected_row_sha256": "6187ff38089a796eec694716fdccdb97854a1dbd07d9a43725702280aa6d512d",
+        "source_sha256": "751cf3a857ff9d902ff5d46321e1991739f6a65ebc4508cc50d0116dca836106",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/CC%28C%29CO.csv",
+        "tau_ij": [
+          17.315521,
+          -308.966797,
+          -3.071854,
+          0.0052
+        ],
+        "tau_ji": [
+          15.873291,
+          -641.572266,
+          -2.511063,
+          0.001778
+        ]
+      },
+      "CC(C)CO|CN(C)C=O": {
+        "alpha": [
+          0.233461,
+          0.000159
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)CO",
+          "CN(C)C=O"
+        ],
+        "selected_row_sha256": "d4bdbefb8e2fd0b497a68932ca1816c6e29b928ff205411ef1c39c52419d03dc",
+        "source_sha256": "751cf3a857ff9d902ff5d46321e1991739f6a65ebc4508cc50d0116dca836106",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/CC%28C%29CO.csv",
+        "tau_ij": [
+          17.623291,
+          -643.310547,
+          -3.016922,
+          0.004783
+        ],
+        "tau_ji": [
+          14.643341,
+          -667.744141,
+          -2.205452,
+          0.000855
+        ]
+      },
+      "CC(C)C|CCSCC": {
+        "alpha": [
+          0.275147,
+          0.000244
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)C",
+          "CCSCC"
+        ],
+        "selected_row_sha256": "c536c6e2cd4e79cbd4860ca8b7d998367a04b168276f9b3d5b11171fab5ef909",
+        "source_sha256": "3b3a794ef90d9fad72fd007d593b566fb699501196b7e3784c23cbc4fc48a1e0",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/6/CC%28C%29C.csv",
+        "tau_ij": [
+          17.431305,
+          -180.355469,
+          -3.154076,
+          0.005667
+        ],
+        "tau_ji": [
+          14.838013,
+          -483.613281,
+          -2.413475,
+          0.001953
+        ]
+      },
+      "CC(C)C|FC(F)CC(F)(F)F": {
+        "alpha": [
+          0.27732,
+          0.000241
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)C",
+          "FC(F)CC(F)(F)F"
+        ],
+        "selected_row_sha256": "02dadd22a45f92c71f68019273333e625b519b2d3c37126e33cfd864e8831197",
+        "source_sha256": "3b3a794ef90d9fad72fd007d593b566fb699501196b7e3784c23cbc4fc48a1e0",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/6/CC%28C%29C.csv",
+        "tau_ij": [
+          16.811584,
+          14.351562,
+          -3.107742,
+          0.005566
+        ],
+        "tau_ji": [
+          13.005981,
+          -153.800781,
+          -2.112808,
+          0.002043
+        ]
+      },
+      "CC(C)OC(C)C|CC(=O)C(C)C": {
+        "alpha": [
+          0.261439,
+          0.000222
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)OC(C)C",
+          "CC(=O)C(C)C"
+        ],
+        "selected_row_sha256": "74c0c47253588d9699a41a9730f72a672b8812df154bd59230a3dc2c3c22c25d",
+        "source_sha256": "f80805138c9a8ab0fdc33eeff1959e3761ed168721c73173a0818235b5a3cf4a",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/11/CC%28C%29OC%28C%29C.csv",
+        "tau_ij": [
+          18.211182,
+          -302.994141,
+          -3.255554,
+          0.005377
+        ],
+        "tau_ji": [
+          16.234985,
+          -620.076172,
+          -2.525558,
+          0.001721
+        ]
+      },
+      "CC(C)OC(C)C|CC(=O)CC(C)C": {
+        "alpha": [
+          0.261486,
+          0.000224
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)OC(C)C",
+          "CC(=O)CC(C)C"
+        ],
+        "selected_row_sha256": "26e255f4e46f66bd56ce6667bf4b7a6e8f176d39ee69b64b255f26a0817aabcd",
+        "source_sha256": "f80805138c9a8ab0fdc33eeff1959e3761ed168721c73173a0818235b5a3cf4a",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/11/CC%28C%29OC%28C%29C.csv",
+        "tau_ij": [
+          18.355225,
+          -313.458984,
+          -3.254303,
+          0.005328
+        ],
+        "tau_ji": [
+          16.342926,
+          -673.300781,
+          -2.565109,
+          0.001828
+        ]
+      },
+      "CC(C)OC(C)C|CC(C)CC(C)(C)C": {
+        "alpha": [
+          0.263574,
+          0.000224
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)OC(C)C",
+          "CC(C)CC(C)(C)C"
+        ],
+        "selected_row_sha256": "3081050258889542aada1e1e29904aacdb48e58aa232a54f616ab2fb002f82d6",
+        "source_sha256": "f80805138c9a8ab0fdc33eeff1959e3761ed168721c73173a0818235b5a3cf4a",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/11/CC%28C%29OC%28C%29C.csv",
+        "tau_ij": [
+          17.022278,
+          -386.253906,
+          -2.999847,
+          0.00521
+        ],
+        "tau_ji": [
+          16.246613,
+          -570.626953,
+          -2.599121,
+          0.001745
+        ]
+      },
+      "CC(C)OC(C)C|CO": {
+        "alpha": [
+          0.251588,
+          0.000189
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)OC(C)C",
+          "CO"
+        ],
+        "selected_row_sha256": "b7c4bb4b833930ae60713f0e1c13b297903d25bdb66089720ac123d679e2de0d",
+        "source_sha256": "f80805138c9a8ab0fdc33eeff1959e3761ed168721c73173a0818235b5a3cf4a",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/11/CC%28C%29OC%28C%29C.csv",
+        "tau_ij": [
+          16.854248,
+          51.4375,
+          -3.1222,
+          0.004822
+        ],
+        "tau_ji": [
+          14.29306,
+          -340.449219,
+          -2.224182,
+          0.002497
+        ]
+      },
+      "CC(C)OC(C)C|COCCO": {
+        "alpha": [
+          0.256997,
+          0.000205
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)OC(C)C",
+          "COCCO"
+        ],
+        "selected_row_sha256": "547183c613d54f7ea8cdbc16f88483227a4de2c1ebd2e9c915657f505ecdf9fe",
+        "source_sha256": "f80805138c9a8ab0fdc33eeff1959e3761ed168721c73173a0818235b5a3cf4a",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/11/CC%28C%29OC%28C%29C.csv",
+        "tau_ij": [
+          17.169495,
+          38.912109,
+          -3.172836,
+          0.004834
+        ],
+        "tau_ji": [
+          15.473877,
+          -388.541016,
+          -2.423996,
+          0.002525
+        ]
+      },
+      "CC(C)O|CC(=O)CC(C)C": {
+        "alpha": [
+          0.260814,
+          0.000211
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)O",
+          "CC(=O)CC(C)C"
+        ],
+        "selected_row_sha256": "6461982b7a84d67111cddb0a6e45674151df6054870fdfed0fd78b6ffa251f8f",
+        "source_sha256": "ac898c169c2efe6ffdec4e56d68d5ec7279d4254ba10d397c6b806d2e0d36974",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/6/CC%28C%29O.csv",
+        "tau_ij": [
+          15.718384,
+          -250.40625,
+          -2.795944,
+          0.005271
+        ],
+        "tau_ji": [
+          15.543182,
+          -298.208984,
+          -2.578812,
+          0.001874
+        ]
+      },
+      "CC(C)O|CC(C)CC(C)(C)C": {
+        "alpha": [
+          0.292933,
+          0.000249
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)O",
+          "CC(C)CC(C)(C)C"
+        ],
+        "selected_row_sha256": "c62d98a183d27caecac62d11067c1d2a2895660dbe5637c6d4ec6342d12007f3",
+        "source_sha256": "ac898c169c2efe6ffdec4e56d68d5ec7279d4254ba10d397c6b806d2e0d36974",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/6/CC%28C%29O.csv",
+        "tau_ij": [
+          11.778839,
+          377.921875,
+          -2.417557,
+          0.006561
+        ],
+        "tau_ji": [
+          13.640961,
+          913.257812,
+          -2.771339,
+          0.00431
+        ]
+      },
+      "CC(C)O|CC(C)OC(C)C": {
+        "alpha": [
+          0.263313,
+          0.000206
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)O",
+          "CC(C)OC(C)C"
+        ],
+        "selected_row_sha256": "5fbff9f291c704983dfb8b69fbe0b712f25cece814ea676f79ae67d80bffc131",
+        "source_sha256": "ac898c169c2efe6ffdec4e56d68d5ec7279d4254ba10d397c6b806d2e0d36974",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/6/CC%28C%29O.csv",
+        "tau_ij": [
+          14.598846,
+          -259.076172,
+          -2.583282,
+          0.00513
+        ],
+        "tau_ji": [
+          15.318298,
+          -82.841797,
+          -2.617096,
+          0.002205
+        ]
+      },
+      "CC(C)O|O": {
+        "alpha": [
+          0.23454,
+          0.000149
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CC(C)O",
+          "O"
+        ],
+        "selected_row_sha256": "c66475f12b4a4b3e9e6ee2160eb3f0af8bd8e4a36dbcc87e4f3a769d5a6e9565",
+        "source_sha256": "ac898c169c2efe6ffdec4e56d68d5ec7279d4254ba10d397c6b806d2e0d36974",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/6/CC%28C%29O.csv",
+        "tau_ij": [
+          14.851471,
+          -96.589844,
+          -2.865234,
+          0.006131
+        ],
+        "tau_ji": [
+          15.04007,
+          -372.554688,
+          -2.097534,
+          0.001494
+        ]
+      },
+      "CCC(=O)O|O": {
+        "alpha": [
+          0.237092,
+          0.00016
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CCC(=O)O",
+          "O"
+        ],
+        "selected_row_sha256": "c88d37f2b0a9fc16ab34ccdefbc455b068443dc152e0d6e62d47e80d0da20065",
+        "source_sha256": "5c8675931740a464cf633bc05358245c10799362205f489806dd73b2276db45e",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/8/CCC%28%3DO%29O.csv",
+        "tau_ij": [
+          15.708862,
+          -226.460938,
+          -2.957703,
+          0.005841
+        ],
+        "tau_ji": [
+          16.526276,
+          -523.601562,
+          -2.309441,
+          0.001427
+        ]
+      },
+      "CCC(C)=O|COCCO": {
+        "alpha": [
+          0.256921,
+          0.000211
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CCC(C)=O",
+          "COCCO"
+        ],
+        "selected_row_sha256": "3100e03ed7c70866ed0b3aea4daa124513dec12253d62a205613bddcff5f2339",
+        "source_sha256": "ae7bc3a5d6b01eb754741920ca687ff798afe5aa9af2217a71f35aefd3cc22ff",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/8/CCC%28C%29%3DO.csv",
+        "tau_ij": [
+          17.513092,
+          -240.792969,
+          -3.158447,
+          0.005389
+        ],
+        "tau_ji": [
+          16.580597,
+          -655.623047,
+          -2.589417,
+          0.002044
+        ]
+      },
+      "CCC(C)Cl|CC(C)OC(C)C": {
+        "alpha": [
+          0.26011,
+          0.00022
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CCC(C)Cl",
+          "CC(C)OC(C)C"
+        ],
+        "selected_row_sha256": "701ea1932a680a0ff7556c064d9bf4cc5add9961bd9c2c4d628f92efa4db12f6",
+        "source_sha256": "e1cba1961e1d05258b6d6a26361180852c87cc02979b706bf818249f77b89fee",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/8/CCC%28C%29Cl.csv",
+        "tau_ij": [
+          17.380859,
+          -402.771484,
+          -3.07093,
+          0.005257
+        ],
+        "tau_ji": [
+          16.52652,
+          -678.589844,
+          -2.603821,
+          0.001591
+        ]
+      },
+      "CCC(C)OC(C)=O|CN(C)C=O": {
+        "alpha": [
+          0.254025,
+          0.000208
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CCC(C)OC(C)=O",
+          "CN(C)C=O"
+        ],
+        "selected_row_sha256": "346988de9bf2a8a46f30d6ce4507b7570ad1f41c25569bcd342667d579cd1a53",
+        "source_sha256": "e63881bb0d5dd011f1f0e6cf4de736f489a9bf938f881c69ba088cacbd494636",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/13/CCC%28C%29OC%28C%29%3DO.csv",
+        "tau_ij": [
+          18.418182,
+          -314.193359,
+          -3.282417,
+          0.005109
+        ],
+        "tau_ji": [
+          16.506439,
+          -561.091797,
+          -2.509399,
+          0.001516
+        ]
+      },
+      "CCC(C)O|CC(=O)N(C)C": {
+        "alpha": [
+          0.229637,
+          0.000156
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CCC(C)O",
+          "CC(=O)N(C)C"
+        ],
+        "selected_row_sha256": "6b39a1b3914cdda4acac6c4d426564bbc3e17d35f1daac175bfa845d43cedd38",
+        "source_sha256": "b1529fcdd4dcac1fa404f42b24b60c47d725f663a94f62f8084ee6d09a1f8e46",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/CCC%28C%29O.csv",
+        "tau_ij": [
+          18.195526,
+          -692.158203,
+          -3.072701,
+          0.004588
+        ],
+        "tau_ji": [
+          14.827209,
+          -756.279297,
+          -2.240494,
+          0.000795
+        ]
+      },
+      "CCC(C)O|CCCC(=O)O": {
+        "alpha": [
+          0.235897,
+          0.000167
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CCC(C)O",
+          "CCCC(=O)O"
+        ],
+        "selected_row_sha256": "63cf9165d11ab7fa6d052b06d684cece6d3397e64aa327f2bd55adcbff1e62ff",
+        "source_sha256": "b1529fcdd4dcac1fa404f42b24b60c47d725f663a94f62f8084ee6d09a1f8e46",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/CCC%28C%29O.csv",
+        "tau_ij": [
+          17.656097,
+          -718.347656,
+          -3.025795,
+          0.004923
+        ],
+        "tau_ji": [
+          15.119781,
+          -649.302734,
+          -2.311066,
+          0.000679
+        ]
+      },
+      "CCCCCl|Cc1ccccc1": {
+        "alpha": [
+          0.272332,
+          0.000246
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CCCCCl",
+          "Cc1ccccc1"
+        ],
+        "selected_row_sha256": "c7ca2c026a9d8e40b5849a0d9a4f2c218473e1b7af5b76586b5ee0f89df3a66c",
+        "source_sha256": "294f0fbb2b5bf512ef44075bddaaa83c41858851995080f17e945bfdb5b0c14b",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/6/CCCCCl.csv",
+        "tau_ij": [
+          17.499359,
+          -347.798828,
+          -3.182182,
+          0.00597
+        ],
+        "tau_ji": [
+          15.975861,
+          -588.804688,
+          -2.546547,
+          0.001661
+        ]
+      },
+      "CCCCO|CCCCCCO": {
+        "alpha": [
+          0.257347,
+          0.000213
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CCCCO",
+          "CCCCCCO"
+        ],
+        "selected_row_sha256": "578009fd4185d1f1efaca49f5853b3ea76a8351c6244ccd2cd6752f7f8e22370",
+        "source_sha256": "a9be745874bd7ee8705e25e77cc09d78354054674d09443471f9bc1cb6fd98fa",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/5/CCCCO.csv",
+        "tau_ij": [
+          17.36908,
+          -334.558594,
+          -3.061882,
+          0.0051
+        ],
+        "tau_ji": [
+          15.754028,
+          -647.611328,
+          -2.492989,
+          0.001705
+        ]
+      },
+      "CCCO|CCOCCO": {
+        "alpha": [
+          0.253551,
+          0.000208
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CCCO",
+          "CCOCCO"
+        ],
+        "selected_row_sha256": "d2056547c2ddf52703c92d3a10862e33687cf2b1fcc0ceeae5c58083ca468c86",
+        "source_sha256": "cbae13cc511e07693bf229b8501da7e4967f7d4ab3f51a05e0cae00490c1f4f3",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/4/CCCO.csv",
+        "tau_ij": [
+          17.991333,
+          -365.724609,
+          -3.130219,
+          0.004833
+        ],
+        "tau_ji": [
+          16.434937,
+          -730.419922,
+          -2.581657,
+          0.001763
+        ]
+      },
+      "CCOC(C)(C)C|CCCO": {
+        "alpha": [
+          0.254047,
+          0.000202
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CCOC(C)(C)C",
+          "CCCO"
+        ],
+        "selected_row_sha256": "2f8eae9432bc239df329cf62a6dc325312f41da3c7018f38b100a2b8aa68d938",
+        "source_sha256": "cf1c847d25db0a513a7108c12c01f20e2bb877398d46c4bd843968cd3b391dca",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/11/CCOC%28C%29%28C%29C.csv",
+        "tau_ij": [
+          18.104095,
+          -11.769531,
+          -3.198143,
+          0.004415
+        ],
+        "tau_ji": [
+          14.075989,
+          -473.066406,
+          -2.290627,
+          0.00253
+        ]
+      },
+      "CCO|CCCOC(C)=O": {
+        "alpha": [
+          0.270786,
+          0.000228
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CCO",
+          "CCCOC(C)=O"
+        ],
+        "selected_row_sha256": "55438b510fa2496bc3cd81cce97252961d19ec36807be8669b52fdbf632ed1cb",
+        "source_sha256": "903e2fcbd174ec2dac61fbf56c093beb029219b7622f2f5d446b014695723981",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/3/CCO.csv",
+        "tau_ij": [
+          15.038025,
+          -132.689453,
+          -2.729927,
+          0.00546
+        ],
+        "tau_ji": [
+          15.58078,
+          -93.464844,
+          -2.673248,
+          0.002233
+        ]
+      },
+      "CCO|COC(=O)OC": {
+        "alpha": [
+          0.271105,
+          0.000231
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CCO",
+          "COC(=O)OC"
+        ],
+        "selected_row_sha256": "de7bd0a6cd3aef0abf4ba56c4e2cbd0e8b8763a46cb243b3de494aaf2fc34b24",
+        "source_sha256": "903e2fcbd174ec2dac61fbf56c093beb029219b7622f2f5d446b014695723981",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/3/CCO.csv",
+        "tau_ij": [
+          15.183167,
+          -46.8125,
+          -2.848549,
+          0.005905
+        ],
+        "tau_ji": [
+          15.479858,
+          -47.375,
+          -2.614822,
+          0.002098
+        ]
+      },
+      "COC(C)(C)C|CC(=O)C(C)(C)C": {
+        "alpha": [
+          0.260499,
+          0.000224
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "COC(C)(C)C",
+          "CC(=O)C(C)(C)C"
+        ],
+        "selected_row_sha256": "6b01d9936c1a3de4da8c8d71fbc448434acc0b9924dc2d7b4860e7d843efb905",
+        "source_sha256": "d6777248ace59d8c424650790edc136c60f63a1a67a4d15daae5ef905ab2214e",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/10/COC%28C%29%28C%29C.csv",
+        "tau_ij": [
+          18.431763,
+          -343.236328,
+          -3.252167,
+          0.005299
+        ],
+        "tau_ji": [
+          16.670044,
+          -722.203125,
+          -2.621391,
+          0.00187
+        ]
+      },
+      "COCCO|CS(C)=O": {
+        "alpha": [
+          0.229158,
+          0.000156
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "COCCO",
+          "CS(C)=O"
+        ],
+        "selected_row_sha256": "35b1f5c27591e44722fa3151b1685a4988529f487d04c2333e4c0657f2e64643",
+        "source_sha256": "39c3a9030b69405a635867c8fe9df32aac40eb492a27852b274fec051e11e8db",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/5/COCCO.csv",
+        "tau_ij": [
+          18.455017,
+          -691.130859,
+          -3.210243,
+          0.005024
+        ],
+        "tau_ji": [
+          15.712799,
+          -862.070312,
+          -2.324982,
+          0.000858
+        ]
+      },
+      "CO|C1CCOC1": {
+        "alpha": [
+          0.256686,
+          0.000193
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CO",
+          "C1CCOC1"
+        ],
+        "selected_row_sha256": "57bae4024b3e3de0fe556b8c8830d248f9eb033b752394c383596191fff7050e",
+        "source_sha256": "6b1f56e77c9fc593dd2adcc681df31d4df0b0ae544cf98c6806ec1dbdf9b3dd0",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/2/CO.csv",
+        "tau_ij": [
+          15.022278,
+          -314.976562,
+          -2.620377,
+          0.004982
+        ],
+        "tau_ji": [
+          15.001862,
+          -282.447266,
+          -2.519279,
+          0.002177
+        ]
+      },
+      "CO|CC#N": {
+        "alpha": [
+          0.2663,
+          0.000223
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CO",
+          "CC#N"
+        ],
+        "selected_row_sha256": "1ee2b85baefc4dd2872cf278618803e76c467cc91a332908075bc3f05ceac7c1",
+        "source_sha256": "6b1f56e77c9fc593dd2adcc681df31d4df0b0ae544cf98c6806ec1dbdf9b3dd0",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/2/CO.csv",
+        "tau_ij": [
+          15.771606,
+          -191.630859,
+          -2.872643,
+          0.005688
+        ],
+        "tau_ji": [
+          16.489899,
+          -154.5,
+          -2.762917,
+          0.001988
+        ]
+      },
+      "CO|CCOCCO": {
+        "alpha": [
+          0.254192,
+          0.000206
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "CO",
+          "CCOCCO"
+        ],
+        "selected_row_sha256": "57492b61e9df9ecf21c3ea4e4285a7f7d6dcd1c3bccdf849154744610340a1e1",
+        "source_sha256": "6b1f56e77c9fc593dd2adcc681df31d4df0b0ae544cf98c6806ec1dbdf9b3dd0",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/2/CO.csv",
+        "tau_ij": [
+          17.469696,
+          -296.767578,
+          -3.004066,
+          0.004716
+        ],
+        "tau_ji": [
+          15.865356,
+          -761.929688,
+          -2.571884,
+          0.002249
+        ]
+      },
+      "Cc1ccccc1|CS(C)=O": {
+        "alpha": [
+          0.254206,
+          0.000199
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "Cc1ccccc1",
+          "CS(C)=O"
+        ],
+        "selected_row_sha256": "bd7abdef4908f73b6807e466eb9e7916ec37d9a5f005bb52dee7e1b4b38c4011",
+        "source_sha256": "6abce3fba6a11d204fc76d036792dcd235df36b7ead5e67bc2c49ccd196ea203",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/9/Cc1ccccc1.csv",
+        "tau_ij": [
+          18.095093,
+          -136.626953,
+          -3.239105,
+          0.004818
+        ],
+        "tau_ji": [
+          15.64978,
+          -451.585938,
+          -2.365303,
+          0.001784
+        ]
+      },
+      "ClC(Cl)Cl|CCO": {
+        "alpha": [
+          0.258647,
+          0.00021
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "ClC(Cl)Cl",
+          "CCO"
+        ],
+        "selected_row_sha256": "529d1efb4c1fc5dc0ebda8a886d2767a81d38cbf0934ef697823dcca9f00ffa2",
+        "source_sha256": "94823a6672c974af13326c3e58a0b61f636cdce3b41f8725e01baf410be9c347",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/9/ClC%28Cl%29Cl.csv",
+        "tau_ij": [
+          17.872284,
+          178.279297,
+          -3.165604,
+          0.004267
+        ],
+        "tau_ji": [
+          14.888947,
+          -510.373047,
+          -2.566505,
+          0.003749
+        ]
+      },
+      "FC(F)(F)I|CC(C)C": {
+        "alpha": [
+          0.271378,
+          0.000235
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "FC(F)(F)I",
+          "CC(C)C"
+        ],
+        "selected_row_sha256": "56476cc5afefed5be778817758bb9d23ec32506176b5f8d18c8be680386e0b54",
+        "source_sha256": "5db06eeccdef5ee647aad5aceaf63cefe1863374def2effc5fc3fea648adedc0",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/F/9/FC%28F%29%28F%29I.csv",
+        "tau_ij": [
+          15.880859,
+          -208.806641,
+          -2.919632,
+          0.005732
+        ],
+        "tau_ji": [
+          14.963318,
+          -414.947266,
+          -2.468475,
+          0.002075
+        ]
+      },
+      "OCC(F)(F)C(F)F|CN(C)C=O": {
+        "alpha": [
+          0.181874,
+          4.9e-05
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "OCC(F)(F)C(F)F",
+          "CN(C)C=O"
+        ],
+        "selected_row_sha256": "c64c90074774220d7a8bcd3e70efa82495ff0352776f27fcd97904f3ab159815",
+        "source_sha256": "e76c7ccccd43c49728cae71e5a728df86d2cb4c34cee84a83a071637863a026f",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/O/14/OCC%28F%29%28F%29C%28F%29F.csv",
+        "tau_ij": [
+          20.99765,
+          -1325.601562,
+          -3.366768,
+          0.004279
+        ],
+        "tau_ji": [
+          14.67807,
+          -1340.371094,
+          -2.185394,
+          0.000743
+        ]
+      },
+      "OCC(F)(F)C(F)F|Cc1ccc(C)cc1": {
+        "alpha": [
+          0.279869,
+          0.00023
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "OCC(F)(F)C(F)F",
+          "Cc1ccc(C)cc1"
+        ],
+        "selected_row_sha256": "fca46e262c0a4e470845214f0cc97aa126ff6f4322c6899824c64dad8978370c",
+        "source_sha256": "e76c7ccccd43c49728cae71e5a728df86d2cb4c34cee84a83a071637863a026f",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/O/14/OCC%28F%29%28F%29C%28F%29F.csv",
+        "tau_ij": [
+          12.927246,
+          424.152344,
+          -2.497749,
+          0.005326
+        ],
+        "tau_ji": [
+          13.384552,
+          428.298828,
+          -2.575447,
+          0.004132
+        ]
+      },
+      "OCC(F)(F)C(F)F|O": {
+        "alpha": [
+          0.238477,
+          0.000157
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "OCC(F)(F)C(F)F",
+          "O"
+        ],
+        "selected_row_sha256": "3996c2fbe5040983a790727fd0d0b4d418cbcc7feaab3881c438638e4b0815ce",
+        "source_sha256": "e76c7ccccd43c49728cae71e5a728df86d2cb4c34cee84a83a071637863a026f",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/O/14/OCC%28F%29%28F%29C%28F%29F.csv",
+        "tau_ij": [
+          14.576294,
+          -43.158203,
+          -2.915138,
+          0.006544
+        ],
+        "tau_ji": [
+          16.294525,
+          -196.820312,
+          -2.11438,
+          0.001264
+        ]
+      },
+      "O|CCOC(=O)OCC": {
+        "alpha": [
+          0.237544,
+          0.000135
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "O",
+          "CCOC(=O)OCC"
+        ],
+        "selected_row_sha256": "6961f1171e777c5fb9612cf2add20b3ab869d744d2edded6731bcc4ebad0a55e",
+        "source_sha256": "1a8c75cbb750b9c36ec319e9190ab39bcd06d4745e242b40def359eaf1f1e2be",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/O/1/O.csv",
+        "tau_ij": [
+          11.496429,
+          793.740234,
+          -1.718925,
+          0.002405
+        ],
+        "tau_ji": [
+          12.492676,
+          459.904297,
+          -2.500908,
+          0.004476
+        ]
+      },
+      "O|CS(C)=O": {
+        "alpha": [
+          0.207549,
+          7.5e-05
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "O",
+          "CS(C)=O"
+        ],
+        "selected_row_sha256": "489cb99cdbfbcc65cd45ca144ec1d72519bba9916b2bdfaad12735495f2a1ffb",
+        "source_sha256": "1a8c75cbb750b9c36ec319e9190ab39bcd06d4745e242b40def359eaf1f1e2be",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/O/1/O.csv",
+        "tau_ij": [
+          14.62262,
+          -426.662109,
+          -2.500877,
+          0.004449
+        ],
+        "tau_ji": [
+          10.670532,
+          -818.726562,
+          -1.846642,
+          0.002339
+        ]
+      },
+      "O|NC1CCCCC1": {
+        "alpha": [
+          0.23665,
+          0.000124
+        ],
+        "lookup_direction": "forward",
+        "requested_smiles": [
+          "O",
+          "NC1CCCCC1"
+        ],
+        "selected_row_sha256": "4e23d104bb951da51c3ecc1e0e26917ecd2e664fa3aa4a1b9bdf70d899f045a7",
+        "source_sha256": "1a8c75cbb750b9c36ec319e9190ab39bcd06d4745e242b40def359eaf1f1e2be",
+        "source_url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/O/1/O.csv",
+        "tau_ij": [
+          11.872589,
+          598.691406,
+          -1.874863,
+          0.003282
+        ],
+        "tau_ji": [
+          10.009766,
+          -285.882812,
+          -1.976776,
+          0.00475
+        ]
+      }
+    },
+    "database_query_audit": {
+      "C1CCCCC1": {
+        "cache_relative_path": "v3/C/8/C1CCCCC1.csv",
+        "sha256": "d3e40b06017a2490c711077526b553e3d3321961a95a816a3c8935356d2ccadd",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/8/C1CCCCC1.csv"
+      },
+      "C1CCOC1": {
+        "cache_relative_path": "v3/C/7/C1CCOC1.csv",
+        "sha256": "365646565ccf8dfae81ad753e44fea9a3d16b48d3c0e2e77d8c228d7988e56d2",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/C1CCOC1.csv"
+      },
+      "C1CCOCC1": {
+        "cache_relative_path": "v3/C/8/C1CCOCC1.csv",
+        "sha256": "a93a8699c6daa06842bd18ff57f7748a03adfb3277bd1e8f3a35d971ac7cfc7e",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/8/C1CCOCC1.csv"
+      },
+      "C1COCCO1": {
+        "cache_relative_path": "v3/C/8/C1COCCO1.csv",
+        "sha256": "c1305fbfed3015bbc3be3858ffcde1dca7b7c9fb96fb5d3a89e9b32e2ad0af6a",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/8/C1COCCO1.csv"
+      },
+      "CC#N": {
+        "cache_relative_path": "v3/C/4/CC%23N.csv",
+        "sha256": "d73e2fe9f8157f4b34af73a5eba0db347032d47f3114f372154d4228b659965f",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/4/CC%23N.csv"
+      },
+      "CC(=O)O": {
+        "cache_relative_path": "v3/C/7/CC%28%3DO%29O.csv",
+        "sha256": "0131177e54790f99ecd9d3e3e44d8a555d27ada8aea433d85047a6615903cd8f",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/CC%28%3DO%29O.csv"
+      },
+      "CC(=O)OCC(C)C": {
+        "cache_relative_path": "v3/C/13/CC%28%3DO%29OCC%28C%29C.csv",
+        "sha256": "4d6a410d47bf3beb8124877d1b986ea4298dcc6e9619f24ad73b262d104b59df",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/13/CC%28%3DO%29OCC%28C%29C.csv"
+      },
+      "CC(C)=O": {
+        "cache_relative_path": "v3/C/7/CC%28C%29%3DO.csv",
+        "sha256": "6b61dc306414c5c7ec79ddcbd3a29d5e897d9ed443b587b0e434327a958c91f3",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/CC%28C%29%3DO.csv"
+      },
+      "CC(C)C": {
+        "cache_relative_path": "v3/C/6/CC%28C%29C.csv",
+        "sha256": "3b3a794ef90d9fad72fd007d593b566fb699501196b7e3784c23cbc4fc48a1e0",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/6/CC%28C%29C.csv"
+      },
+      "CC(C)C(C)C": {
+        "cache_relative_path": "v3/C/10/CC%28C%29C%28C%29C.csv",
+        "sha256": "0317a588780f459ba102b760798382c7973b8f9da7a5905ffbf16b1f92382fd9",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/10/CC%28C%29C%28C%29C.csv"
+      },
+      "CC(C)CC(C)(C)C": {
+        "cache_relative_path": "v3/C/14/CC%28C%29CC%28C%29%28C%29C.csv",
+        "sha256": "68e933bef77c350e38ec94b58f854c325db91f186fa93e813c8df32044313ad2",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/14/CC%28C%29CC%28C%29%28C%29C.csv"
+      },
+      "CC(C)CO": {
+        "cache_relative_path": "v3/C/7/CC%28C%29CO.csv",
+        "sha256": "751cf3a857ff9d902ff5d46321e1991739f6a65ebc4508cc50d0116dca836106",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/CC%28C%29CO.csv"
+      },
+      "CC(C)O": {
+        "cache_relative_path": "v3/C/6/CC%28C%29O.csv",
+        "sha256": "ac898c169c2efe6ffdec4e56d68d5ec7279d4254ba10d397c6b806d2e0d36974",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/6/CC%28C%29O.csv"
+      },
+      "CC(C)OC(C)C": {
+        "cache_relative_path": "v3/C/11/CC%28C%29OC%28C%29C.csv",
+        "sha256": "f80805138c9a8ab0fdc33eeff1959e3761ed168721c73173a0818235b5a3cf4a",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/11/CC%28C%29OC%28C%29C.csv"
+      },
+      "CCC(=O)O": {
+        "cache_relative_path": "v3/C/8/CCC%28%3DO%29O.csv",
+        "sha256": "5c8675931740a464cf633bc05358245c10799362205f489806dd73b2276db45e",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/8/CCC%28%3DO%29O.csv"
+      },
+      "CCC(C)=O": {
+        "cache_relative_path": "v3/C/8/CCC%28C%29%3DO.csv",
+        "sha256": "ae7bc3a5d6b01eb754741920ca687ff798afe5aa9af2217a71f35aefd3cc22ff",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/8/CCC%28C%29%3DO.csv"
+      },
+      "CCC(C)Cl": {
+        "cache_relative_path": "v3/C/8/CCC%28C%29Cl.csv",
+        "sha256": "e1cba1961e1d05258b6d6a26361180852c87cc02979b706bf818249f77b89fee",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/8/CCC%28C%29Cl.csv"
+      },
+      "CCC(C)O": {
+        "cache_relative_path": "v3/C/7/CCC%28C%29O.csv",
+        "sha256": "b1529fcdd4dcac1fa404f42b24b60c47d725f663a94f62f8084ee6d09a1f8e46",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/7/CCC%28C%29O.csv"
+      },
+      "CCC(C)OC(C)=O": {
+        "cache_relative_path": "v3/C/13/CCC%28C%29OC%28C%29%3DO.csv",
+        "sha256": "e63881bb0d5dd011f1f0e6cf4de736f489a9bf938f881c69ba088cacbd494636",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/13/CCC%28C%29OC%28C%29%3DO.csv"
+      },
+      "CCCCCl": {
+        "cache_relative_path": "v3/C/6/CCCCCl.csv",
+        "sha256": "294f0fbb2b5bf512ef44075bddaaa83c41858851995080f17e945bfdb5b0c14b",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/6/CCCCCl.csv"
+      },
+      "CCCCO": {
+        "cache_relative_path": "v3/C/5/CCCCO.csv",
+        "sha256": "a9be745874bd7ee8705e25e77cc09d78354054674d09443471f9bc1cb6fd98fa",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/5/CCCCO.csv"
+      },
+      "CCCO": {
+        "cache_relative_path": "v3/C/4/CCCO.csv",
+        "sha256": "cbae13cc511e07693bf229b8501da7e4967f7d4ab3f51a05e0cae00490c1f4f3",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/4/CCCO.csv"
+      },
+      "CCO": {
+        "cache_relative_path": "v3/C/3/CCO.csv",
+        "sha256": "903e2fcbd174ec2dac61fbf56c093beb029219b7622f2f5d446b014695723981",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/3/CCO.csv"
+      },
+      "CCOC(C)(C)C": {
+        "cache_relative_path": "v3/C/11/CCOC%28C%29%28C%29C.csv",
+        "sha256": "cf1c847d25db0a513a7108c12c01f20e2bb877398d46c4bd843968cd3b391dca",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/11/CCOC%28C%29%28C%29C.csv"
+      },
+      "CO": {
+        "cache_relative_path": "v3/C/2/CO.csv",
+        "sha256": "6b1f56e77c9fc593dd2adcc681df31d4df0b0ae544cf98c6806ec1dbdf9b3dd0",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/2/CO.csv"
+      },
+      "COC(C)(C)C": {
+        "cache_relative_path": "v3/C/10/COC%28C%29%28C%29C.csv",
+        "sha256": "d6777248ace59d8c424650790edc136c60f63a1a67a4d15daae5ef905ab2214e",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/10/COC%28C%29%28C%29C.csv"
+      },
+      "COCCO": {
+        "cache_relative_path": "v3/C/5/COCCO.csv",
+        "sha256": "39c3a9030b69405a635867c8fe9df32aac40eb492a27852b274fec051e11e8db",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/5/COCCO.csv"
+      },
+      "Cc1ccccc1": {
+        "cache_relative_path": "v3/C/9/Cc1ccccc1.csv",
+        "sha256": "6abce3fba6a11d204fc76d036792dcd235df36b7ead5e67bc2c49ccd196ea203",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/9/Cc1ccccc1.csv"
+      },
+      "ClC(Cl)Cl": {
+        "cache_relative_path": "v3/C/9/ClC%28Cl%29Cl.csv",
+        "sha256": "94823a6672c974af13326c3e58a0b61f636cdce3b41f8725e01baf410be9c347",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/C/9/ClC%28Cl%29Cl.csv"
+      },
+      "FC(F)(F)I": {
+        "cache_relative_path": "v3/F/9/FC%28F%29%28F%29I.csv",
+        "sha256": "5db06eeccdef5ee647aad5aceaf63cefe1863374def2effc5fc3fea648adedc0",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/F/9/FC%28F%29%28F%29I.csv"
+      },
+      "FC(F)C(F)F": {
+        "cache_relative_path": "v3/F/10/FC%28F%29C%28F%29F.csv",
+        "sha256": "8b849658858a19164d07d75c8967c68e6c1e7a6a5e23b40f1f4497dc07bfbcde",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/F/10/FC%28F%29C%28F%29F.csv"
+      },
+      "O": {
+        "cache_relative_path": "v3/O/1/O.csv",
+        "sha256": "1a8c75cbb750b9c36ec319e9190ab39bcd06d4745e242b40def359eaf1f1e2be",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/O/1/O.csv"
+      },
+      "OCC(F)(F)C(F)F": {
+        "cache_relative_path": "v3/O/14/OCC%28F%29%28F%29C%28F%29F.csv",
+        "sha256": "e76c7ccccd43c49728cae71e5a728df86d2cb4c34cee84a83a071637863a026f",
+        "url": "https://raw.githubusercontent.com/ClapeyronThermo/spt-nrtl-db/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e/v3/O/14/OCC%28F%29%28F%29C%28F%29F.csv"
+      }
+    },
+    "database_revision": "f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e",
+    "database_valid_temperature_range": "not_published",
+    "parameter_policy": "exact_canonical_smiles_lookup_no_test_fit_or_imputation",
+    "source_revision": "691d55ce07a860b9e700877c64b6342a6dc385e1",
+    "training_system_overlap": "unknown_database_model_training_inventory"
+  },
+  "parameter_accounting": {
+    "optimized": 0
+  },
+  "runtime": {
+    "cuda": "12.6",
+    "cudnn": "90501",
+    "device": "cuda",
+    "execution_profile": "thermoformer_ggnn39_external_compatibility",
+    "gpu": "NVIDIA GeForce RTX 3090 Ti",
+    "hanna_dependencies": {},
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "tennetsac_dependencies": {},
+    "torch": "2.6.0+cu126",
+    "upstream_environment_parity": "not_established"
+  },
+  "schema_version": 1,
+  "seed": 1,
+  "selection_partition": "not_applicable_fixed_external_model",
+  "settings_sha256": "a9433e6c64c051ba3be120c3e7257b3b5522b5f67e8f34d2375763264103eaed",
+  "source_workbooks": {
+    "datasets/vle/binary_vle_english.xlsx": "1fdd6bd4417970a023a4917882a0faa14a747f232cff06f33fd5394672029788",
+    "datasets/vle/ternary_vle_english.xlsx": "f7fcd62064f0f192b3a2d14f57860a03cae9606744fcb3b3a5efd019eafcaf8b"
+  },
+  "split_protocol": "vle_overall_binary_ternary",
+  "split_sha256": "6ff92f332ffafdaa5031d62b49db33a4c026ab92ac64711c1ee9588f4d8a774b",
+  "status": "completed",
+  "test_labels_used_for_selection": false,
+  "test_sample_ids_sha256": "93bc1d357d4cdd876298257c27364e9aa3153bb3ecdda1fc13517ff8cc6c98fd",
+  "test_system_ids_sha256": "adc5fb52227f8c8c093e5858c541b8f19c6f7cec19fe241917734511d3a903e1",
+  "train_sample_ids_sha256": "c5081db602affeddcd7f1361b643a5b8a6721f2685c610d91e9e3de53131df11",
+  "train_system_ids_sha256": "0d6b4e2b906c4df0aca6db8fdd23d1cb654aa6dbb07fd773bfd6f92c78f5d24a",
+  "trainable_parameters": 0,
+  "validation_sample_ids_sha256": "4cb8b325f6571bab375ca33558fc47a69bb880e4221ae9df84c3931018f033df",
+  "validation_system_ids_sha256": "00bb63fbcc7fc83c188bb4bd0cab0b5142ffe519d9c8e2de380b33978dc47770"
+}

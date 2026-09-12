@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-1. Create or update the `ggnn39` environment from `environment-ggnn39.yml`.
+1. Create or update the `ggnn39` environment from `environment.yml`.
 2. Materialize Git-LFS checkpoints with `git lfs pull`.
 3. Keep formal code, configuration, split, and input artifacts committed.
 4. Run commands from the repository root.

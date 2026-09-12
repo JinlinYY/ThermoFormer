@@ -23,13 +23,11 @@ class OutputLifecycleTests(unittest.TestCase):
             / "training"
             / "supervised.yaml",
         )
-        self.assertEqual(_project_path("dataset"), PROJECT_ROOT / "dataset")
+        self.assertEqual(_project_path("datasets/vle_reference"), PROJECT_ROOT / 'datasets/vle_reference')
         self.assertEqual(
-            _project_path("runs/public/c1_supervised"),
+            _project_path("experiments/run_records/public/c1_supervised"),
             PROJECT_ROOT
-            / "runs"
-            / "public"
-            / "c1_supervised",
+            / 'experiments/run_records/public/c1_supervised',
         )
 
     def test_stale_training_outputs_are_removed_but_unimolv2_cache_is_kept(self) -> None:

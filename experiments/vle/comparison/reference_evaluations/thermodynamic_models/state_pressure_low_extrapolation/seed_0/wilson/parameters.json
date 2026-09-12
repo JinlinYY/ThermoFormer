@@ -1,0 +1,2439 @@
+{
+  "failure_counts": {},
+  "final_training_loss": 0.0069393303149317895,
+  "fit_objective": "quality-weighted direct log-pressure and vapor-composition residuals",
+  "fitted_ordered_pairs": 482,
+  "fitted_systems": 68,
+  "initial_training_loss": 0.0748487733347441,
+  "model": "wilson",
+  "optimizer_message": "LBFGS converged without worsening the direct-VLE objective",
+  "parameter_coverage_by_component_count": {
+    "2": {
+      "attempted_systems": 60,
+      "coverage": 1.0,
+      "fitted_systems": 60
+    },
+    "3": {
+      "attempted_systems": 8,
+      "coverage": 1.0,
+      "fitted_systems": 8
+    }
+  },
+  "parameterization": "ln(Lambda_ij)=B_ij/T",
+  "requested_systems": 68,
+  "shared_ordered_pair_parameters_k": [
+    {
+      "B_ij_k": 216.52945006059636,
+      "component_i": "BrCCBr",
+      "component_j": "ClC(Cl)C(Cl)Cl"
+    },
+    {
+      "B_ij_k": 505.92919097762444,
+      "component_i": "BrCCBr",
+      "component_j": "ClC(Cl)Cl"
+    },
+    {
+      "B_ij_k": 453.2743055352194,
+      "component_i": "BrCCBr",
+      "component_j": "ClCCCl"
+    },
+    {
+      "B_ij_k": -363.6105793288248,
+      "component_i": "C#CCCCC",
+      "component_j": "CCCOC(C)=O"
+    },
+    {
+      "B_ij_k": -159.28764383098968,
+      "component_i": "C1CC1",
+      "component_j": "FCC(F)(F)F"
+    },
+    {
+      "B_ij_k": 4.064931861989123,
+      "component_i": "C1CCCCC1",
+      "component_j": "CCC(C)Cl"
+    },
+    {
+      "B_ij_k": -88.54118787347895,
+      "component_i": "C1CCCCC1",
+      "component_j": "CCCCCO"
+    },
+    {
+      "B_ij_k": -0.06364966791383143,
+      "component_i": "C1CCCCC1",
+      "component_j": "CCCCCl"
+    },
+    {
+      "B_ij_k": -448.31913800132537,
+      "component_i": "C1CCCCC1",
+      "component_j": "CCO"
+    },
+    {
+      "B_ij_k": -3.1805260901040553,
+      "component_i": "C1CCCCC1",
+      "component_j": "CCSCC"
+    },
+    {
+      "B_ij_k": -396.6203025340827,
+      "component_i": "C1CCCCC1",
+      "component_j": "Nc1ccccc1"
+    },
+    {
+      "B_ij_k": 216.90895167066387,
+      "component_i": "C1CCOC1",
+      "component_j": "CC#N"
+    },
+    {
+      "B_ij_k": 159.85427079413373,
+      "component_i": "C1CCOC1",
+      "component_j": "CCCCCCl"
+    },
+    {
+      "B_ij_k": -169.43808597128407,
+      "component_i": "C1CCOC1",
+      "component_j": "CO"
+    },
+    {
+      "B_ij_k": 395.314411332708,
+      "component_i": "C1CCOC1",
+      "component_j": "Cc1ccccc1"
+    },
+    {
+      "B_ij_k": 41.04786260925008,
+      "component_i": "C1CCOCC1",
+      "component_j": "CC(C)O"
+    },
+    {
+      "B_ij_k": -7.438068770223975,
+      "component_i": "C1CCOCC1",
+      "component_j": "CCC(C)O"
+    },
+    {
+      "B_ij_k": -51.8545529063058,
+      "component_i": "C1CCOCC1",
+      "component_j": "CCCCCC"
+    },
+    {
+      "B_ij_k": -244.34592774099886,
+      "component_i": "C1CCOCC1",
+      "component_j": "CCCCCCl"
+    },
+    {
+      "B_ij_k": -0.5279124180952206,
+      "component_i": "C1CCSC1",
+      "component_j": "C=C(C)CC(C)(C)C"
+    },
+    {
+      "B_ij_k": -186.50577295307187,
+      "component_i": "C1CCSC1",
+      "component_j": "Cc1ccccc1C"
+    },
+    {
+      "B_ij_k": 13.15077126780991,
+      "component_i": "C1CN=C2CCCN2C1",
+      "component_j": "O"
+    },
+    {
+      "B_ij_k": 189.59613102411762,
+      "component_i": "C1COCCO1",
+      "component_j": "CC(C)CO"
+    },
+    {
+      "B_ij_k": 118.8423903007535,
+      "component_i": "C1COCCO1",
+      "component_j": "CCC(C)O"
+    },
+    {
+      "B_ij_k": 68.02802319797554,
+      "component_i": "C1COCCO1",
+      "component_j": "CCCCCCl"
+    },
+    {
+      "B_ij_k": -11.689539963679541,
+      "component_i": "C1COCCO1",
+      "component_j": "CCCCO"
+    },
+    {
+      "B_ij_k": 41.84208578964389,
+      "component_i": "C1COCO1",
+      "component_j": "CCCCCCl"
+    },
+    {
+      "B_ij_k": -83.1235782256986,
+      "component_i": "C=C(C)C",
+      "component_j": "CCC#N"
+    },
+    {
+      "B_ij_k": 55.55035257570878,
+      "component_i": "C=C(C)C",
+      "component_j": "CCSCC"
+    },
+    {
+      "B_ij_k": -7.050265093771341,
+      "component_i": "C=C(C)C(C)C",
+      "component_j": "Cc1ccsc1"
+    },
+    {
+      "B_ij_k": -231.30582783959753,
+      "component_i": "C=C(C)CC(C)(C)C",
+      "component_j": "C1CCSC1"
+    },
+    {
+      "B_ij_k": -128.4988214918053,
+      "component_i": "C=C(C)[C@H]1CC=C(C)CC1",
+      "component_j": "CCCCCO"
+    },
+    {
+      "B_ij_k": 97.37285203119517,
+      "component_i": "C=C(Cl)C(F)(F)F",
+      "component_j": "CC(F)(Cl)C(F)(F)F"
+    },
+    {
+      "B_ij_k": -2302.3921463401716,
+      "component_i": "C=C1C2CCC(C2)C1(C)C",
+      "component_j": "CC1=CCC2CC1C2(C)C"
+    },
+    {
+      "B_ij_k": 358.8606224271327,
+      "component_i": "C=C1C2CCC(C2)C1(C)C",
+      "component_j": "Cc1ccc(C(C)C)cc1"
+    },
+    {
+      "B_ij_k": -126.97087064709496,
+      "component_i": "C=CCC",
+      "component_j": "CCC#N"
+    },
+    {
+      "B_ij_k": -7.571001621647691,
+      "component_i": "C=CCC",
+      "component_j": "CCSCC"
+    },
+    {
+      "B_ij_k": -1056.452519283317,
+      "component_i": "C=CCO",
+      "component_j": "CN1CCCC1=O"
+    },
+    {
+      "B_ij_k": 230.71795074367202,
+      "component_i": "C=CCO",
+      "component_j": "CNC=O"
+    },
+    {
+      "B_ij_k": -1159.625499843647,
+      "component_i": "C=CCO",
+      "component_j": "O"
+    },
+    {
+      "B_ij_k": -218.17191367671515,
+      "component_i": "CC#CCCC",
+      "component_j": "CCCOC(C)=O"
+    },
+    {
+      "B_ij_k": -413.4475372527728,
+      "component_i": "CC#N",
+      "component_j": "C1CCOC1"
+    },
+    {
+      "B_ij_k": -734.3574322326724,
+      "component_i": "CC#N",
+      "component_j": "CCCCCC"
+    },
+    {
+      "B_ij_k": -201.35739870586158,
+      "component_i": "CC#N",
+      "component_j": "CO"
+    },
+    {
+      "B_ij_k": 42.3869856887097,
+      "component_i": "CC#N",
+      "component_j": "Cc1ccccc1"
+    },
+    {
+      "B_ij_k": -146.69216153268718,
+      "component_i": "CC(=O)C(C)(C)C",
+      "component_j": "CC(C)(C)CO"
+    },
+    {
+      "B_ij_k": -185.38018937094003,
+      "component_i": "CC(=O)C(C)(C)C",
+      "component_j": "COC(C)(C)C"
+    },
+    {
+      "B_ij_k": -296.4877923472954,
+      "component_i": "CC(=O)C(C)C",
+      "component_j": "CC(C)C(C)C"
+    },
+    {
+      "B_ij_k": -224.20609581605964,
+      "component_i": "CC(=O)C(C)C",
+      "component_j": "CC(C)CC(C)(C)C"
+    },
+    {
+      "B_ij_k": -98.9850052065146,
+      "component_i": "CC(=O)C(C)C",
+      "component_j": "CC(C)O"
+    },
+    {
+      "B_ij_k": -177.36190923447126,
+      "component_i": "CC(=O)C(C)C",
+      "component_j": "CC(C)OC(C)C"
+    },
+    {
+      "B_ij_k": -233.14698900311217,
+      "component_i": "CC(=O)CC(C)C",
+      "component_j": "CC(C)CC(C)(C)C"
+    },
+    {
+      "B_ij_k": -154.7348223415857,
+      "component_i": "CC(=O)CC(C)C",
+      "component_j": "CC(C)CO"
+    },
+    {
+      "B_ij_k": -168.09909437724647,
+      "component_i": "CC(=O)CC(C)C",
+      "component_j": "CC(C)O"
+    },
+    {
+      "B_ij_k": -189.51031185681603,
+      "component_i": "CC(=O)CC(C)C",
+      "component_j": "CC(C)OC(C)C"
+    },
+    {
+      "B_ij_k": 144.85335453154903,
+      "component_i": "CC(=O)CC(C)C",
+      "component_j": "ClC(Cl)Cl"
+    },
+    {
+      "B_ij_k": -127.6606724332398,
+      "component_i": "CC(=O)CC(C)C",
+      "component_j": "O=Cc1ccco1"
+    },
+    {
+      "B_ij_k": 316.1568659018474,
+      "component_i": "CC(=O)N(C)C",
+      "component_j": "CN(C)C=O"
+    },
+    {
+      "B_ij_k": 461.2517177288991,
+      "component_i": "CC(=O)N(C)C",
+      "component_j": "CS(C)=O"
+    },
+    {
+      "B_ij_k": 543.6147413957378,
+      "component_i": "CC(=O)O",
+      "component_j": "CN(C)C=O"
+    },
+    {
+      "B_ij_k": 130.06993887226662,
+      "component_i": "CC(=O)O",
+      "component_j": "O"
+    },
+    {
+      "B_ij_k": -193.4090930550637,
+      "component_i": "CC(=O)OCC(C)C",
+      "component_j": "CCCCCCO"
+    },
+    {
+      "B_ij_k": 365.47708894425,
+      "component_i": "CC(=O)OCC(C)C",
+      "component_j": "COC(=O)OC"
+    },
+    {
+      "B_ij_k": 34.28754953658282,
+      "component_i": "CC(C)(C)CO",
+      "component_j": "CC(=O)C(C)(C)C"
+    },
+    {
+      "B_ij_k": -192.26566308509067,
+      "component_i": "CC(C)(C)CO",
+      "component_j": "COC(C)(C)C"
+    },
+    {
+      "B_ij_k": -51.30123300032881,
+      "component_i": "CC(C)(C)Cl",
+      "component_j": "CC(C)OC(C)C"
+    },
+    {
+      "B_ij_k": -64.43309585164907,
+      "component_i": "CC(C)(C)Cl",
+      "component_j": "CCCCCCC"
+    },
+    {
+      "B_ij_k": -323.25161679252545,
+      "component_i": "CC(C)(C)O",
+      "component_j": "CCCC"
+    },
+    {
+      "B_ij_k": -832.2635926249601,
+      "component_i": "CC(C)(C)O",
+      "component_j": "CCCCC(CC)CO"
+    },
+    {
+      "B_ij_k": -1232.9070145709163,
+      "component_i": "CC(C)(C)O",
+      "component_j": "O"
+    },
+    {
+      "B_ij_k": -1125.6732134557371,
+      "component_i": "CC(C)(N)CO",
+      "component_j": "O"
+    },
+    {
+      "B_ij_k": -672.565241997074,
+      "component_i": "CC(C)=C(C)C",
+      "component_j": "CO"
+    },
+    {
+      "B_ij_k": 118.67800406862274,
+      "component_i": "CC(C)=O",
+      "component_j": "CCC(=O)O"
+    },
+    {
+      "B_ij_k": -53.92970119393969,
+      "component_i": "CC(C)=O",
+      "component_j": "CCC(C)O"
+    },
+    {
+      "B_ij_k": -233.82026852603994,
+      "component_i": "CC(C)=O",
+      "component_j": "CO"
+    },
+    {
+      "B_ij_k": -138.1939730235516,
+      "component_i": "CC(C)=O",
+      "component_j": "O=Cc1ccco1"
+    },
+    {
+      "B_ij_k": -277.75507131351947,
+      "component_i": "CC(C)C",
+      "component_j": "CCC#N"
+    },
+    {
+      "B_ij_k": -218.92537348137108,
+      "component_i": "CC(C)C",
+      "component_j": "CCO"
+    },
+    {
+      "B_ij_k": -76.69918229167963,
+      "component_i": "CC(C)C",
+      "component_j": "CCSCC"
+    },
+    {
+      "B_ij_k": -92.40735080731919,
+      "component_i": "CC(C)C",
+      "component_j": "FC(F)(F)I"
+    },
+    {
+      "B_ij_k": -514.417509909932,
+      "component_i": "CC(C)C",
+      "component_j": "FC(F)C(F)F"
+    },
+    {
+      "B_ij_k": -255.7835917370159,
+      "component_i": "CC(C)C",
+      "component_j": "FC(F)CC(F)(F)F"
+    },
+    {
+      "B_ij_k": -131.69599873291162,
+      "component_i": "CC(C)C(=O)C(C)C",
+      "component_j": "CC(C)CC(C)(C)C"
+    },
+    {
+      "B_ij_k": -136.74847112518418,
+      "component_i": "CC(C)C(=O)C(C)C",
+      "component_j": "CC(C)O"
+    },
+    {
+      "B_ij_k": -88.5775741664274,
+      "component_i": "CC(C)C(C)C",
+      "component_j": "CC(=O)C(C)C"
+    },
+    {
+      "B_ij_k": -80.86977471843187,
+      "component_i": "CC(C)C(C)C",
+      "component_j": "CC(C)OC(C)C"
+    },
+    {
+      "B_ij_k": -157.51931320397438,
+      "component_i": "CC(C)CC(C)(C)C",
+      "component_j": "CC(=O)C(C)C"
+    },
+    {
+      "B_ij_k": -93.32204210226446,
+      "component_i": "CC(C)CC(C)(C)C",
+      "component_j": "CC(=O)CC(C)C"
+    },
+    {
+      "B_ij_k": -111.74977791026386,
+      "component_i": "CC(C)CC(C)(C)C",
+      "component_j": "CC(C)C(=O)C(C)C"
+    },
+    {
+      "B_ij_k": -255.5148811717736,
+      "component_i": "CC(C)CC(C)(C)C",
+      "component_j": "CC(C)CO"
+    },
+    {
+      "B_ij_k": -331.76503378112085,
+      "component_i": "CC(C)CC(C)(C)C",
+      "component_j": "CC(C)O"
+    },
+    {
+      "B_ij_k": -56.35752290371371,
+      "component_i": "CC(C)CC(C)(C)C",
+      "component_j": "CCC(C)=O"
+    },
+    {
+      "B_ij_k": -183.8522186154378,
+      "component_i": "CC(C)CC(C)(C)C",
+      "component_j": "CCCCCO"
+    },
+    {
+      "B_ij_k": -6.096991519814553,
+      "component_i": "CC(C)CC(C)(C)C",
+      "component_j": "CCCCOCCCC"
+    },
+    {
+      "B_ij_k": -352.780201974989,
+      "component_i": "CC(C)CC(C)(C)C",
+      "component_j": "CCOC(C)=O"
+    },
+    {
+      "B_ij_k": -19.069808782322365,
+      "component_i": "CC(C)CC(C)(C)C",
+      "component_j": "COC(C)(C)C"
+    },
+    {
+      "B_ij_k": -409.89086208080755,
+      "component_i": "CC(C)CC(C)(C)C",
+      "component_j": "c1ccsc1"
+    },
+    {
+      "B_ij_k": 6.502376551687969,
+      "component_i": "CC(C)CCl",
+      "component_j": "CC(C)OC(C)C"
+    },
+    {
+      "B_ij_k": -107.26212860764566,
+      "component_i": "CC(C)CCl",
+      "component_j": "CCCCCCC"
+    },
+    {
+      "B_ij_k": -431.4557037603779,
+      "component_i": "CC(C)CO",
+      "component_j": "C1COCCO1"
+    },
+    {
+      "B_ij_k": -21.86179160743114,
+      "component_i": "CC(C)CO",
+      "component_j": "CC(=O)CC(C)C"
+    },
+    {
+      "B_ij_k": -589.8427824133231,
+      "component_i": "CC(C)CO",
+      "component_j": "CC(C)CC(C)(C)C"
+    },
+    {
+      "B_ij_k": -280.10284781359604,
+      "component_i": "CC(C)CO",
+      "component_j": "CCCC(=O)O"
+    },
+    {
+      "B_ij_k": -541.8946132787272,
+      "component_i": "CC(C)CO",
+      "component_j": "CCCCOC(=O)CC"
+    },
+    {
+      "B_ij_k": 171.71837515494212,
+      "component_i": "CC(C)CO",
+      "component_j": "CN(C)C=O"
+    },
+    {
+      "B_ij_k": -230.0084984728459,
+      "component_i": "CC(C)O",
+      "component_j": "C1CCOCC1"
+    },
+    {
+      "B_ij_k": -117.21476056033929,
+      "component_i": "CC(C)O",
+      "component_j": "CC(=O)C(C)C"
+    },
+    {
+      "B_ij_k": -84.99135684701517,
+      "component_i": "CC(C)O",
+      "component_j": "CC(=O)CC(C)C"
+    },
+    {
+      "B_ij_k": -110.42011838366801,
+      "component_i": "CC(C)O",
+      "component_j": "CC(C)C(=O)C(C)C"
+    },
+    {
+      "B_ij_k": -568.1979362567741,
+      "component_i": "CC(C)O",
+      "component_j": "CC(C)CC(C)(C)C"
+    },
+    {
+      "B_ij_k": -305.89098842250974,
+      "component_i": "CC(C)O",
+      "component_j": "CC(C)OC(C)C"
+    },
+    {
+      "B_ij_k": -415.31577570325675,
+      "component_i": "CC(C)O",
+      "component_j": "CCCC"
+    },
+    {
+      "B_ij_k": -65.21161009130323,
+      "component_i": "CC(C)O",
+      "component_j": "CCCC(=O)O"
+    },
+    {
+      "B_ij_k": -888.0913682992198,
+      "component_i": "CC(C)O",
+      "component_j": "O"
+    },
+    {
+      "B_ij_k": -1.853514902715949,
+      "component_i": "CC(C)OC(C)C",
+      "component_j": "CC(=O)C(C)C"
+    },
+    {
+      "B_ij_k": 22.973418524860307,
+      "component_i": "CC(C)OC(C)C",
+      "component_j": "CC(=O)CC(C)C"
+    },
+    {
+      "B_ij_k": 28.48120248960581,
+      "component_i": "CC(C)OC(C)C",
+      "component_j": "CC(C)(C)Cl"
+    },
+    {
+      "B_ij_k": 45.022687382333764,
+      "component_i": "CC(C)OC(C)C",
+      "component_j": "CC(C)C(C)C"
+    },
+    {
+      "B_ij_k": -11.680917889028787,
+      "component_i": "CC(C)OC(C)C",
+      "component_j": "CC(C)CCl"
+    },
+    {
+      "B_ij_k": -159.9618231916969,
+      "component_i": "CC(C)OC(C)C",
+      "component_j": "CC(C)O"
+    },
+    {
+      "B_ij_k": -37.193706382369115,
+      "component_i": "CC(C)OC(C)C",
+      "component_j": "CCC(C)Cl"
+    },
+    {
+      "B_ij_k": -231.10424217061856,
+      "component_i": "CC(C)OC(C)C",
+      "component_j": "CCCCCl"
+    },
+    {
+      "B_ij_k": -112.96609211909683,
+      "component_i": "CC(C)OC(C)C",
+      "component_j": "CCCCO"
+    },
+    {
+      "B_ij_k": -229.78183559480047,
+      "component_i": "CC(C)OC(C)C",
+      "component_j": "CCO"
+    },
+    {
+      "B_ij_k": -464.01442624262523,
+      "component_i": "CC(C)OC(C)C",
+      "component_j": "CO"
+    },
+    {
+      "B_ij_k": 166.98592070874048,
+      "component_i": "CC(C)OC(C)C",
+      "component_j": "Cc1ccc(C)o1"
+    },
+    {
+      "B_ij_k": -51.16953419436762,
+      "component_i": "CC(Cl)(Cl)Cl",
+      "component_j": "O=C1CCCCC1"
+    },
+    {
+      "B_ij_k": -135.11812460875845,
+      "component_i": "CC(F)(Cl)C(F)(F)F",
+      "component_j": "C=C(Cl)C(F)(F)F"
+    },
+    {
+      "B_ij_k": -225.41235158021522,
+      "component_i": "CC(F)F",
+      "component_j": "CCCC"
+    },
+    {
+      "B_ij_k": 124.88767733127315,
+      "component_i": "CC(F)F",
+      "component_j": "FC(F)C(F)F"
+    },
+    {
+      "B_ij_k": 40.072731679062535,
+      "component_i": "CC1=CCC2CC1C2(C)C",
+      "component_j": "C=C1C2CCC(C2)C1(C)C"
+    },
+    {
+      "B_ij_k": -3444.2754752752326,
+      "component_i": "CC1=CCC2CC1C2(C)C",
+      "component_j": "Cc1ccc(C(C)C)cc1"
+    },
+    {
+      "B_ij_k": -95.1922980581493,
+      "component_i": "CC1CCCCC1",
+      "component_j": "CCOCCO"
+    },
+    {
+      "B_ij_k": -349.99309388791096,
+      "component_i": "CC1CCCCC1",
+      "component_j": "COCCO"
+    },
+    {
+      "B_ij_k": -267.5897974548577,
+      "component_i": "CC1CCCCC1",
+      "component_j": "Cc1ccsc1"
+    },
+    {
+      "B_ij_k": -79.08475763958266,
+      "component_i": "CC1CCCCC1",
+      "component_j": "NC1CCCCC1"
+    },
+    {
+      "B_ij_k": -634.3031222323991,
+      "component_i": "CC1CCCCC1",
+      "component_j": "Nc1ccccc1"
+    },
+    {
+      "B_ij_k": -73.49594185345941,
+      "component_i": "CCC#CCC",
+      "component_j": "CCCOC(C)=O"
+    },
+    {
+      "B_ij_k": -557.9702458438672,
+      "component_i": "CCC#N",
+      "component_j": "C=C(C)C"
+    },
+    {
+      "B_ij_k": -618.8480200101003,
+      "component_i": "CCC#N",
+      "component_j": "C=CCC"
+    },
+    {
+      "B_ij_k": -795.8831946652556,
+      "component_i": "CCC#N",
+      "component_j": "CC(C)C"
+    },
+    {
+      "B_ij_k": -708.6116170693595,
+      "component_i": "CCC#N",
+      "component_j": "CCCC"
+    },
+    {
+      "B_ij_k": -89.90905552447985,
+      "component_i": "CCC(=O)O",
+      "component_j": "CC(C)=O"
+    },
+    {
+      "B_ij_k": -767.7391779100201,
+      "component_i": "CCC(=O)O",
+      "component_j": "CCI"
+    },
+    {
+      "B_ij_k": -312.93945218984084,
+      "component_i": "CCC(=O)O",
+      "component_j": "O"
+    },
+    {
+      "B_ij_k": -300.88958922619094,
+      "component_i": "CCC(C)(C)OC",
+      "component_j": "CCO"
+    },
+    {
+      "B_ij_k": -538.2741289160812,
+      "component_i": "CCC(C)=O",
+      "component_j": "CC(C)CC(C)(C)C"
+    },
+    {
+      "B_ij_k": -1043.479558804377,
+      "component_i": "CCC(C)=O",
+      "component_j": "CO"
+    },
+    {
+      "B_ij_k": -342.62983574299835,
+      "component_i": "CCC(C)=O",
+      "component_j": "COCCO"
+    },
+    {
+      "B_ij_k": -124.38718077684591,
+      "component_i": "CCC(C)Cl",
+      "component_j": "C1CCCCC1"
+    },
+    {
+      "B_ij_k": 19.993414987236836,
+      "component_i": "CCC(C)Cl",
+      "component_j": "CC(C)OC(C)C"
+    },
+    {
+      "B_ij_k": -49.46139546974631,
+      "component_i": "CCC(C)Cl",
+      "component_j": "CCCCCCC"
+    },
+    {
+      "B_ij_k": 49.234107619669174,
+      "component_i": "CCC(C)Cl",
+      "component_j": "Cc1ccccc1"
+    },
+    {
+      "B_ij_k": -96.97402339948887,
+      "component_i": "CCC(C)O",
+      "component_j": "C1CCOCC1"
+    },
+    {
+      "B_ij_k": -270.36847094168564,
+      "component_i": "CCC(C)O",
+      "component_j": "C1COCCO1"
+    },
+    {
+      "B_ij_k": -46.320617824640706,
+      "component_i": "CCC(C)O",
+      "component_j": "CC(C)=O"
+    },
+    {
+      "B_ij_k": -472.7696152717934,
+      "component_i": "CCC(C)O",
+      "component_j": "CCCC"
+    },
+    {
+      "B_ij_k": -269.5897088405375,
+      "component_i": "CCC(C)O",
+      "component_j": "CCCC(=O)O"
+    },
+    {
+      "B_ij_k": 128.38880879004344,
+      "component_i": "CCC(C)O",
+      "component_j": "CCCOC(C)=O"
+    },
+    {
+      "B_ij_k": -994.7189249935469,
+      "component_i": "CCC(C)O",
+      "component_j": "CS(C)=O"
+    },
+    {
+      "B_ij_k": -139.39823043285963,
+      "component_i": "CCC(C)O",
+      "component_j": "O=Cc1ccco1"
+    },
+    {
+      "B_ij_k": 291.5565778122446,
+      "component_i": "CCC(C)OC(C)=O",
+      "component_j": "CS(C)=O"
+    },
+    {
+      "B_ij_k": -78.67937786593048,
+      "component_i": "CCC(C)OC(C)=O",
+      "component_j": "Cc1ccc(C)cc1"
+    },
+    {
+      "B_ij_k": -67.29968684060984,
+      "component_i": "CCCC",
+      "component_j": "CC(C)(C)O"
+    },
+    {
+      "B_ij_k": -180.05060045233958,
+      "component_i": "CCCC",
+      "component_j": "CC(C)O"
+    },
+    {
+      "B_ij_k": -263.08130268602946,
+      "component_i": "CCCC",
+      "component_j": "CC(F)F"
+    },
+    {
+      "B_ij_k": -276.82214005424805,
+      "component_i": "CCCC",
+      "component_j": "CCC#N"
+    },
+    {
+      "B_ij_k": -66.30730387960116,
+      "component_i": "CCCC",
+      "component_j": "CCC(C)O"
+    },
+    {
+      "B_ij_k": -57.67837679639965,
+      "component_i": "CCCC",
+      "component_j": "CCCCO"
+    },
+    {
+      "B_ij_k": -284.08422113306267,
+      "component_i": "CCCC",
+      "component_j": "CCO"
+    },
+    {
+      "B_ij_k": -9.2764200501365,
+      "component_i": "CCCC",
+      "component_j": "CCSCC"
+    },
+    {
+      "B_ij_k": -490.93357161026563,
+      "component_i": "CCCC",
+      "component_j": "CO"
+    },
+    {
+      "B_ij_k": -267.0444601781551,
+      "component_i": "CCCC",
+      "component_j": "FC(F)CC(F)(F)F"
+    },
+    {
+      "B_ij_k": 243.55383882610107,
+      "component_i": "CCCC(=O)O",
+      "component_j": "CC(C)CO"
+    },
+    {
+      "B_ij_k": 103.17043645486203,
+      "component_i": "CCCC(=O)O",
+      "component_j": "CC(C)O"
+    },
+    {
+      "B_ij_k": 225.90787939128109,
+      "component_i": "CCCC(=O)O",
+      "component_j": "CCC(C)O"
+    },
+    {
+      "B_ij_k": 396.9645272326639,
+      "component_i": "CCCCC(CC)CO",
+      "component_j": "CC(C)(C)O"
+    },
+    {
+      "B_ij_k": -20.363848917998276,
+      "component_i": "CCCCC(CC)CO",
+      "component_j": "CCCCO"
+    },
+    {
+      "B_ij_k": -93.13467769460347,
+      "component_i": "CCCCCC",
+      "component_j": "C1CCOCC1"
+    },
+    {
+      "B_ij_k": -753.5436249932433,
+      "component_i": "CCCCCC",
+      "component_j": "CC#N"
+    },
+    {
+      "B_ij_k": -151.3638021393357,
+      "component_i": "CCCCCC",
+      "component_j": "Cc1ccsc1"
+    },
+    {
+      "B_ij_k": -72.22522478409962,
+      "component_i": "CCCCCCC",
+      "component_j": "CC(C)(C)Cl"
+    },
+    {
+      "B_ij_k": -16.10266740659336,
+      "component_i": "CCCCCCC",
+      "component_j": "CC(C)CCl"
+    },
+    {
+      "B_ij_k": -69.12740737634253,
+      "component_i": "CCCCCCC",
+      "component_j": "CCC(C)Cl"
+    },
+    {
+      "B_ij_k": -180.2142563254866,
+      "component_i": "CCCCCCC",
+      "component_j": "CCCCCO"
+    },
+    {
+      "B_ij_k": -67.76364619346272,
+      "component_i": "CCCCCCC",
+      "component_j": "CCCCCl"
+    },
+    {
+      "B_ij_k": -83.88479754461905,
+      "component_i": "CCCCCCC",
+      "component_j": "CCCOCCO"
+    },
+    {
+      "B_ij_k": -770.1191988707357,
+      "component_i": "CCCCCCC",
+      "component_j": "COC=O"
+    },
+    {
+      "B_ij_k": -87.5298892693223,
+      "component_i": "CCCCCCC",
+      "component_j": "Cc1ccc(C)cc1"
+    },
+    {
+      "B_ij_k": -346.39911741931155,
+      "component_i": "CCCCCCC",
+      "component_j": "Cc1ccccc1"
+    },
+    {
+      "B_ij_k": -84.91637694449527,
+      "component_i": "CCCCCCC",
+      "component_j": "Clc1ccccc1"
+    },
+    {
+      "B_ij_k": 318.2760933011472,
+      "component_i": "CCCCCCC",
+      "component_j": "c1ccccc1"
+    },
+    {
+      "B_ij_k": -282.34523816461433,
+      "component_i": "CCCCCCCC",
+      "component_j": "CCCOCCO"
+    },
+    {
+      "B_ij_k": -285.51963146026924,
+      "component_i": "CCCCCCCC",
+      "component_j": "CCc1cccs1"
+    },
+    {
+      "B_ij_k": -1307.0726038037642,
+      "component_i": "CCCCCCCC",
+      "component_j": "COC=O"
+    },
+    {
+      "B_ij_k": -228.0050167011727,
+      "component_i": "CCCCCCCC",
+      "component_j": "Cc1ccc(C)cc1"
+    },
+    {
+      "B_ij_k": -45.974854650964346,
+      "component_i": "CCCCCCCC",
+      "component_j": "Cc1cccc(C)c1"
+    },
+    {
+      "B_ij_k": -122.83898055534412,
+      "component_i": "CCCCCCCC",
+      "component_j": "NC1CCCCC1"
+    },
+    {
+      "B_ij_k": -253.59957228336722,
+      "component_i": "CCCCCCCC(=O)OC",
+      "component_j": "CCCCCCCCCC(=O)OC"
+    },
+    {
+      "B_ij_k": -757.526128742465,
+      "component_i": "CCCCCCCCC",
+      "component_j": "COC=O"
+    },
+    {
+      "B_ij_k": 229.29975064030023,
+      "component_i": "CCCCCCCCC",
+      "component_j": "Cc1cccc(C)c1"
+    },
+    {
+      "B_ij_k": -3057.5378930526495,
+      "component_i": "CCCCCCCCC",
+      "component_j": "c1ccccc1"
+    },
+    {
+      "B_ij_k": -402.35821641236174,
+      "component_i": "CCCCCCCCCC",
+      "component_j": "CCc1cccs1"
+    },
+    {
+      "B_ij_k": -214.65903043453943,
+      "component_i": "CCCCCCCCCC",
+      "component_j": "Cc1cccc(C)c1"
+    },
+    {
+      "B_ij_k": 3.003800822011924,
+      "component_i": "CCCCCCCCCC",
+      "component_j": "Cc1ccccc1C"
+    },
+    {
+      "B_ij_k": 133.01498872121067,
+      "component_i": "CCCCCCCCCC(=O)OC",
+      "component_j": "CCCCCCCC(=O)OC"
+    },
+    {
+      "B_ij_k": 100.27521306738984,
+      "component_i": "CCCCCCCCCC(=O)OC",
+      "component_j": "CCCCCCCCCCCC(=O)OC"
+    },
+    {
+      "B_ij_k": -192.75689559656024,
+      "component_i": "CCCCCCCCCCCC(=O)OC",
+      "component_j": "CCCCCCCCCC(=O)OC"
+    },
+    {
+      "B_ij_k": 146.46416259483254,
+      "component_i": "CCCCCCCCCCCCCC(=O)OC",
+      "component_j": "CCCCCCCCCCCCCCCC(=O)OC"
+    },
+    {
+      "B_ij_k": -194.42290199877354,
+      "component_i": "CCCCCCCCCCCCCCCC(=O)OC",
+      "component_j": "CCCCCCCCCCCCCC(=O)OC"
+    },
+    {
+      "B_ij_k": -631.0182929099195,
+      "component_i": "CCCCCCO",
+      "component_j": "CC(=O)OCC(C)C"
+    },
+    {
+      "B_ij_k": -176.69073475702928,
+      "component_i": "CCCCCCO",
+      "component_j": "CCCCO"
+    },
+    {
+      "B_ij_k": -339.32799960503405,
+      "component_i": "CCCCCCO",
+      "component_j": "CN(C)C=O"
+    },
+    {
+      "B_ij_k": -33.83206906856028,
+      "component_i": "CCCCCCO",
+      "component_j": "Clc1ccccc1"
+    },
+    {
+      "B_ij_k": -12.907642852514753,
+      "component_i": "CCCCCCO",
+      "component_j": "Nc1ccccc1"
+    },
+    {
+      "B_ij_k": -43.264562370114014,
+      "component_i": "CCCCCCl",
+      "component_j": "C1CCOC1"
+    },
+    {
+      "B_ij_k": 208.5268391708384,
+      "component_i": "CCCCCCl",
+      "component_j": "C1CCOCC1"
+    },
+    {
+      "B_ij_k": -280.4933754232145,
+      "component_i": "CCCCCCl",
+      "component_j": "C1COCCO1"
+    },
+    {
+      "B_ij_k": -251.212506028708,
+      "component_i": "CCCCCCl",
+      "component_j": "C1COCO1"
+    },
+    {
+      "B_ij_k": -195.8764775861424,
+      "component_i": "CCCCCCl",
+      "component_j": "CC[N+](=O)[O-]"
+    },
+    {
+      "B_ij_k": -451.3843897701996,
+      "component_i": "CCCCCCl",
+      "component_j": "C[N+](=O)[O-]"
+    },
+    {
+      "B_ij_k": -778.4736056826282,
+      "component_i": "CCCCCO",
+      "component_j": "C1CCCCC1"
+    },
+    {
+      "B_ij_k": -1192.8074858690761,
+      "component_i": "CCCCCO",
+      "component_j": "C=C(C)[C@H]1CC=C(C)CC1"
+    },
+    {
+      "B_ij_k": -677.5737575511384,
+      "component_i": "CCCCCO",
+      "component_j": "CC(C)CC(C)(C)C"
+    },
+    {
+      "B_ij_k": -862.0440817668692,
+      "component_i": "CCCCCO",
+      "component_j": "CCCCCCC"
+    },
+    {
+      "B_ij_k": -236.00058835968215,
+      "component_i": "CCCCCO",
+      "component_j": "CCCCCS"
+    },
+    {
+      "B_ij_k": 177.35411988339413,
+      "component_i": "CCCCCO",
+      "component_j": "CCCCO"
+    },
+    {
+      "B_ij_k": -497.2242722914381,
+      "component_i": "CCCCCO",
+      "component_j": "CCCOCCC"
+    },
+    {
+      "B_ij_k": -944.7948991448537,
+      "component_i": "CCCCCO",
+      "component_j": "Cc1ccc(C)c(C)c1"
+    },
+    {
+      "B_ij_k": -568.7679110225683,
+      "component_i": "CCCCCO",
+      "component_j": "Cc1ccccc1"
+    },
+    {
+      "B_ij_k": -177.99208069258836,
+      "component_i": "CCCCCS",
+      "component_j": "CCCCCO"
+    },
+    {
+      "B_ij_k": -119.23788367247603,
+      "component_i": "CCCCCl",
+      "component_j": "C1CCCCC1"
+    },
+    {
+      "B_ij_k": 155.44196213782652,
+      "component_i": "CCCCCl",
+      "component_j": "CC(C)OC(C)C"
+    },
+    {
+      "B_ij_k": -58.78310802047598,
+      "component_i": "CCCCCl",
+      "component_j": "CCCCCCC"
+    },
+    {
+      "B_ij_k": -94.57661474878087,
+      "component_i": "CCCCCl",
+      "component_j": "CC[N+](=O)[O-]"
+    },
+    {
+      "B_ij_k": 90.63368900360736,
+      "component_i": "CCCCCl",
+      "component_j": "CN1CCCC1=O"
+    },
+    {
+      "B_ij_k": -68.90433227973767,
+      "component_i": "CCCCCl",
+      "component_j": "Cc1ccccc1"
+    },
+    {
+      "B_ij_k": 154.4926063840979,
+      "component_i": "CCCCCl",
+      "component_j": "O=C1CCCCC1"
+    },
+    {
+      "B_ij_k": -133.78017316856585,
+      "component_i": "CCCCO",
+      "component_j": "C1COCCO1"
+    },
+    {
+      "B_ij_k": -409.56930007152795,
+      "component_i": "CCCCO",
+      "component_j": "CC(C)OC(C)C"
+    },
+    {
+      "B_ij_k": -750.5034273349942,
+      "component_i": "CCCCO",
+      "component_j": "CCCC"
+    },
+    {
+      "B_ij_k": 17.40594232800878,
+      "component_i": "CCCCO",
+      "component_j": "CCCCC(CC)CO"
+    },
+    {
+      "B_ij_k": 183.3127228066714,
+      "component_i": "CCCCO",
+      "component_j": "CCCCCCO"
+    },
+    {
+      "B_ij_k": -174.9559465976907,
+      "component_i": "CCCCO",
+      "component_j": "CCCCCO"
+    },
+    {
+      "B_ij_k": -192.47389106991113,
+      "component_i": "CCCCO",
+      "component_j": "CCCCOCCCC"
+    },
+    {
+      "B_ij_k": 74.30424012226955,
+      "component_i": "CCCCO",
+      "component_j": "CCCOC(C)=O"
+    },
+    {
+      "B_ij_k": 522.3609288185676,
+      "component_i": "CCCCOC(=O)CC",
+      "component_j": "CC(C)CO"
+    },
+    {
+      "B_ij_k": 497.0409708370243,
+      "component_i": "CCCCOC(=O)CC",
+      "component_j": "COC(=O)OC"
+    },
+    {
+      "B_ij_k": -5.388568442829338,
+      "component_i": "CCCCOCCCC",
+      "component_j": "CC(C)CC(C)(C)C"
+    },
+    {
+      "B_ij_k": -237.81879308328124,
+      "component_i": "CCCCOCCCC",
+      "component_j": "CCCCO"
+    },
+    {
+      "B_ij_k": -40.18512578422188,
+      "component_i": "CCCO",
+      "component_j": "CCCOC(C)=O"
+    },
+    {
+      "B_ij_k": -315.0812701309812,
+      "component_i": "CCCO",
+      "component_j": "CCCOCCC"
+    },
+    {
+      "B_ij_k": 5.000328490102031,
+      "component_i": "CCCO",
+      "component_j": "CCO"
+    },
+    {
+      "B_ij_k": -121.81932354109708,
+      "component_i": "CCCO",
+      "component_j": "CCOC(=O)C(C)C"
+    },
+    {
+      "B_ij_k": -311.04130745308055,
+      "component_i": "CCCO",
+      "component_j": "CCOC(C)(C)C"
+    },
+    {
+      "B_ij_k": -115.19880427159462,
+      "component_i": "CCCO",
+      "component_j": "CCOC(C)=O"
+    },
+    {
+      "B_ij_k": -269.9986020607918,
+      "component_i": "CCCO",
+      "component_j": "CCSCC"
+    },
+    {
+      "B_ij_k": -505.1755335047277,
+      "component_i": "CCCO",
+      "component_j": "ClCCCl"
+    },
+    {
+      "B_ij_k": -1141.6542760582786,
+      "component_i": "CCCO",
+      "component_j": "O"
+    },
+    {
+      "B_ij_k": 232.55719457848383,
+      "component_i": "CCCOC(C)=O",
+      "component_j": "C#CCCCC"
+    },
+    {
+      "B_ij_k": 118.26733475134492,
+      "component_i": "CCCOC(C)=O",
+      "component_j": "CC#CCCC"
+    },
+    {
+      "B_ij_k": 1.340719992449051,
+      "component_i": "CCCOC(C)=O",
+      "component_j": "CCC#CCC"
+    },
+    {
+      "B_ij_k": -220.51989327979135,
+      "component_i": "CCCOC(C)=O",
+      "component_j": "CCC(C)O"
+    },
+    {
+      "B_ij_k": -255.80418752136936,
+      "component_i": "CCCOC(C)=O",
+      "component_j": "CCCCO"
+    },
+    {
+      "B_ij_k": -241.21596864991474,
+      "component_i": "CCCOC(C)=O",
+      "component_j": "CCCO"
+    },
+    {
+      "B_ij_k": -262.76442158471576,
+      "component_i": "CCCOC(C)=O",
+      "component_j": "CCO"
+    },
+    {
+      "B_ij_k": 66.43513880660132,
+      "component_i": "CCCOC(C)=O",
+      "component_j": "CCOC(C)=O"
+    },
+    {
+      "B_ij_k": -94.69995509673525,
+      "component_i": "CCCOC(C)=O",
+      "component_j": "CCSCC"
+    },
+    {
+      "B_ij_k": 63.311456506005555,
+      "component_i": "CCCOCCC",
+      "component_j": "CCCCCO"
+    },
+    {
+      "B_ij_k": -190.71928545817363,
+      "component_i": "CCCOCCC",
+      "component_j": "CCCO"
+    },
+    {
+      "B_ij_k": -706.6677853501001,
+      "component_i": "CCCOCCO",
+      "component_j": "CCCCCCC"
+    },
+    {
+      "B_ij_k": -535.1257882326425,
+      "component_i": "CCCOCCO",
+      "component_j": "CCCCCCCC"
+    },
+    {
+      "B_ij_k": -480.6055304405262,
+      "component_i": "CCI",
+      "component_j": "CCC(=O)O"
+    },
+    {
+      "B_ij_k": -598.8274011735776,
+      "component_i": "CCI",
+      "component_j": "CCO"
+    },
+    {
+      "B_ij_k": -727.0599780814524,
+      "component_i": "CCO",
+      "component_j": "C1CCCCC1"
+    },
+    {
+      "B_ij_k": -1171.8001500109467,
+      "component_i": "CCO",
+      "component_j": "CC(C)C"
+    },
+    {
+      "B_ij_k": -369.1913178783744,
+      "component_i": "CCO",
+      "component_j": "CC(C)OC(C)C"
+    },
+    {
+      "B_ij_k": -99.746479640483,
+      "component_i": "CCO",
+      "component_j": "CCC(C)(C)OC"
+    },
+    {
+      "B_ij_k": -1011.1651283855174,
+      "component_i": "CCO",
+      "component_j": "CCCC"
+    },
+    {
+      "B_ij_k": 5.591982327149054,
+      "component_i": "CCO",
+      "component_j": "CCCO"
+    },
+    {
+      "B_ij_k": -109.61862207829748,
+      "component_i": "CCO",
+      "component_j": "CCCOC(C)=O"
+    },
+    {
+      "B_ij_k": -68.66660558653007,
+      "component_i": "CCO",
+      "component_j": "CCI"
+    },
+    {
+      "B_ij_k": -177.5974594461595,
+      "component_i": "CCO",
+      "component_j": "CCOC(=O)OCC"
+    },
+    {
+      "B_ij_k": -148.18896657703053,
+      "component_i": "CCO",
+      "component_j": "CCOC(C)=O"
+    },
+    {
+      "B_ij_k": -366.059192513811,
+      "component_i": "CCO",
+      "component_j": "CCSCC"
+    },
+    {
+      "B_ij_k": -386.97526903738753,
+      "component_i": "CCO",
+      "component_j": "CSC"
+    },
+    {
+      "B_ij_k": -614.8739225479529,
+      "component_i": "CCO",
+      "component_j": "O"
+    },
+    {
+      "B_ij_k": 25.310807693338454,
+      "component_i": "CCO",
+      "component_j": "c1ccccc1"
+    },
+    {
+      "B_ij_k": -183.05788991154694,
+      "component_i": "CCOC(=O)C(C)C",
+      "component_j": "CCCO"
+    },
+    {
+      "B_ij_k": -331.8427296290467,
+      "component_i": "CCOC(=O)C(C)C",
+      "component_j": "CO"
+    },
+    {
+      "B_ij_k": -358.4747775710452,
+      "component_i": "CCOC(=O)OCC",
+      "component_j": "CCO"
+    },
+    {
+      "B_ij_k": -380.621419731883,
+      "component_i": "CCOC(=O)OCC",
+      "component_j": "CCOC(C)=O"
+    },
+    {
+      "B_ij_k": -1273.478114273159,
+      "component_i": "CCOC(=O)OCC",
+      "component_j": "O"
+    },
+    {
+      "B_ij_k": -118.52275039855053,
+      "component_i": "CCOC(C)(C)C",
+      "component_j": "CCCO"
+    },
+    {
+      "B_ij_k": -123.58150886997501,
+      "component_i": "CCOC(C)(C)C",
+      "component_j": "CCSCC"
+    },
+    {
+      "B_ij_k": -226.9367931590594,
+      "component_i": "CCOC(C)(C)C",
+      "component_j": "c1ccsc1"
+    },
+    {
+      "B_ij_k": -19.748359778899918,
+      "component_i": "CCOC(C)=O",
+      "component_j": "CC(C)CC(C)(C)C"
+    },
+    {
+      "B_ij_k": -166.41511929157,
+      "component_i": "CCOC(C)=O",
+      "component_j": "CCCO"
+    },
+    {
+      "B_ij_k": -91.72525669648337,
+      "component_i": "CCOC(C)=O",
+      "component_j": "CCCOC(C)=O"
+    },
+    {
+      "B_ij_k": -199.18355363588643,
+      "component_i": "CCOC(C)=O",
+      "component_j": "CCO"
+    },
+    {
+      "B_ij_k": 343.0048840647341,
+      "component_i": "CCOC(C)=O",
+      "component_j": "CCOC(=O)OCC"
+    },
+    {
+      "B_ij_k": 41.66697439472094,
+      "component_i": "CCOC(C)=O",
+      "component_j": "COC(C)(C)C"
+    },
+    {
+      "B_ij_k": -834.9934580808032,
+      "component_i": "CCOCCO",
+      "component_j": "CC1CCCCC1"
+    },
+    {
+      "B_ij_k": -160.25080688574764,
+      "component_i": "CCOCCO",
+      "component_j": "CN1CCCC1=O"
+    },
+    {
+      "B_ij_k": -113.02017359030884,
+      "component_i": "CCSCC",
+      "component_j": "C1CCCCC1"
+    },
+    {
+      "B_ij_k": -128.67225722904874,
+      "component_i": "CCSCC",
+      "component_j": "C=C(C)C"
+    },
+    {
+      "B_ij_k": -45.52331511806422,
+      "component_i": "CCSCC",
+      "component_j": "C=CCC"
+    },
+    {
+      "B_ij_k": -79.21576440573985,
+      "component_i": "CCSCC",
+      "component_j": "CC(C)C"
+    },
+    {
+      "B_ij_k": -105.88357239034089,
+      "component_i": "CCSCC",
+      "component_j": "CCCC"
+    },
+    {
+      "B_ij_k": -218.11109106195474,
+      "component_i": "CCSCC",
+      "component_j": "CCCO"
+    },
+    {
+      "B_ij_k": 35.207461287826476,
+      "component_i": "CCSCC",
+      "component_j": "CCCOC(C)=O"
+    },
+    {
+      "B_ij_k": -284.7165599212102,
+      "component_i": "CCSCC",
+      "component_j": "CCO"
+    },
+    {
+      "B_ij_k": 64.45731164859313,
+      "component_i": "CCSCC",
+      "component_j": "CCOC(C)(C)C"
+    },
+    {
+      "B_ij_k": -227.442045868498,
+      "component_i": "CC[N+](=O)[O-]",
+      "component_j": "CCCCCCl"
+    },
+    {
+      "B_ij_k": -279.8052525748566,
+      "component_i": "CC[N+](=O)[O-]",
+      "component_j": "CCCCCl"
+    },
+    {
+      "B_ij_k": -32.149510648258875,
+      "component_i": "CC[N+](=O)[O-]",
+      "component_j": "ClCCCCCl"
+    },
+    {
+      "B_ij_k": -139.11103382561066,
+      "component_i": "CC[N+](=O)[O-]",
+      "component_j": "ClCCCl"
+    },
+    {
+      "B_ij_k": 251.21900925335666,
+      "component_i": "CCc1cccs1",
+      "component_j": "CCCCCCCC"
+    },
+    {
+      "B_ij_k": -298.53588287796373,
+      "component_i": "CCc1cccs1",
+      "component_j": "CCCCCCCCCC"
+    },
+    {
+      "B_ij_k": -368.2220953345029,
+      "component_i": "CN(C)C=O",
+      "component_j": "CC(=O)N(C)C"
+    },
+    {
+      "B_ij_k": 304.9799240562333,
+      "component_i": "CN(C)C=O",
+      "component_j": "CC(=O)O"
+    },
+    {
+      "B_ij_k": 46.11924150196228,
+      "component_i": "CN(C)C=O",
+      "component_j": "CC(C)CO"
+    },
+    {
+      "B_ij_k": 147.51596702985688,
+      "component_i": "CN(C)C=O",
+      "component_j": "CCCCCCO"
+    },
+    {
+      "B_ij_k": -506.2852657418521,
+      "component_i": "CN(C)C=O",
+      "component_j": "OCC(F)(F)C(F)F"
+    },
+    {
+      "B_ij_k": -1249.550683215147,
+      "component_i": "CN1CCCC1=O",
+      "component_j": "C=CCO"
+    },
+    {
+      "B_ij_k": -389.9049367230653,
+      "component_i": "CN1CCCC1=O",
+      "component_j": "CCCCCl"
+    },
+    {
+      "B_ij_k": 120.87938070946986,
+      "component_i": "CN1CCCC1=O",
+      "component_j": "CCOCCO"
+    },
+    {
+      "B_ij_k": 332.3056228921882,
+      "component_i": "CN1CCCC1=O",
+      "component_j": "ClCCCl"
+    },
+    {
+      "B_ij_k": -1200.743238315808,
+      "component_i": "CN1CCCC1=O",
+      "component_j": "OCC(F)(F)C(F)F"
+    },
+    {
+      "B_ij_k": -3371.5483460806868,
+      "component_i": "CNC=O",
+      "component_j": "C=CCO"
+    },
+    {
+      "B_ij_k": -3183.277426270584,
+      "component_i": "CNC=O",
+      "component_j": "OCC(F)(F)C(F)F"
+    },
+    {
+      "B_ij_k": -148.04697756356828,
+      "component_i": "CO",
+      "component_j": "C1CCOC1"
+    },
+    {
+      "B_ij_k": -100.76843972101504,
+      "component_i": "CO",
+      "component_j": "CC#N"
+    },
+    {
+      "B_ij_k": -613.2943440181917,
+      "component_i": "CO",
+      "component_j": "CC(C)=C(C)C"
+    },
+    {
+      "B_ij_k": -141.0928064210303,
+      "component_i": "CO",
+      "component_j": "CC(C)=O"
+    },
+    {
+      "B_ij_k": -523.629620437673,
+      "component_i": "CO",
+      "component_j": "CC(C)OC(C)C"
+    },
+    {
+      "B_ij_k": 346.0178392183679,
+      "component_i": "CO",
+      "component_j": "CCC(C)=O"
+    },
+    {
+      "B_ij_k": -1626.623757857297,
+      "component_i": "CO",
+      "component_j": "CCCC"
+    },
+    {
+      "B_ij_k": -169.88810551499273,
+      "component_i": "CO",
+      "component_j": "CCOC(=O)C(C)C"
+    },
+    {
+      "B_ij_k": -146.92559019543665,
+      "component_i": "CO",
+      "component_j": "COC(=O)OC"
+    },
+    {
+      "B_ij_k": 317.57984289940225,
+      "component_i": "CO",
+      "component_j": "COC(=O)Oc1ccccc1"
+    },
+    {
+      "B_ij_k": -219.49611504704785,
+      "component_i": "CO",
+      "component_j": "COC(C)=O"
+    },
+    {
+      "B_ij_k": -964.947723141579,
+      "component_i": "CO",
+      "component_j": "OCC(F)(F)C(F)(F)C(F)(F)C(F)F"
+    },
+    {
+      "B_ij_k": 76.90447608325715,
+      "component_i": "CO",
+      "component_j": "c1ccccc1"
+    },
+    {
+      "B_ij_k": -112.37259265013344,
+      "component_i": "COC(=O)CCC(=O)OC",
+      "component_j": "COC(=O)CCCC(=O)OC"
+    },
+    {
+      "B_ij_k": -249.76045623123574,
+      "component_i": "COC(=O)CCC(=O)OC",
+      "component_j": "COC(=O)CCCCC(=O)OC"
+    },
+    {
+      "B_ij_k": 29.154379618898144,
+      "component_i": "COC(=O)CCCC(=O)OC",
+      "component_j": "COC(=O)CCC(=O)OC"
+    },
+    {
+      "B_ij_k": -179.29770262030826,
+      "component_i": "COC(=O)CCCC(=O)OC",
+      "component_j": "COC(=O)CCCCC(=O)OC"
+    },
+    {
+      "B_ij_k": 117.6746795771579,
+      "component_i": "COC(=O)CCCCC(=O)OC",
+      "component_j": "COC(=O)CCC(=O)OC"
+    },
+    {
+      "B_ij_k": 111.5319249559193,
+      "component_i": "COC(=O)CCCCC(=O)OC",
+      "component_j": "COC(=O)CCCC(=O)OC"
+    },
+    {
+      "B_ij_k": -357.1477467658708,
+      "component_i": "COC(=O)OC",
+      "component_j": "CC(=O)OCC(C)C"
+    },
+    {
+      "B_ij_k": -503.777496629531,
+      "component_i": "COC(=O)OC",
+      "component_j": "CCCCOC(=O)CC"
+    },
+    {
+      "B_ij_k": -343.8324231305602,
+      "component_i": "COC(=O)OC",
+      "component_j": "CO"
+    },
+    {
+      "B_ij_k": -767.7477347450009,
+      "component_i": "COC(=O)OC",
+      "component_j": "COC(=O)Oc1ccccc1"
+    },
+    {
+      "B_ij_k": -772.9466614213305,
+      "component_i": "COC(=O)OC",
+      "component_j": "COC=O"
+    },
+    {
+      "B_ij_k": -2512.4278994409897,
+      "component_i": "COC(=O)Oc1ccccc1",
+      "component_j": "CO"
+    },
+    {
+      "B_ij_k": 583.7340658258515,
+      "component_i": "COC(=O)Oc1ccccc1",
+      "component_j": "COC(=O)OC"
+    },
+    {
+      "B_ij_k": 99.51281945501037,
+      "component_i": "COC(C)(C)C",
+      "component_j": "CC(=O)C(C)(C)C"
+    },
+    {
+      "B_ij_k": 99.91568490149331,
+      "component_i": "COC(C)(C)C",
+      "component_j": "CC(C)(C)CO"
+    },
+    {
+      "B_ij_k": -25.177082159902987,
+      "component_i": "COC(C)(C)C",
+      "component_j": "CC(C)CC(C)(C)C"
+    },
+    {
+      "B_ij_k": -110.25700302980839,
+      "component_i": "COC(C)(C)C",
+      "component_j": "CCOC(C)=O"
+    },
+    {
+      "B_ij_k": -172.82100388053667,
+      "component_i": "COC(C)=O",
+      "component_j": "CO"
+    },
+    {
+      "B_ij_k": -37.2755687280583,
+      "component_i": "COC(C)=O",
+      "component_j": "CSC"
+    },
+    {
+      "B_ij_k": -895.1973784068658,
+      "component_i": "COC=O",
+      "component_j": "CCCCCCC"
+    },
+    {
+      "B_ij_k": -1243.986672261911,
+      "component_i": "COC=O",
+      "component_j": "CCCCCCCC"
+    },
+    {
+      "B_ij_k": 91.46971294684974,
+      "component_i": "COC=O",
+      "component_j": "CCCCCCCCC"
+    },
+    {
+      "B_ij_k": -412.91460168521246,
+      "component_i": "COC=O",
+      "component_j": "COC(=O)OC"
+    },
+    {
+      "B_ij_k": -710.0945625448636,
+      "component_i": "COCCO",
+      "component_j": "CC1CCCCC1"
+    },
+    {
+      "B_ij_k": -2467.7526502582114,
+      "component_i": "COCCO",
+      "component_j": "CCC(C)=O"
+    },
+    {
+      "B_ij_k": -696.9290493103936,
+      "component_i": "COCCO",
+      "component_j": "O"
+    },
+    {
+      "B_ij_k": -1746.0008809305452,
+      "component_i": "CS(C)=O",
+      "component_j": "CC(=O)N(C)C"
+    },
+    {
+      "B_ij_k": 770.2210394993274,
+      "component_i": "CS(C)=O",
+      "component_j": "CCC(C)O"
+    },
+    {
+      "B_ij_k": -2966.703082645819,
+      "component_i": "CS(C)=O",
+      "component_j": "CCC(C)OC(C)=O"
+    },
+    {
+      "B_ij_k": -161.3340249099822,
+      "component_i": "CSC",
+      "component_j": "CCO"
+    },
+    {
+      "B_ij_k": -67.40431787814012,
+      "component_i": "CSC",
+      "component_j": "COC(C)=O"
+    },
+    {
+      "B_ij_k": -338.92332575944863,
+      "component_i": "C[N+](=O)[O-]",
+      "component_j": "CCCCCCl"
+    },
+    {
+      "B_ij_k": -88.67433761205758,
+      "component_i": "C[N+](=O)[O-]",
+      "component_j": "ClCCCCCl"
+    },
+    {
+      "B_ij_k": -1241.6327635851583,
+      "component_i": "Cc1ccc(C(C)C)cc1",
+      "component_j": "C=C1C2CCC(C2)C1(C)C"
+    },
+    {
+      "B_ij_k": -930.6081353014948,
+      "component_i": "Cc1ccc(C(C)C)cc1",
+      "component_j": "CC1=CCC2CC1C2(C)C"
+    },
+    {
+      "B_ij_k": -69.77002970457643,
+      "component_i": "Cc1ccc(C)c(C)c1",
+      "component_j": "CCCCCO"
+    },
+    {
+      "B_ij_k": -4.813979532782998,
+      "component_i": "Cc1ccc(C)c(C)c1",
+      "component_j": "Cc1ccsc1"
+    },
+    {
+      "B_ij_k": -363.2125471003939,
+      "component_i": "Cc1ccc(C)cc1",
+      "component_j": "CCC(C)OC(C)=O"
+    },
+    {
+      "B_ij_k": -0.3211521659638176,
+      "component_i": "Cc1ccc(C)cc1",
+      "component_j": "CCCCCCC"
+    },
+    {
+      "B_ij_k": 105.21292390260754,
+      "component_i": "Cc1ccc(C)cc1",
+      "component_j": "CCCCCCCC"
+    },
+    {
+      "B_ij_k": -294.69507708101827,
+      "component_i": "Cc1ccc(C)o1",
+      "component_j": "CC(C)OC(C)C"
+    },
+    {
+      "B_ij_k": 14.391433585813859,
+      "component_i": "Cc1cccc(C)c1",
+      "component_j": "CCCCCCCC"
+    },
+    {
+      "B_ij_k": -244.60248655219755,
+      "component_i": "Cc1cccc(C)c1",
+      "component_j": "CCCCCCCCC"
+    },
+    {
+      "B_ij_k": 114.12909889592858,
+      "component_i": "Cc1cccc(C)c1",
+      "component_j": "CCCCCCCCCC"
+    },
+    {
+      "B_ij_k": -172.7029724869003,
+      "component_i": "Cc1ccccc1",
+      "component_j": "C1CCOC1"
+    },
+    {
+      "B_ij_k": 74.80018129576014,
+      "component_i": "Cc1ccccc1",
+      "component_j": "CC#N"
+    },
+    {
+      "B_ij_k": -63.2634758549029,
+      "component_i": "Cc1ccccc1",
+      "component_j": "CCC(C)Cl"
+    },
+    {
+      "B_ij_k": 125.88571792716297,
+      "component_i": "Cc1ccccc1",
+      "component_j": "CCCCCCC"
+    },
+    {
+      "B_ij_k": -78.04806486905915,
+      "component_i": "Cc1ccccc1",
+      "component_j": "CCCCCO"
+    },
+    {
+      "B_ij_k": 80.38810323694477,
+      "component_i": "Cc1ccccc1",
+      "component_j": "CCCCCl"
+    },
+    {
+      "B_ij_k": -6.163476652199576,
+      "component_i": "Cc1ccccc1",
+      "component_j": "Cc1ccsc1"
+    },
+    {
+      "B_ij_k": -564.004778494894,
+      "component_i": "Cc1ccccc1",
+      "component_j": "c1ccccc1"
+    },
+    {
+      "B_ij_k": 124.12405295207556,
+      "component_i": "Cc1ccccc1C",
+      "component_j": "C1CCSC1"
+    },
+    {
+      "B_ij_k": 0.616477115999995,
+      "component_i": "Cc1ccccc1C",
+      "component_j": "CCCCCCCCCC"
+    },
+    {
+      "B_ij_k": -3.4944735913211757,
+      "component_i": "Cc1ccccc1C",
+      "component_j": "Cc1ccsc1"
+    },
+    {
+      "B_ij_k": -766.7705853890861,
+      "component_i": "Cc1ccccc1C",
+      "component_j": "c1ccccc1"
+    },
+    {
+      "B_ij_k": -7.087920617409768,
+      "component_i": "Cc1ccsc1",
+      "component_j": "C=C(C)C(C)C"
+    },
+    {
+      "B_ij_k": 68.65565251013457,
+      "component_i": "Cc1ccsc1",
+      "component_j": "CC1CCCCC1"
+    },
+    {
+      "B_ij_k": -78.81680433718316,
+      "component_i": "Cc1ccsc1",
+      "component_j": "CCCCCC"
+    },
+    {
+      "B_ij_k": -2.2792341561364284,
+      "component_i": "Cc1ccsc1",
+      "component_j": "Cc1ccc(C)c(C)c1"
+    },
+    {
+      "B_ij_k": -6.694270685647072,
+      "component_i": "Cc1ccsc1",
+      "component_j": "Cc1ccccc1"
+    },
+    {
+      "B_ij_k": -17.590070929744417,
+      "component_i": "Cc1ccsc1",
+      "component_j": "Cc1ccccc1C"
+    },
+    {
+      "B_ij_k": -560.6703781674996,
+      "component_i": "ClC(Cl)C(Cl)Cl",
+      "component_j": "BrCCBr"
+    },
+    {
+      "B_ij_k": 158.8848845856742,
+      "component_i": "ClC(Cl)C(Cl)Cl",
+      "component_j": "O=C1CCCC1"
+    },
+    {
+      "B_ij_k": 212.94685174029064,
+      "component_i": "ClC(Cl)C(Cl)Cl",
+      "component_j": "O=C1CCCCC1"
+    },
+    {
+      "B_ij_k": -605.417843300538,
+      "component_i": "ClC(Cl)Cl",
+      "component_j": "BrCCBr"
+    },
+    {
+      "B_ij_k": 188.0272400287284,
+      "component_i": "ClC(Cl)Cl",
+      "component_j": "CC(=O)CC(C)C"
+    },
+    {
+      "B_ij_k": -132.59375406288294,
+      "component_i": "ClCCCCCl",
+      "component_j": "CC[N+](=O)[O-]"
+    },
+    {
+      "B_ij_k": -240.83968324004886,
+      "component_i": "ClCCCCCl",
+      "component_j": "C[N+](=O)[O-]"
+    },
+    {
+      "B_ij_k": -436.136991879438,
+      "component_i": "ClCCCl",
+      "component_j": "BrCCBr"
+    },
+    {
+      "B_ij_k": -147.21609832718823,
+      "component_i": "ClCCCl",
+      "component_j": "CCCO"
+    },
+    {
+      "B_ij_k": 53.70593612321569,
+      "component_i": "ClCCCl",
+      "component_j": "CC[N+](=O)[O-]"
+    },
+    {
+      "B_ij_k": 43.344221895607916,
+      "component_i": "ClCCCl",
+      "component_j": "CN1CCCC1=O"
+    },
+    {
+      "B_ij_k": -112.43420530709083,
+      "component_i": "Clc1ccccc1",
+      "component_j": "CCCCCCC"
+    },
+    {
+      "B_ij_k": -131.01334800473953,
+      "component_i": "Clc1ccccc1",
+      "component_j": "CCCCCCO"
+    },
+    {
+      "B_ij_k": -109.25890845978566,
+      "component_i": "F/C=C/C(F)(F)F",
+      "component_j": "FC(F)(F)I"
+    },
+    {
+      "B_ij_k": -16.17351933526856,
+      "component_i": "F/C=C/C(F)(F)F",
+      "component_j": "FC(F)C(F)F"
+    },
+    {
+      "B_ij_k": 2.508516500902958,
+      "component_i": "F/C=C/C(F)(F)F",
+      "component_j": "FCC(F)(F)F"
+    },
+    {
+      "B_ij_k": 17.854475812496133,
+      "component_i": "FC(C(F)(F)F)C(F)(F)F",
+      "component_j": "FCC(F)(F)F"
+    },
+    {
+      "B_ij_k": 19.966814091891024,
+      "component_i": "FC(F)(F)I",
+      "component_j": "CC(C)C"
+    },
+    {
+      "B_ij_k": -55.92253419009026,
+      "component_i": "FC(F)(F)I",
+      "component_j": "F/C=C/C(F)(F)F"
+    },
+    {
+      "B_ij_k": -286.2184202196651,
+      "component_i": "FC(F)C(F)F",
+      "component_j": "CC(C)C"
+    },
+    {
+      "B_ij_k": -78.1626847200171,
+      "component_i": "FC(F)C(F)F",
+      "component_j": "CC(F)F"
+    },
+    {
+      "B_ij_k": -33.31754304538304,
+      "component_i": "FC(F)C(F)F",
+      "component_j": "F/C=C/C(F)(F)F"
+    },
+    {
+      "B_ij_k": -404.826486935291,
+      "component_i": "FC(F)CC(F)(F)F",
+      "component_j": "CC(C)C"
+    },
+    {
+      "B_ij_k": -447.59543410438744,
+      "component_i": "FC(F)CC(F)(F)F",
+      "component_j": "CCCC"
+    },
+    {
+      "B_ij_k": -319.9818590381322,
+      "component_i": "FCC(F)(F)F",
+      "component_j": "C1CC1"
+    },
+    {
+      "B_ij_k": -44.8459660097786,
+      "component_i": "FCC(F)(F)F",
+      "component_j": "F/C=C/C(F)(F)F"
+    },
+    {
+      "B_ij_k": -57.55566952089437,
+      "component_i": "FCC(F)(F)F",
+      "component_j": "FC(C(F)(F)F)C(F)(F)F"
+    },
+    {
+      "B_ij_k": -172.6373464139874,
+      "component_i": "NC1CCCCC1",
+      "component_j": "CC1CCCCC1"
+    },
+    {
+      "B_ij_k": -121.6287804911267,
+      "component_i": "NC1CCCCC1",
+      "component_j": "CCCCCCCC"
+    },
+    {
+      "B_ij_k": -674.8508761206441,
+      "component_i": "NC1CCCCC1",
+      "component_j": "Nc1ccccc1"
+    },
+    {
+      "B_ij_k": -2234.793914102804,
+      "component_i": "NC1CCCCC1",
+      "component_j": "O"
+    },
+    {
+      "B_ij_k": -625.1327729742304,
+      "component_i": "Nc1ccccc1",
+      "component_j": "C1CCCCC1"
+    },
+    {
+      "B_ij_k": -629.2765600017608,
+      "component_i": "Nc1ccccc1",
+      "component_j": "CC1CCCCC1"
+    },
+    {
+      "B_ij_k": 20.11787042847192,
+      "component_i": "Nc1ccccc1",
+      "component_j": "CCCCCCO"
+    },
+    {
+      "B_ij_k": 377.8161189591541,
+      "component_i": "Nc1ccccc1",
+      "component_j": "NC1CCCCC1"
+    },
+    {
+      "B_ij_k": 510.51568882954325,
+      "component_i": "O",
+      "component_j": "C1CN=C2CCCN2C1"
+    },
+    {
+      "B_ij_k": 130.87602667968693,
+      "component_i": "O",
+      "component_j": "C=CCO"
+    },
+    {
+      "B_ij_k": -375.70481812718134,
+      "component_i": "O",
+      "component_j": "CC(=O)O"
+    },
+    {
+      "B_ij_k": -163.33774862809463,
+      "component_i": "O",
+      "component_j": "CC(C)(C)O"
+    },
+    {
+      "B_ij_k": 295.4624026045331,
+      "component_i": "O",
+      "component_j": "CC(C)(N)CO"
+    },
+    {
+      "B_ij_k": -139.23089741588586,
+      "component_i": "O",
+      "component_j": "CC(C)O"
+    },
+    {
+      "B_ij_k": -334.4569893386268,
+      "component_i": "O",
+      "component_j": "CCC(=O)O"
+    },
+    {
+      "B_ij_k": -37.782414493874484,
+      "component_i": "O",
+      "component_j": "CCCO"
+    },
+    {
+      "B_ij_k": -55.80796169889339,
+      "component_i": "O",
+      "component_j": "CCO"
+    },
+    {
+      "B_ij_k": -646.9495390462829,
+      "component_i": "O",
+      "component_j": "CCOC(=O)OCC"
+    },
+    {
+      "B_ij_k": 170.36754762502417,
+      "component_i": "O",
+      "component_j": "COCCO"
+    },
+    {
+      "B_ij_k": 88.33314268502464,
+      "component_i": "O",
+      "component_j": "NC1CCCCC1"
+    },
+    {
+      "B_ij_k": -605.2318663920785,
+      "component_i": "O",
+      "component_j": "OCCOCCOCCO"
+    },
+    {
+      "B_ij_k": 237.01315526482324,
+      "component_i": "O=C1CCCC1",
+      "component_j": "ClC(Cl)C(Cl)Cl"
+    },
+    {
+      "B_ij_k": 66.96896516936764,
+      "component_i": "O=C1CCCCC1",
+      "component_j": "CC(Cl)(Cl)Cl"
+    },
+    {
+      "B_ij_k": -292.8453804581814,
+      "component_i": "O=C1CCCCC1",
+      "component_j": "CCCCCl"
+    },
+    {
+      "B_ij_k": 237.77698925522182,
+      "component_i": "O=C1CCCCC1",
+      "component_j": "ClC(Cl)C(Cl)Cl"
+    },
+    {
+      "B_ij_k": -27.198009204681462,
+      "component_i": "O=C1OC(=O)c2cc(Cl)ccc21",
+      "component_j": "O=C1OC(=O)c2cc(F)ccc21"
+    },
+    {
+      "B_ij_k": 13.653490876877258,
+      "component_i": "O=C1OC(=O)c2cc(F)ccc21",
+      "component_j": "O=C1OC(=O)c2cc(Cl)ccc21"
+    },
+    {
+      "B_ij_k": -73.72161280555171,
+      "component_i": "O=Cc1ccco1",
+      "component_j": "CC(=O)CC(C)C"
+    },
+    {
+      "B_ij_k": 169.1860698247367,
+      "component_i": "O=Cc1ccco1",
+      "component_j": "CC(C)=O"
+    },
+    {
+      "B_ij_k": -335.816271852117,
+      "component_i": "O=Cc1ccco1",
+      "component_j": "CCC(C)O"
+    },
+    {
+      "B_ij_k": -7.222731729871276,
+      "component_i": "O=[N+]([O-])c1ccc(Cl)c(Cl)c1",
+      "component_j": "O=[N+]([O-])c1cccc(Cl)c1Cl"
+    },
+    {
+      "B_ij_k": -5.898964936686739,
+      "component_i": "O=[N+]([O-])c1cccc(Cl)c1Cl",
+      "component_j": "O=[N+]([O-])c1ccc(Cl)c(Cl)c1"
+    },
+    {
+      "B_ij_k": 885.7006489808261,
+      "component_i": "OCC(F)(F)C(F)(F)C(F)(F)C(F)F",
+      "component_j": "CO"
+    },
+    {
+      "B_ij_k": -3062.0593573940487,
+      "component_i": "OCC(F)(F)C(F)(F)C(F)(F)C(F)F",
+      "component_j": "OCC(F)(F)C(F)F"
+    },
+    {
+      "B_ij_k": -196.8570080880839,
+      "component_i": "OCC(F)(F)C(F)F",
+      "component_j": "CN(C)C=O"
+    },
+    {
+      "B_ij_k": -750.7822882047478,
+      "component_i": "OCC(F)(F)C(F)F",
+      "component_j": "CN1CCCC1=O"
+    },
+    {
+      "B_ij_k": 262.13177761522985,
+      "component_i": "OCC(F)(F)C(F)F",
+      "component_j": "CNC=O"
+    },
+    {
+      "B_ij_k": 392.8340872416235,
+      "component_i": "OCC(F)(F)C(F)F",
+      "component_j": "OCC(F)(F)C(F)(F)C(F)(F)C(F)F"
+    },
+    {
+      "B_ij_k": 817.9951457540992,
+      "component_i": "OCCOCCOCCO",
+      "component_j": "O"
+    },
+    {
+      "B_ij_k": -1046.9297551956124,
+      "component_i": "c1ccccc1",
+      "component_j": "CCCCCCC"
+    },
+    {
+      "B_ij_k": 315.23289190419524,
+      "component_i": "c1ccccc1",
+      "component_j": "CCCCCCCCC"
+    },
+    {
+      "B_ij_k": -567.1843084677143,
+      "component_i": "c1ccccc1",
+      "component_j": "CCO"
+    },
+    {
+      "B_ij_k": -572.5597117918578,
+      "component_i": "c1ccccc1",
+      "component_j": "CO"
+    },
+    {
+      "B_ij_k": 31.25472070249402,
+      "component_i": "c1ccccc1",
+      "component_j": "Cc1ccccc1"
+    },
+    {
+      "B_ij_k": -278.4739394381448,
+      "component_i": "c1ccccc1",
+      "component_j": "Cc1ccccc1C"
+    },
+    {
+      "B_ij_k": 117.5327050391339,
+      "component_i": "c1ccccc1",
+      "component_j": "c1ccsc1"
+    },
+    {
+      "B_ij_k": 53.29267560284683,
+      "component_i": "c1ccsc1",
+      "component_j": "CC(C)CC(C)(C)C"
+    },
+    {
+      "B_ij_k": 103.44940665291455,
+      "component_i": "c1ccsc1",
+      "component_j": "CCOC(C)(C)C"
+    },
+    {
+      "B_ij_k": -201.6976493698211,
+      "component_i": "c1ccsc1",
+      "component_j": "c1ccccc1"
+    }
+  ],
+  "system_parameter_coverage": 1.0,
+  "training_partition": "train",
+  "training_rows_with_model_coverage": 7640
+}

@@ -1,0 +1,33 @@
+{
+  "capability": {
+    "adaptation_label": "leakage_free_task_adapter",
+    "citation": "Xue et al., Chemical Engineering Science (2024)",
+    "display_name": "SMILES-RNN",
+    "external_assets_required": false,
+    "implementation_source": "reimplemented_from_official",
+    "key": "smiles_rnn",
+    "native_component_counts": [
+      2
+    ],
+    "native_directions": [
+      "isothermal",
+      "isobaric"
+    ],
+    "notes": "Direction-specific heads are retained; the missing author dataset prevents byte-level reproduction.",
+    "prediction_target": "direct_vle",
+    "reference_parameter_note": "",
+    "reference_trainable_parameters": null,
+    "source_revision": "d41d533",
+    "source_url": "https://github.com/Xiyue17/SMILES-RNN",
+    "temperature_mode": "variable"
+  },
+  "smoke": {
+    "asset_root": "datasets/molecular_features/upstream_baselines",
+    "epochs": 1,
+    "learning_rate": 0.001,
+    "max_train_rows": 8,
+    "max_validation_rows": 8,
+    "seed": 0,
+    "settings_sha256": "87f91d3132a02bab604a23101a8d52e5cfc7b93a5967d0a2c7e1db0c1e450ab3"
+  }
+}

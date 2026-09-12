@@ -15,7 +15,7 @@ implementation belongs in `src/`; scripts expose those methods to experiments.
 - `train.py`: configuration-driven training entry point.
 - `run_experiment.py`: one registered protocol and seed.
 - `evaluate.py`: evaluate one checkpoint on a compatible registered split.
-- `run_paper_suite.py`: registered multi-seed supervised campaigns.
+- `run_registered_suite.py`: registered multi-seed supervised campaigns.
 - `run_c1_physics_finetune.py`: C1 fugacity-constrained fine-tuning.
 - `aggregate_results.py`: consistency-checked multi-seed statistical aggregation.
 
@@ -23,15 +23,16 @@ implementation belongs in `src/`; scripts expose those methods to experiments.
 
 - `run_multiview_suite.py`: molecular-representation ablations.
 - `run_chemical_attention_suite.py`: interaction-architecture ablations.
-- The exact published Figure 2 is retained under `analysis/manuscript_figures/`;
-  earlier interpretability runners are preserved under `archive/legacy_code/`.
+- The exact published Figure 2 is retained under `analysis/`;
+  earlier interpretability runners are preserved under `docs/reference_records/`.
 
 ## Report generation
 
 - `build_reports.py`: unified generalization and ablation report command.
 - `reproduce/`: manuscript-section reproduction commands.
-- `build_c1_ablation_report.py`: retained `overall_binary_ternary` ablations.
+- `build_c1_ablation_report.py`: validated `overall_binary` three-stage ablation report.
 - `build_c1_generalization_report.py`: final generalization campaign.
 
 Archived one-time data-processing, diagnostic, and early reporting commands are
-listed in `archive/legacy_code/README.md`.
+listed in `docs/reference_records/README.md`.
+

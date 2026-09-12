@@ -1,0 +1,1185 @@
+{
+  "experiment": "lle.generalization.binary_temperature_high",
+  "provenance": "lle_nist",
+  "status": "runnable",
+  "notes": "Binary RK / ternary continuous parallel tie-line model; SMILES+T+P only. Includes unchanged activity and finite-grid TPD certification. No LLE comparison/ablation/interpretability.",
+  "sources": [
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high",
+      "exists": true,
+      "kind": "directory",
+      "sha256": null
+    }
+  ],
+  "files": [
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/data_audit.json",
+      "bytes": 931
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/identity.json",
+      "bytes": 3492
+    },
+    {
+      "path": "models/lle/generalization/binary-temperature-high/seed_0/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/completion.json",
+      "bytes": 378
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/features.json",
+      "bytes": 6457
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/history.json",
+      "bytes": 17874
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/predictions.json",
+      "bytes": 555775
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/predictions.partial.json",
+      "bytes": 555775
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/split.json",
+      "bytes": 779281
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/split_check.json",
+      "bytes": 278
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_109/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_109/predictions.json",
+      "bytes": 546922
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_109/predictions.partial.json",
+      "bytes": 546922
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_119/metrics.json",
+      "bytes": 2316
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_119/predictions.json",
+      "bytes": 546807
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_119/predictions.partial.json",
+      "bytes": 546807
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_129/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_129/predictions.json",
+      "bytes": 546922
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_129/predictions.partial.json",
+      "bytes": 546922
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_139/metrics.json",
+      "bytes": 2314
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_139/predictions.json",
+      "bytes": 547020
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_139/predictions.partial.json",
+      "bytes": 547020
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_149/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_149/predictions.json",
+      "bytes": 546583
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_149/predictions.partial.json",
+      "bytes": 546583
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_159/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_159/predictions.json",
+      "bytes": 546923
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_159/predictions.partial.json",
+      "bytes": 546923
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_19/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_19/predictions.json",
+      "bytes": 547082
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_19/predictions.partial.json",
+      "bytes": 547082
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_29/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_29/predictions.json",
+      "bytes": 547154
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_29/predictions.partial.json",
+      "bytes": 547154
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_39/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_39/predictions.json",
+      "bytes": 546945
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_39/predictions.partial.json",
+      "bytes": 546945
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_49/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_49/predictions.json",
+      "bytes": 547271
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_49/predictions.partial.json",
+      "bytes": 547271
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_59/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_59/predictions.json",
+      "bytes": 547119
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_59/predictions.partial.json",
+      "bytes": 547119
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_69/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_69/predictions.json",
+      "bytes": 546875
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_69/predictions.partial.json",
+      "bytes": 546875
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_79/metrics.json",
+      "bytes": 2314
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_79/predictions.json",
+      "bytes": 546661
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_79/predictions.partial.json",
+      "bytes": 546661
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_89/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_89/predictions.json",
+      "bytes": 547091
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_89/predictions.partial.json",
+      "bytes": 547091
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_9/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_9/predictions.json",
+      "bytes": 547437
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_9/predictions.partial.json",
+      "bytes": 547437
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_99/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_99/predictions.json",
+      "bytes": 546997
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_0/validation_epoch_99/predictions.partial.json",
+      "bytes": 546997
+    },
+    {
+      "path": "models/lle/generalization/binary-temperature-high/seed_1/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/completion.json",
+      "bytes": 377
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/features.json",
+      "bytes": 6457
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/history.json",
+      "bytes": 17861
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/predictions.json",
+      "bytes": 555708
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/predictions.partial.json",
+      "bytes": 555708
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/split.json",
+      "bytes": 779281
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/split_check.json",
+      "bytes": 278
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_109/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_109/predictions.json",
+      "bytes": 547032
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_109/predictions.partial.json",
+      "bytes": 547032
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_119/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_119/predictions.json",
+      "bytes": 546949
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_119/predictions.partial.json",
+      "bytes": 546949
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_129/metrics.json",
+      "bytes": 2316
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_129/predictions.json",
+      "bytes": 546797
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_129/predictions.partial.json",
+      "bytes": 546797
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_139/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_139/predictions.json",
+      "bytes": 546723
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_139/predictions.partial.json",
+      "bytes": 546723
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_149/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_149/predictions.json",
+      "bytes": 546649
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_149/predictions.partial.json",
+      "bytes": 546649
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_159/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_159/predictions.json",
+      "bytes": 546779
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_159/predictions.partial.json",
+      "bytes": 546779
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_19/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_19/predictions.json",
+      "bytes": 547151
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_19/predictions.partial.json",
+      "bytes": 547151
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_29/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_29/predictions.json",
+      "bytes": 547057
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_29/predictions.partial.json",
+      "bytes": 547057
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_39/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_39/predictions.json",
+      "bytes": 546903
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_39/predictions.partial.json",
+      "bytes": 546903
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_49/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_49/predictions.json",
+      "bytes": 546930
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_49/predictions.partial.json",
+      "bytes": 546930
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_59/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_59/predictions.json",
+      "bytes": 546951
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_59/predictions.partial.json",
+      "bytes": 546951
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_69/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_69/predictions.json",
+      "bytes": 547031
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_69/predictions.partial.json",
+      "bytes": 547031
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_79/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_79/predictions.json",
+      "bytes": 546877
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_79/predictions.partial.json",
+      "bytes": 546877
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_89/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_89/predictions.json",
+      "bytes": 547034
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_89/predictions.partial.json",
+      "bytes": 547034
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_9/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_9/predictions.json",
+      "bytes": 547202
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_9/predictions.partial.json",
+      "bytes": 547202
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_99/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_99/predictions.json",
+      "bytes": 547107
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_1/validation_epoch_99/predictions.partial.json",
+      "bytes": 547107
+    },
+    {
+      "path": "models/lle/generalization/binary-temperature-high/seed_2/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/completion.json",
+      "bytes": 378
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/features.json",
+      "bytes": 6457
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/history.json",
+      "bytes": 17873
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/predictions.json",
+      "bytes": 555489
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/predictions.partial.json",
+      "bytes": 555489
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/split.json",
+      "bytes": 779281
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/split_check.json",
+      "bytes": 278
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_109/metrics.json",
+      "bytes": 2316
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_109/predictions.json",
+      "bytes": 546661
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_109/predictions.partial.json",
+      "bytes": 546661
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_119/metrics.json",
+      "bytes": 2316
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_119/predictions.json",
+      "bytes": 546771
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_119/predictions.partial.json",
+      "bytes": 546771
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_129/metrics.json",
+      "bytes": 2316
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_129/predictions.json",
+      "bytes": 546990
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_129/predictions.partial.json",
+      "bytes": 546990
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_139/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_139/predictions.json",
+      "bytes": 546810
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_139/predictions.partial.json",
+      "bytes": 546810
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_149/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_149/predictions.json",
+      "bytes": 546836
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_149/predictions.partial.json",
+      "bytes": 546836
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_159/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_159/predictions.json",
+      "bytes": 546947
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_159/predictions.partial.json",
+      "bytes": 546947
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_19/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_19/predictions.json",
+      "bytes": 546978
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_19/predictions.partial.json",
+      "bytes": 546978
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_29/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_29/predictions.json",
+      "bytes": 546840
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_29/predictions.partial.json",
+      "bytes": 546840
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_39/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_39/predictions.json",
+      "bytes": 547322
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_39/predictions.partial.json",
+      "bytes": 547322
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_49/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_49/predictions.json",
+      "bytes": 546971
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_49/predictions.partial.json",
+      "bytes": 546971
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_59/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_59/predictions.json",
+      "bytes": 547180
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_59/predictions.partial.json",
+      "bytes": 547180
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_69/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_69/predictions.json",
+      "bytes": 546948
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_69/predictions.partial.json",
+      "bytes": 546948
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_79/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_79/predictions.json",
+      "bytes": 546858
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_79/predictions.partial.json",
+      "bytes": 546858
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_89/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_89/predictions.json",
+      "bytes": 546748
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_89/predictions.partial.json",
+      "bytes": 546748
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_9/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_9/predictions.json",
+      "bytes": 547055
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_9/predictions.partial.json",
+      "bytes": 547055
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_99/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_99/predictions.json",
+      "bytes": 547117
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_2/validation_epoch_99/predictions.partial.json",
+      "bytes": 547117
+    },
+    {
+      "path": "models/lle/generalization/binary-temperature-high/seed_3/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/completion.json",
+      "bytes": 377
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/features.json",
+      "bytes": 6457
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/history.json",
+      "bytes": 17879
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/predictions.json",
+      "bytes": 555491
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/predictions.partial.json",
+      "bytes": 555491
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/split.json",
+      "bytes": 779281
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/split_check.json",
+      "bytes": 278
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_109/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_109/predictions.json",
+      "bytes": 546958
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_109/predictions.partial.json",
+      "bytes": 546958
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_119/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_119/predictions.json",
+      "bytes": 546850
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_119/predictions.partial.json",
+      "bytes": 546850
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_129/metrics.json",
+      "bytes": 2314
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_129/predictions.json",
+      "bytes": 546844
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_129/predictions.partial.json",
+      "bytes": 546844
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_139/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_139/predictions.json",
+      "bytes": 546583
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_139/predictions.partial.json",
+      "bytes": 546583
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_149/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_149/predictions.json",
+      "bytes": 546840
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_149/predictions.partial.json",
+      "bytes": 546840
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_159/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_159/predictions.json",
+      "bytes": 547148
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_159/predictions.partial.json",
+      "bytes": 547148
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_19/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_19/predictions.json",
+      "bytes": 547109
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_19/predictions.partial.json",
+      "bytes": 547109
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_29/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_29/predictions.json",
+      "bytes": 547128
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_29/predictions.partial.json",
+      "bytes": 547128
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_39/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_39/predictions.json",
+      "bytes": 546963
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_39/predictions.partial.json",
+      "bytes": 546963
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_49/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_49/predictions.json",
+      "bytes": 546785
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_49/predictions.partial.json",
+      "bytes": 546785
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_59/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_59/predictions.json",
+      "bytes": 547062
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_59/predictions.partial.json",
+      "bytes": 547062
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_69/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_69/predictions.json",
+      "bytes": 546837
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_69/predictions.partial.json",
+      "bytes": 546837
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_79/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_79/predictions.json",
+      "bytes": 546717
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_79/predictions.partial.json",
+      "bytes": 546717
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_89/metrics.json",
+      "bytes": 2316
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_89/predictions.json",
+      "bytes": 546730
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_89/predictions.partial.json",
+      "bytes": 546730
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_9/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_9/predictions.json",
+      "bytes": 546999
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_9/predictions.partial.json",
+      "bytes": 546999
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_99/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_99/predictions.json",
+      "bytes": 547087
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_3/validation_epoch_99/predictions.partial.json",
+      "bytes": 547087
+    },
+    {
+      "path": "models/lle/generalization/binary-temperature-high/seed_4/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/completion.json",
+      "bytes": 378
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/features.json",
+      "bytes": 6457
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/history.json",
+      "bytes": 17867
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/predictions.json",
+      "bytes": 555375
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/predictions.partial.json",
+      "bytes": 555375
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/split.json",
+      "bytes": 779281
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/split_check.json",
+      "bytes": 278
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_109/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_109/predictions.json",
+      "bytes": 547098
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_109/predictions.partial.json",
+      "bytes": 547098
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_119/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_119/predictions.json",
+      "bytes": 547255
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_119/predictions.partial.json",
+      "bytes": 547255
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_129/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_129/predictions.json",
+      "bytes": 546732
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_129/predictions.partial.json",
+      "bytes": 546732
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_139/metrics.json",
+      "bytes": 2316
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_139/predictions.json",
+      "bytes": 546824
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_139/predictions.partial.json",
+      "bytes": 546824
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_149/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_149/predictions.json",
+      "bytes": 546784
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_149/predictions.partial.json",
+      "bytes": 546784
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_159/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_159/predictions.json",
+      "bytes": 546547
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_159/predictions.partial.json",
+      "bytes": 546547
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_19/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_19/predictions.json",
+      "bytes": 547225
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_19/predictions.partial.json",
+      "bytes": 547225
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_29/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_29/predictions.json",
+      "bytes": 546858
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_29/predictions.partial.json",
+      "bytes": 546858
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_39/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_39/predictions.json",
+      "bytes": 547341
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_39/predictions.partial.json",
+      "bytes": 547341
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_49/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_49/predictions.json",
+      "bytes": 547095
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_49/predictions.partial.json",
+      "bytes": 547095
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_59/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_59/predictions.json",
+      "bytes": 546901
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_59/predictions.partial.json",
+      "bytes": 546901
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_69/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_69/predictions.json",
+      "bytes": 546830
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_69/predictions.partial.json",
+      "bytes": 546830
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_79/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_79/predictions.json",
+      "bytes": 546669
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_79/predictions.partial.json",
+      "bytes": 546669
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_89/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_89/predictions.json",
+      "bytes": 547224
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_89/predictions.partial.json",
+      "bytes": 547224
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_9/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_9/predictions.json",
+      "bytes": 547042
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_9/predictions.partial.json",
+      "bytes": 547042
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_99/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_99/predictions.json",
+      "bytes": 546812
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/binary-temperature-high/seed_4/validation_epoch_99/predictions.partial.json",
+      "bytes": 546812
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/cache/functional_groups_thermoformer_v1.npz",
+      "bytes": 9289
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/cache/hybrid_rdkit_unimol_84m_functional_v1.npz",
+      "bytes": 1353233
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/cache/hybrid_rdkit_unimol_84m_v1.npz",
+      "bytes": 403616
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/cache/rdkit_2d_raw24_v1.npz",
+      "bytes": 24167
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-high/cache/unimolv2_84m.npz",
+      "bytes": 1321813
+    }
+  ],
+  "note": "Existence-only inventory; does not certify metrics or completed seed counts."
+}

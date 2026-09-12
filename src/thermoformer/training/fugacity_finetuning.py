@@ -84,6 +84,39 @@ def _matches_group(name: str, group: str) -> bool:
     return name == group or name.startswith(group + ".")
 
 
+def _resolve_physics_group(
+    named_parameters: Sequence[tuple[str, nn.Parameter]],
+    configured_group: str,
+) -> tuple[str, tuple[tuple[str, nn.Parameter], ...]]:
+    """Resolve the configured interaction alias to modules present on a model.
+
+    The public configuration intentionally continues to call the thermodynamic
+    interaction group ``pair_potential``. Context-conditioned variants replace
+    that module with ``context_pair_potential``; both represent the same
+    trainable thermodynamic interaction role and therefore share its learning
+    rate. Prefer the ordinary pair potential when both are available.
+    """
+    candidates = (
+        ("pair_potential", "context_pair_potential")
+        if configured_group == "pair_potential"
+        else (configured_group,)
+    )
+    for resolved_group in candidates:
+        selected = tuple(
+            (name, parameter)
+            for name, parameter in named_parameters
+            if _matches_group(name, resolved_group)
+        )
+        if selected:
+            return resolved_group, selected
+    if configured_group == "pair_potential":
+        raise ValueError(
+            "ThermoFormer has no interaction-potential parameters for physics "
+            "group 'pair_potential'; expected 'pair_potential' or "
+            "'context_pair_potential'"
+        )
+    raise ValueError(f"ThermoFormer has no parameters for physics group {configured_group}")
+
 def configure_physics_finetuning(
     model: nn.Module,
     config: TrainingConfig,
@@ -103,20 +136,14 @@ def configure_physics_finetuning(
     named = tuple(model.named_parameters())
     groups: list[FineTuneParameterGroup] = []
     optimizer_groups: list[dict[str, object]] = []
-    for group_name in finetuning.trainable_modules:
-        selected = tuple(
-            (name, parameter)
-            for name, parameter in named
-            if _matches_group(name, group_name)
-        )
-        if not selected:
-            raise ValueError(f"ThermoFormer has no parameters for physics group {group_name}")
+    for configured_group in finetuning.trainable_modules:
+        resolved_group, selected = _resolve_physics_group(named, configured_group)
         parameters = tuple(parameter for _, parameter in selected)
         for parameter in parameters:
             parameter.requires_grad_(True)
-        learning_rate = learning_rates[group_name]
+        learning_rate = learning_rates[configured_group]
         group = FineTuneParameterGroup(
-            name=group_name,
+            name=resolved_group,
             learning_rate=learning_rate,
             parameter_count=sum(parameter.numel() for parameter in parameters),
             parameter_names=tuple(name for name, _ in selected),
@@ -124,7 +151,7 @@ def configure_physics_finetuning(
         )
         groups.append(group)
         optimizer_groups.append(
-            {"params": list(parameters), "lr": learning_rate, "name": group_name}
+            {"params": list(parameters), "lr": learning_rate, "name": resolved_group}
         )
     optimizer = torch.optim.AdamW(
         optimizer_groups,

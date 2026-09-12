@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 import os
 import random
+import time
 from dataclasses import asdict, dataclass
 from typing import Sequence
 
@@ -303,7 +304,10 @@ def fit_model(
         stage_best_state = _cpu_state(model)
         stage_best_validation = best_validation
         epochs_without_improvement = 0
+        stage_started = time.perf_counter()
+        print(f"[stage {name}] starting {epochs} epoch(s)", flush=True)
         for epoch in range(1, epochs + 1):
+            epoch_started = time.perf_counter()
             set_training_epoch = getattr(model, "set_training_epoch", None)
             if callable(set_training_epoch):
                 set_training_epoch(epoch_offset + epoch)
@@ -329,17 +333,35 @@ def fit_model(
                     "validation": validation_metrics,
                 }
             )
+            improved = validation_metrics is None
             if validation_metrics is None:
                 stage_best_state = _cpu_state(model)
             elif (
                 validation_metrics["total"]
                 < stage_best_validation - config.validation_min_delta
             ):
+                improved = True
                 stage_best_validation = validation_metrics["total"]
                 stage_best_state = _cpu_state(model)
                 epochs_without_improvement = 0
             else:
                 epochs_without_improvement += 1
+            now = time.perf_counter()
+            validation_total = (
+                float("nan")
+                if validation_metrics is None
+                else float(validation_metrics["total"])
+            )
+            print(
+                f"[stage {name}] [epoch {epoch}/{epochs}] "
+                f"train_total={float(train_metrics['total']):.6f} "
+                f"val_total={validation_total:.6f} "
+                f"best={stage_best_validation:.6f} "
+                f"improved={'yes' if improved else 'no'} "
+                f"epoch_time={now - epoch_started:.1f}s "
+                f"total_time={now - stage_started:.1f}s",
+                flush=True,
+            )
             if (
                 validation_metrics is not None
                 and config.early_stopping_patience > 0
@@ -347,6 +369,11 @@ def fit_model(
                 and epochs_without_improvement >= config.early_stopping_patience
             ):
                 history[-1]["early_stopped"] = True
+                print(
+                    f"[stage {name}] early stopping at epoch {epoch}; "
+                    f"best_validation={stage_best_validation:.6f}",
+                    flush=True,
+                )
                 break
         model.load_state_dict(stage_best_state)
         best_state = stage_best_state

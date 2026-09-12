@@ -1,0 +1,73 @@
+{
+  "analysis_status": "coverage_audit",
+  "artifacts": {
+    "history": {
+      "path": "history.csv",
+      "sha256": "551e1c75457ee37d99a6e41bbb961e01249e235c3fae09bab4361b5eea746022"
+    },
+    "metrics": {
+      "path": "metrics.csv",
+      "sha256": "d8067e6ee3eddca96eda58cc99cb4a307c22e93a99d3773bfc15e95936ee2b9a"
+    },
+    "predictions": {
+      "path": "predictions.csv",
+      "sha256": "ee788f3b4c939a98995faab99c3ff46b9cf7bbecb40161c6dccb0a9f00ff0470"
+    }
+  },
+  "baseline": "descriptor_ann",
+  "benchmark": "binary_train_binary_test",
+  "config": {
+    "device": "cuda",
+    "epochs": 200,
+    "fixed_temperature_tolerance_k": 0.5,
+    "gdi_weight": 0.01,
+    "learning_rate": 0.001,
+    "mc_dropout_samples": 32,
+    "minimum_composition": 1e-05,
+    "patience": 25
+  },
+  "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+  "environment": {
+    "path": "environment.yml",
+    "sha256": "505e06ece39ae0a83e1bc217ba357cb6b6c816a2d3d5ffa3ce93bb0a90c282af"
+  },
+  "evaluation_partition": "test",
+  "feature_cache": {
+    "policy": "deterministic_on_the_fly_from_registered_rows",
+    "used": false
+  },
+  "feature_definitions": {
+    "src/thermoformer/baselines/machine_learning/formal.py": "b77952c9e33da0ec3d27bfcdcfd3313c430f0056d0afafa2fc1d23113b20bd85",
+    "src/thermoformer/baselines/machine_learning/models.py": "85bea39c337386776bc745a7d07d69952b0fc215e3024f3dece6a81d1c285a34",
+    "src/thermoformer/baselines/machine_learning/smoke.py": "e84b0d51be5cb2d90832c8057da96cc8a461de8a974c18ddb0d7cb47d1cdbad2"
+  },
+  "git_commit": "909cc20f0ba4150b3551b8dbf23b2b9e03c0489e",
+  "runtime": {
+    "cuda": "12.6",
+    "cudnn": "90501",
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 3090 Ti",
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "torch": "2.6.0+cu126"
+  },
+  "schema_version": 1,
+  "seed": 4,
+  "selection_partition": "validation",
+  "settings_sha256": "df3f3da3ab4c73f8ff9172ed63b0d4473a44841b79c66c379ff7e0ea1210099d",
+  "source_workbooks": {
+    "datasets/vle_reference/binary_vle_english.xlsx": "d122177fe42b5b41ca2e782cc77b3e6a7a0ebf922bb0e589f18edde622bf3efc",
+    "datasets/vle_reference/ternary_vle_english.xlsx": "52fe356da44cc5e78f32b881a614ac95ea98e55002aaba464cfcf35069764c67"
+  },
+  "split_protocol": "overall_binary",
+  "split_sha256": "e77e729ad4383ea15415c8088afb07b406065ee4600cd5da684234ae4b2cd71f",
+  "status": "not_evaluated",
+  "test_labels_used_for_selection": false,
+  "test_sample_ids_sha256": "9cbfc2de6332d6bede7d1cc470c0cecd1955412421e894b63d6cfa38cf416257",
+  "test_system_ids_sha256": "8c0946102215778c3b583b7da7f6719dc3352d14fd5bac1b1664f1503e4f10dc",
+  "train_sample_ids_sha256": "5f63604a7a2eb24bcf67ef1b01c36e0cdfe6b1eea88064a998d7f5e016c71d80",
+  "train_system_ids_sha256": "b21e11e5371e9f80b983bb4026e8a80be397af9ed0ec2105c3f62a6fc54c1c16",
+  "trainable_parameters": 0,
+  "validation_sample_ids_sha256": "352d7ceba1add92f6bb82eaec2c6c6ab890fa46ac68d3341cd4dc2feb9af5b7d",
+  "validation_system_ids_sha256": "93fe2e6f4a969f2ae32f14d3a908d41693ffc51b5009cc1a985e0870754d1306"
+}

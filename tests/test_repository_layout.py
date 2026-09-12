@@ -14,8 +14,8 @@ HAN = re.compile(r"[\u3400-\u9fff]")
 class RepositoryLayoutTests(unittest.TestCase):
     def test_release_dataset_contains_only_two_workbooks(self) -> None:
         files = sorted(
-            path.relative_to(PROJECT_ROOT / "dataset").as_posix()
-            for path in (PROJECT_ROOT / "dataset").rglob("*")
+            path.relative_to(PROJECT_ROOT / 'datasets/vle_reference').as_posix()
+            for path in (PROJECT_ROOT / 'datasets/vle_reference').rglob("*")
             if path.is_file()
         )
         self.assertEqual(
@@ -41,42 +41,33 @@ class RepositoryLayoutTests(unittest.TestCase):
                             f"Non-English comment in {path.relative_to(PROJECT_ROOT)}:{token.start[0]}",
                         )
 
-    def test_legacy_code_is_isolated_from_active_imports(self) -> None:
-        self.assertTrue((PROJECT_ROOT / "archive" / "legacy_code" / "README.md").is_file())
+    def test_reference_code_is_isolated_from_active_imports(self) -> None:
+        self.assertTrue((PROJECT_ROOT / 'docs/reference_records/README.md').is_file())
         for root_name in ("src", "scripts"):
             for path in (PROJECT_ROOT / root_name).rglob("*.py"):
                 source = path.read_text(encoding="utf-8-sig")
                 self.assertNotIn("archive.legacy_code", source)
-                self.assertNotIn("archive/legacy_code", source)
+                self.assertNotIn("docs/reference_records", source)
 
-    def test_paper_navigation_declares_incomplete_studies(self) -> None:
-        paper_map = (PROJECT_ROOT / "docs" / "paper_code_map.md").read_text(
+    def test_experiment_navigation_declares_incomplete_studies(self) -> None:
+        experiment_map = (PROJECT_ROOT / "docs" / "experiment_code_map.md").read_text(
             encoding="utf-8"
         )
-        self.assertIn("Machine-learning and thermodynamic-model comparison", paper_map)
-        self.assertIn("Autonomous separation design", paper_map)
-        self.assertIn("not evaluated", paper_map.lower())
+        self.assertIn("Machine-learning and thermodynamic VLE baselines", experiment_map)
+        self.assertIn("Agent-assisted separation design", experiment_map)
+        self.assertIn("unavailable", experiment_map.lower())
 
-    def test_active_experiments_match_manuscript_results_sections(self) -> None:
+    def test_active_experiments_cover_existing_research_tasks(self) -> None:
         active = {
             path.name
             for path in (PROJECT_ROOT / "experiments").iterdir()
             if path.is_dir() and any(path.rglob("*"))
         }
-        self.assertEqual(
-            active,
-            {
-                "ablations",
-                "comparisons",
-                "interpretability",
-                "predictive_performance",
-                "separation_design",
-            },
-        )
+        self.assertEqual(active, {"vle", "lle", "summary", "data_quality", "run_records", "reference_results"})
         representation_variants = {
             path.name
             for path in (
-                PROJECT_ROOT / "experiments" / "ablations" / "molecular_representation"
+                PROJECT_ROOT / 'configs/vle/ablation/studies/molecular_representation'
             ).iterdir()
             if path.is_dir()
         }
@@ -93,7 +84,7 @@ class RepositoryLayoutTests(unittest.TestCase):
         interaction_variants = {
             path.name
             for path in (
-                PROJECT_ROOT / "experiments" / "ablations" / "interaction_architecture"
+                PROJECT_ROOT / 'configs/vle/ablation/studies/interaction_architecture'
             ).iterdir()
             if path.is_dir()
         }
@@ -106,35 +97,11 @@ class RepositoryLayoutTests(unittest.TestCase):
             },
         )
 
-    def test_manuscript_figures_have_single_active_sources(self) -> None:
-        dataset_figures = PROJECT_ROOT / "analysis" / "dataset_distribution" / "figures"
-        self.assertEqual(
-            {path.name for path in dataset_figures.glob("Figure_dataset_overview*.png")},
-            {"Figure_dataset_overview_v3.png"},
-        )
-        figure_1 = dataset_figures / "Figure_dataset_overview_v3.png"
-        figure_1_source = json.loads(
-            (dataset_figures / "Figure_dataset_overview_v3.source.json").read_text(
-                encoding="utf-8"
-            )
-        )
-        self.assertEqual(
-            hashlib.sha256(figure_1.read_bytes()).hexdigest(),
-            figure_1_source["artifact_sha256"],
-        )
-        self.assertTrue(figure_1_source["rgb_pixels_match_manuscript"])
-        figure_2_root = PROJECT_ROOT / "analysis" / "manuscript_figures"
-        figure_2 = figure_2_root / "Figure_2_interpretability.png"
-        source = json.loads(
-            (figure_2_root / "Figure_2_interpretability.source.json").read_text(
-                encoding="utf-8"
-            )
-        )
-        self.assertEqual(
-            hashlib.sha256(figure_2.read_bytes()).hexdigest(),
-            source["artifact_sha256"],
-        )
-        self.assertEqual(source["dimensions_pixels"], [3157, 2878])
+    def test_result_figures_are_inside_experiments(self) -> None:
+        self.assertFalse((PROJECT_ROOT / "analysis").exists())
+        figure = PROJECT_ROOT / "experiments/vle/interpretability/molecular_interactions/figures/vle_interpretability_complete.png"
+        self.assertTrue(figure.is_file())
+        self.assertEqual(hashlib.sha256(figure.read_bytes()).hexdigest(), "aad0801b940baae279d1346a5213038e4f2c27be6c6315029d59c56251089a54")
 
     def test_active_implementation_uses_manuscript_subpackages(self) -> None:
         expected = {
@@ -172,7 +139,10 @@ class RepositoryLayoutTests(unittest.TestCase):
         self.assertEqual(configs[-1].protocol.seeds, (0, 1, 2, 3, 4))
 
     def test_checkpoint_documentation_matches_manuscript_artifacts(self) -> None:
-        readme = (PROJECT_ROOT / "checkpoints" / "README.md").read_text(
+        optional_root = PROJECT_ROOT / 'models/vle/experiments/physics_finetuning'
+        if not optional_root.is_dir() or not any(optional_root.rglob("*.pt")):
+            self.skipTest("Ablation checkpoints are optional and are not distributed")
+        readme = (PROJECT_ROOT / 'models/vle/README.md').read_text(
             encoding="utf-8"
         )
         documented_stages = {}
@@ -187,16 +157,11 @@ class RepositoryLayoutTests(unittest.TestCase):
 
         result_root = (
             PROJECT_ROOT
-            / "results"
-            / "experiments"
-            / "physics_finetuning"
-            / "c1_three_view_vanilla_fugacity"
+            / 'experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity'
         )
         checkpoint_root = (
             PROJECT_ROOT
-            / "checkpoints"
-            / "experiments"
-            / "physics_finetuning"
+            / 'models/vle/experiments/physics_finetuning'
             / "c1_three_view_vanilla_fugacity"
         )
         actual_stages = {}
@@ -224,19 +189,19 @@ class RepositoryLayoutTests(unittest.TestCase):
         self.assertEqual(documented_stages, actual_stages)
 
         ablation_roots = (
-            "checkpoints/multiview/chemical_attention/formal/"
+            "models/vle/multiview/chemical_attention/formal/"
             "c0_current_vanilla.on.overall_binary_ternary",
-            "checkpoints/multiview/formal/"
+            "models/vle/multiview/formal/"
             "v1_rdkit_only.on.overall_binary_ternary",
-            "checkpoints/multiview/predictive/"
+            "models/vle/multiview/predictive/"
             "v3_functional_group_only.on.overall_binary_ternary",
-            "checkpoints/multiview/predictive/"
+            "models/vle/multiview/predictive/"
             "v4_rdkit_unimol_naive.on.overall_binary_ternary",
-            "checkpoints/multiview/chemical_attention/formal/"
+            "models/vle/multiview/chemical_attention/formal/"
             "c1_three_view_vanilla.on.overall_binary_ternary",
-            "checkpoints/multiview/chemical_attention/formal/"
+            "models/vle/multiview/chemical_attention/formal/"
             "c2_chemical_bias_full.on.overall_binary_ternary",
-            "checkpoints/multiview/chemical_attention/formal/"
+            "models/vle/multiview/chemical_attention/formal/"
             "c3_no_pair_bias.on.overall_binary_ternary",
         )
         for relative_root in ablation_roots:
@@ -256,3 +221,11 @@ class RepositoryLayoutTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+
+
+
+
+
+

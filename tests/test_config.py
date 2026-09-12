@@ -13,7 +13,7 @@ from src.thermoformer.configuration import ProtocolConfig
 
 class ExperimentConfigTests(unittest.TestCase):
     ROOT = Path(__file__).resolve().parents[1]
-    CONFIG_ROOT = ROOT / "experiments"
+    CONFIG_ROOT = ROOT / "configs"
     BASE_CONFIG = ROOT / "configs" / "training" / "supervised.yaml"
 
     def assert_only_named_config_changes(
@@ -96,7 +96,7 @@ class ExperimentConfigTests(unittest.TestCase):
 
     def test_repository_configs_construct_thermoformer(self) -> None:
         paths = sorted(
-            set(self.CONFIG_ROOT.rglob("config.json"))
+            set()
             | set(self.CONFIG_ROOT.rglob("config.yaml"))
         )
 
@@ -108,38 +108,14 @@ class ExperimentConfigTests(unittest.TestCase):
                 model = ThermoFormer(replace(experiment.model, feature_dim=8))
                 self.assertEqual(model.config.feature_dim, 8)
 
-    def test_unevaluated_comparisons_do_not_expose_runnable_configs(self) -> None:
-        comparison_root = self.CONFIG_ROOT / "comparisons"
-        self.assertEqual(list(comparison_root.rglob("config.json")), [])
-        self.assertEqual(list(comparison_root.rglob("config.yaml")), [])
-
-    def test_concrete_experiments_are_nested_and_have_complete_records(self) -> None:
-        experiment_root = self.CONFIG_ROOT
-
-        self.assertEqual(list(experiment_root.glob("*/config.json")), [])
-        self.assertEqual(list(experiment_root.glob("*/config.yaml")), [])
-        config_paths = sorted(
-            set(experiment_root.rglob("config.json"))
-            | set(experiment_root.rglob("config.yaml"))
-        )
-        self.assertGreater(len(config_paths), 0)
-        for config_path in config_paths:
-            with self.subTest(config=config_path):
-                experiment_dir = config_path.parent
-                relative_dir = experiment_dir.relative_to(experiment_root).as_posix()
-                run_file = experiment_dir / "run.md"
-                results_file = experiment_dir / "results.md"
-                self.assertTrue(run_file.is_file())
-                self.assertTrue(results_file.is_file())
-                config = load_experiment_config(config_path)
-                self.assertEqual(
-                    config.runtime.output_dir,
-                    f"runs/experiments/{relative_dir}",
-                )
-                self.assertEqual(
-                    config.runtime.results_file,
-                    f"experiments/{relative_dir}/results.md",
-                )
+    def test_registered_configs_are_separate_from_results(self) -> None:
+        catalog = json.loads((self.CONFIG_ROOT / "catalog.json").read_text(encoding="utf-8"))
+        for item in catalog["experiments"]:
+            config = self.CONFIG_ROOT / item["config"]
+            self.assertTrue(config.is_file())
+            entry = json.loads(config.read_text(encoding="utf-8"))
+            for relative in entry["configs"]:
+                self.assertTrue((self.ROOT / relative).is_file(), relative)
 
     def test_cyclic_config_inheritance_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

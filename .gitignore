@@ -1,4 +1,4 @@
-# Python caches and local environments
+# Python environments and generated caches
 __pycache__/
 *.py[cod]
 *.egg-info/
@@ -7,81 +7,12 @@ __pycache__/
 .ruff_cache/
 .venv/
 venv/
-
-# Editors and operating-system metadata
+# Editor and operating-system files
 .idea/
 .vscode/
 .DS_Store
 Thumbs.db
-
-# Local secrets
+# Local credentials
 .env
 .env.*
 !.env.example
-
-# Generated training products and logs
-runs/
-logs/
-*.log
-*.pt
-*.pth
-*.ckpt
-*.npy
-*.npz
-
-# Publish formal ThermoFormer weights through Git LFS.
-!checkpoints/**/*.pt
-# Smoke/screening checkpoints are reproducible diagnostics, not release weights.
-checkpoints/multiview/smoke/
-checkpoints/multiview/screening/
-checkpoints/multiview/*_exploratory/
-# Publish the one V6 state-interpolation weight required to reproduce the
-# known-mixture gate diagnostic; all other screening weights stay ignored.
-!checkpoints/multiview/screening/
-checkpoints/multiview/screening/*
-!checkpoints/multiview/screening/v6_full_interaction.on.state_composition_interpolation/
-checkpoints/multiview/screening/v6_full_interaction.on.state_composition_interpolation/*
-!checkpoints/multiview/screening/v6_full_interaction.on.state_composition_interpolation/seed_0/
-checkpoints/multiview/screening/v6_full_interaction.on.state_composition_interpolation/seed_0/*
-!checkpoints/multiview/screening/v6_full_interaction.on.state_composition_interpolation/seed_0/best_model.pt
-
-# Publish formal multi-view manifests, predictions and aggregates even though
-# their protocol namespace contains a directory named "runs".
-!results/multiview/
-!results/multiview/formal/
-!results/multiview/formal/runs/
-!results/multiview/formal/runs/**
-!results/multiview/predictive/
-!results/multiview/predictive/runs/
-!results/multiview/predictive/runs/**
-!results/multiview/chemical_attention/
-!results/multiview/chemical_attention/**
-
-# Formal multi-view manifests reference these compact training histories.
-!/runs/
-/runs/*
-!/runs/multiview/
-/runs/multiview/*
-!/runs/multiview/formal/
-!/runs/multiview/formal/**
-!/runs/multiview/predictive/
-!/runs/multiview/predictive/**
-!/runs/multiview/chemical_attention/
-!/runs/multiview/chemical_attention/**
-!/runs/experiments/
-!/runs/experiments/physics_finetuning/
-!/runs/experiments/physics_finetuning/c1_three_view_vanilla/
-!/runs/experiments/physics_finetuning/c1_three_view_vanilla/**
-!/runs/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/
-!/runs/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/**
-!/runs/experiments/physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/
-!/runs/experiments/physics_finetuning/c1_three_view_vanilla_fugacity_pure_anchor/**
-!/runs/experiments/physics_finetuning/c1_three_view_vanilla_pure_anchor/
-!/runs/experiments/physics_finetuning/c1_three_view_vanilla_pure_anchor/**
-!/runs/experiments/physics_finetuning/c1_three_view_vanilla_pure_anchor_0p1/
-!/runs/experiments/physics_finetuning/c1_three_view_vanilla_pure_anchor_0p1/**
-
-# Temporary files
-*.tmp
-*.temp
-~$*

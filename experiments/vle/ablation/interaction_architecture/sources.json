@@ -1,0 +1,485 @@
+{
+  "experiment": "vle.ablation.interaction_architecture",
+  "provenance": "registered_vle_dataset",
+  "status": "runnable",
+  "notes": "Fixed joint split/seeds 0–4. Also supplies representation controls.",
+  "sources": [
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention",
+      "exists": true,
+      "kind": "directory",
+      "sha256": null
+    }
+  ],
+  "files": [
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/supervised_joint_performance.csv",
+      "bytes": 2136
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/aggregate_manifest.json",
+      "bytes": 4229
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/diagnostic_aggregate_manifest.json",
+      "bytes": 280
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/metrics_by_seed.csv",
+      "bytes": 14423
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/metrics_summary.csv",
+      "bytes": 11892
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 9689
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10196
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 3182
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 747858
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 2974
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 9707
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 9024
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 3182
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 747741
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 2974
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 9702
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10183
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 3186
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 800920
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 2974
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 9710
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 9030
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 3183
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 752253
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 2974
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 9710
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10193
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 3188
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 768393
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 2974
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/aggregate_manifest.json",
+      "bytes": 4241
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/diagnostic_aggregate_manifest.json",
+      "bytes": 283
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/metrics_by_seed.csv",
+      "bytes": 14596
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/metrics_summary.csv",
+      "bytes": 11959
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 16507
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10241
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 3185
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 747055
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 9568
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 16509
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 9034
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 3187
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 747188
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 9568
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 16513
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10233
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 3191
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 800809
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 9568
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 16501
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 9043
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 3179
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 750875
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 9568
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 16519
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10248
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 3191
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 768810
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 9568
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/aggregate_manifest.json",
+      "bytes": 4241
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/diagnostic_aggregate_manifest.json",
+      "bytes": 283
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/metrics_by_seed.csv",
+      "bytes": 14559
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/metrics_summary.csv",
+      "bytes": 11956
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 16513
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10220
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 3191
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 747052
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 9564
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 16510
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 9033
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 3184
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 747772
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 9564
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 16501
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10223
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 3179
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 800508
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 9564
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 16507
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 9050
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 3180
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 751697
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 9564
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 16512
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10236
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 3184
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 767986
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 9564
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/aggregate_manifest.json",
+      "bytes": 4217
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/diagnostic_aggregate_manifest.json",
+      "bytes": 277
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/metrics_by_seed.csv",
+      "bytes": 14578
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/metrics_summary.csv",
+      "bytes": 11945
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 16453
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10229
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 3182
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 746855
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 9542
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 16464
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 9034
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 3193
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 747329
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 9542
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 16464
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10225
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 3195
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 799877
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 9542
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 16455
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 9050
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 3182
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 751931
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 9542
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 16457
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10243
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 3185
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 767986
+    },
+    {
+      "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 9542
+    }
+  ],
+  "note": "Existence-only inventory; does not certify metrics or completed seed counts."
+}

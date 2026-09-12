@@ -1,0 +1,36 @@
+{
+  "status": "smoke_passed",
+  "baseline": "tennet_sac_binary_adapted",
+  "benchmark": "binary_train_binary_test",
+  "seed": 0,
+  "selection_partition": "validation",
+  "evaluation_partition": "validation_smoke",
+  "test_labels_used_for_selection": false,
+  "config": {
+    "hidden_dimension": 32,
+    "dropout": 0.05,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "batch_size": 256,
+    "epochs": 2,
+    "patience": 2,
+    "minimum_composition": 1e-05
+  },
+  "train_rows": 24,
+  "validation_rows": 12,
+  "vapor_pressure_calibration": {
+    "partition": "registered_training_only",
+    "eligible_rows": "near-pure endpoints with x >= 0.999",
+    "calibration_rows_scanned": 6937,
+    "binary_mixture_activity_labels_used": false
+  },
+  "base_predictions_cached": 156,
+  "source_commit": "f23b27424f957162574a1fc85ae3f1b0c24d8633",
+  "dataset_sha256": "fdffa94af2bf19c58cfc78b43528fc8d79035e94926f4e25806547572007fea0",
+  "split_protocol": "vle_overall_binary",
+  "split_sha256": "71e7ac0ae1474c48063f1e44afac7263b0a8f958f5eb2992d9324e803cc5dc22",
+  "checkpoint": {
+    "path": "experiments/vle/comparison/diagnostic_records/activity_adapted_smoke/binary_train_binary_test/checkpoints/tennet_sac_binary_adapted.on.binary_train_binary_test/seed_0/best_model.pt",
+    "sha256": "01accb1f2040085d2f48c662b71a95a4fe80ec447d51f4fff728994becaf26c8"
+  }
+}

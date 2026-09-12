@@ -1,0 +1,7 @@
+seed,baseline,benchmark,direction,component_count,status,pressure_mae_kpa,pressure_rmse_kpa,pressure_r2,temperature_mae_k,temperature_rmse_k,temperature_r2,y_mae,y_rmse,y_r2,valid_coverage,nonphysical_rate,solver_failure_rate
+3,solvgnn,joint_train_joint_test,isothermal,2,evaluated,2.5150641303333847,3.2702082473147716,0.9007666057776276,,,,0.019065563466477267,0.02435183537737648,0.9934284254902843,0.0451505016722408,0.0,
+3,solvgnn,joint_train_joint_test,isothermal,3,not_evaluated_no_298k_coverage,,,,,,,,,,0.0,,
+3,solvgnn,joint_train_joint_test,isothermal,2+3,evaluated,2.5150641303333847,3.2702082473147716,0.9007666057776276,,,,0.019065563466477267,0.02435183537737648,0.9934284254902843,0.03534031413612566,0.0,
+3,solvgnn,joint_train_joint_test,isobaric,2,not_applicable,,,,,,,,,,0.0,,
+3,solvgnn,joint_train_joint_test,isobaric,3,not_applicable,,,,,,,,,,0.0,,
+3,solvgnn,joint_train_joint_test,isobaric,2+3,not_applicable,,,,,,,,,,0.0,,

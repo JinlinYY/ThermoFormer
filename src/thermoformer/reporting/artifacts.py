@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-TEXT_ARTIFACT_SUFFIXES = {".csv", ".json", ".md", ".txt"}
+TEXT_ARTIFACT_SUFFIXES = {".csv", ".json", ".md", ".txt", ".yaml", ".yml"}
 
 
 def artifact_sha256(path: Path) -> str:

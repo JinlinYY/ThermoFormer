@@ -1,0 +1,30 @@
+{
+  "raw_rows": 19844,
+  "accepted_before_deduplication": 17951,
+  "duplicates_removed": 1829,
+  "loaded_samples": 16122,
+  "rejected": {
+    "failed_quality": 1882,
+    "invalid_state": 11
+  },
+  "component_count": null,
+  "quality_policy": "Inherited VLE policy: 0=failed/excluded, 1=passed, -1=unverified/weight 0.5",
+  "inputs": {
+    "D:\\VLE\\VLE\\thermoformer_project\\datasets/lle\\binary_lle.xlsx": "2379fc57b16c6a95de7f658173ea368da7a083f80b7ac9d0e6ec8d1f55a98f59",
+    "D:\\VLE\\VLE\\thermoformer_project\\datasets/lle\\ternary_lle.xlsx": "412f631a94e28802bb73b7175692695bdf9ecdd54a6326392c9550bf5f2b8b5c"
+  },
+  "by_components": {
+    "2": {
+      "rows": 2825,
+      "conditions": 2794,
+      "systems": 174,
+      "multiple_tieline_conditions": 28
+    },
+    "3": {
+      "rows": 13297,
+      "conditions": 1584,
+      "systems": 886,
+      "multiple_tieline_conditions": 1517
+    }
+  }
+}

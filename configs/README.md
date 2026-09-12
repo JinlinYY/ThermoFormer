@@ -1,22 +1,13 @@
 # Configuration organization
 
-Runnable experiment configurations are colocated with their scientific records
-under `experiments/`. Each JSON or YAML configuration is accompanied by the
-corresponding command and reported results.
+- benchmarks/: common experiment catalog and task-specific orchestration JSON.
+- model/: scientific model/representation definitions.
+- training/: existing optimization configurations.
+- protocols/: registered split and evaluation definitions.
+- ablation/: retained reference configurations.
+- experiments/: existing configuration inheritance notes.
 
-This directory stores shared configuration declarations:
-
-- `ablation/full_model_reference.yaml`: full-model reference definition.
-- `experiments/README.md`: configuration inheritance conventions.
-
-Configuration loading is strict: unknown sections, unknown fields, malformed
-overrides, and inheritance cycles are rejected.
-
-The manuscript-facing inheritance chain is:
-
-- `model/c1_three_view_vanilla.yaml`: final molecular representation and architecture;
-- `training/supervised.yaml`: Stage-1 supervised training;
-- `training/fugacity_finetuning.yaml`: validation-gated 10-epoch Stage 2;
-- `protocols/*.yaml`: protocol-family entry points.
-
-YAML configurations are parsed with `PyYAML`; JSON is also supported.
+Benchmark JSON references the original YAML/JSON declarations, including those
+retained under experiments/. No model parameter, loss, split, or metric is
+overridden by the repository reorganization.
+Use python scripts/run_experiments.py show EXPERIMENT_ID to inspect a workflow.

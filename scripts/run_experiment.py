@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from run_paper_experiment import main
+from run_registered_experiment import main
 
 
 if __name__ == "__main__":

@@ -1,0 +1,104 @@
+{
+  "artifacts": {
+    "metrics": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_high_extrapolation/seed_0/nrtl/metrics.json",
+      "sha256": "9ed774f7e96d32c6598890d03447652266cee35a8631f7d667e53d576471214f"
+    },
+    "parameters": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_high_extrapolation/seed_0/nrtl/parameters.json",
+      "sha256": "c5ff170170f84ff3299c6f64d6dca50399dfb0a4ed3c81abe8a635170e489d9d"
+    },
+    "predictions": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_high_extrapolation/seed_0/nrtl/predictions.csv",
+      "sha256": "16acfdf3a94b60854f1d46be4e423b492914e4cb18fefc1755eb4dd127bed65a"
+    },
+    "vapor_pressure_fits": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_high_extrapolation/seed_0/vapor_pressure_fits.json",
+      "sha256": "f31ac1382c170dcd6d7aa9a6b33e67845f36423ceaf866d1009185d2d8e33bfb"
+    }
+  },
+  "config_sources": [
+    {
+      "path": "configs/model/c1_three_view_vanilla.yaml",
+      "sha256": "b49471ea53d6222c65c8e89b59095d09f827978b025c49a508c1e0bf849ee6d7"
+    },
+    {
+      "path": "configs/training/supervised.yaml",
+      "sha256": "7acefbcf4da404b4cbbe4e09c8bc3cc21c5bebe509b624c3cb981b8509184e71"
+    },
+    {
+      "path": "configs/training/fugacity_finetuning.yaml",
+      "sha256": "eaf09983d015da25b7979adb585c3a6ef8070e83bb32164f560ef21eea138aaf"
+    },
+    {
+      "path": "configs/protocols/state_generalization.yaml",
+      "sha256": "9b6493d4673a8e150b992d51328a2a7918d662e5c7d1d4af2370e9063541ed6e"
+    },
+    {
+      "path": "configs/vle/comparison/studies/thermodynamic_models/config.json",
+      "sha256": "d1f2aeefcba75779d5f615f336197486233ab67e7bd93bdccf07607e17edd78a"
+    }
+  ],
+  "counts": {
+    "fitted_systems": 139,
+    "parameter_coverage_by_component_count": {
+      "2": {
+        "attempted_systems": 118,
+        "coverage": 1.0,
+        "fitted_systems": 118
+      },
+      "3": {
+        "attempted_systems": 21,
+        "coverage": 1.0,
+        "fitted_systems": 21
+      }
+    },
+    "requested_systems": 139,
+    "system_parameter_coverage": 1.0,
+    "test_rows": 772,
+    "training_rows": 8622,
+    "validation_rows": 779
+  },
+  "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+  "dataset_workbooks": [
+    {
+      "path": "datasets/vle_reference/binary_vle_english.xlsx",
+      "sha256": "d122177fe42b5b41ca2e782cc77b3e6a7a0ebf922bb0e589f18edde622bf3efc"
+    },
+    {
+      "path": "datasets/vle_reference/ternary_vle_english.xlsx",
+      "sha256": "52fe356da44cc5e78f32b881a614ac95ea98e55002aaba464cfcf35069764c67"
+    }
+  ],
+  "elapsed_seconds": 6.471753120422363,
+  "evaluation_partition": "test",
+  "experiment": "thermodynamic_model_state_generalization",
+  "git_commit": "fbc03969621d4cfec0f4cf26377643874e2b3978",
+  "model": "nrtl",
+  "protocol": "state_temperature_high_extrapolation",
+  "resolved_config_sha256": "15cf42b0a5bd46fa7b4309d7876d5e7f8efbc8bd90fb7efaa3119a136bad6fdd",
+  "run_kind": "formal",
+  "runtime": {
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "scipy": "1.13.1",
+    "thermo": "0.6.0"
+  },
+  "schema_version": 1,
+  "seed": 0,
+  "selection_partition": "train",
+  "settings_sha256": "0d451968bcf82c7115fc8d1af1629199b60a453f5b0223faf2b57cea7b8ca60f",
+  "split": {
+    "path": "datasets/splits/vle/state_temperature_high_extrapolation/seed_0.json",
+    "sha256": "ba381f8b3c60690e9e844aeafe644d8687cb393c4760fd52791528b3d74d930f"
+  },
+  "split_sha256": "ba381f8b3c60690e9e844aeafe644d8687cb393c4760fd52791528b3d74d930f",
+  "status": "completed",
+  "temperature_solver_bounds_k": [
+    150.0,
+    859.01
+  ],
+  "test_labels_used_for_case_selection": false,
+  "test_labels_used_for_fitting": false,
+  "vapor_pressure_fits_sha256": "f31ac1382c170dcd6d7aa9a6b33e67845f36423ceaf866d1009185d2d8e33bfb"
+}

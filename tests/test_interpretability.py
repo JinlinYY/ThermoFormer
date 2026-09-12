@@ -8,6 +8,7 @@ import torch
 
 from src.data import VLESample
 from src.interpretability.core import simplex_response_directions, stable_pca_scores
+from src.thermoformer.interpretability.vle_binary import exact_group_shapley
 from src.interpretability.selection import (
     eligible_ternary_systems,
     select_best_validation_seed,
@@ -32,6 +33,19 @@ def _sample(smiles: tuple[str, ...]) -> VLESample:
 
 
 class InterpretabilityTests(unittest.TestCase):
+    def test_exact_group_shapley_is_additive(self) -> None:
+        coalitions = {
+            (): torch.tensor([1.0]),
+            (0,): torch.tensor([3.0]),
+            (1,): torch.tensor([4.0]),
+            (0, 1): torch.tensor([8.0]),
+        }
+
+        values = exact_group_shapley(coalitions, groups=2)
+
+        torch.testing.assert_close(values, torch.tensor([[3.0, 4.0]]))
+        torch.testing.assert_close(values.sum(dim=-1), coalitions[(0, 1)] - coalitions[()])
+
     def test_simplex_response_directions_preserve_composition_closure(self) -> None:
         composition = torch.tensor([0.2, 0.3, 0.5])
 

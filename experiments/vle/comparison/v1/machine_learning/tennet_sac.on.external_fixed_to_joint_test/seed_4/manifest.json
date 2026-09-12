@@ -1,0 +1,220 @@
+{
+  "analysis_status": "external_pretrained_overlap_unknown",
+  "artifacts": {
+    "checkpoint": {
+      "path": "models/vle/comparison/v1/machine_learning/tennet_sac.on.external_fixed_to_joint_test/seed_4/best_model.pt",
+      "sha256": "5c467b1ad3af62c4ce45ac5362c8bb623eb4408d02f070e3ef564f290ee568b9"
+    },
+    "history": {
+      "path": "history.csv",
+      "sha256": "551e1c75457ee37d99a6e41bbb961e01249e235c3fae09bab4361b5eea746022"
+    },
+    "metrics": {
+      "path": "metrics.csv",
+      "sha256": "ef684bf68c7c4d0c6f18afd1de243696e89e9451e83b910b95381f6ad2d007f5"
+    },
+    "predictions": {
+      "path": "predictions.csv",
+      "sha256": "ffb0d48b392ff958e9f60ab77cb47abeb4339aa7d0c11a087182c5227b537f4c"
+    }
+  },
+  "baseline": "tennet_sac",
+  "benchmark": "external_fixed_to_joint_test",
+  "config": {
+    "device": "cuda",
+    "epochs": 200,
+    "fixed_temperature_tolerance_k": 0.5,
+    "gdi_weight": 0.01,
+    "learning_rate": 0.001,
+    "mc_dropout_samples": 32,
+    "minimum_composition": 1e-05,
+    "patience": 25,
+    "spt_adapted_attention_heads": 4,
+    "spt_adapted_batch_size": 32,
+    "spt_adapted_dropout": 0.1,
+    "spt_adapted_embedding_dimension": 128,
+    "spt_adapted_epochs": 300,
+    "spt_adapted_feedforward_dimension": 256,
+    "spt_adapted_label_fit_evaluations": 250,
+    "spt_adapted_label_regularization": 0.001,
+    "spt_adapted_learning_rate": 0.0003,
+    "spt_adapted_max_sequence_length": 128,
+    "spt_adapted_minimum_pair_rows": 5,
+    "spt_adapted_patience": 30,
+    "spt_adapted_transformer_layers": 2
+  },
+  "dataset_sha256": "fdffa94af2bf19c58cfc78b43528fc8d79035e94926f4e25806547572007fea0",
+  "environment": {
+    "path": "environment.yml",
+    "requirements_path": "requirements.txt",
+    "requirements_sha256": "ed875989e22267f49b631924cdda980bbabec68917b1f1d56eae574855a8b0f5",
+    "sha256": "88f063806981a4025837ea6048b50a372c816796340ca2d46e92c22fe9c322b7"
+  },
+  "evaluation_partition": "test",
+  "feature_cache": {
+    "policy": "deterministic_on_the_fly_from_registered_rows",
+    "used": false
+  },
+  "feature_definitions": {
+    "src/thermoformer/baselines/machine_learning/external_activity.py": "b762fc6d13ecac71987325c967c41e4f8d833dc830c0b14603fcf18553a18738",
+    "src/thermoformer/baselines/machine_learning/formal.py": "39945745fd2f26f6507283c60a0b57a5b42d6ee3f005e360f2178016a320be0c",
+    "src/thermoformer/baselines/machine_learning/models.py": "1aec963e87371a1a3300b6c0e8f3eff17b6c3cf98d87298093ecbb544daaa3f7",
+    "src/thermoformer/baselines/machine_learning/smoke.py": "7a26bcaf8f20a297373c81998e58d120cdb7fdc33d6cc554bf7d4187c62ff834",
+    "src/thermoformer/baselines/machine_learning/tennet_sac.py": "004843d8ab79f1df5259b12a2ede7932321b1a55bf86b554287f9605a93d10f9"
+  },
+  "git_commit": "d169c4bb10dc338eab6e268c8158715479a85d13",
+  "model_assets": {
+    "installed_assets": {
+      "external_encoders": {
+        "chemberta": {
+          "files": {
+            "added_tokens.json": "2b0e66b84bd97bc08467f7a7c033cfd5a66c6335eb79779a144b50f8e7b2557d",
+            "config.json": "b9ec477f76a173461741cb0f339b89661c9d9249af2f6a84df7593c3baede9b0",
+            "merges.txt": "291976363a8a20ed148ff687cf3da54ada8ddbc99655fa876326f0ef28dbd6ad",
+            "pytorch_model.bin": "95571af26b61ba8d56b9d61ff108b5c9afe96fd69ea3cbd1901d9421e3d2dd6d",
+            "special_tokens_map.json": "23dbc119b7e11cb23d3c43b13004c5a4ab4e6530c7146e34fa1f9564856b5580",
+            "tokenizer.json": "1197005224bc8917f46f8d6fc360aec71c6626858966e167b2ff8af62214f814",
+            "tokenizer_config.json": "79919cd4b54bdf241f19956753e8a47b8b782eb4b38eec0e0254bd2434545abd",
+            "vocab.json": "0c9afbd534ab59fa51718c998027da0e7932293c9a51de03317d4c83d3fe48f6"
+          },
+          "revision": "ed8a5374f2024ec8da53760af91a33fb8f6a15ff"
+        },
+        "smi_ted": {
+          "files": {
+            "smi-ted-Light_40.pt": "baf252dbc081a00c68d2fd6ed8b08a0db0fa15244cfea442d49f0619a3a65375"
+          },
+          "revision": "414c3ea0a8603ef49d1c5bb3db336e09877c01ce"
+        }
+      },
+      "package_checkpoints": {
+        "ckpt_files/base.ckpt": "791ce5bf9c59e2099467882b4e7ee220575f464f2f3e007495a78ed9ae6f2d93",
+        "ckpt_files/fine-tuned/1.ckpt": "134be46cce6839a7b08250750e4803c8198a4725d5973ca124db76dd488aedc1",
+        "ckpt_files/fine-tuned/10.ckpt": "def4bb97274011564b33d55666bcc5d4d2bcae9c422cbf2c96529c7c364ebfcc",
+        "ckpt_files/fine-tuned/2.ckpt": "d763688bbe2898fc182ae6e9b39436a678ad892510c76b510c43c389e87d4c5b",
+        "ckpt_files/fine-tuned/3.ckpt": "15232df78dbbce274818e00bdfff455a163fbb9ff8af1ef3ba4de73650519400",
+        "ckpt_files/fine-tuned/4.ckpt": "bf01d2c6832b161ddf12d789dc886a3c3065a1810948d196f103a89c94f0daeb",
+        "ckpt_files/fine-tuned/5.ckpt": "937a02283521bba254b917685f4db265c48617732f9c5bbfffb14eaaf1d38813",
+        "ckpt_files/fine-tuned/6.ckpt": "7588bfe7a265752395373cf930ede2e721da2cb37fd7779a7b3b94d6c3590e79",
+        "ckpt_files/fine-tuned/7.ckpt": "f4c03f8281b7ac56213e5e04123c208fc4f2030ca610684bd1cbd9aa59f7e16d",
+        "ckpt_files/fine-tuned/8.ckpt": "0ff319a81281b4315638281283433590e6adf7b7ab17039919601747f736096d",
+        "ckpt_files/fine-tuned/9.ckpt": "73c65639135717a3eaa7130c03ea6f85fa3f95ed1b5937b5b73611bd33378c70",
+        "ckpt_files/geo.ckpt": "ab4e37731eb07573cf4d9a7a15c906c6ef8b0ae5a895ff4f921a736c32483624",
+        "ckpt_files/prf.ckpt": "649e7139cc43a95bd459d0eb0c58fac3a5d3a62a9b15ae6bdb0018894c42723e"
+      },
+      "package_source": {
+        "__init__.py": "72f86f4d456c5ebdac7497c10725ddcceb4dd82391c4d3dc69f7281c2c95b742",
+        "core.py": "7fa954ff6d857ef353bde8439104eec583c1a1859a708d6ccded944e2210cdc9",
+        "models/Emb2Geometry.py": "5b470a70f34c86071f5113b6976b52f3a6e69c6ea39ea7e04d04bf021bbde98e",
+        "models/Emb2Profile.py": "e5eeada3dc705bba3058bdc755bb0b77c6a8c79e3c5aeb1ff8f6565d7858641d",
+        "models/Prf2Gamma.py": "3978c3d134093aba4ea14d4d41b84999113ba729d3d22b8b6101e9a17cfa078b",
+        "utils/embedding.py": "b1af04610af071ed43abf6029ad38353a55c0abe757ae7674c8699558fa91243",
+        "utils/model_io.py": "a16e9a57cfe1a4d5117383dcd2388c424b40884b64ba153863eac24ab3b71b3f",
+        "utils/plotting.py": "ef29183b0d946f25645277c2e6fe8e41a82ac000557d281bcde479dc7513c86b",
+        "utils/property.py": "2edc407deca5c9d53b44ed8b29d4bff924b8f4f0d3436d269d17daa39782ed69",
+        "utils/smi_ted_light/fast_transformers/__init__.py": "f21597c9c910a9876504d806df87cb09de423f72558aa01fe82dd6878f05748b",
+        "utils/smi_ted_light/fast_transformers/aggregate/__init__.py": "dd80529b337a669cad9d3dedcb11af049ff310221c21eed36136540b17ad6be1",
+        "utils/smi_ted_light/fast_transformers/attention/__init__.py": "ca0cf2c8a574beb71cdbda944c46d148a796569b90cb2ad2cdf183cff18c50a4",
+        "utils/smi_ted_light/fast_transformers/attention/attention_layer.py": "fcc2b1e5cfab572b4e3b037c836a3ecafc8531e477fbf268a32c97bcda9103a3",
+        "utils/smi_ted_light/fast_transformers/attention/causal_linear_attention.py": "a98ebfb7c51d0f87e8353bac0ae867aa58f4b65923b91cd6c3fd99c8129ec112",
+        "utils/smi_ted_light/fast_transformers/attention/clustered_attention.py": "55d977d5e38fe79692cf8e402eef5828aa7233400db8dee1a6cda6f8b63f3471",
+        "utils/smi_ted_light/fast_transformers/attention/conditional_full_attention.py": "a4bfcf1135e076821bb474b2a2f4a0849ee50f592821cd9cd82a4079a5e3d8b4",
+        "utils/smi_ted_light/fast_transformers/attention/exact_topk_attention.py": "6dac6aa2fd12eb8a5e40adb5bc829f8e15575f1e28f9bb519fb3af376200b2ca",
+        "utils/smi_ted_light/fast_transformers/attention/full_attention.py": "a98c6958e029a4597c350fbecf0e4a81e2e31f5cf321ab58f385aa8b3736ab83",
+        "utils/smi_ted_light/fast_transformers/attention/improved_clustered_attention.py": "43a4d5cc2e3696be0f513ea9dd13cd4e06c53e734f4d5d288c82a88844531a52",
+        "utils/smi_ted_light/fast_transformers/attention/improved_clustered_causal_attention.py": "ed2a5b3647c5811672074fa0742f2fbad5da755066351e639396f061b98a4c34",
+        "utils/smi_ted_light/fast_transformers/attention/linear_attention.py": "450756ae944882165067a8ba4a541f41347cc603568808ed7e8d990bf8376307",
+        "utils/smi_ted_light/fast_transformers/attention/local_attention.py": "8fc1d7b5071f492a8ce9521eaf37ee62b10504fb4879749941696b960a811e14",
+        "utils/smi_ted_light/fast_transformers/attention/reformer_attention.py": "f9b0fc030d17a09d50879ee5313fa206d2af95620f9d87340ed96a44dd6c5f3a",
+        "utils/smi_ted_light/fast_transformers/attention_registry/__init__.py": "bbb16e25c66a954f1cd185aaddac67e46e8cf3496a0efb90455a631f1b06e946",
+        "utils/smi_ted_light/fast_transformers/attention_registry/registry.py": "1fea42dafd961df24f30a5f67ee3e1aa658751dea0e306cca4e7b0d9c939aa41",
+        "utils/smi_ted_light/fast_transformers/attention_registry/spec.py": "1a6f9f7469f7fa80995ad186e6f326feef8966b44354680949839bf317bdeb4f",
+        "utils/smi_ted_light/fast_transformers/builders/__init__.py": "e6a8c64ebba23aeda4f8dbd0b7d6bc5dc7df4e9ab8cabfce8d0da3df4a96bc31",
+        "utils/smi_ted_light/fast_transformers/builders/attention_builders.py": "2018e1232713c91f6bb9b39f4bb7155c94057de05e3f7c8810c587c06fc088e5",
+        "utils/smi_ted_light/fast_transformers/builders/base.py": "684e6cbc741ec804e05603dada59a47d3d09ab4333a7f383c3cd8fba74d6f79e",
+        "utils/smi_ted_light/fast_transformers/builders/transformer_builders.py": "1fc511133338c692e98ab437150d1fb63765cb396d6255637c2a584e5b6e2d44",
+        "utils/smi_ted_light/fast_transformers/causal_product/__init__.py": "7ed1b39de55cc64c4d4f2f014ce562d7fc96fc5c4a2cef700fe34ef725d3803c",
+        "utils/smi_ted_light/fast_transformers/clustering/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "utils/smi_ted_light/fast_transformers/clustering/hamming/__init__.py": "0e4e768cd7bb65d7000daf901d4ef3767fe3f4f05650b52d8a58ba227831d780",
+        "utils/smi_ted_light/fast_transformers/events/__init__.py": "e5e987e9e18a0cc713f7b52e49a210497bd8130fa5a282353dce0d0d7f771e08",
+        "utils/smi_ted_light/fast_transformers/events/event.py": "d5176e5c88c5a9f4090a2e011993c15c3567ab2709e814af14e4cc8c18f0e0e3",
+        "utils/smi_ted_light/fast_transformers/events/event_dispatcher.py": "8163a815ab59d08d0c98c8b99f35d105170cd4a6a056eea4b2e1d07d43cc7318",
+        "utils/smi_ted_light/fast_transformers/events/filters.py": "5a13310067d9a4602026406c8c9703767d4ce3ca0dd7fc7cd4b476629eab574e",
+        "utils/smi_ted_light/fast_transformers/feature_maps/__init__.py": "6291da8fbf7c1ad779dc3033254a463b10e7a86f265751400690f41d7c3cf82e",
+        "utils/smi_ted_light/fast_transformers/feature_maps/base.py": "aee8d49911f25f39185a28e9b0ca0968bb19a95158f11963b661dd467007e9d9",
+        "utils/smi_ted_light/fast_transformers/feature_maps/fourier_features.py": "afa0cd4947ee368b9c77d61272c3f696d3fad7019b0dd7715e27df4de8c2351c",
+        "utils/smi_ted_light/fast_transformers/hashing/__init__.py": "11244fac8a8b73c08b4aaf13cb9ac0fe6a4267a3e6fe3cc3211195b83ac40861",
+        "utils/smi_ted_light/fast_transformers/local_product/__init__.py": "45fb5e59f94401ad379543ca0c5bedda7e61a127476081e97b74c70540c81689",
+        "utils/smi_ted_light/fast_transformers/masking.py": "50454b4cd063ec515a292a4ab186dff82797ed6a3515007a52b05af62ed43f43",
+        "utils/smi_ted_light/fast_transformers/recurrent/__init__.py": "190453b848128aefac6b75de2007ed5ab5ec90eddb170f3bf81938d457aefaa7",
+        "utils/smi_ted_light/fast_transformers/recurrent/_utils.py": "b9265e2d76fbdd4664f44171cecd1c2b80c17e3d734e0afb8aecb3d337691825",
+        "utils/smi_ted_light/fast_transformers/recurrent/attention/__init__.py": "6906843add38921b6aafbd362d2882fcf7c65feeee52e6c09be959be2da0e6c4",
+        "utils/smi_ted_light/fast_transformers/recurrent/attention/cross_attention/__init__.py": "4aa733c4f4042e92c238356c18e8acadddceca6f4d6d9f1f1d3232ea2b78ca53",
+        "utils/smi_ted_light/fast_transformers/recurrent/attention/cross_attention/attention_layer.py": "a615d47532700e0ccc2d8fe5e39556b7f3d0f4b1bc020fdef7d87f4968424bd9",
+        "utils/smi_ted_light/fast_transformers/recurrent/attention/cross_attention/full_attention.py": "36cf2f4563987feb1b8cc1c0385f3578c5281b3638f8477ac79c9c85aba11e75",
+        "utils/smi_ted_light/fast_transformers/recurrent/attention/cross_attention/linear_attention.py": "ab9ee32baa838c19df9df4ad27d96c5b195dc1e469db828a1e18f5d7842196fb",
+        "utils/smi_ted_light/fast_transformers/recurrent/attention/self_attention/__init__.py": "edd779e5445be097073dd6e405a21120d58d2fadd6262127d0990ef3dea5d146",
+        "utils/smi_ted_light/fast_transformers/recurrent/attention/self_attention/attention_layer.py": "60ef707ba94437d742ec7abab3751d7c65d997d958a7c14bde0828e9ebcf9463",
+        "utils/smi_ted_light/fast_transformers/recurrent/attention/self_attention/full_attention.py": "26993db0f336698d207987fd252706b5cb2138a6cc78f43d846ee8894dfb44e5",
+        "utils/smi_ted_light/fast_transformers/recurrent/attention/self_attention/linear_attention.py": "830f4d6227dada973cfbf8807b0d92888c7fefd6a6e9b8371932005af1746b8a",
+        "utils/smi_ted_light/fast_transformers/recurrent/transformers.py": "d4a2fadfd4598d4ceb2fa334aa7cfe97d75cb156f64792acb4800dc7cae3796a",
+        "utils/smi_ted_light/fast_transformers/sparse_product/__init__.py": "c3393f1cf08bfa152564c1542762a5f0ff01f66728edc85db5cbde8af1645a97",
+        "utils/smi_ted_light/fast_transformers/transformers.py": "0972cbef7dbad420573ef671daca41db00a0f5bb3a1f4009f6859f3203f434ea",
+        "utils/smi_ted_light/fast_transformers/utils.py": "28e51f2ca6bf6bea10e871ea751e38b0b4348f61efbc2cd817096b0085fa5825",
+        "utils/smi_ted_light/fast_transformers/weight_mapper.py": "4f76088f78eea1d86b7043d81091b92fee5838b0c61038123fd6867accb88d5b",
+        "utils/smi_ted_light/load.py": "ca37dfa58e8a78e60827489ba2556bf20de6113c07b907aa80f883446d9484b7",
+        "utils/smiles.py": "9749ee3869eccb45a09f821a20d390ebb24e989f40fda7a9f9bee453321a04aa"
+      },
+      "package_version": "0.1.10"
+    },
+    "model_version": "tuned_mean_of_10_experimental_finetuned_heads",
+    "package": "tennetsac==0.1.10",
+    "source_revision": "2367e89c87c335c4fd27ff7fa22c87f660f459ba",
+    "training_system_overlap": "unknown_official_training_inventory_not_fully_published",
+    "verified_wheel": {
+      "filename": "tennetsac-0.1.10-py3-none-any.whl",
+      "sha256": "0ec0e2724273730e4fd8dd70a2fc1c170c092f098462b1065eb20cf5110a05e5"
+    },
+    "wheel_sha256": "0ec0e2724273730e4fd8dd70a2fc1c170c092f098462b1065eb20cf5110a05e5"
+  },
+  "parameter_accounting": {
+    "optimized": 0
+  },
+  "runtime": {
+    "cuda": "12.6",
+    "cudnn": "90501",
+    "device": "cuda",
+    "execution_profile": "thermoformer_ggnn39_external_compatibility",
+    "gpu": "NVIDIA GeForce RTX 3090 Ti",
+    "hanna_dependencies": {},
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "tennetsac_dependencies": {
+      "numpy": "1.26.4",
+      "rdkit": "2025.3.5",
+      "tennetsac": "0.1.10",
+      "tokenizers": "0.15.2",
+      "transformers": "4.36.2"
+    },
+    "torch": "2.6.0+cu126",
+    "upstream_environment_parity": "not_established"
+  },
+  "schema_version": 1,
+  "seed": 4,
+  "selection_partition": "not_applicable_fixed_external_model",
+  "settings_sha256": "a9433e6c64c051ba3be120c3e7257b3b5522b5f67e8f34d2375763264103eaed",
+  "source_workbooks": {
+    "datasets/vle/binary_vle_english.xlsx": "1fdd6bd4417970a023a4917882a0faa14a747f232cff06f33fd5394672029788",
+    "datasets/vle/ternary_vle_english.xlsx": "f7fcd62064f0f192b3a2d14f57860a03cae9606744fcb3b3a5efd019eafcaf8b"
+  },
+  "split_protocol": "vle_overall_binary_ternary",
+  "split_sha256": "33a4b5c70f820952226467a8add187310e2a5da80bee35d1ee6e18ae821ae39e",
+  "status": "completed",
+  "test_labels_used_for_selection": false,
+  "test_sample_ids_sha256": "fbb2ac74b5f41b55f4b7044eb664e32d0ab33691abc53bc3c931096cde7fe706",
+  "test_system_ids_sha256": "4cd9da5f128475b45d1cb0433a03f994aa337a11fe196d178d7a86d338448e9b",
+  "train_sample_ids_sha256": "687fa73186cc017dd7bde59ee509d99781eacafbed65e01d09cf2ea9e53f1c7c",
+  "train_system_ids_sha256": "6b78078f38c5d490a35d2e8f601a9403aa30a2fd0c5c7682f6e3b1b9fc76a1d8",
+  "trainable_parameters": 0,
+  "validation_sample_ids_sha256": "bd059c8541d24e20c95ad739e93a51036af5a70889f577f6f01b61f4087ded54",
+  "validation_system_ids_sha256": "bf3aa6f7269a93c322e80e365a23a10d216af65d46a73681194473bce5eb7e22"
+}

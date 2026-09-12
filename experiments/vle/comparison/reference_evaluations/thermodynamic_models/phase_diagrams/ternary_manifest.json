@@ -1,0 +1,467 @@
+{
+  "analysis_status": "test_exposed_exploratory",
+  "case_selection_used_test_labels": true,
+  "experiment": "ternary_thermodynamic_phase_diagram_case_study",
+  "generation_git_commit": "7d5a15cc9522d89c2684e8855d35b9ac3f8fa17e",
+  "inputs": [
+    {
+      "kind": "seed_manifest",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_low_extrapolation/seed_0/manifest.json",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 0,
+      "sha256": "104f2d49ab3162c3df1c361c917bb6bac8ad7d80cd3e35d6c93875aaef27a6cd"
+    },
+    {
+      "kind": "predictions",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_low_extrapolation/seed_0/predictions.csv",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 0,
+      "sha256": "f4501156290a2c307b4259209f54141ee87eed035a9d06786f8ccaf1cfa4b3b5"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_low_extrapolation/seed_1/manifest.json",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 1,
+      "sha256": "048ecdc2828fae6a95c71a6ef0fb1da4879d5d416b26e124d0ad9d68aaa95df6"
+    },
+    {
+      "kind": "predictions",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_low_extrapolation/seed_1/predictions.csv",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 1,
+      "sha256": "25a07f4753d46a00422cf0f361ce27e11754039ec2e0f6db56bf63ce4e3d9703"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_low_extrapolation/seed_2/manifest.json",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 2,
+      "sha256": "74d41d29854cd23a394de2c4d603fd380693bb0c0eeb43eea7828ec1f8175e8b"
+    },
+    {
+      "kind": "predictions",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_low_extrapolation/seed_2/predictions.csv",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 2,
+      "sha256": "b00d2021f2114add9316ed2952af39f7ed7a1d1f3a4a494530975ec623fdd249"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_low_extrapolation/seed_3/manifest.json",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 3,
+      "sha256": "5716100b452ad3b76c7bd79fd264e0ed555386c1b78ff01af31f2261dd626ca6"
+    },
+    {
+      "kind": "predictions",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_low_extrapolation/seed_3/predictions.csv",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 3,
+      "sha256": "6f81d8eca717617ba779a89b4c914d00499a5dc4f6f01830bcd23cfe9e33ce17"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_low_extrapolation/seed_4/manifest.json",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 4,
+      "sha256": "ef41d7508ec0779eab38455dc41a0511702824a6239c65ffb939df717d988945"
+    },
+    {
+      "kind": "predictions",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_low_extrapolation/seed_4/predictions.csv",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 4,
+      "sha256": "13eb4b1242836829b469f6fd010993364ee2f332addc791b30f381dccba7fba2"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "nrtl",
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_low_extrapolation/seed_0/nrtl/manifest.json",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 0,
+      "sha256": "9701590325b0212768077e9b57583b726618bfcb00ff45572af93ddb8b01b947"
+    },
+    {
+      "kind": "predictions",
+      "model": "nrtl",
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_low_extrapolation/seed_0/nrtl/predictions.csv",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 0,
+      "sha256": "6751aef878d9f801f3c19c3c64aa9ed611a178cb20a34a071e8c183ae6bfb67e"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "wilson",
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_low_extrapolation/seed_0/wilson/manifest.json",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 0,
+      "sha256": "89d3b7f959a57e153652cc27b514b85d44e131098fe2ccba77d7fe5c755f6485"
+    },
+    {
+      "kind": "predictions",
+      "model": "wilson",
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_low_extrapolation/seed_0/wilson/predictions.csv",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 0,
+      "sha256": "23316d753261b60b7d0c5c72091c65844fa31883e69ee60d94960b9718552429"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "uniquac",
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_low_extrapolation/seed_0/uniquac/manifest.json",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 0,
+      "sha256": "20f2d4321ecfdd650f748665854004dfd6fc42626d30632abccdf294761a06ea"
+    },
+    {
+      "kind": "predictions",
+      "model": "uniquac",
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_low_extrapolation/seed_0/uniquac/predictions.csv",
+      "protocol": "state_temperature_low_extrapolation",
+      "seed": 0,
+      "sha256": "af8c3f2ebf2c89905b717f8048e5db987f17710ce8712b6dcb77f076acf00dc9"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_high_extrapolation/seed_0/manifest.json",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 0,
+      "sha256": "d3dd7dd24f43362141b875f0a2c6bf2e7b0867bb7e4b018f9884e58b6b626a23"
+    },
+    {
+      "kind": "predictions",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_high_extrapolation/seed_0/predictions.csv",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 0,
+      "sha256": "937c8ec82b2abbcd1069e59bb78016896b1d0d8f336e4b66020648c1d0b578f7"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_high_extrapolation/seed_1/manifest.json",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 1,
+      "sha256": "c0e6ab5fe1270ebd4c37405b99bb85004a632448e69b845453d3ff604f45d152"
+    },
+    {
+      "kind": "predictions",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_high_extrapolation/seed_1/predictions.csv",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 1,
+      "sha256": "4086a8a2e3eda1ebded0b0fc4596faaa0cccfa6c9ea32a355fa3b9ccb713932b"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_high_extrapolation/seed_2/manifest.json",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 2,
+      "sha256": "5962a90d50f264d192eb80462f97c59423eba689b27a8a86b3c342d1735d4edc"
+    },
+    {
+      "kind": "predictions",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_high_extrapolation/seed_2/predictions.csv",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 2,
+      "sha256": "4f217745f1bf777c1073fe0b6f356a893b003a21d7ec84ef26aa54807e8ea64b"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_high_extrapolation/seed_3/manifest.json",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 3,
+      "sha256": "435a3f849a1a9f0a06cb419cf757a189f751e9fce39bd9c1f37ed8cf8974f25f"
+    },
+    {
+      "kind": "predictions",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_high_extrapolation/seed_3/predictions.csv",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 3,
+      "sha256": "9372bac80daf427a9cace75403cb5426e93c0b12c820557f2b997076cc5b75df"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_high_extrapolation/seed_4/manifest.json",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 4,
+      "sha256": "6aa01e4142c15380101cbb2e73a9e9191545b4ebaf4b6fc410c1f13530905283"
+    },
+    {
+      "kind": "predictions",
+      "model": "thermoformer",
+      "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.state_temperature_high_extrapolation/seed_4/predictions.csv",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 4,
+      "sha256": "a6527910da2041fe582acbe253b81570d5fa0af018d97e7a673f14fb25057ff2"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "nrtl",
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_high_extrapolation/seed_0/nrtl/manifest.json",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 0,
+      "sha256": "feee9dc9ea284699ca78404f6d04dfd6531d9287dd43be6e97d4de56b1cee522"
+    },
+    {
+      "kind": "predictions",
+      "model": "nrtl",
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_high_extrapolation/seed_0/nrtl/predictions.csv",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 0,
+      "sha256": "16acfdf3a94b60854f1d46be4e423b492914e4cb18fefc1755eb4dd127bed65a"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "wilson",
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_high_extrapolation/seed_0/wilson/manifest.json",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 0,
+      "sha256": "22d917cd01a767ab2eafdc5e21f5d46abd928d43dd53e57f535c74a7f6fd44b4"
+    },
+    {
+      "kind": "predictions",
+      "model": "wilson",
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_high_extrapolation/seed_0/wilson/predictions.csv",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 0,
+      "sha256": "c0c5b9de960a48731262a6bb502482ea51b229c66d2d0870e53706f230cda233"
+    },
+    {
+      "kind": "seed_manifest",
+      "model": "uniquac",
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_high_extrapolation/seed_0/uniquac/manifest.json",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 0,
+      "sha256": "6ae5f11eaba7363fb9b350e8c43001eb544d0f95a2a0bbe4f05c96dd749d8f3f"
+    },
+    {
+      "kind": "predictions",
+      "model": "uniquac",
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_temperature_high_extrapolation/seed_0/uniquac/predictions.csv",
+      "protocol": "state_temperature_high_extrapolation",
+      "seed": 0,
+      "sha256": "8b868afa4c3f759ee05187c2407ea4c570fbe6a1aff242dc73e14d3f7034adb0"
+    }
+  ],
+  "optional_classical_models": [
+    "uniquac"
+  ],
+  "outputs": {
+    "ternary_candidate_ranking_csv": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/phase_diagrams/ternary_candidate_ranking.csv",
+      "sha256": "314c5e0f9ac3565acc0a73c6e54f4fca499a18c34aeeb47299c09e5868e87b9d"
+    },
+    "ternary_phase_diagram_cases_pdf": {
+      "path": "figures/comparisons/thermodynamic_models/ternary_phase_diagram_cases.pdf",
+      "sha256": "57a6b46002c7587536d5ae7417b5ceef59c7a9ead94fde4160e789225c8b46da"
+    },
+    "ternary_phase_diagram_cases_png": {
+      "path": "figures/comparisons/thermodynamic_models/ternary_phase_diagram_cases.png",
+      "sha256": "e3145e48476c32e5a88a3027efab1d3c87036a10760111f1a88d43d24ea0e000"
+    },
+    "ternary_phase_diagram_cases_svg": {
+      "path": "figures/comparisons/thermodynamic_models/ternary_phase_diagram_cases.svg",
+      "sha256": "df93bc0068334d64197574b6b5823eb0ce5900c723401cccc2aaf7627def345b"
+    },
+    "ternary_phase_diagram_cases_tiff": {
+      "path": "figures/comparisons/thermodynamic_models/ternary_phase_diagram_cases.tiff",
+      "sha256": "dc46a980cf40a40140863f1debf70b6f293d57003c71ec8a7e8793eb58cec632"
+    },
+    "ternary_results_md": {
+      "path": "experiments/vle/comparison/study_records/thermodynamic_models/phase_diagrams/ternary_results.md",
+      "sha256": "a7aa896b5616a8c4886aaa05c5debfd3d49616aa3e7814d99592667fef61ab0b"
+    },
+    "ternary_selected_plot_data_csv": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/phase_diagrams/ternary_selected_plot_data.csv",
+      "sha256": "6c1167345686e9f959fd208e1a1045257159029d2d2080e4a42f26f33eb79d06"
+    }
+  },
+  "required_classical_models": [
+    "nrtl",
+    "wilson"
+  ],
+  "schema_version": 1,
+  "selected_cases": [
+    {
+      "best_baseline": "wilson",
+      "case_id": "state_temperature_high_extrapolation:3c_a6f39dd395c2cfcf800d:340.0",
+      "component_1": "pinacolone",
+      "component_2": "neopentyl alcohol",
+      "component_3": "2-methoxy-2-methylpropane",
+      "component_smiles_1": "CC(=O)C(C)(C)C",
+      "component_smiles_2": "CC(C)(C)CO",
+      "component_smiles_3": "COC(C)(C)C",
+      "condition": 340.0,
+      "direction": "isothermal",
+      "doi": "10.1016/j.fluid.2009.01.016",
+      "nrtl_coverage": 1.0,
+      "nrtl_curve_score": 0.010359011275989633,
+      "nrtl_state_mae": 0.3897666654240992,
+      "nrtl_state_rmse": 0.5693785402426065,
+      "nrtl_y_mae": 0.003847276096791581,
+      "nrtl_y_rmse": 0.00479290071973847,
+      "points": 19,
+      "protocol": "state_temperature_high_extrapolation",
+      "selection_category": "well_predicted",
+      "state_scale": 61.999967369983985,
+      "system_id": "3c_a6f39dd395c2cfcf800d",
+      "thermoformer_coverage": 1.0,
+      "thermoformer_curve_score": 0.021436315693437232,
+      "thermoformer_minus_best_baseline_score": 0.011733484126230553,
+      "thermoformer_state_mae": 1.1052189904602285,
+      "thermoformer_state_rmse": 1.2773749879323557,
+      "thermoformer_y_mae": 0.004595540724302587,
+      "thermoformer_y_rmse": 0.005919365966326534,
+      "uniquac_available": false,
+      "uniquac_coverage": 0.0,
+      "wilson_coverage": 1.0,
+      "wilson_curve_score": 0.00970283156720668,
+      "wilson_state_mae": 0.35023157409119693,
+      "wilson_state_rmse": 0.5253358952033875,
+      "wilson_y_mae": 0.0038832821965114187,
+      "wilson_y_rmse": 0.004727624270609538
+    },
+    {
+      "best_baseline": "wilson",
+      "case_id": "state_temperature_low_extrapolation:3c_a6f39dd395c2cfcf800d:320.0",
+      "component_1": "pinacolone",
+      "component_2": "neopentyl alcohol",
+      "component_3": "2-methoxy-2-methylpropane",
+      "component_smiles_1": "CC(=O)C(C)(C)C",
+      "component_smiles_2": "CC(C)(C)CO",
+      "component_smiles_3": "COC(C)(C)C",
+      "condition": 320.0,
+      "direction": "isothermal",
+      "doi": "10.1016/j.fluid.2009.01.016",
+      "nrtl_coverage": 1.0,
+      "nrtl_curve_score": 0.03234633626529749,
+      "nrtl_state_mae": 0.18927496848238246,
+      "nrtl_state_rmse": 0.26469101447245197,
+      "nrtl_y_mae": 0.021224881229196798,
+      "nrtl_y_rmse": 0.031376504867700834,
+      "points": 14,
+      "protocol": "state_temperature_low_extrapolation",
+      "selection_category": "well_predicted",
+      "state_scale": 33.670030748928006,
+      "system_id": "3c_a6f39dd395c2cfcf800d",
+      "thermoformer_coverage": 1.0,
+      "thermoformer_curve_score": 0.023660206654034205,
+      "thermoformer_minus_best_baseline_score": -0.00864473167070473,
+      "thermoformer_state_mae": 0.20114896426676385,
+      "thermoformer_state_rmse": 0.2637048122428971,
+      "thermoformer_y_mae": 0.014653741197784755,
+      "thermoformer_y_rmse": 0.022326321429012246,
+      "uniquac_available": false,
+      "uniquac_coverage": 0.0,
+      "wilson_coverage": 1.0,
+      "wilson_curve_score": 0.032304938324738935,
+      "wilson_state_mae": 0.18478321729209504,
+      "wilson_state_rmse": 0.25532796531759416,
+      "wilson_y_mae": 0.021341278992539466,
+      "wilson_y_rmse": 0.03140228483161244
+    },
+    {
+      "best_baseline": "nrtl",
+      "case_id": "state_temperature_high_extrapolation:3c_485aadc678c8a7fb274c:364.15",
+      "component_1": "4-methyl-2-pentanone",
+      "component_2": "2,2,4-trimethylpentane",
+      "component_3": "2-methyl-1-propanol",
+      "component_smiles_1": "CC(=O)CC(C)C",
+      "component_smiles_2": "CC(C)CC(C)(C)C",
+      "component_smiles_3": "CC(C)CO",
+      "condition": 364.15,
+      "direction": "isothermal",
+      "doi": "10.1016/j.fluid.2011.05.011",
+      "nrtl_coverage": 1.0,
+      "nrtl_curve_score": 0.03166440484744122,
+      "nrtl_state_mae": 0.9387581868701607,
+      "nrtl_state_rmse": 1.4025147452629403,
+      "nrtl_y_mae": 0.0085954769662049,
+      "nrtl_y_rmse": 0.012201765702753789,
+      "points": 30,
+      "protocol": "state_temperature_high_extrapolation",
+      "selection_category": "representative",
+      "state_scale": 48.00005215104,
+      "system_id": "3c_485aadc678c8a7fb274c",
+      "thermoformer_coverage": 1.0,
+      "thermoformer_curve_score": 0.03773066971151219,
+      "thermoformer_minus_best_baseline_score": 0.006066264864070969,
+      "thermoformer_state_mae": 1.3908989299530723,
+      "thermoformer_state_rmse": 1.6929869044158075,
+      "thermoformer_y_mae": 0.009660384187135409,
+      "thermoformer_y_rmse": 0.013401257458494437,
+      "uniquac_available": false,
+      "uniquac_coverage": 0.0,
+      "wilson_coverage": 1.0,
+      "wilson_curve_score": 0.038339235253384465,
+      "wilson_state_mae": 1.2804098197504319,
+      "wilson_state_rmse": 1.7351586812129813,
+      "wilson_y_mae": 0.009236263568555112,
+      "wilson_y_rmse": 0.012772608779316436
+    },
+    {
+      "best_baseline": "wilson",
+      "case_id": "state_temperature_low_extrapolation:3c_65250b1389afa8bc1bcc:313.15",
+      "component_1": "3-methyl-2-butanone",
+      "component_2": "2,3-dimethylbutane",
+      "component_3": "diisopropyl ether",
+      "component_smiles_1": "CC(=O)C(C)C",
+      "component_smiles_2": "CC(C)C(C)C",
+      "component_smiles_3": "CC(C)OC(C)C",
+      "condition": 313.15,
+      "direction": "isothermal",
+      "doi": "10.1016/j.fluid.2013.01.020",
+      "nrtl_coverage": 1.0,
+      "nrtl_curve_score": 0.010905148082062064,
+      "nrtl_state_mae": 0.24195447295703612,
+      "nrtl_state_rmse": 0.27328097738403406,
+      "nrtl_y_mae": 0.0018757349106121534,
+      "nrtl_y_rmse": 0.0022872414159505173,
+      "points": 28,
+      "protocol": "state_temperature_low_extrapolation",
+      "selection_category": "high_error",
+      "state_scale": 25.62989202432,
+      "system_id": "3c_65250b1389afa8bc1bcc",
+      "thermoformer_coverage": 1.0,
+      "thermoformer_curve_score": 0.08655918508095363,
+      "thermoformer_minus_best_baseline_score": 0.07619423096124034,
+      "thermoformer_state_mae": 2.0273615126543376,
+      "thermoformer_state_rmse": 2.214599264241145,
+      "thermoformer_y_mae": 0.004452138481750369,
+      "thermoformer_y_rmse": 0.005132432132091194,
+      "uniquac_available": false,
+      "uniquac_coverage": 0.0,
+      "wilson_coverage": 1.0,
+      "wilson_curve_score": 0.010364954119713287,
+      "wilson_state_mae": 0.22648654513111208,
+      "wilson_state_rmse": 0.25841132959304386,
+      "wilson_y_mae": 0.0019715130653737505,
+      "wilson_y_rmse": 0.002403556915070492
+    }
+  ],
+  "selection_partition": "test",
+  "selection_rule": "protocol minima, distinct-system candidate nearest global median, and one global maximum ThermoFormer ternary normalized curve score",
+  "settings": {
+    "path": "configs/vle/comparison/studies/thermodynamic_models/phase_diagrams/ternary_settings.json",
+    "sha256": "b8f2ed1a5c2d964423946dbff077283a31b68284301cac20cc5e0e490148a31c"
+  },
+  "status": "completed_exploratory"
+}

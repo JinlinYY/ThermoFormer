@@ -12,7 +12,7 @@ class ArtifactPathTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as first, tempfile.TemporaryDirectory() as second:
             first_root = Path(first)
             second_root = Path(second)
-            first_artifact = first_root / "results" / "run" / "metrics.json"
+            first_artifact = first_root / 'experiments/reference_results/run/metrics.json'
             first_artifact.parent.mkdir(parents=True)
             first_artifact.write_text(json.dumps({"mae": 1.0}), encoding="utf-8")
             recorded = portable_artifact_path(first_artifact, first_root)
@@ -21,7 +21,7 @@ class ArtifactPathTests(unittest.TestCase):
             relocated.parent.mkdir(parents=True)
             relocated.write_bytes(first_artifact.read_bytes())
 
-            self.assertEqual(recorded, "results/run/metrics.json")
+            self.assertEqual(recorded, "experiments/reference_results/run/metrics.json")
             self.assertEqual(resolve_artifact_path(recorded, second_root), relocated.resolve())
 
     def test_external_artifact_remains_absolute(self) -> None:
@@ -53,4 +53,13 @@ class ArtifactPathTests(unittest.TestCase):
             unix = root / "unix.json"
             windows.write_bytes(b'{\r\n  "value": 1\r\n}\r\n')
             unix.write_bytes(b'{\n  "value": 1\n}\n')
+            self.assertEqual(artifact_sha256(windows), artifact_sha256(unix))
+
+    def test_yaml_config_digest_is_independent_of_platform_eol(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            windows = root / "windows.yaml"
+            unix = root / "unix.yaml"
+            windows.write_bytes(b"name: experiment\r\nseed: 0\r\n")
+            unix.write_bytes(b"name: experiment\nseed: 0\n")
             self.assertEqual(artifact_sha256(windows), artifact_sha256(unix))

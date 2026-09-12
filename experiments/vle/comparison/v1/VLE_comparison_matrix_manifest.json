@@ -1,0 +1,209 @@
+{
+  "commands": [
+    "conda run -n ggnn39 python scripts/run_joint_activity_adapted.py --baselines tennet_sac_joint_adapted --benchmark binary_train_binary_test --seeds 0 1 2 3 4 --epochs 100 --patience 15 --device cuda",
+    "conda run -n ggnn39 python scripts/run_joint_activity_adapted.py --baselines hanna_joint_adapted tennet_sac_joint_adapted --benchmark joint_train_joint_test --seeds 0 1 2 3 4 --epochs 100 --patience 15 --device cuda",
+    "python scripts/build_vle_comparison_matrix.py"
+  ],
+  "evaluation_partition": "test",
+  "inputs": {
+    "experiments/summary/VLE_results_table.csv": "92843d0744cd14cb2d12b28181e7fd987d213467685e4a3a6cd1dbe274dadb99",
+    "experiments/vle/comparison/v1/machine_learning/descriptor_ann.on.binary_train_binary_test/metrics_summary.csv": "8cd98d27d90eef55fa19b8ef1d8cd63e6fd85ea2b7c105cd5f3936b4d61f83a6",
+    "experiments/vle/comparison/v1/machine_learning/gdi_gnn.on.binary_train_binary_test/metrics_summary.csv": "018e2aaf3e6c346f8bd565c2d71dd06104e886cdb124361e059c2cd99e3d21fc",
+    "experiments/vle/comparison/v1/machine_learning/ge_gnn.on.binary_train_binary_test/metrics_summary.csv": "46b813022fc70e7a319b83559a130e0f5a26469a785624f680ce10dfd03fd0f6",
+    "experiments/vle/comparison/v1/machine_learning/hanna.on.official_pretrained_to_joint_test/metrics_summary.csv": "7b8d60d64cd4df39562f8962418daad5cd2ccd3d3efc865bd9b99e8570ebb282",
+    "experiments/vle/comparison/v1/machine_learning/hanna_binary_adapted.on.binary_train_binary_test/aggregate.csv": "a9d4f506cbee18c06bf5c540083d2e576c68e2b0920a03a45e4fbbb004356096",
+    "experiments/vle/comparison/v1/machine_learning/hanna_joint_adapted.on.joint_train_joint_test/aggregate.csv": "247fe4c69858a3252dd6859cc9732e0a68026f2b3b0d9c85094055f7fac508b2",
+    "experiments/vle/comparison/v1/machine_learning/hanna_ternary_adapted.on.ternary_train_ternary_test/aggregate.csv": "50e326e573cb944267937a29d78fd4d972343a02c55b4b3f548e2ab0e6a61d99",
+    "experiments/vle/comparison/v1/machine_learning/smiles_rnn.on.binary_train_binary_test/metrics_summary.csv": "1c49efa35640f6a0c199bf276a2f87366f67364cb80d62fddf3014ea233e1ff3",
+    "experiments/vle/comparison/v1/machine_learning/solvgnn.on.joint_train_joint_test/metrics_summary.csv": "2eea8cab712aaa5647b29c2bcb2ae00fee581b4fdfbfb7b4d1d2f27c353caf00",
+    "experiments/vle/comparison/v1/machine_learning/spt_nrtl.on.external_fixed_to_joint_test/metrics_summary.csv": "6c098f82791e7f9761a69db7fa6fde21a83fb38e5bec36bced719734c12b83be",
+    "experiments/vle/comparison/v1/machine_learning/spt_nrtl_adapted.on.joint_train_joint_test/metrics_summary.csv": "b46798aef3d4051edeb90fd2abb037134cc1bc8748d4ed2f4fe02ed7dbde9528",
+    "experiments/vle/comparison/v1/machine_learning/tennet_sac.on.external_fixed_to_joint_test/metrics_summary.csv": "77fb42aeb1f4fd5ae9892e725dd4a47ba8b7f661ddf4fce89764eeea1000e5e1",
+    "experiments/vle/comparison/v1/machine_learning/tennet_sac_binary_adapted.on.binary_train_binary_test/aggregate.csv": "26dbdf1fb659fb14e24e334c32d7242c8b4b9e631ae7d209510ab376371a2305",
+    "experiments/vle/comparison/v1/machine_learning/tennet_sac_joint_adapted.on.joint_train_joint_test/aggregate.csv": "fb45caa1838a65f7e7944f990b52c2d2278ae9055c1aab28478a92af379aceba",
+    "experiments/vle/comparison/v1/machine_learning/tennet_sac_ternary_adapted.on.ternary_train_ternary_test/aggregate.csv": "ff73fb1defbf5327de6a4c47078af8515bdd050c9da8dbdb6c544fc8ea4e89d1",
+    "experiments/vle/comparison/v1/machine_learning/ualf_gnn.on.binary_train_binary_test/metrics_summary.csv": "6dd12e6b9ba48e64ebfdaf2286ba476c98c485ccb85e2a23371bf28f737051cc",
+    "scripts/build_vle_comparison_matrix.py": "e449deda01fb2b8ebf18606cb0df5ee5672b6266f77f8d8f6e98783f82852138",
+    "src/thermoformer/baselines/machine_learning/schema.py": "fb93f25322b84c0a92245c975bf6a8e76b46e1335ad1f835d037e120accea442",
+    "src/thermoformer/baselines/machine_learning/smoke.py": "4f7c31b45f3d4d97147331389a6ea63476967fefa932d363e384fe6df7152f88"
+  },
+  "outputs": {
+    "experiments/vle/comparison/v1/VLE_comparison_matrix.csv": "7a4f016eb45f192cd25e517a79f99b63aec5af9f189d2abd30e9dee3c1efd540",
+    "experiments/vle/comparison/v1/VLE_comparison_matrix.md": "b3e71f2f6ed8a7deb82c202ab94dc37492d18e8204c0c678d0c603b6afe7cc04",
+    "experiments/vle/comparison/v1/VLE_comparison_matrix.tex": "e73f4d3b1ff71b26e16a53568829a21dd49cc5113684f7119368a248bbb21928"
+  },
+  "row_count": 58,
+  "schema_version": 1,
+  "seed_artifacts": {
+    "hanna_joint_adapted.on.joint_train_joint_test": {
+      "0": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/hanna_joint_adapted.on.joint_train_joint_test/seed_0/best_model.pt",
+          "sha256": "3b09af0164c59a1164ccecec87705966ca766461b4b5c8693037463def2bec5c"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/hanna_joint_adapted.on.joint_train_joint_test/seed_0/manifest.json",
+          "sha256": "4e6e4261478315e8405f5ee21bdf4164ab7847a6bb1a4becdb41c9959eeee1f1"
+        }
+      },
+      "1": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/hanna_joint_adapted.on.joint_train_joint_test/seed_1/best_model.pt",
+          "sha256": "8a303c003a4ae4b0bf22e1504a17e96755f2db3a4a45624c74525a60b45dbef5"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/hanna_joint_adapted.on.joint_train_joint_test/seed_1/manifest.json",
+          "sha256": "29cb8afb81af6d8195cf64b5ccccc4b3bf23bcff6745fea250c228eea0c146ca"
+        }
+      },
+      "2": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/hanna_joint_adapted.on.joint_train_joint_test/seed_2/best_model.pt",
+          "sha256": "93d0b9703d7ec3fa29deb55315d47c6f61f0e3ff829f3cb4976f0bf148253bd1"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/hanna_joint_adapted.on.joint_train_joint_test/seed_2/manifest.json",
+          "sha256": "d1a2d10e8bc6414d13192f68c5c559b7bb64dbb77e59810c6906e28e5f6b24c3"
+        }
+      },
+      "3": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/hanna_joint_adapted.on.joint_train_joint_test/seed_3/best_model.pt",
+          "sha256": "c885bb2536261d6cd5d7c566aad970e0fa23662e993cfa6528ab45d65b55ff29"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/hanna_joint_adapted.on.joint_train_joint_test/seed_3/manifest.json",
+          "sha256": "0ff86cd1599e1cc91de4876f9d1a2b93029c4219bf33d9a6105b0becda682ed0"
+        }
+      },
+      "4": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/hanna_joint_adapted.on.joint_train_joint_test/seed_4/best_model.pt",
+          "sha256": "86278a7faa14e2c23e215844e0db4c313491a65b29bf0e0611930f1878d25d6f"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/hanna_joint_adapted.on.joint_train_joint_test/seed_4/manifest.json",
+          "sha256": "c849907effb57a4bc4f39c1f6e48547b6862c66befebaa7406982d947ad73fb9"
+        }
+      }
+    },
+    "tennet_sac_binary_adapted.on.binary_train_binary_test": {
+      "0": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/tennet_sac_binary_adapted.on.binary_train_binary_test/seed_0/best_model.pt",
+          "sha256": "8a8d5a003efad9f88c244a581f4a8426791ca8a3a58cfd7a58f8648f4066eeb8"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/tennet_sac_binary_adapted.on.binary_train_binary_test/seed_0/manifest.json",
+          "sha256": "fd53b186edcad8eb996cfd1d8eb0e85e0a47343f052445c54e8c324235505b3e"
+        }
+      },
+      "1": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/tennet_sac_binary_adapted.on.binary_train_binary_test/seed_1/best_model.pt",
+          "sha256": "2340ff0e9d2c6e6bc615a0abee4a4d9bb54d5aea8de2a84c339e95b64157104d"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/tennet_sac_binary_adapted.on.binary_train_binary_test/seed_1/manifest.json",
+          "sha256": "d16cebfcf0f249539c9f8826e98dae0fe45f89e399181d4644c421faec9ea4ce"
+        }
+      },
+      "2": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/tennet_sac_binary_adapted.on.binary_train_binary_test/seed_2/best_model.pt",
+          "sha256": "f4f80266e4794cae82d2f50fd29ee91d1409894a00a7c3fd5f345778fb9a9024"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/tennet_sac_binary_adapted.on.binary_train_binary_test/seed_2/manifest.json",
+          "sha256": "41eeea791ec15f81c611e065a548655777bc0c36411c2f4adab994159dd821bf"
+        }
+      },
+      "3": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/tennet_sac_binary_adapted.on.binary_train_binary_test/seed_3/best_model.pt",
+          "sha256": "178d1545647f038434839ffc5604db43a084b447455b8e97b2421440ca208622"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/tennet_sac_binary_adapted.on.binary_train_binary_test/seed_3/manifest.json",
+          "sha256": "1b521acc35b310f2b1703257387d938a41169726dea83040c584e66760e01a9c"
+        }
+      },
+      "4": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/tennet_sac_binary_adapted.on.binary_train_binary_test/seed_4/best_model.pt",
+          "sha256": "0a6a0a741d62179aa885e596aded4bb849088de68e91498fe2eb987c9ebe5398"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/tennet_sac_binary_adapted.on.binary_train_binary_test/seed_4/manifest.json",
+          "sha256": "fb746b78298b5426836dec29038f21cff718375298e427345659d61568979b82"
+        }
+      }
+    },
+    "tennet_sac_joint_adapted.on.joint_train_joint_test": {
+      "0": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/tennet_sac_joint_adapted.on.joint_train_joint_test/seed_0/best_model.pt",
+          "sha256": "df05e86f424298e6a4b99d549a7f6dcd15ffdae58e432603251573f83c38fef6"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/tennet_sac_joint_adapted.on.joint_train_joint_test/seed_0/manifest.json",
+          "sha256": "5d199cd1fb11ef1e5045e0b88ae2f0ef27abbd124afebb1dafb1cb654596c590"
+        }
+      },
+      "1": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/tennet_sac_joint_adapted.on.joint_train_joint_test/seed_1/best_model.pt",
+          "sha256": "e2e935e642e0fc7a809b988cba3c0783fe92ba9d7f92b439e27f2ff89f700592"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/tennet_sac_joint_adapted.on.joint_train_joint_test/seed_1/manifest.json",
+          "sha256": "95fd3be42ccaf51ba28f3d44bea45fba37a2136f7b9b72c2c8219960710007b8"
+        }
+      },
+      "2": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/tennet_sac_joint_adapted.on.joint_train_joint_test/seed_2/best_model.pt",
+          "sha256": "4e61953bfc41512500a8e8762fec42eda0a7852ff88044ec6a66eadfed3d2d4c"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/tennet_sac_joint_adapted.on.joint_train_joint_test/seed_2/manifest.json",
+          "sha256": "2ad2df8d3adb19ef398d4946c82d2ab0a3f983281990c13f55fb9e19ddca67ee"
+        }
+      },
+      "3": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/tennet_sac_joint_adapted.on.joint_train_joint_test/seed_3/best_model.pt",
+          "sha256": "249b645b6a1bdcd9660561623a5ac25335171dd77ee67d4f156a6490c366c764"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/tennet_sac_joint_adapted.on.joint_train_joint_test/seed_3/manifest.json",
+          "sha256": "b0d20c0ff483d5b6dcbc211657b3bbbe41172e8848ebe06f3aa924eaa85c898e"
+        }
+      },
+      "4": {
+        "checkpoint": {
+          "path": "models/vle/comparison/v1/machine_learning/tennet_sac_joint_adapted.on.joint_train_joint_test/seed_4/best_model.pt",
+          "sha256": "885d6de6246e50fd39e5547492dbc7a5e4c4dd77bc34c45c683730f0f7f8bdad"
+        },
+        "manifest": {
+          "path": "experiments/vle/comparison/v1/machine_learning/tennet_sac_joint_adapted.on.joint_train_joint_test/seed_4/manifest.json",
+          "sha256": "11c0ea93bca596966eab3edefa39b995105c067149c5ccefe36b739361173a0a"
+        }
+      }
+    }
+  },
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "selection_partition": "validation",
+  "status": "completed",
+  "ualf_isothermal_audit": {
+    "capability_evidence": "src/thermoformer/baselines/machine_learning/schema.py:96-107",
+    "executable_contract_evidence": "src/thermoformer/baselines/machine_learning/smoke.py:241-245",
+    "status": "not_applicable_native_direction_isobaric_only"
+  }
+}

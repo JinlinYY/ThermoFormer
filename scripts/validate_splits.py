@@ -58,11 +58,11 @@ def _strict_boundary_violations(split) -> int:
 
 def main() -> None:
     samples = retain_pure_anchored_systems(
-        load_vle_samples(PROJECT_ROOT / "dataset", max_pressure_kpa=500.0),
+        load_vle_samples(PROJECT_ROOT / 'datasets/vle_reference', max_pressure_kpa=500.0),
         minimum_temperatures=2,
     )
     rows = []
-    paths = sorted((PROJECT_ROOT / "splits").glob("*/seed_*.json"))
+    paths = sorted((PROJECT_ROOT / 'datasets/splits/vle').glob("*/seed_*.json"))
     found = {
         (path.parent.name, int(path.stem.removeprefix("seed_"))) for path in paths
     }

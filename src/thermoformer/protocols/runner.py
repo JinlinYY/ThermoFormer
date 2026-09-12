@@ -12,11 +12,12 @@ import subprocess
 import time
 from dataclasses import asdict, replace
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any, Mapping, Sequence
 
 import numpy as np
 import rdkit
 import torch
+import yaml
 
 from ..configuration import ExperimentConfig, experiment_sha256, load_experiment_config
 from ..reporting.artifacts import artifact_sha256, portable_artifact_path
@@ -33,6 +34,11 @@ from ..training.fugacity_finetuning import (
     evaluate_physics_residuals,
     fit_physics_stage,
     load_stage1_checkpoint,
+)
+from ..training.checkpointing import cpu_state_dict
+from ..training.direct_ge_pipeline import (
+    evaluate_direct_label_metrics,
+    fit_direct_ge_stages,
 )
 
 
@@ -63,6 +69,136 @@ def _normalized_experiment_digest(experiment: ExperimentConfig) -> str:
 
 def _feature_subset_digest(feature_map: dict[str, np.ndarray]) -> str:
     return feature_subset_sha256(feature_map)
+
+
+
+_STAGE0_RECIPE_SCHEMA = "thermoformer-stage0-recipe-v1"
+_STAGE0_RUNTIME_MODEL_FIELDS = frozenset(
+    {
+        "feature_dim",
+        "rdkit_feature_dim",
+        "unimol_feature_dim",
+        "functional_group_feature_dim",
+    }
+)
+
+
+def _stage0_recipe_digest(payload: object) -> str:
+    return hashlib.sha256(
+        json.dumps(
+            payload,
+            ensure_ascii=True,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+
+
+def _stage0_semantic_model_recipe(
+    model: Mapping[str, object], encoder: Mapping[str, object]
+) -> dict[str, object]:
+    normalized = {
+        str(name): value
+        for name, value in model.items()
+        if name not in _STAGE0_RUNTIME_MODEL_FIELDS
+    }
+    normalized["fusion_mode"] = encoder.get("fusion_mode")
+    normalized["chemical_attention_bias"] = encoder.get(
+        "chemical_attention_bias"
+    )
+    normalized["context_pair_interaction"] = encoder.get(
+        "context_pair_interaction"
+    )
+    return normalized
+
+
+def _formal_c1_stage0_recipe(
+    experiment: ExperimentConfig,
+    split_path: Path,
+    split_protocol: str,
+    seed: int,
+    dataset_sha256: str,
+    feature_cache_sha256: str,
+    pure_property_catalog_sha256: str | None,
+) -> dict[str, object] | None:
+    """Build the versioned recipe required for auditable C1 Stage 0 reuse."""
+
+    if (
+        experiment.name != "c1_three_view_vanilla"
+        or experiment.direct_ge_supervision is not None
+        or experiment.physics_finetuning is not None
+        or experiment.protocol is None
+        or experiment.protocol.evaluation_partition != "validation"
+    ):
+        return None
+    try:
+        split_payload = json.loads(split_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    if not isinstance(split_payload, Mapping):
+        return None
+    partitions = split_payload.get("partitions")
+    if not isinstance(partitions, Mapping):
+        return None
+    partition_recipe: dict[str, dict[str, object]] = {}
+    for partition in ("train", "validation", "test"):
+        values = partitions.get(partition)
+        if not isinstance(values, list) or not all(
+            isinstance(value, str) for value in values
+        ):
+            return None
+        partition_recipe[partition] = {
+            "count": len(values),
+            "sha256": _stage0_recipe_digest(values),
+        }
+    payload = experiment.to_dict()
+    data = payload.get("data")
+    encoder = payload.get("encoder")
+    model = payload.get("model")
+    training = payload.get("training")
+    protocol = payload.get("protocol")
+    if not all(
+        isinstance(value, Mapping)
+        for value in (data, encoder, model, training, protocol)
+    ):
+        return None
+    return {
+        "schema": _STAGE0_RECIPE_SCHEMA,
+        "variant": experiment.name,
+        "protocol": {
+            "split_protocol": split_protocol,
+            "seed": seed,
+            "registered_splits": list(protocol.get("registered_splits", ())),
+            "split_sha256": _file_digest(split_path),
+            "dataset_sha256": dataset_sha256,
+            "partitions": partition_recipe,
+            "metadata_sha256": _stage0_recipe_digest(
+                split_payload.get("metadata")
+            ),
+        },
+        "data": {
+            "config": dict(data),
+            "dataset_sha256": dataset_sha256,
+            "pure_property_catalog_sha256": pure_property_catalog_sha256,
+        },
+        "features": {
+            "encoder": dict(encoder),
+            "cache_sha256": feature_cache_sha256,
+        },
+        "model": _stage0_semantic_model_recipe(model, encoder),
+        "training": dict(training),
+        "loss": {
+            "pressure_weight": training.get("pressure_weight"),
+            "pure_weight": training.get("pure_weight"),
+            "direct_ge_supervision": None,
+            "physics_finetuning": None,
+        },
+        "selection": {
+            "partition": "validation",
+            "evaluation_partition": "validation",
+            "test_metrics_used_for_selection": False,
+        },
+    }
 
 
 def requested_run_fingerprint(
@@ -140,7 +276,12 @@ def _config_source_paths(path: Path, ancestors: tuple[Path, ...] = ()) -> tuple[
     resolved = path.resolve()
     if resolved in ancestors:
         raise ValueError("Cyclic experiment configuration inheritance")
-    payload = json.loads(resolved.read_text(encoding="utf-8"))
+    text = resolved.read_text(encoding="utf-8")
+    payload = (
+        yaml.safe_load(text)
+        if resolved.suffix.lower() in {".yaml", ".yml"}
+        else json.loads(text)
+    )
     parent = payload.get("extends") if isinstance(payload, dict) else None
     if parent is None:
         return (resolved,)
@@ -180,6 +321,71 @@ def _require_committed_file(path: Path, label: str) -> None:
     )
     if completed.returncode != 0:
         raise RuntimeError(f"Formal {label} differs from the committed HEAD version: {path}")
+
+
+def _require_generated_stage1_checkpoint(
+    checkpoint_path: Path,
+    manifest_path: Path,
+    *,
+    expected_git_commit: str,
+    expected_seed: int,
+) -> None:
+    """Validate a formal Stage 1 checkpoint produced earlier in this campaign."""
+
+    checkpoint = checkpoint_path.resolve()
+    manifest = manifest_path.resolve()
+    project_root = PROJECT_ROOT.resolve()
+    for path, label in ((checkpoint, "checkpoint"), (manifest, "manifest")):
+        try:
+            path.relative_to(project_root)
+        except ValueError as error:
+            raise RuntimeError(
+                f"Generated Stage 1 {label} must be inside the project: {path}"
+            ) from error
+        if not path.is_file():
+            raise RuntimeError(f"Generated Stage 1 {label} does not exist: {path}")
+
+    try:
+        payload = json.loads(manifest.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise RuntimeError(f"Generated Stage 1 manifest is unreadable: {manifest}") from error
+    if not isinstance(payload, dict):
+        raise RuntimeError("Generated Stage 1 manifest must contain a JSON object")
+
+    required = {
+        "status": "completed",
+        "run_kind": "formal",
+        "analysis_status": "confirmatory",
+        "git_commit": expected_git_commit,
+        "git_dirty": False,
+        "seed": expected_seed,
+    }
+    for key, expected in required.items():
+        if payload.get(key) != expected:
+            raise RuntimeError(
+                f"Generated Stage 1 manifest has invalid {key}: "
+                f"expected {expected!r}, found {payload.get(key)!r}"
+            )
+
+    artifact = payload.get("artifacts", {}).get("checkpoint")
+    if not isinstance(artifact, dict):
+        raise RuntimeError("Generated Stage 1 manifest lacks checkpoint provenance")
+    recorded_path = artifact.get("path")
+    recorded_hash = artifact.get("sha256")
+    if not isinstance(recorded_path, str) or not isinstance(recorded_hash, str):
+        raise RuntimeError("Generated Stage 1 checkpoint provenance is incomplete")
+    declared_checkpoint = (project_root / recorded_path).resolve()
+    if declared_checkpoint != checkpoint:
+        raise RuntimeError(
+            "Generated Stage 1 manifest references a different checkpoint: "
+            f"{declared_checkpoint}"
+        )
+    actual_hash = artifact_sha256(checkpoint)
+    if recorded_hash != actual_hash:
+        raise RuntimeError(
+            "Generated Stage 1 checkpoint hash differs from its manifest: "
+            f"expected {recorded_hash}, found {actual_hash}"
+        )
 
 
 def _validate_formal_inputs(
@@ -306,6 +512,7 @@ def run_paper_experiment(
     run_kind: str = "formal",
     evaluation_partition: str = "test",
     stage1_checkpoint: Path | None = None,
+    generated_stage1_manifest: Path | None = None,
     aggregate_expected: bool = True,
     analysis_status: str = "confirmatory",
 ) -> dict[str, Any]:
@@ -320,6 +527,8 @@ def run_paper_experiment(
         "diagnostic",
     }:
         raise ValueError("analysis_status is invalid")
+    if generated_stage1_manifest is not None and stage1_checkpoint is None:
+        raise ValueError("A generated Stage 1 manifest requires a Stage 1 checkpoint")
     audited_run = run_kind in {"formal", "pilot", "selection"}
     git_commit = _git_commit()
     worktree_dirty, git_dirty, dirty_code_paths = _git_state()
@@ -352,7 +561,14 @@ def run_paper_experiment(
             experiment.data.source_filter,
             catalog_path,
         )
-        if stage1_checkpoint is not None:
+        if stage1_checkpoint is not None and generated_stage1_manifest is not None:
+            _require_generated_stage1_checkpoint(
+                stage1_checkpoint,
+                generated_stage1_manifest,
+                expected_git_commit=git_commit,
+                expected_seed=seed,
+            )
+        elif stage1_checkpoint is not None:
             _require_committed_file(stage1_checkpoint, "Stage 1 checkpoint")
     loaded = load_vle_dataset(
         data_root,
@@ -373,7 +589,7 @@ def run_paper_experiment(
     protocol = result_protocol_name(experiment.name, split_protocol)
     if audited_run:
         expected_split_path = (
-            PROJECT_ROOT / "splits" / split_protocol / f"seed_{seed}.json"
+            PROJECT_ROOT / 'datasets/splits/vle' / split_protocol / f"seed_{seed}.json"
         ).resolve()
         if split_path.resolve() != expected_split_path:
             raise RuntimeError(
@@ -458,6 +674,26 @@ def run_paper_experiment(
     resolved_payload = resolved_experiment.to_dict()
     resolved_config_sha256 = _normalized_experiment_digest(resolved_experiment)
     split_sha256 = _file_digest(split_path)
+    stage0_recipe = (
+        _formal_c1_stage0_recipe(
+            experiment,
+            split_path,
+            split_protocol,
+            seed,
+            dataset_digest(samples),
+            feature_cache_sha256,
+            pure_property_catalog_sha256,
+        )
+        if (
+            run_kind == "formal"
+            and stage1_checkpoint is None
+            and evaluation_partition == "validation"
+        )
+        else None
+    )
+    stage0_recipe_sha256 = (
+        _stage0_recipe_digest(stage0_recipe) if stage0_recipe is not None else None
+    )
     request_sha256 = requested_run_fingerprint(
         config_path,
         split_path,
@@ -503,7 +739,34 @@ def run_paper_experiment(
         else empty_pure_property_catalog()
     )
     stage1_checkpoint_sha256 = None
-    if stage1_checkpoint is None:
+    if experiment.direct_ge_supervision is not None:
+        if stage1_checkpoint is None:
+            raise ValueError("Direct-GE training requires the fixed C1 baseline checkpoint")
+        if experiment.physics_finetuning is None:
+            raise ValueError("Direct-GE Stage 3 requires physics_finetuning configuration")
+        stage1_checkpoint_sha256 = load_stage1_checkpoint(
+            model,
+            stage1_checkpoint,
+            expected_provenance={
+                "dataset_sha256": dataset_digest(samples),
+                "split_sha256": split_sha256,
+                "feature_subset_sha256": feature_subset_sha256,
+            },
+        )
+        baseline_state = cpu_state_dict(model)
+        result = fit_direct_ge_stages(
+            model,
+            split.train,
+            feature_map,
+            training,
+            experiment.direct_ge_supervision,
+            experiment.physics_finetuning,
+            device,
+            validation_samples=split.validation,
+            pure_property_catalog=catalog,
+            baseline_state=baseline_state,
+        )
+    elif stage1_checkpoint is None:
         result = fit_model(
             model,
             split.train,
@@ -548,9 +811,33 @@ def run_paper_experiment(
     )
     stage_comparison: dict[str, object] | None = None
     stage_predictions: dict[str, list[dict[str, Any]]] = {}
+    trained_candidate_stage: str | None = None
+    is_direct_ge = experiment.direct_ge_supervision is not None
+    direct_stage_names = ("stage0", "stage1", "stage2", "stage3")
     if stage1_checkpoint is not None:
         stage_rows: dict[str, object] = {}
-        for stage_name, stage_state in result.stage_states.items():
+        if is_direct_ge:
+            missing_stages = tuple(
+                stage_name
+                for stage_name in direct_stage_names
+                if stage_name not in result.stage_states
+            )
+            if missing_stages:
+                raise RuntimeError(
+                    "Direct-GE result is missing persisted stage state(s): "
+                    + ", ".join(missing_stages)
+                )
+            trained_candidate_stage = min(
+                (stage_name for stage_name in direct_stage_names if stage_name != "stage0"),
+                key=lambda stage_name: result.stage_validation_losses[stage_name],
+            )
+            # Every stage is evaluated only for post-selection diagnostics. The
+            # selected checkpoint remains the one chosen using validation data.
+            comparison_stage_names = direct_stage_names
+        else:
+            comparison_stage_names = tuple(result.stage_states)
+        for stage_name in comparison_stage_names:
+            stage_state = result.stage_states[stage_name]
             model.load_state_dict(stage_state)
             current_predictions = predict_vle(
                 model,
@@ -562,6 +849,7 @@ def run_paper_experiment(
                 pure_property_catalog=catalog,
             )
             stage_predictions[stage_name] = current_predictions
+            validation_score = result.stage_validation_losses[stage_name]
             stage_rows[stage_name] = {
                 "metrics": prediction_metric_rows(current_predictions),
                 "physics_residuals": evaluate_physics_residuals(
@@ -572,21 +860,56 @@ def run_paper_experiment(
                     device,
                     pure_property_catalog=catalog,
                 ),
-                "validation_loss": result.stage_validation_losses[stage_name],
+                "validation_loss": validation_score,
+                "validation_score": validation_score,
+                "selected_as_final": stage_name == result.selected_stage,
             }
+            if is_direct_ge:
+                stage_rows[stage_name]["best_epoch"] = int(
+                    result.stage_best_epochs[stage_name]
+                )
+                stage_rows[stage_name]["validation_metrics"] = (
+                    result.stage_validation_metrics[stage_name]
+                )
+                stage_rows[stage_name]["validation_label_metrics"] = (
+                    result.stage_label_metrics[stage_name]
+                )
+                stage_rows[stage_name]["evaluation_label_metrics"] = (
+                    evaluate_direct_label_metrics(
+                        model,
+                        evaluation_samples,
+                        feature_map,
+                        training,
+                        device,
+                        catalog,
+                        minimum_fraction=experiment.direct_ge_supervision.minimum_fraction,
+                    )
+                )
         stage_comparison = {
             "selection_partition": "validation",
             "evaluation_partition": evaluation_partition,
+            "evaluation_purpose": "diagnostic_only",
+            "test_metrics_used_for_selection": False,
             "selected_stage": result.selected_stage,
+            "trained_candidate_stage": trained_candidate_stage,
             "stages": stage_rows,
             "parameter_summary": result.parameter_summary,
             "stage1_checkpoint": portable_artifact_path(stage1_checkpoint),
             "stage1_checkpoint_sha256": stage1_checkpoint_sha256,
-            "thermodynamic_loss_weights": {
-                "teacher_forced_fugacity": (
-                    experiment.physics_finetuning.teacher_forced_fugacity_weight
-                ),
-            },
+            "thermodynamic_loss_weights": (
+                {
+                    "excess_gibbs": experiment.direct_ge_supervision.excess_gibbs_weight,
+                    "activity_coefficient": experiment.direct_ge_supervision.activity_coefficient_weight,
+                    "vle": experiment.direct_ge_supervision.vle_weight,
+                    "teacher_forced_fugacity": experiment.direct_ge_supervision.fugacity_weight,
+                }
+                if is_direct_ge
+                else {
+                    "teacher_forced_fugacity": (
+                        experiment.physics_finetuning.teacher_forced_fugacity_weight
+                    ),
+                }
+            ),
         }
         model.load_state_dict(result.state_dict)
         predictions = stage_predictions[result.selected_stage]
@@ -676,7 +999,17 @@ def run_paper_experiment(
         "run_kind": run_kind,
         "analysis_status": analysis_status,
         "evaluation_partition": evaluation_partition,
+        "selection_partition": "validation",
+        "test_metrics_used_for_selection": False,
+        "stage0_recipe": stage0_recipe,
+        "stage0_recipe_sha256": stage0_recipe_sha256,
         "best_validation_loss": result.best_validation_loss,
+        "stage_validation_scores": (
+            dict(result.stage_validation_losses) if is_direct_ge else None
+        ),
+        "stage_best_epochs": (
+            dict(result.stage_best_epochs) if is_direct_ge else None
+        ),
         "stage1_checkpoint_sha256": stage1_checkpoint_sha256,
         "selected_stage": getattr(result, "selected_stage", "experimental"),
         "physics_parameter_summary": getattr(result, "parameter_summary", None),
@@ -685,8 +1018,28 @@ def run_paper_experiment(
     }
     checkpoint_path = checkpoint_dir / "best_model.pt"
     _atomic_checkpoint(checkpoint_path, checkpoint_payload)
+    stage_checkpoint_paths: dict[str, Path] = {}
     stage2_checkpoint_path = checkpoint_dir / "stage2_best_model.pt"
-    if stage1_checkpoint is not None:
+    if is_direct_ge:
+        for stage_name in direct_stage_names:
+            stage_checkpoint_path = checkpoint_dir / f"{stage_name}_best_model.pt"
+            stage_payload = {
+                **checkpoint_payload,
+                "model": result.stage_states[stage_name],
+                "checkpoint_role": "best_stage_by_validation",
+                "stage": stage_name,
+                "stage_best_epoch": result.stage_best_epochs[stage_name],
+                "validation_loss": result.stage_validation_losses[stage_name],
+                "validation_score": result.stage_validation_losses[stage_name],
+                "selected_as_final": stage_name == result.selected_stage,
+            }
+            if stage_name == "stage2":
+                stage_payload["legacy_checkpoint_role"] = "best_physics_epoch_by_validation"
+            _atomic_checkpoint(stage_checkpoint_path, stage_payload)
+            stage_checkpoint_paths[stage_name] = stage_checkpoint_path
+    elif stage1_checkpoint is not None:
+        # Retain the historical Stage 2 artifact for the two-stage physics
+        # fine-tuning runner.
         stage2_payload = {
             **checkpoint_payload,
             "model": result.stage_states["stage2"],
@@ -695,6 +1048,30 @@ def run_paper_experiment(
             "validation_loss": result.stage_validation_losses["stage2"],
         }
         _atomic_checkpoint(stage2_checkpoint_path, stage2_payload)
+        stage_checkpoint_paths["stage2"] = stage2_checkpoint_path
+    trained_candidate_checkpoint_path = checkpoint_dir / "trained_candidate_best_model.pt"
+    if trained_candidate_stage is not None:
+        trained_candidate_payload = {
+            **checkpoint_payload,
+            "model": result.stage_states[trained_candidate_stage],
+            "checkpoint_role": "best_trained_stage_by_validation",
+            "trained_candidate_stage": trained_candidate_stage,
+            "selected_as_final": result.selected_stage == trained_candidate_stage,
+            "validation_loss": result.stage_validation_losses[trained_candidate_stage],
+        }
+        _atomic_checkpoint(
+            trained_candidate_checkpoint_path, trained_candidate_payload
+        )
+    if is_direct_ge and stage_comparison is not None:
+        stage_entries = stage_comparison["stages"]
+        if not isinstance(stage_entries, dict):
+            raise RuntimeError("Direct-GE stage comparison is malformed")
+        for stage_name, stage_checkpoint_path in stage_checkpoint_paths.items():
+            stage_entry = stage_entries.get(stage_name)
+            if not isinstance(stage_entry, dict):
+                raise RuntimeError(f"Direct-GE stage entry is missing: {stage_name}")
+            stage_entry["checkpoint"] = portable_artifact_path(stage_checkpoint_path)
+            stage_entry["checkpoint_sha256"] = _file_digest(stage_checkpoint_path)
     history_path = run_dir / "history.json"
     curves_path = run_dir / "training_curves.csv"
     predictions_path = result_dir / "predictions.csv"
@@ -705,7 +1082,22 @@ def run_paper_experiment(
     _atomic_json(history_path, result.history)
     _write_training_curves(curves_path, result.history)
     write_prediction_csv(predictions_path, predictions)
+    stage_prediction_paths: dict[str, Path] = {}
+    if is_direct_ge and stage_comparison is not None:
+        stage_entries = stage_comparison["stages"]
+        if not isinstance(stage_entries, dict):
+            raise RuntimeError("Direct-GE stage comparison is malformed")
+        for stage_name in direct_stage_names:
+            stage_prediction_path = result_dir / f"{stage_name}_predictions.csv"
+            write_prediction_csv(stage_prediction_path, stage_predictions[stage_name])
+            stage_prediction_paths[stage_name] = stage_prediction_path
+            stage_entry = stage_entries.get(stage_name)
+            if not isinstance(stage_entry, dict):
+                raise RuntimeError(f"Direct-GE stage entry is missing: {stage_name}")
+            stage_entry["predictions"] = portable_artifact_path(stage_prediction_path)
+            stage_entry["predictions_sha256"] = _file_digest(stage_prediction_path)
     _atomic_json(metrics_path, metric_rows)
+
     _atomic_json(physical_consistency_path, physical_consistency)
     if stage_comparison is not None:
         _atomic_json(stage_comparison_path, stage_comparison)
@@ -720,7 +1112,17 @@ def run_paper_experiment(
     }
     if stage_comparison is not None:
         artifact_paths["stage_comparison"] = stage_comparison_path
-        artifact_paths["stage2_checkpoint"] = stage2_checkpoint_path
+        if is_direct_ge:
+            for stage_name, stage_checkpoint_path in stage_checkpoint_paths.items():
+                artifact_paths[f"{stage_name}_checkpoint"] = stage_checkpoint_path
+            for stage_name, stage_prediction_path in stage_prediction_paths.items():
+                artifact_paths[f"{stage_name}_predictions"] = stage_prediction_path
+        else:
+            artifact_paths["stage2_checkpoint"] = stage2_checkpoint_path
+        if trained_candidate_stage is not None:
+            artifact_paths["trained_candidate_checkpoint"] = (
+                trained_candidate_checkpoint_path
+            )
     artifacts = {
         name: {"path": portable_artifact_path(path), "sha256": _file_digest(path)}
         for name, path in artifact_paths.items()
@@ -737,6 +1139,10 @@ def run_paper_experiment(
         "run_kind": run_kind,
         "analysis_status": analysis_status,
         "evaluation_partition": evaluation_partition,
+        "selection_partition": "validation",
+        "test_metrics_used_for_selection": False,
+        "stage0_recipe": stage0_recipe,
+        "stage0_recipe_sha256": stage0_recipe_sha256,
         "dataset_sha256": dataset_digest(samples),
         "split_sha256": split_sha256,
         "resolved_config_sha256": resolved_config_sha256,

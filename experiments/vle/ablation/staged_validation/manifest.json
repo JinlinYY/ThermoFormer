@@ -1,0 +1,245 @@
+{
+  "status": "completed",
+  "scope": "saved-checkpoint validation-only diagnostics",
+  "selection_partition": "validation",
+  "evaluation_partition": "validation",
+  "retraining": false,
+  "checkpoint_reselection": false,
+  "test_set_evaluation": false,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "metric_definitions": {
+    "mean_abs_log_fugacity_residual": "mean component-wise |ln(x_i gamma_i Psat_i)-ln(y_i P)| at observed validation states",
+    "p95_abs_log_fugacity_residual": "95th percentile of the same component-wise absolute residual",
+    "relative_pressure_closure_residual": "mean |sum_i(x_i gamma_i Psat_i)/P-1| over validation states",
+    "log_gamma_reference_error": "mean absolute ln(gamma) error where external Psat makes the experimental reference identifiable"
+  },
+  "config": "configs/vle/prediction/studies/vle/three_stage.yaml",
+  "config_sha256": "e11206fa573ab6eb235a6a579f6a11e488a36b156e46b099d156096993711440",
+  "dataset_files": [
+    {
+      "path": "datasets/vle/binary_vle_english.xlsx",
+      "sha256": "1fdd6bd4417970a023a4917882a0faa14a747f232cff06f33fd5394672029788"
+    },
+    {
+      "path": "datasets/vle/ternary_vle_english.xlsx",
+      "sha256": "f7fcd62064f0f192b3a2d14f57860a03cae9606744fcb3b3a5efd019eafcaf8b"
+    }
+  ],
+  "provenance": [
+    {
+      "seed": 0,
+      "stage": "stage0",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_0/stage0_best_model.pt",
+      "checkpoint_sha256": "67bc533b45f387d4c7ae0446ee98730428a28405958748fc45d445e6374a2a06",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_0.json",
+      "split_sha256": "efa0f31832b73d8b06150ca699a31158e2223916e2e57fba5d18176e18805d65",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 0,
+      "stage": "stage1",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_0/stage1_best_model.pt",
+      "checkpoint_sha256": "791aefdebcae60a9ce0776a28e91019e93539a28d65d4a1e554d76dce8548143",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_0.json",
+      "split_sha256": "efa0f31832b73d8b06150ca699a31158e2223916e2e57fba5d18176e18805d65",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 0,
+      "stage": "stage2",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_0/stage2_best_model.pt",
+      "checkpoint_sha256": "189c6bcaa344876d20ba78e78be53ab6019524f02724cbaf3034f422c7f5ad0e",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_0.json",
+      "split_sha256": "efa0f31832b73d8b06150ca699a31158e2223916e2e57fba5d18176e18805d65",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 0,
+      "stage": "stage3",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_0/stage3_best_model.pt",
+      "checkpoint_sha256": "23aaae88a03801404f57aeb66e82785cde2be0c8002f800217779af5db12a48f",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_0.json",
+      "split_sha256": "efa0f31832b73d8b06150ca699a31158e2223916e2e57fba5d18176e18805d65",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 1,
+      "stage": "stage0",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_1/stage0_best_model.pt",
+      "checkpoint_sha256": "8181bec0a08a13c638f85ee14db96275a2701c6c90250c397c599abee68ff0e6",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_1.json",
+      "split_sha256": "4b42b4493a01517ba1dfe05f01677276545142fd2c872f88fe5a91b601eb4bbd",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 1,
+      "stage": "stage1",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_1/stage1_best_model.pt",
+      "checkpoint_sha256": "de7294fb916efa49cac6e027e67662754677259489ba94bc0bb31ba940029c1a",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_1.json",
+      "split_sha256": "4b42b4493a01517ba1dfe05f01677276545142fd2c872f88fe5a91b601eb4bbd",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 1,
+      "stage": "stage2",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_1/stage2_best_model.pt",
+      "checkpoint_sha256": "1af5d40ddd405d34adfd243cb0f1a591433b66522808d2b678078f635f7a028f",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_1.json",
+      "split_sha256": "4b42b4493a01517ba1dfe05f01677276545142fd2c872f88fe5a91b601eb4bbd",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 1,
+      "stage": "stage3",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_1/stage3_best_model.pt",
+      "checkpoint_sha256": "f3e7a99e5ee860b3376434b85c7eb14decce3c5dd26080dcebef9e9fd8958621",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_1.json",
+      "split_sha256": "4b42b4493a01517ba1dfe05f01677276545142fd2c872f88fe5a91b601eb4bbd",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 2,
+      "stage": "stage0",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_2/stage0_best_model.pt",
+      "checkpoint_sha256": "9a0cf6c0e089ac9e5b6e1100e3501b12594553ce12cc57ed9401257d5e5c1414",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_2.json",
+      "split_sha256": "aecffa11ad6d746f4a5895b6c882e3229bfdae220cff0828dd3cf6e35b85b6a4",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 2,
+      "stage": "stage1",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_2/stage1_best_model.pt",
+      "checkpoint_sha256": "2d4342c3e75bd7e3824df6a9c35574b2e143036727281fa0b81d69bd1f767204",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_2.json",
+      "split_sha256": "aecffa11ad6d746f4a5895b6c882e3229bfdae220cff0828dd3cf6e35b85b6a4",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 2,
+      "stage": "stage2",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_2/stage2_best_model.pt",
+      "checkpoint_sha256": "10164be2ecfa75aec7b3281ae103c1e4b021e6aa7fc9f70d10f07e96dd236e8c",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_2.json",
+      "split_sha256": "aecffa11ad6d746f4a5895b6c882e3229bfdae220cff0828dd3cf6e35b85b6a4",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 2,
+      "stage": "stage3",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_2/stage3_best_model.pt",
+      "checkpoint_sha256": "8f4d503c14e6c45401e71dc03f422707e71f12a49484cc7ebac60a838fb72741",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_2.json",
+      "split_sha256": "aecffa11ad6d746f4a5895b6c882e3229bfdae220cff0828dd3cf6e35b85b6a4",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 3,
+      "stage": "stage0",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_3/stage0_best_model.pt",
+      "checkpoint_sha256": "2d19f5f783c03b3c04cba77236f8f14e59adaf93418abf268b9366f345ff48cd",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_3.json",
+      "split_sha256": "798745dee39c97432e6a82b95e4126a6ae74779e36098d3684e01b270ee688f5",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 3,
+      "stage": "stage1",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_3/stage1_best_model.pt",
+      "checkpoint_sha256": "37ce446afd97f9e97519ca5584226605492fe439b4fd3749b96d63892a306a2a",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_3.json",
+      "split_sha256": "798745dee39c97432e6a82b95e4126a6ae74779e36098d3684e01b270ee688f5",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 3,
+      "stage": "stage2",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_3/stage2_best_model.pt",
+      "checkpoint_sha256": "912540088adb5f4bb0bbcf7350b57e4db19c77188893206dd62f9fe7dbfefa41",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_3.json",
+      "split_sha256": "798745dee39c97432e6a82b95e4126a6ae74779e36098d3684e01b270ee688f5",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 3,
+      "stage": "stage3",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_3/stage3_best_model.pt",
+      "checkpoint_sha256": "af6771df0757591ba13afcd6e05f63fc6c4c5b22d678014d016d5771701eb4d3",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_3.json",
+      "split_sha256": "798745dee39c97432e6a82b95e4126a6ae74779e36098d3684e01b270ee688f5",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 4,
+      "stage": "stage0",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_4/stage0_best_model.pt",
+      "checkpoint_sha256": "3c866a73ed888677be0b1629927b18cb35040b391dffd3aa2e86bfc00cc66cf3",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_4.json",
+      "split_sha256": "69039941cfcbb8f6696db26f00036c257d6ace190e48d38e6119508b2a8b7a03",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 4,
+      "stage": "stage1",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_4/stage1_best_model.pt",
+      "checkpoint_sha256": "ec462f2d23f5f3aafcb79eef4fe0becc5538eed9c422117ba45e1aea8cc4dbd0",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_4.json",
+      "split_sha256": "69039941cfcbb8f6696db26f00036c257d6ace190e48d38e6119508b2a8b7a03",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 4,
+      "stage": "stage2",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_4/stage2_best_model.pt",
+      "checkpoint_sha256": "1e8e5ec16f753369f84cb166f5a2bcfadcc4589d808f5daa125278bf23fb6b74",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_4.json",
+      "split_sha256": "69039941cfcbb8f6696db26f00036c257d6ace190e48d38e6119508b2a8b7a03",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    },
+    {
+      "seed": 4,
+      "stage": "stage3",
+      "checkpoint": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_4/stage3_best_model.pt",
+      "checkpoint_sha256": "046c38ca87346ea91a19f9b2c1bd02cf9e4e5d4c0ba6a203fe02dc0260996fc5",
+      "split": "D:\\VLE\\VLE\\thermoformer_project\\results\\benchmarks\\vle\\ablation\\staged_validation\\frozen_splits\\seed_4.json",
+      "split_sha256": "69039941cfcbb8f6696db26f00036c257d6ace190e48d38e6119508b2a8b7a03",
+      "selection_partition": "validation",
+      "evaluation_partition": "validation"
+    }
+  ],
+  "per_seed_metrics_sha256": "040a79ed6c0cba958d256a73b95f8303d5fa947ce65b05d0d3b32aba0596df05",
+  "summary_sha256": "06a139c32591d357a6fe819541a0a2ede6546049c2870ea5ca1305b3debd1ffe",
+  "request_sha256": "9a5ec11c6d4686aae3bb54a2e7f5316915902ec1c9a327230a8529f51edb19cb",
+  "report_artifacts": {
+    "README.md": "4dc9de4af79d10a07c2e0af970da5c0d4763ad5410a29b7dd5af7feba6feb728",
+    "table.tex": "d577fb4a441b5acf48218cc7bf651948fc39656431d817dd5775aa539f532d52",
+    "replacement_section.tex": "006905497bb9fb1890e0c4d0cf5d8c0c9c1d059befa14e4bbaae859f988cb6cd"
+  },
+  "frozen_split_git_revision": "4689cdd5311d9ca22f430a1ba3a255260719720e"
+}

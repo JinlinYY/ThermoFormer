@@ -1,0 +1,5 @@
+# Figure dataset overview v3 caption
+
+## English
+
+**Figure 1 | Coverage of the vapor–liquid equilibrium datasets.** **a,** Numbers of experimental state points, unique unordered systems and molecular components in the binary and ternary datasets. **b,** Temperature–pressure coverage; pressure is displayed logarithmically, density contours summarize the main sampling regions and the broken axis retains the 25 observations above 650 K. **c,** Chemical-family coverage classified using RDKit/SMARTS; c1 and c2 share the same absolute bubble-area scale for unique systems. **c1,** Each unordered binary family pair appears once in the upper-triangular matrix, with color denoting experimental VLE points. **c2,** The 18 ternary family triplets with the most experimental points, from 49 triplets in total; horizontal position denotes experimental points. **d,** Binary liquid–vapor composition density relative to the y=x line and ternary liquid-composition coverage in the recorded component-order simplex. **e,** Ternary systems grouped by how many of their three constituent binary subsystems occur in the binary dataset. System identities are invariant to component order.

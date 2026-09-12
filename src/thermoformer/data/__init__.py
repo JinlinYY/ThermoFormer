@@ -1,5 +1,10 @@
 """Dataset schema, loading, auditing, and registered split assignments."""
 
+from .lle import (
+    LLEBatch, LLEDatasetLoadResult, LLESample, LLESplit, LLETensorDataset,
+    build_lle_split, collate_lle, lle_dataset_digest, load_lle_dataset, load_lle_split, save_lle_split,
+)
+
 from .loading import (
     DatasetAudit,
     DatasetLoadResult,
@@ -35,3 +40,8 @@ __all__ = [
     "pure_anchor_temperatures",
     "retain_pure_anchored_systems",
 ]
+__all__ += [
+    "LLEBatch", "LLEDatasetLoadResult", "LLESample", "LLESplit", "LLETensorDataset",
+    "build_lle_split", "collate_lle", "lle_dataset_digest", "load_lle_dataset", "load_lle_split", "save_lle_split",
+]
+

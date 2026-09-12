@@ -14,7 +14,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
 def rdkit_descriptor_definition_path() -> Path:
-    return PROJECT_ROOT / "assets" / "rdkit_descriptors.json"
+    return PROJECT_ROOT / 'datasets/molecular_features/rdkit_descriptors.json'
 
 
 def _sha256(path: Path) -> str:

@@ -15,6 +15,8 @@ from pathlib import Path
 from typing import Sequence, Union
 
 import numpy as np
+import torch
+from torch import Tensor
 
 CORRELATION_TYPE_ANTOINE = 1.0
 CORRELATION_TYPE_DIPPR101 = 2.0
@@ -276,3 +278,91 @@ def empty_antoine_catalog() -> PurePropertyCatalog:
 
 def load_antoine_catalog(path: Path) -> PurePropertyCatalog:
     return load_pure_property_catalog(path)
+
+
+@dataclass(frozen=True)
+class ExternalVaporPressureEvaluation:
+    """External log-Psat values and a strict per-component validity mask."""
+
+    log_psat_kpa: Tensor
+    valid: Tensor
+
+
+def evaluate_pure_property_correlations(
+    temperature_k: Tensor,
+    mask: Tensor,
+    pure_property_parameters: Tensor,
+) -> ExternalVaporPressureEvaluation:
+    """Evaluate declared correlations without a learned-branch fallback.
+
+    A value is valid only when its catalog entry is available, the requested
+    temperature lies inside the declared range, the pressure is finite, and
+    ``d log(Psat) / dT`` is strictly positive at that temperature.
+    """
+    expected_shape = (*mask.shape, CORRELATION_PARAMETER_COUNT)
+    if pure_property_parameters.shape != expected_shape:
+        raise ValueError(
+            "pure_property_parameters must have shape "
+            f"[batch, components, {CORRELATION_PARAMETER_COUNT}]"
+        )
+    coefficients = pure_property_parameters.to(mask)
+    temperature = temperature_k.to(mask).expand_as(mask).clamp_min(1e-6)
+    correlation_type = coefficients[..., 0]
+    a, b, c, d, e = (coefficients[..., index] for index in range(1, 6))
+    minimum_temperature = coefficients[..., 6]
+    maximum_temperature = coefficients[..., 7]
+    temperature_offset = coefficients[..., 8]
+    pressure_scale = coefficients[..., 9].clamp_min(1e-30)
+    available = coefficients[..., 10] > 0.5
+    in_range = (
+        available
+        & (temperature >= minimum_temperature)
+        & (temperature <= maximum_temperature)
+        & mask.bool()
+    )
+
+    denominator = c + temperature - temperature_offset
+    safe_denominator = torch.where(
+        denominator.abs() > 1e-6,
+        denominator,
+        torch.where(
+            denominator >= 0.0,
+            torch.full_like(denominator, 1e-6),
+            torch.full_like(denominator, -1e-6),
+        ),
+    )
+    log_ten = torch.log(
+        torch.tensor(10.0, dtype=temperature.dtype, device=temperature.device)
+    )
+    log_pressure_scale = torch.log(pressure_scale)
+    antoine_log_psat = log_ten * (a - b / safe_denominator) + log_pressure_scale
+    antoine_derivative = log_ten * b / safe_denominator.square()
+
+    temperature_power = torch.exp(
+        (e * torch.log(temperature)).clamp(min=-80.0, max=80.0)
+    )
+    dippr_log_psat = (
+        a + b / temperature + c * torch.log(temperature)
+        + d * temperature_power + log_pressure_scale
+    )
+    dippr_derivative = (
+        -b / temperature.square()
+        + c / temperature
+        + d * e * temperature_power / temperature
+    )
+    is_antoine = correlation_type == CORRELATION_TYPE_ANTOINE
+    is_dippr101 = correlation_type == CORRELATION_TYPE_DIPPR101
+    log_psat = torch.where(is_antoine, antoine_log_psat, dippr_log_psat)
+    derivative = torch.where(is_antoine, antoine_derivative, dippr_derivative)
+    valid = (
+        in_range
+        & (is_antoine | is_dippr101)
+        & (~is_antoine | (denominator.abs() > 1e-6))
+        & torch.isfinite(log_psat)
+        & torch.isfinite(derivative)
+        & (derivative > 0.0)
+    )
+    return ExternalVaporPressureEvaluation(
+        log_psat_kpa=torch.where(valid, log_psat, torch.zeros_like(log_psat)),
+        valid=valid,
+    )

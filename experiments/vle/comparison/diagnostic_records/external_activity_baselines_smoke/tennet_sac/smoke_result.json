@@ -1,0 +1,1273 @@
+{
+  "analysis_status": "diagnostic",
+  "baseline": "tennet_sac",
+  "environment_sha256": "88f063806981a4025837ea6048b50a372c816796340ca2d46e92c22fe9c322b7",
+  "evaluation_partition": "validation",
+  "git_commit": "d169c4bb10dc338eab6e268c8158715479a85d13",
+  "implementation_sha256": {
+    "scripts/run_external_activity_baselines_smoke.py": "380d4c71fb881e583d5aa75481141ca921bfd7fc9b90b631f4676f2c8f539c54",
+    "scripts/run_ml_baselines_formal.py": "84372a34a6c3334743d53c58c4b1bb9b036349d96d4328f8d864b079a439c36a",
+    "src/thermoformer/baselines/machine_learning/external_activity.py": "b762fc6d13ecac71987325c967c41e4f8d833dc830c0b14603fcf18553a18738",
+    "src/thermoformer/baselines/machine_learning/formal.py": "39945745fd2f26f6507283c60a0b57a5b42d6ee3f005e360f2178016a320be0c",
+    "src/thermoformer/baselines/machine_learning/spt_nrtl.py": "e8f70460be95ce5fb8c00017e9b416b061913b860e058c2c234190ab323d8c75",
+    "src/thermoformer/baselines/machine_learning/tennet_sac.py": "004843d8ab79f1df5259b12a2ede7932321b1a55bf86b554287f9605a93d10f9"
+  },
+  "metrics": [
+    {
+      "baseline": "tennet_sac",
+      "benchmark": "external_fixed_to_joint_test",
+      "component_count": 2,
+      "direction": "isothermal",
+      "nonphysical_rate": 0.0,
+      "pressure_mae_kpa": 1.6868125915527372,
+      "pressure_r2": null,
+      "pressure_rmse_kpa": 1.6868125915527372,
+      "solver_failure_rate": 0.0,
+      "status": "evaluated",
+      "valid_coverage": 1.0,
+      "y_mae": 0.005905705213546719,
+      "y_r2": 0.9965468820999281,
+      "y_rmse": 0.005905705213621916
+    },
+    {
+      "baseline": "tennet_sac",
+      "benchmark": "external_fixed_to_joint_test",
+      "component_count": 3,
+      "direction": "isothermal",
+      "nonphysical_rate": 0.0,
+      "pressure_mae_kpa": 0.45350967407226506,
+      "pressure_r2": null,
+      "pressure_rmse_kpa": 0.45350967407226506,
+      "solver_failure_rate": 0.0,
+      "status": "evaluated",
+      "valid_coverage": 1.0,
+      "y_mae": 0.011759344538052904,
+      "y_r2": 0.9950691028960063,
+      "y_rmse": 0.013957316082352417
+    },
+    {
+      "baseline": "tennet_sac",
+      "benchmark": "external_fixed_to_joint_test",
+      "component_count": "2+3",
+      "direction": "isothermal",
+      "nonphysical_rate": 0.0,
+      "pressure_mae_kpa": 1.0701611328125011,
+      "pressure_r2": 0.991983774887582,
+      "pressure_rmse_kpa": 1.235112898381762,
+      "solver_failure_rate": 0.0,
+      "status": "evaluated",
+      "valid_coverage": 1.0,
+      "y_mae": 0.00941788880825043,
+      "y_r2": 0.9961978938190983,
+      "y_rmse": 0.01143831040677322
+    },
+    {
+      "baseline": "tennet_sac",
+      "benchmark": "external_fixed_to_joint_test",
+      "component_count": 2,
+      "direction": "isobaric",
+      "nonphysical_rate": 0.0,
+      "solver_failure_rate": 0.0,
+      "status": "evaluated",
+      "temperature_mae_k": 1.4994616699218568,
+      "temperature_r2": null,
+      "temperature_rmse_k": 1.4994616699218568,
+      "valid_coverage": 1.0,
+      "y_mae": 0.01609234225749967,
+      "y_r2": 0.9724770454529991,
+      "y_rmse": 0.01609234225750657
+    },
+    {
+      "baseline": "tennet_sac",
+      "benchmark": "external_fixed_to_joint_test",
+      "component_count": 3,
+      "direction": "isobaric",
+      "nonphysical_rate": 0.0,
+      "solver_failure_rate": 0.0,
+      "status": "evaluated",
+      "temperature_mae_k": 0.8870568847656273,
+      "temperature_r2": null,
+      "temperature_rmse_k": 0.8870568847656273,
+      "valid_coverage": 1.0,
+      "y_mae": 0.008658975293238969,
+      "y_r2": 0.9993470649196226,
+      "y_rmse": 0.009602163458660612
+    },
+    {
+      "baseline": "tennet_sac",
+      "benchmark": "external_fixed_to_joint_test",
+      "component_count": "2+3",
+      "direction": "isobaric",
+      "nonphysical_rate": 0.0,
+      "solver_failure_rate": 0.0,
+      "status": "evaluated",
+      "temperature_mae_k": 1.193259277343742,
+      "temperature_r2": 0.988051389991194,
+      "temperature_rmse_k": 1.231920292952215,
+      "valid_coverage": 1.0,
+      "y_mae": 0.01163232207894325,
+      "y_r2": 0.9983300582030376,
+      "y_rmse": 0.012605804916196147
+    }
+  ],
+  "model_audit": {
+    "coverage_audit": {
+      "missing_parameter_file": 0,
+      "missing_parameter_row": 0,
+      "missing_psat": 0,
+      "solver_failure": 0
+    },
+    "model": "tennet_sac",
+    "model_assets": {
+      "installed_assets": {
+        "external_encoders": {
+          "chemberta": {
+            "files": {
+              "added_tokens.json": "2b0e66b84bd97bc08467f7a7c033cfd5a66c6335eb79779a144b50f8e7b2557d",
+              "config.json": "b9ec477f76a173461741cb0f339b89661c9d9249af2f6a84df7593c3baede9b0",
+              "merges.txt": "291976363a8a20ed148ff687cf3da54ada8ddbc99655fa876326f0ef28dbd6ad",
+              "pytorch_model.bin": "95571af26b61ba8d56b9d61ff108b5c9afe96fd69ea3cbd1901d9421e3d2dd6d",
+              "special_tokens_map.json": "23dbc119b7e11cb23d3c43b13004c5a4ab4e6530c7146e34fa1f9564856b5580",
+              "tokenizer.json": "1197005224bc8917f46f8d6fc360aec71c6626858966e167b2ff8af62214f814",
+              "tokenizer_config.json": "79919cd4b54bdf241f19956753e8a47b8b782eb4b38eec0e0254bd2434545abd",
+              "vocab.json": "0c9afbd534ab59fa51718c998027da0e7932293c9a51de03317d4c83d3fe48f6"
+            },
+            "revision": "ed8a5374f2024ec8da53760af91a33fb8f6a15ff"
+          },
+          "smi_ted": {
+            "files": {
+              "smi-ted-Light_40.pt": "baf252dbc081a00c68d2fd6ed8b08a0db0fa15244cfea442d49f0619a3a65375"
+            },
+            "revision": "414c3ea0a8603ef49d1c5bb3db336e09877c01ce"
+          }
+        },
+        "package_checkpoints": {
+          "ckpt_files/base.ckpt": "791ce5bf9c59e2099467882b4e7ee220575f464f2f3e007495a78ed9ae6f2d93",
+          "ckpt_files/fine-tuned/1.ckpt": "134be46cce6839a7b08250750e4803c8198a4725d5973ca124db76dd488aedc1",
+          "ckpt_files/fine-tuned/10.ckpt": "def4bb97274011564b33d55666bcc5d4d2bcae9c422cbf2c96529c7c364ebfcc",
+          "ckpt_files/fine-tuned/2.ckpt": "d763688bbe2898fc182ae6e9b39436a678ad892510c76b510c43c389e87d4c5b",
+          "ckpt_files/fine-tuned/3.ckpt": "15232df78dbbce274818e00bdfff455a163fbb9ff8af1ef3ba4de73650519400",
+          "ckpt_files/fine-tuned/4.ckpt": "bf01d2c6832b161ddf12d789dc886a3c3065a1810948d196f103a89c94f0daeb",
+          "ckpt_files/fine-tuned/5.ckpt": "937a02283521bba254b917685f4db265c48617732f9c5bbfffb14eaaf1d38813",
+          "ckpt_files/fine-tuned/6.ckpt": "7588bfe7a265752395373cf930ede2e721da2cb37fd7779a7b3b94d6c3590e79",
+          "ckpt_files/fine-tuned/7.ckpt": "f4c03f8281b7ac56213e5e04123c208fc4f2030ca610684bd1cbd9aa59f7e16d",
+          "ckpt_files/fine-tuned/8.ckpt": "0ff319a81281b4315638281283433590e6adf7b7ab17039919601747f736096d",
+          "ckpt_files/fine-tuned/9.ckpt": "73c65639135717a3eaa7130c03ea6f85fa3f95ed1b5937b5b73611bd33378c70",
+          "ckpt_files/geo.ckpt": "ab4e37731eb07573cf4d9a7a15c906c6ef8b0ae5a895ff4f921a736c32483624",
+          "ckpt_files/prf.ckpt": "649e7139cc43a95bd459d0eb0c58fac3a5d3a62a9b15ae6bdb0018894c42723e"
+        },
+        "package_source": {
+          "__init__.py": "72f86f4d456c5ebdac7497c10725ddcceb4dd82391c4d3dc69f7281c2c95b742",
+          "core.py": "7fa954ff6d857ef353bde8439104eec583c1a1859a708d6ccded944e2210cdc9",
+          "models/Emb2Geometry.py": "5b470a70f34c86071f5113b6976b52f3a6e69c6ea39ea7e04d04bf021bbde98e",
+          "models/Emb2Profile.py": "e5eeada3dc705bba3058bdc755bb0b77c6a8c79e3c5aeb1ff8f6565d7858641d",
+          "models/Prf2Gamma.py": "3978c3d134093aba4ea14d4d41b84999113ba729d3d22b8b6101e9a17cfa078b",
+          "utils/embedding.py": "b1af04610af071ed43abf6029ad38353a55c0abe757ae7674c8699558fa91243",
+          "utils/model_io.py": "a16e9a57cfe1a4d5117383dcd2388c424b40884b64ba153863eac24ab3b71b3f",
+          "utils/plotting.py": "ef29183b0d946f25645277c2e6fe8e41a82ac000557d281bcde479dc7513c86b",
+          "utils/property.py": "2edc407deca5c9d53b44ed8b29d4bff924b8f4f0d3436d269d17daa39782ed69",
+          "utils/smi_ted_light/fast_transformers/__init__.py": "f21597c9c910a9876504d806df87cb09de423f72558aa01fe82dd6878f05748b",
+          "utils/smi_ted_light/fast_transformers/aggregate/__init__.py": "dd80529b337a669cad9d3dedcb11af049ff310221c21eed36136540b17ad6be1",
+          "utils/smi_ted_light/fast_transformers/attention/__init__.py": "ca0cf2c8a574beb71cdbda944c46d148a796569b90cb2ad2cdf183cff18c50a4",
+          "utils/smi_ted_light/fast_transformers/attention/attention_layer.py": "fcc2b1e5cfab572b4e3b037c836a3ecafc8531e477fbf268a32c97bcda9103a3",
+          "utils/smi_ted_light/fast_transformers/attention/causal_linear_attention.py": "a98ebfb7c51d0f87e8353bac0ae867aa58f4b65923b91cd6c3fd99c8129ec112",
+          "utils/smi_ted_light/fast_transformers/attention/clustered_attention.py": "55d977d5e38fe79692cf8e402eef5828aa7233400db8dee1a6cda6f8b63f3471",
+          "utils/smi_ted_light/fast_transformers/attention/conditional_full_attention.py": "a4bfcf1135e076821bb474b2a2f4a0849ee50f592821cd9cd82a4079a5e3d8b4",
+          "utils/smi_ted_light/fast_transformers/attention/exact_topk_attention.py": "6dac6aa2fd12eb8a5e40adb5bc829f8e15575f1e28f9bb519fb3af376200b2ca",
+          "utils/smi_ted_light/fast_transformers/attention/full_attention.py": "a98c6958e029a4597c350fbecf0e4a81e2e31f5cf321ab58f385aa8b3736ab83",
+          "utils/smi_ted_light/fast_transformers/attention/improved_clustered_attention.py": "43a4d5cc2e3696be0f513ea9dd13cd4e06c53e734f4d5d288c82a88844531a52",
+          "utils/smi_ted_light/fast_transformers/attention/improved_clustered_causal_attention.py": "ed2a5b3647c5811672074fa0742f2fbad5da755066351e639396f061b98a4c34",
+          "utils/smi_ted_light/fast_transformers/attention/linear_attention.py": "450756ae944882165067a8ba4a541f41347cc603568808ed7e8d990bf8376307",
+          "utils/smi_ted_light/fast_transformers/attention/local_attention.py": "8fc1d7b5071f492a8ce9521eaf37ee62b10504fb4879749941696b960a811e14",
+          "utils/smi_ted_light/fast_transformers/attention/reformer_attention.py": "f9b0fc030d17a09d50879ee5313fa206d2af95620f9d87340ed96a44dd6c5f3a",
+          "utils/smi_ted_light/fast_transformers/attention_registry/__init__.py": "bbb16e25c66a954f1cd185aaddac67e46e8cf3496a0efb90455a631f1b06e946",
+          "utils/smi_ted_light/fast_transformers/attention_registry/registry.py": "1fea42dafd961df24f30a5f67ee3e1aa658751dea0e306cca4e7b0d9c939aa41",
+          "utils/smi_ted_light/fast_transformers/attention_registry/spec.py": "1a6f9f7469f7fa80995ad186e6f326feef8966b44354680949839bf317bdeb4f",
+          "utils/smi_ted_light/fast_transformers/builders/__init__.py": "e6a8c64ebba23aeda4f8dbd0b7d6bc5dc7df4e9ab8cabfce8d0da3df4a96bc31",
+          "utils/smi_ted_light/fast_transformers/builders/attention_builders.py": "2018e1232713c91f6bb9b39f4bb7155c94057de05e3f7c8810c587c06fc088e5",
+          "utils/smi_ted_light/fast_transformers/builders/base.py": "684e6cbc741ec804e05603dada59a47d3d09ab4333a7f383c3cd8fba74d6f79e",
+          "utils/smi_ted_light/fast_transformers/builders/transformer_builders.py": "1fc511133338c692e98ab437150d1fb63765cb396d6255637c2a584e5b6e2d44",
+          "utils/smi_ted_light/fast_transformers/causal_product/__init__.py": "7ed1b39de55cc64c4d4f2f014ce562d7fc96fc5c4a2cef700fe34ef725d3803c",
+          "utils/smi_ted_light/fast_transformers/clustering/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "utils/smi_ted_light/fast_transformers/clustering/hamming/__init__.py": "0e4e768cd7bb65d7000daf901d4ef3767fe3f4f05650b52d8a58ba227831d780",
+          "utils/smi_ted_light/fast_transformers/events/__init__.py": "e5e987e9e18a0cc713f7b52e49a210497bd8130fa5a282353dce0d0d7f771e08",
+          "utils/smi_ted_light/fast_transformers/events/event.py": "d5176e5c88c5a9f4090a2e011993c15c3567ab2709e814af14e4cc8c18f0e0e3",
+          "utils/smi_ted_light/fast_transformers/events/event_dispatcher.py": "8163a815ab59d08d0c98c8b99f35d105170cd4a6a056eea4b2e1d07d43cc7318",
+          "utils/smi_ted_light/fast_transformers/events/filters.py": "5a13310067d9a4602026406c8c9703767d4ce3ca0dd7fc7cd4b476629eab574e",
+          "utils/smi_ted_light/fast_transformers/feature_maps/__init__.py": "6291da8fbf7c1ad779dc3033254a463b10e7a86f265751400690f41d7c3cf82e",
+          "utils/smi_ted_light/fast_transformers/feature_maps/base.py": "aee8d49911f25f39185a28e9b0ca0968bb19a95158f11963b661dd467007e9d9",
+          "utils/smi_ted_light/fast_transformers/feature_maps/fourier_features.py": "afa0cd4947ee368b9c77d61272c3f696d3fad7019b0dd7715e27df4de8c2351c",
+          "utils/smi_ted_light/fast_transformers/hashing/__init__.py": "11244fac8a8b73c08b4aaf13cb9ac0fe6a4267a3e6fe3cc3211195b83ac40861",
+          "utils/smi_ted_light/fast_transformers/local_product/__init__.py": "45fb5e59f94401ad379543ca0c5bedda7e61a127476081e97b74c70540c81689",
+          "utils/smi_ted_light/fast_transformers/masking.py": "50454b4cd063ec515a292a4ab186dff82797ed6a3515007a52b05af62ed43f43",
+          "utils/smi_ted_light/fast_transformers/recurrent/__init__.py": "190453b848128aefac6b75de2007ed5ab5ec90eddb170f3bf81938d457aefaa7",
+          "utils/smi_ted_light/fast_transformers/recurrent/_utils.py": "b9265e2d76fbdd4664f44171cecd1c2b80c17e3d734e0afb8aecb3d337691825",
+          "utils/smi_ted_light/fast_transformers/recurrent/attention/__init__.py": "6906843add38921b6aafbd362d2882fcf7c65feeee52e6c09be959be2da0e6c4",
+          "utils/smi_ted_light/fast_transformers/recurrent/attention/cross_attention/__init__.py": "4aa733c4f4042e92c238356c18e8acadddceca6f4d6d9f1f1d3232ea2b78ca53",
+          "utils/smi_ted_light/fast_transformers/recurrent/attention/cross_attention/attention_layer.py": "a615d47532700e0ccc2d8fe5e39556b7f3d0f4b1bc020fdef7d87f4968424bd9",
+          "utils/smi_ted_light/fast_transformers/recurrent/attention/cross_attention/full_attention.py": "36cf2f4563987feb1b8cc1c0385f3578c5281b3638f8477ac79c9c85aba11e75",
+          "utils/smi_ted_light/fast_transformers/recurrent/attention/cross_attention/linear_attention.py": "ab9ee32baa838c19df9df4ad27d96c5b195dc1e469db828a1e18f5d7842196fb",
+          "utils/smi_ted_light/fast_transformers/recurrent/attention/self_attention/__init__.py": "edd779e5445be097073dd6e405a21120d58d2fadd6262127d0990ef3dea5d146",
+          "utils/smi_ted_light/fast_transformers/recurrent/attention/self_attention/attention_layer.py": "60ef707ba94437d742ec7abab3751d7c65d997d958a7c14bde0828e9ebcf9463",
+          "utils/smi_ted_light/fast_transformers/recurrent/attention/self_attention/full_attention.py": "26993db0f336698d207987fd252706b5cb2138a6cc78f43d846ee8894dfb44e5",
+          "utils/smi_ted_light/fast_transformers/recurrent/attention/self_attention/linear_attention.py": "830f4d6227dada973cfbf8807b0d92888c7fefd6a6e9b8371932005af1746b8a",
+          "utils/smi_ted_light/fast_transformers/recurrent/transformers.py": "d4a2fadfd4598d4ceb2fa334aa7cfe97d75cb156f64792acb4800dc7cae3796a",
+          "utils/smi_ted_light/fast_transformers/sparse_product/__init__.py": "c3393f1cf08bfa152564c1542762a5f0ff01f66728edc85db5cbde8af1645a97",
+          "utils/smi_ted_light/fast_transformers/transformers.py": "0972cbef7dbad420573ef671daca41db00a0f5bb3a1f4009f6859f3203f434ea",
+          "utils/smi_ted_light/fast_transformers/utils.py": "28e51f2ca6bf6bea10e871ea751e38b0b4348f61efbc2cd817096b0085fa5825",
+          "utils/smi_ted_light/fast_transformers/weight_mapper.py": "4f76088f78eea1d86b7043d81091b92fee5838b0c61038123fd6867accb88d5b",
+          "utils/smi_ted_light/load.py": "ca37dfa58e8a78e60827489ba2556bf20de6113c07b907aa80f883446d9484b7",
+          "utils/smiles.py": "9749ee3869eccb45a09f821a20d390ebb24e989f40fda7a9f9bee453321a04aa"
+        },
+        "package_version": "0.1.10"
+      },
+      "model_version": "tuned_mean_of_10_experimental_finetuned_heads",
+      "official_api_reference": {
+        "composition": [
+          0.5,
+          0.5
+        ],
+        "cuda_equivalence_tolerance": 0.00011,
+        "cuda_log_gamma": [
+          0.6033897995948792,
+          0.36128488183021545
+        ],
+        "log_gamma": [
+          0.6033937335014343,
+          0.3612835109233856
+        ],
+        "smiles": [
+          "CCCC",
+          "CCO"
+        ],
+        "temperature_k": 330.0
+      },
+      "package": "tennetsac==0.1.10",
+      "verified_wheel": {
+        "filename": "tennetsac-0.1.10-py3-none-any.whl",
+        "sha256": "0ec0e2724273730e4fd8dd70a2fc1c170c092f098462b1065eb20cf5110a05e5"
+      }
+    },
+    "parameter_accounting": {
+      "optimized": 0
+    },
+    "training_regime": "fixed_external_model_no_test_training_or_tuning",
+    "training_system_overlap": "unknown_external_training_inventory",
+    "vapor_pressure_audit": {
+      "component_coverage": 1.0,
+      "components": 143,
+      "covered_components": 143,
+      "fits": {
+        "BrCCBr": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 404.7,
+          "minimum_temperature_k": 404.4,
+          "rmse_log_pressure": 4.0231415698040824e-05,
+          "unique_temperatures": 2
+        },
+        "C#CCCCC": {
+          "endpoint_rows": 11,
+          "maximum_temperature_k": 363.15,
+          "minimum_temperature_k": 273.15,
+          "rmse_log_pressure": 0.019614532949375752,
+          "unique_temperatures": 11
+        },
+        "C1CC1": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 273.15,
+          "minimum_temperature_k": 253.15,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "C1CCC2=NCCCN2CC1": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 349.81,
+          "minimum_temperature_k": 331.39,
+          "rmse_log_pressure": 1.3322676295501878e-15,
+          "unique_temperatures": 2
+        },
+        "C1CCCCC1": {
+          "endpoint_rows": 5,
+          "maximum_temperature_k": 353.94,
+          "minimum_temperature_k": 313.15,
+          "rmse_log_pressure": 0.003437943600093992,
+          "unique_temperatures": 5
+        },
+        "C1CCOC1": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 338.65,
+          "minimum_temperature_k": 298.15,
+          "rmse_log_pressure": 0.004549653023074478,
+          "unique_temperatures": 4
+        },
+        "C1CCOCC1": {
+          "endpoint_rows": 5,
+          "maximum_temperature_k": 361.09,
+          "minimum_temperature_k": 298.15,
+          "rmse_log_pressure": 0.011057562667697782,
+          "unique_temperatures": 4
+        },
+        "C1CCSC1": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 368.15,
+          "minimum_temperature_k": 358.15,
+          "rmse_log_pressure": 6.280369834735101e-16,
+          "unique_temperatures": 2
+        },
+        "C1CN=C2CCCN2C1": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 349.96,
+          "minimum_temperature_k": 331.48,
+          "rmse_log_pressure": 4.775249788392737e-15,
+          "unique_temperatures": 2
+        },
+        "C1COCCO1": {
+          "endpoint_rows": 7,
+          "maximum_temperature_k": 363.15,
+          "minimum_temperature_k": 298.15,
+          "rmse_log_pressure": 0.007416335918264413,
+          "unique_temperatures": 6
+        },
+        "C1COCO1": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 328.15,
+          "minimum_temperature_k": 298.15,
+          "rmse_log_pressure": 0.004736386256572165,
+          "unique_temperatures": 3
+        },
+        "C=C(C)C": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 312.6,
+          "minimum_temperature_k": 312.59,
+          "rmse_log_pressure": 2.589462819655575e-15,
+          "unique_temperatures": 2
+        },
+        "C=C(C)C(C)C": {
+          "endpoint_rows": 6,
+          "maximum_temperature_k": 371.36,
+          "minimum_temperature_k": 328.7,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 4
+        },
+        "C=C(C)CC(C)(C)C": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 368.15,
+          "minimum_temperature_k": 358.15,
+          "rmse_log_pressure": 6.280369834735101e-16,
+          "unique_temperatures": 2
+        },
+        "C=C(C)[C@H]1CC=C(C)CC1": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 343.15,
+          "minimum_temperature_k": 328.15,
+          "rmse_log_pressure": 0.0056555677736706686,
+          "unique_temperatures": 4
+        },
+        "C=C(Cl)C(F)(F)F": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 323.15,
+          "minimum_temperature_k": 303.15,
+          "rmse_log_pressure": 0.0002137875279791402,
+          "unique_temperatures": 3
+        },
+        "C=C1C2CCC(C2)C1(C)C": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 432.74,
+          "minimum_temperature_k": 432.73,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "C=C1CC/C=C(\\C)CC[C@@H]2[C@@H]1CC2(C)C": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 528.78,
+          "minimum_temperature_k": 526.4,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 3
+        },
+        "C=CCC": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 312.6,
+          "minimum_temperature_k": 312.59,
+          "rmse_log_pressure": 1.6011864169946884e-14,
+          "unique_temperatures": 2
+        },
+        "C=CCO": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 369.95,
+          "minimum_temperature_k": 369.9,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "CC#CCCC": {
+          "endpoint_rows": 11,
+          "maximum_temperature_k": 363.15,
+          "minimum_temperature_k": 273.15,
+          "rmse_log_pressure": 0.02371078812753124,
+          "unique_temperatures": 11
+        },
+        "CC#N": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 354.65,
+          "minimum_temperature_k": 348.2,
+          "rmse_log_pressure": 0.0007831778595061157,
+          "unique_temperatures": 3
+        },
+        "CC(=O)C(C)(C)C": {
+          "endpoint_rows": 6,
+          "maximum_temperature_k": 340.0,
+          "minimum_temperature_k": 320.0,
+          "rmse_log_pressure": 0.002076637528229544,
+          "unique_temperatures": 3
+        },
+        "CC(=O)C(C)C": {
+          "endpoint_rows": 5,
+          "maximum_temperature_k": 340.0,
+          "minimum_temperature_k": 313.15,
+          "rmse_log_pressure": 0.0027568798931501804,
+          "unique_temperatures": 5
+        },
+        "CC(=O)CC(C)C": {
+          "endpoint_rows": 5,
+          "maximum_temperature_k": 340.0,
+          "minimum_temperature_k": 303.15,
+          "rmse_log_pressure": 0.008785676709407525,
+          "unique_temperatures": 3
+        },
+        "CC(=O)N(C)C": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 438.95,
+          "minimum_temperature_k": 438.92999999999995,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "CC(=O)O": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 391.03,
+          "minimum_temperature_k": 336.55,
+          "rmse_log_pressure": 3.552713678800501e-15,
+          "unique_temperatures": 2
+        },
+        "CC(=O)OCC(C)C": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 389.9,
+          "minimum_temperature_k": 389.54999999999995,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "CC(C)(C)CO": {
+          "endpoint_rows": 6,
+          "maximum_temperature_k": 340.0,
+          "minimum_temperature_k": 320.0,
+          "rmse_log_pressure": 0.001897315333425646,
+          "unique_temperatures": 3
+        },
+        "CC(C)(C)Cl": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 308.15,
+          "minimum_temperature_k": 288.15,
+          "rmse_log_pressure": 0.0008074455923839334,
+          "unique_temperatures": 3
+        },
+        "CC(C)(C)O": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 364.5,
+          "minimum_temperature_k": 355.2,
+          "rmse_log_pressure": 0.004441652820379915,
+          "unique_temperatures": 3
+        },
+        "CC(C)(N)CO": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 436.84999999999997,
+          "minimum_temperature_k": 424.45,
+          "rmse_log_pressure": 0.00012230553366193643,
+          "unique_temperatures": 3
+        },
+        "CC(C)=C(C)C": {
+          "endpoint_rows": 9,
+          "maximum_temperature_k": 373.15,
+          "minimum_temperature_k": 343.15,
+          "rmse_log_pressure": 0.00138681195141935,
+          "unique_temperatures": 7
+        },
+        "CC(C)=O": {
+          "endpoint_rows": 13,
+          "maximum_temperature_k": 373.15,
+          "minimum_temperature_k": 329.0,
+          "rmse_log_pressure": 0.004334299799086996,
+          "unique_temperatures": 8
+        },
+        "CC(C)C": {
+          "endpoint_rows": 9,
+          "maximum_temperature_k": 308.0,
+          "minimum_temperature_k": 263.15,
+          "rmse_log_pressure": 0.0079279464033762,
+          "unique_temperatures": 8
+        },
+        "CC(C)C(=O)C(C)C": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 340.0,
+          "minimum_temperature_k": 330.0,
+          "rmse_log_pressure": 4.440892098500626e-16,
+          "unique_temperatures": 2
+        },
+        "CC(C)C(C)C": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 333.15,
+          "minimum_temperature_k": 313.15,
+          "rmse_log_pressure": 0.0009317212090125675,
+          "unique_temperatures": 3
+        },
+        "CC(C)CC(C)(C)C": {
+          "endpoint_rows": 9,
+          "maximum_temperature_k": 372.37,
+          "minimum_temperature_k": 330.0,
+          "rmse_log_pressure": 0.002956227095870325,
+          "unique_temperatures": 8
+        },
+        "CC(C)CCl": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 308.15,
+          "minimum_temperature_k": 288.15,
+          "rmse_log_pressure": 0.003907024689710074,
+          "unique_temperatures": 3
+        },
+        "CC(C)CO": {
+          "endpoint_rows": 5,
+          "maximum_temperature_k": 381.09,
+          "minimum_temperature_k": 333.15,
+          "rmse_log_pressure": 0.01134283138331864,
+          "unique_temperatures": 5
+        },
+        "CC(C)O": {
+          "endpoint_rows": 13,
+          "maximum_temperature_k": 373.15,
+          "minimum_temperature_k": 330.0,
+          "rmse_log_pressure": 0.01380686799839975,
+          "unique_temperatures": 10
+        },
+        "CC(C)OC(C)C": {
+          "endpoint_rows": 12,
+          "maximum_temperature_k": 341.49,
+          "minimum_temperature_k": 313.15,
+          "rmse_log_pressure": 0.004389591692256703,
+          "unique_temperatures": 9
+        },
+        "CC(Cl)(Cl)Cl": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 318.15,
+          "minimum_temperature_k": 298.15,
+          "rmse_log_pressure": 0.009209319401421185,
+          "unique_temperatures": 3
+        },
+        "CC(F)(Cl)C(F)(F)F": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 323.15,
+          "minimum_temperature_k": 303.15,
+          "rmse_log_pressure": 0.00035877151023239786,
+          "unique_temperatures": 3
+        },
+        "CC(F)F": {
+          "endpoint_rows": 6,
+          "maximum_temperature_k": 288.15,
+          "minimum_temperature_k": 258.15,
+          "rmse_log_pressure": 0.001650339700268008,
+          "unique_temperatures": 6
+        },
+        "CC1=CCC2CC1C2(C)C": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 428.65,
+          "minimum_temperature_k": 428.64,
+          "rmse_log_pressure": 3.4079326104129974e-14,
+          "unique_temperatures": 2
+        },
+        "CC1CCCCC1": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 373.88,
+          "minimum_temperature_k": 350.62,
+          "rmse_log_pressure": 0.0005503199247673876,
+          "unique_temperatures": 3
+        },
+        "CCC#CCC": {
+          "endpoint_rows": 11,
+          "maximum_temperature_k": 363.15,
+          "minimum_temperature_k": 273.15,
+          "rmse_log_pressure": 0.023977164135866966,
+          "unique_temperatures": 11
+        },
+        "CCC#N": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 322.0,
+          "minimum_temperature_k": 312.5,
+          "rmse_log_pressure": 0.0013513459490185403,
+          "unique_temperatures": 3
+        },
+        "CCC(=O)O": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 414.31999999999994,
+          "minimum_temperature_k": 333.15,
+          "rmse_log_pressure": 0.022898429423407522,
+          "unique_temperatures": 4
+        },
+        "CCC(C)(C)OC": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 413.18999999999994,
+          "minimum_temperature_k": 398.25,
+          "rmse_log_pressure": 6.280369834735101e-16,
+          "unique_temperatures": 2
+        },
+        "CCC(C)=O": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 352.8,
+          "minimum_temperature_k": 352.72,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "CCC(C)Cl": {
+          "endpoint_rows": 12,
+          "maximum_temperature_k": 341.23,
+          "minimum_temperature_k": 288.15,
+          "rmse_log_pressure": 0.003495820062026717,
+          "unique_temperatures": 6
+        },
+        "CCC(C)O": {
+          "endpoint_rows": 8,
+          "maximum_temperature_k": 383.84,
+          "minimum_temperature_k": 333.15,
+          "rmse_log_pressure": 0.013365179163191123,
+          "unique_temperatures": 8
+        },
+        "CCC(C)OC(C)=O": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 385.08,
+          "minimum_temperature_k": 383.15,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "CCCC": {
+          "endpoint_rows": 10,
+          "maximum_temperature_k": 323.15,
+          "minimum_temperature_k": 273.15,
+          "rmse_log_pressure": 0.0032070252161106334,
+          "unique_temperatures": 7
+        },
+        "CCCC(=O)O": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 373.15,
+          "minimum_temperature_k": 333.15,
+          "rmse_log_pressure": 0.008123727661199768,
+          "unique_temperatures": 3
+        },
+        "CCCCC(CC)CO": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 459.73,
+          "minimum_temperature_k": 458.15,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "CCCCCC": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 348.2,
+          "minimum_temperature_k": 333.15,
+          "rmse_log_pressure": 3.2834583959630877e-15,
+          "unique_temperatures": 2
+        },
+        "CCCCCCC": {
+          "endpoint_rows": 21,
+          "maximum_temperature_k": 371.56,
+          "minimum_temperature_k": 288.15,
+          "rmse_log_pressure": 0.013106964742234899,
+          "unique_temperatures": 9
+        },
+        "CCCCCCCC": {
+          "endpoint_rows": 8,
+          "maximum_temperature_k": 398.83,
+          "minimum_temperature_k": 349.13,
+          "rmse_log_pressure": 0.0030909476528190477,
+          "unique_temperatures": 6
+        },
+        "CCCCCCCC(=O)OC": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 391.77,
+          "minimum_temperature_k": 356.53,
+          "rmse_log_pressure": 0.013108062342969117,
+          "unique_temperatures": 3
+        },
+        "CCCCCCCCC": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 423.93999999999994,
+          "minimum_temperature_k": 423.79999999999995,
+          "rmse_log_pressure": 8.881784197001252e-16,
+          "unique_temperatures": 2
+        },
+        "CCCCCCCCCC": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 447.46,
+          "minimum_temperature_k": 393.12,
+          "rmse_log_pressure": 1.061576257419e-15,
+          "unique_temperatures": 2
+        },
+        "CCCCCCCCCC(=O)OC": {
+          "endpoint_rows": 6,
+          "maximum_temperature_k": 424.42999999999995,
+          "minimum_temperature_k": 389.09999999999997,
+          "rmse_log_pressure": 0.015902687804469413,
+          "unique_temperatures": 5
+        },
+        "CCCCCCCCCCCC(=O)OC": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 443.29999999999995,
+          "minimum_temperature_k": 417.53,
+          "rmse_log_pressure": 0.0055274924264220645,
+          "unique_temperatures": 3
+        },
+        "CCCCCCCCCCCCCC(=O)OC": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 436.11,
+          "minimum_temperature_k": 412.03,
+          "rmse_log_pressure": 0.009313229515268098,
+          "unique_temperatures": 3
+        },
+        "CCCCCCCCCCCCCCCC(=O)OC": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 459.02,
+          "minimum_temperature_k": 435.51,
+          "rmse_log_pressure": 0.001846495700218485,
+          "unique_temperatures": 3
+        },
+        "CCCCCCO": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 430.05999999999995,
+          "minimum_temperature_k": 428.45,
+          "rmse_log_pressure": 7.251946429389431e-16,
+          "unique_temperatures": 2
+        },
+        "CCCCCCl": {
+          "endpoint_rows": 15,
+          "maximum_temperature_k": 328.15,
+          "minimum_temperature_k": 298.15,
+          "rmse_log_pressure": 0.021815865638876993,
+          "unique_temperatures": 5
+        },
+        "CCCCCO": {
+          "endpoint_rows": 12,
+          "maximum_temperature_k": 411.09999999999997,
+          "minimum_temperature_k": 313.15,
+          "rmse_log_pressure": 0.037672704208300566,
+          "unique_temperatures": 9
+        },
+        "CCCCCS": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 392.7200000000001,
+          "minimum_temperature_k": 372.75,
+          "rmse_log_pressure": 6.280369834735101e-16,
+          "unique_temperatures": 2
+        },
+        "CCCCCl": {
+          "endpoint_rows": 15,
+          "maximum_temperature_k": 351.53,
+          "minimum_temperature_k": 288.15,
+          "rmse_log_pressure": 0.008447541437927383,
+          "unique_temperatures": 7
+        },
+        "CCCCO": {
+          "endpoint_rows": 7,
+          "maximum_temperature_k": 390.85999999999996,
+          "minimum_temperature_k": 351.18,
+          "rmse_log_pressure": 0.008721875664051595,
+          "unique_temperatures": 7
+        },
+        "CCCCOC(=O)CC": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 418.68999999999994,
+          "minimum_temperature_k": 418.34999999999997,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "CCCCOCCCC": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 414.54999999999995,
+          "minimum_temperature_k": 363.51,
+          "rmse_log_pressure": 0.010110412957022795,
+          "unique_temperatures": 3
+        },
+        "CCCO": {
+          "endpoint_rows": 19,
+          "maximum_temperature_k": 413.2,
+          "minimum_temperature_k": 313.15,
+          "rmse_log_pressure": 0.03004944171741972,
+          "unique_temperatures": 15
+        },
+        "CCCOC(C)=O": {
+          "endpoint_rows": 36,
+          "maximum_temperature_k": 387.92999999999995,
+          "minimum_temperature_k": 273.15,
+          "rmse_log_pressure": 0.029911526356395483,
+          "unique_temperatures": 13
+        },
+        "CCCOCCC": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 363.16,
+          "minimum_temperature_k": 317.33,
+          "rmse_log_pressure": 4.440892098500626e-16,
+          "unique_temperatures": 2
+        },
+        "CCCOCCO": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 422.75,
+          "minimum_temperature_k": 406.15,
+          "rmse_log_pressure": 0.000499153534262924,
+          "unique_temperatures": 3
+        },
+        "CCI": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 345.6,
+          "minimum_temperature_k": 345.45,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "CCO": {
+          "endpoint_rows": 23,
+          "maximum_temperature_k": 398.25,
+          "minimum_temperature_k": 313.2,
+          "rmse_log_pressure": 0.011158107436841742,
+          "unique_temperatures": 15
+        },
+        "CCOC(=O)C(C)C": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 383.59,
+          "minimum_temperature_k": 303.15,
+          "rmse_log_pressure": 0.0242721582560713,
+          "unique_temperatures": 4
+        },
+        "CCOC(=O)OCC": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 363.15,
+          "minimum_temperature_k": 353.15,
+          "rmse_log_pressure": 2.010699415441723e-15,
+          "unique_temperatures": 2
+        },
+        "CCOC(C)(C)C": {
+          "endpoint_rows": 7,
+          "maximum_temperature_k": 343.48,
+          "minimum_temperature_k": 324.94,
+          "rmse_log_pressure": 0.0013922543892752291,
+          "unique_temperatures": 5
+        },
+        "CCOC(C)=O": {
+          "endpoint_rows": 8,
+          "maximum_temperature_k": 373.16999999999996,
+          "minimum_temperature_k": 323.15,
+          "rmse_log_pressure": 0.0052383674081324764,
+          "unique_temperatures": 6
+        },
+        "CCOCCO": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 408.62,
+          "minimum_temperature_k": 386.58,
+          "rmse_log_pressure": 0.007194874810617013,
+          "unique_temperatures": 4
+        },
+        "CCSCC": {
+          "endpoint_rows": 7,
+          "maximum_temperature_k": 363.15,
+          "minimum_temperature_k": 308.0,
+          "rmse_log_pressure": 0.01811818848310446,
+          "unique_temperatures": 6
+        },
+        "CC[N+](=O)[O-]": {
+          "endpoint_rows": 9,
+          "maximum_temperature_k": 363.15,
+          "minimum_temperature_k": 298.15,
+          "rmse_log_pressure": 0.03087465316888888,
+          "unique_temperatures": 6
+        },
+        "CCc1cccs1": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 407.15,
+          "minimum_temperature_k": 407.14,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "CN(C)C=O": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 425.63,
+          "minimum_temperature_k": 363.65,
+          "rmse_log_pressure": 0.027224178634423522,
+          "unique_temperatures": 4
+        },
+        "CN1CCCC1=O": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 476.04999999999995,
+          "minimum_temperature_k": 474.01,
+          "rmse_log_pressure": 0.007993452528791242,
+          "unique_temperatures": 3
+        },
+        "CNC=O": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 472.25,
+          "minimum_temperature_k": 471.2,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "CO": {
+          "endpoint_rows": 23,
+          "maximum_temperature_k": 383.15,
+          "minimum_temperature_k": 303.15,
+          "rmse_log_pressure": 0.00723566441978534,
+          "unique_temperatures": 19
+        },
+        "COC(=O)CCC(=O)OC": {
+          "endpoint_rows": 6,
+          "maximum_temperature_k": 393.49,
+          "minimum_temperature_k": 363.39,
+          "rmse_log_pressure": 0.020079612361956323,
+          "unique_temperatures": 3
+        },
+        "COC(=O)CCCC(=O)OC": {
+          "endpoint_rows": 6,
+          "maximum_temperature_k": 407.11,
+          "minimum_temperature_k": 376.09,
+          "rmse_log_pressure": 0.011805904046053172,
+          "unique_temperatures": 3
+        },
+        "COC(=O)CCCCC(=O)OC": {
+          "endpoint_rows": 6,
+          "maximum_temperature_k": 422.4700000000001,
+          "minimum_temperature_k": 390.97999999999996,
+          "rmse_log_pressure": 0.01555189916331236,
+          "unique_temperatures": 3
+        },
+        "COC(=O)OC": {
+          "endpoint_rows": 11,
+          "maximum_temperature_k": 413.15,
+          "minimum_temperature_k": 350.64,
+          "rmse_log_pressure": 0.0033492165988369595,
+          "unique_temperatures": 8
+        },
+        "COC(=O)Oc1ccccc1": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 487.48,
+          "minimum_temperature_k": 481.7,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "COC(C)(C)C": {
+          "endpoint_rows": 7,
+          "maximum_temperature_k": 373.16999999999996,
+          "minimum_temperature_k": 320.0,
+          "rmse_log_pressure": 0.007828228361077164,
+          "unique_temperatures": 4
+        },
+        "COC(C)=O": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 350.34,
+          "minimum_temperature_k": 330.05,
+          "rmse_log_pressure": 0.002121803970948965,
+          "unique_temperatures": 3
+        },
+        "COC=O": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 304.7,
+          "minimum_temperature_k": 304.68,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "COCCO": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 397.44,
+          "minimum_temperature_k": 395.78,
+          "rmse_log_pressure": 2.1142875386882457e-15,
+          "unique_temperatures": 2
+        },
+        "CS(C)=O": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 464.0,
+          "minimum_temperature_k": 463.16999999999996,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 3
+        },
+        "CSC": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 350.4,
+          "minimum_temperature_k": 350.34,
+          "rmse_log_pressure": 1.7763568394002505e-15,
+          "unique_temperatures": 2
+        },
+        "C[N+](=O)[O-]": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 363.15,
+          "minimum_temperature_k": 343.15,
+          "rmse_log_pressure": 0.0008762559762420681,
+          "unique_temperatures": 3
+        },
+        "Cc1ccc(C(C)C)cc1": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 450.28,
+          "minimum_temperature_k": 449.39,
+          "rmse_log_pressure": 6.280369834735101e-16,
+          "unique_temperatures": 2
+        },
+        "Cc1ccc(C)c(C)c1": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 383.15,
+          "minimum_temperature_k": 313.15,
+          "rmse_log_pressure": 2.2837290315185457e-15,
+          "unique_temperatures": 2
+        },
+        "Cc1ccc(C)cc1": {
+          "endpoint_rows": 5,
+          "maximum_temperature_k": 411.62,
+          "minimum_temperature_k": 359.75,
+          "rmse_log_pressure": 0.0019117936871172702,
+          "unique_temperatures": 5
+        },
+        "Cc1ccc(C)o1": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 364.37,
+          "minimum_temperature_k": 345.24,
+          "rmse_log_pressure": 0.0011866147286171609,
+          "unique_temperatures": 3
+        },
+        "Cc1cccc(C)c1": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 412.0,
+          "minimum_temperature_k": 360.59,
+          "rmse_log_pressure": 2.5121479338940403e-15,
+          "unique_temperatures": 2
+        },
+        "Cc1ccccc1": {
+          "endpoint_rows": 12,
+          "maximum_temperature_k": 383.82,
+          "minimum_temperature_k": 313.15,
+          "rmse_log_pressure": 0.006547791009339888,
+          "unique_temperatures": 9
+        },
+        "Cc1ccccc1C": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 417.5,
+          "minimum_temperature_k": 365.16,
+          "rmse_log_pressure": 0.004531993526756998,
+          "unique_temperatures": 3
+        },
+        "Cc1ccsc1": {
+          "endpoint_rows": 5,
+          "maximum_temperature_k": 383.15,
+          "minimum_temperature_k": 333.15,
+          "rmse_log_pressure": 0.002521245804008084,
+          "unique_temperatures": 3
+        },
+        "ClC(Cl)C(Cl)Cl": {
+          "endpoint_rows": 6,
+          "maximum_temperature_k": 418.59999999999997,
+          "minimum_temperature_k": 343.15,
+          "rmse_log_pressure": 0.012378684846650065,
+          "unique_temperatures": 4
+        },
+        "ClC(Cl)Cl": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 334.7,
+          "minimum_temperature_k": 303.15,
+          "rmse_log_pressure": 2.1142875386882457e-15,
+          "unique_temperatures": 2
+        },
+        "ClCCCCCl": {
+          "endpoint_rows": 6,
+          "maximum_temperature_k": 363.15,
+          "minimum_temperature_k": 343.15,
+          "rmse_log_pressure": 0.0004470798720479096,
+          "unique_temperatures": 3
+        },
+        "ClCCCl": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 357.0,
+          "minimum_temperature_k": 313.15,
+          "rmse_log_pressure": 2.2644195468014703e-15,
+          "unique_temperatures": 2
+        },
+        "Clc1ccccc1": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 404.59999999999997,
+          "minimum_temperature_k": 402.84999999999997,
+          "rmse_log_pressure": 5.127900497022838e-16,
+          "unique_temperatures": 2
+        },
+        "F/C=C/C(F)(F)F": {
+          "endpoint_rows": 6,
+          "maximum_temperature_k": 298.15,
+          "minimum_temperature_k": 258.15,
+          "rmse_log_pressure": 0.0023337282580065885,
+          "unique_temperatures": 6
+        },
+        "F/C=C\\C(F)(F)F": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 323.15,
+          "minimum_temperature_k": 303.15,
+          "rmse_log_pressure": 0.0009538274827790122,
+          "unique_temperatures": 3
+        },
+        "FC(C(F)(F)F)C(F)(F)F": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 293.15,
+          "minimum_temperature_k": 283.15,
+          "rmse_log_pressure": 1.7763568394002505e-15,
+          "unique_temperatures": 2
+        },
+        "FC(F)(F)I": {
+          "endpoint_rows": 9,
+          "maximum_temperature_k": 298.15,
+          "minimum_temperature_k": 258.15,
+          "rmse_log_pressure": 0.003439677969316687,
+          "unique_temperatures": 9
+        },
+        "FC(F)C(F)F": {
+          "endpoint_rows": 8,
+          "maximum_temperature_k": 288.15,
+          "minimum_temperature_k": 258.15,
+          "rmse_log_pressure": 0.006134765662353913,
+          "unique_temperatures": 5
+        },
+        "FC(F)CC(F)(F)F": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 323.15,
+          "minimum_temperature_k": 303.15,
+          "rmse_log_pressure": 2.2644195468014703e-15,
+          "unique_temperatures": 2
+        },
+        "FCC(F)(F)F": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 283.15,
+          "minimum_temperature_k": 253.15,
+          "rmse_log_pressure": 7.597580291898118e-05,
+          "unique_temperatures": 3
+        },
+        "NC1CCCCC1": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 363.15,
+          "minimum_temperature_k": 333.15,
+          "rmse_log_pressure": 2.010699415441723e-15,
+          "unique_temperatures": 2
+        },
+        "Nc1ccccc1": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 455.25,
+          "minimum_temperature_k": 333.15,
+          "rmse_log_pressure": 0.011098678232335417,
+          "unique_temperatures": 3
+        },
+        "O": {
+          "endpoint_rows": 25,
+          "maximum_temperature_k": 423.2,
+          "minimum_temperature_k": 331.48,
+          "rmse_log_pressure": 0.016038470890423016,
+          "unique_temperatures": 20
+        },
+        "O=C1CCCC1": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 363.15,
+          "minimum_temperature_k": 343.15,
+          "rmse_log_pressure": 0.0020733226070182484,
+          "unique_temperatures": 3
+        },
+        "O=C1CCCCC1": {
+          "endpoint_rows": 8,
+          "maximum_temperature_k": 353.15,
+          "minimum_temperature_k": 298.15,
+          "rmse_log_pressure": 0.028014457968333607,
+          "unique_temperatures": 5
+        },
+        "O=C1OC(=O)c2cc(Cl)ccc21": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 550.71,
+          "minimum_temperature_k": 500.61,
+          "rmse_log_pressure": 0.0028727415610748665,
+          "unique_temperatures": 4
+        },
+        "O=C1OC(=O)c2cc(F)ccc21": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 525.79,
+          "minimum_temperature_k": 477.38,
+          "rmse_log_pressure": 0.00250509622102391,
+          "unique_temperatures": 4
+        },
+        "O=CC=Cc1ccccc1": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 475.83,
+          "minimum_temperature_k": 442.84,
+          "rmse_log_pressure": 0.0008017969998196189,
+          "unique_temperatures": 3
+        },
+        "O=Cc1ccccc1": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 408.66999999999996,
+          "minimum_temperature_k": 377.63,
+          "rmse_log_pressure": 0.00020320834255233448,
+          "unique_temperatures": 3
+        },
+        "O=Cc1ccco1": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 435.15,
+          "minimum_temperature_k": 345.69,
+          "rmse_log_pressure": 0.0022042718661619246,
+          "unique_temperatures": 3
+        },
+        "O=[N+]([O-])c1ccc(Cl)c(Cl)c1": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 528.5900000000001,
+          "minimum_temperature_k": 469.0,
+          "rmse_log_pressure": 0.0036659013506828587,
+          "unique_temperatures": 3
+        },
+        "O=[N+]([O-])c1cccc(Cl)c1Cl": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 530.3300000000002,
+          "minimum_temperature_k": 470.95,
+          "rmse_log_pressure": 0.004959686840914845,
+          "unique_temperatures": 3
+        },
+        "OCC(F)(F)C(F)(F)C(F)(F)C(F)F": {
+          "endpoint_rows": 2,
+          "maximum_temperature_k": 413.56999999999994,
+          "minimum_temperature_k": 413.25,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "OCC(F)(F)C(F)F": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 382.28,
+          "minimum_temperature_k": 381.95,
+          "rmse_log_pressure": 0.0,
+          "unique_temperatures": 2
+        },
+        "OCCOCCOCCO": {
+          "endpoint_rows": 4,
+          "maximum_temperature_k": 559.01,
+          "minimum_temperature_k": 535.65,
+          "rmse_log_pressure": 0.004353861416789003,
+          "unique_temperatures": 4
+        },
+        "c1ccccc1": {
+          "endpoint_rows": 6,
+          "maximum_temperature_k": 353.3,
+          "minimum_temperature_k": 353.15,
+          "rmse_log_pressure": 0.00013122403859794755,
+          "unique_temperatures": 5
+        },
+        "c1ccsc1": {
+          "endpoint_rows": 3,
+          "maximum_temperature_k": 357.26,
+          "minimum_temperature_k": 333.15,
+          "rmse_log_pressure": 0.0017315372644521826,
+          "unique_temperatures": 3
+        }
+      }
+    }
+  },
+  "registered_cells": 4,
+  "requirements_sha256": "ed875989e22267f49b631924cdda980bbabec68917b1f1d56eae574855a8b0f5",
+  "run_kind": "smoke",
+  "schema_version": 1,
+  "selection_partition": "not_applicable_fixed_external_model",
+  "status": "smoke_passed",
+  "test_rows_used": false,
+  "valid_predictions": 4
+}

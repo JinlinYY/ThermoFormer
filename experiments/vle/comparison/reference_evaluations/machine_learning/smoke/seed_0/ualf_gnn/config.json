@@ -1,0 +1,32 @@
+{
+  "capability": {
+    "adaptation_label": null,
+    "citation": "Sun et al., AIChE Journal (2025)",
+    "display_name": "UALF-GNN",
+    "external_assets_required": false,
+    "implementation_source": "paper_reimplemented",
+    "key": "ualf_gnn",
+    "native_component_counts": [
+      2
+    ],
+    "native_directions": [
+      "isobaric"
+    ],
+    "notes": "No official code was located; the paper architecture and heteroscedastic objective are reproduced.",
+    "prediction_target": "direct_vle",
+    "reference_parameter_note": "",
+    "reference_trainable_parameters": null,
+    "source_revision": "paper_specification",
+    "source_url": "paper_reimplementation",
+    "temperature_mode": "variable"
+  },
+  "smoke": {
+    "asset_root": "datasets/molecular_features/upstream_baselines",
+    "epochs": 1,
+    "learning_rate": 0.001,
+    "max_train_rows": 8,
+    "max_validation_rows": 8,
+    "seed": 0,
+    "settings_sha256": "87f91d3132a02bab604a23101a8d52e5cfc7b93a5967d0a2c7e1db0c1e450ab3"
+  }
+}

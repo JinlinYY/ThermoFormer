@@ -49,17 +49,13 @@ def main(argv: list[str] | None = None) -> None:
     protocols = CHEMICAL_ATTENTION_FORMAL_PROTOCOLS
     seeds = CHEMICAL_ATTENTION_SEEDS
     artifact_root = args.artifact_root.resolve()
-    run_root = artifact_root / "runs" / "multiview" / "chemical_attention" / "formal"
+    run_root = artifact_root / 'experiments/vle/ablation/training_records/chemical_attention/formal'
     checkpoint_root = (
-        artifact_root / "checkpoints" / "multiview" / "chemical_attention" / "formal"
+        artifact_root / 'models/vle/multiview/chemical_attention/formal'
     )
     results_root = (
         artifact_root
-        / "results"
-        / "multiview"
-        / "chemical_attention"
-        / "formal"
-        / "runs"
+        / 'experiments/vle/ablation/multiview/chemical_attention/formal/runs'
     )
 
     for variant_id in variants:
@@ -73,7 +69,7 @@ def main(argv: list[str] | None = None) -> None:
                 try:
                     manifest = run_paper_experiment(
                         config_path=config_path,
-                        split_path=PROJECT_ROOT / "splits" / split_protocol / f"seed_{seed}.json",
+                        split_path=PROJECT_ROOT / 'datasets/splits/vle' / split_protocol / f"seed_{seed}.json",
                         seed=seed,
                         run_root=run_root,
                         checkpoint_root=checkpoint_root,

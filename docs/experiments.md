@@ -12,5 +12,5 @@ fine-tuning. Generalization protocols retain their registered split semantics:
 state studies hold out states within systems, whereas unseen-component and
 transfer studies impose chemical-system constraints.
 
-See [`experiments/README.md`](../experiments/README.md) for the registry and
-[`paper_code_map.md`](paper_code_map.md) for the manuscript mapping.
+See [`docs/experiment_overview.md`](../experiments/README.md) for the registry and
+[`experiment_code_map.md`](experiment_code_map.md) for the manuscript mapping.

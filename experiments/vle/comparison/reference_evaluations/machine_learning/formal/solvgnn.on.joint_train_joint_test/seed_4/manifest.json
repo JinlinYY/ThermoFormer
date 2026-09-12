@@ -1,0 +1,77 @@
+{
+  "analysis_status": "confirmatory",
+  "artifacts": {
+    "checkpoint": {
+      "path": "models/vle/comparisons/machine_learning/formal/solvgnn.on.joint_train_joint_test/seed_4/best_model.pt",
+      "sha256": "93cdcb2cde34bba20dcd3890a3dda06dd201163ef04768082bbaf8f632d60c94"
+    },
+    "history": {
+      "path": "history.csv",
+      "sha256": "cf7672a99110fc47060c9ddfc33397c4c9124cef4e373554226f29b5956639d7"
+    },
+    "metrics": {
+      "path": "metrics.csv",
+      "sha256": "15bd302330d3f7a64458194a08af2f2c81e02c9d9f6f203367d8972af48ea23c"
+    },
+    "predictions": {
+      "path": "predictions.csv",
+      "sha256": "722e9252531b22e7d3e1765200f89862d2d28f65f69a8d422b5cb9a984e67015"
+    }
+  },
+  "baseline": "solvgnn",
+  "benchmark": "joint_train_joint_test",
+  "config": {
+    "device": "cuda",
+    "epochs": 200,
+    "fixed_temperature_tolerance_k": 0.5,
+    "gdi_weight": 0.01,
+    "learning_rate": 0.001,
+    "mc_dropout_samples": 32,
+    "minimum_composition": 1e-05,
+    "patience": 25
+  },
+  "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+  "environment": {
+    "path": "environment.yml",
+    "sha256": "505e06ece39ae0a83e1bc217ba357cb6b6c816a2d3d5ffa3ce93bb0a90c282af"
+  },
+  "evaluation_partition": "test",
+  "feature_cache": {
+    "policy": "deterministic_on_the_fly_from_registered_rows",
+    "used": false
+  },
+  "feature_definitions": {
+    "src/thermoformer/baselines/machine_learning/formal.py": "b77952c9e33da0ec3d27bfcdcfd3313c430f0056d0afafa2fc1d23113b20bd85",
+    "src/thermoformer/baselines/machine_learning/models.py": "85bea39c337386776bc745a7d07d69952b0fc215e3024f3dece6a81d1c285a34",
+    "src/thermoformer/baselines/machine_learning/smoke.py": "e84b0d51be5cb2d90832c8057da96cc8a461de8a974c18ddb0d7cb47d1cdbad2"
+  },
+  "git_commit": "909cc20f0ba4150b3551b8dbf23b2b9e03c0489e",
+  "runtime": {
+    "cuda": "12.6",
+    "cudnn": "90501",
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 3090 Ti",
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "torch": "2.6.0+cu126"
+  },
+  "schema_version": 1,
+  "seed": 4,
+  "selection_partition": "validation",
+  "settings_sha256": "df3f3da3ab4c73f8ff9172ed63b0d4473a44841b79c66c379ff7e0ea1210099d",
+  "source_workbooks": {
+    "datasets/vle_reference/binary_vle_english.xlsx": "d122177fe42b5b41ca2e782cc77b3e6a7a0ebf922bb0e589f18edde622bf3efc",
+    "datasets/vle_reference/ternary_vle_english.xlsx": "52fe356da44cc5e78f32b881a614ac95ea98e55002aaba464cfcf35069764c67"
+  },
+  "split_protocol": "overall_binary_ternary",
+  "split_sha256": "31fd9b24f4531ddc7fb35b5e90f55932b87cc434b467bccf3d913584039ec3d1",
+  "status": "completed",
+  "test_labels_used_for_selection": false,
+  "test_sample_ids_sha256": "ad4a6289251088683ea512ac842b5ff9acbfa4e32b8ed0cfee500afc0882ecbf",
+  "test_system_ids_sha256": "ac6973b3055ce89734788a9d7d9bfafc7d52da6de4c9c840e2baa0ee98f78b72",
+  "train_sample_ids_sha256": "6a25b9485054c1b5d64cbb75e7caaca9bb279b2ab70b28a5fdff3c0e6ccc62aa",
+  "train_system_ids_sha256": "4475ef7142f7e51557825e7403b5371ee065f1b4af0344a1ec0a33d6378dccae",
+  "trainable_parameters": 174209,
+  "validation_sample_ids_sha256": "f268c5989b1234f35f16f5df05eeaf9e5a547140d8c0d9bbba5f8d5f04c614af",
+  "validation_system_ids_sha256": "b7a4d3214200d7b9d14736db3c0bae45002f897bec54adc8289c93ee92e1ba9e"
+}

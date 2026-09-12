@@ -1,0 +1,99 @@
+{
+  "experiment": "vle.ablation.staged_validation",
+  "provenance": "updated_vle_dataset",
+  "status": "completed",
+  "notes": "Validation-only recomputation from the original validation-selected Stage 0–3 checkpoints. No retraining, checkpoint reselection, or test-set evaluation.",
+  "sources": [
+    {
+      "path": "experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_overall_binary_ternary",
+      "exists": true,
+      "kind": "directory",
+      "sha256": null
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation",
+      "exists": true,
+      "kind": "directory",
+      "sha256": null
+    }
+  ],
+  "files": [
+    {
+      "path": "models/vle/prediction/vle_overall_binary_ternary/seed_0/best_model.pt",
+      "bytes": 8096820
+    },
+    {
+      "path": "models/vle/prediction/vle_overall_binary_ternary/seed_1/best_model.pt",
+      "bytes": 8096820
+    },
+    {
+      "path": "models/vle/prediction/vle_overall_binary_ternary/seed_2/best_model.pt",
+      "bytes": 8096820
+    },
+    {
+      "path": "models/vle/prediction/vle_overall_binary_ternary/seed_3/best_model.pt",
+      "bytes": 8096820
+    },
+    {
+      "path": "models/vle/prediction/vle_overall_binary_ternary/seed_4/best_model.pt",
+      "bytes": 8096820
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation/manifest.json",
+      "bytes": 14598
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation/per_seed_metrics.csv",
+      "bytes": 2233
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation/README.md",
+      "bytes": 884
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation/reference_metrics.csv",
+      "bytes": 3233
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation/reference_metrics.md",
+      "bytes": 4224
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation/replacement_section.tex",
+      "bytes": 2777
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation/sources.json",
+      "bytes": 3459
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation/summary.csv",
+      "bytes": 958
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation/table.tex",
+      "bytes": 622
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation/frozen_splits/seed_0.json",
+      "bytes": 456920
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation/frozen_splits/seed_1.json",
+      "bytes": 456920
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation/frozen_splits/seed_2.json",
+      "bytes": 456920
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation/frozen_splits/seed_3.json",
+      "bytes": 456920
+    },
+    {
+      "path": "experiments/vle/ablation/staged_validation/frozen_splits/seed_4.json",
+      "bytes": 456920
+    }
+  ],
+  "note": "Existence-only inventory; does not certify metrics or completed seed counts."
+}

@@ -16,7 +16,7 @@ from src.thermoformer.reporting.aggregation import aggregate_protocol_results
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--results-root", type=Path, default=PROJECT_ROOT / "results")
+    parser.add_argument("--results-root", type=Path, default=PROJECT_ROOT / 'experiments/reference_results')
     parser.add_argument("--protocol", default="")
     parser.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2, 3, 4])
     parser.add_argument(

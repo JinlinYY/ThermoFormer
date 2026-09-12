@@ -52,9 +52,9 @@ def main(argv: list[str] | None = None) -> None:
     seeds = MULTIVIEW_SEEDS
     artifact_root = args.artifact_root.resolve()
     namespace = "predictive"
-    run_root = artifact_root / "runs" / "multiview" / namespace
-    checkpoint_root = artifact_root / "checkpoints" / "multiview" / namespace
-    results_root = artifact_root / "results" / "multiview" / namespace / "runs"
+    run_root = artifact_root / 'experiments/vle/ablation/training_records' / namespace
+    checkpoint_root = artifact_root / 'models/vle/multiview' / namespace
+    results_root = artifact_root / 'experiments/vle/ablation/multiview' / namespace / 'experiments/run_records'
     overrides: tuple[str, ...] = ()
     for variant_id in variants:
         variant = MULTIVIEW_VARIANTS[variant_id]
@@ -67,7 +67,7 @@ def main(argv: list[str] | None = None) -> None:
                 try:
                     manifest = run_paper_experiment(
                         config_path=config_path,
-                        split_path=PROJECT_ROOT / "splits" / split_protocol / f"seed_{seed}.json",
+                        split_path=PROJECT_ROOT / 'datasets/splits/vle' / split_protocol / f"seed_{seed}.json",
                         seed=seed,
                         run_root=run_root,
                         checkpoint_root=checkpoint_root,

@@ -1,5 +1,11 @@
 """Supervised training and validation-gated fugacity fine-tuning."""
 
+from .direct_ge import (
+    DirectThermodynamicLoss,
+    DirectThermodynamicTargets,
+    build_direct_thermodynamic_targets,
+    direct_thermodynamic_supervision,
+)
 from .losses import Objective, with_teacher_forced_fugacity_equilibrium
 from .supervised import FitResult, TrainingConfig, evaluate_model, fit_model, seed_everything
 
@@ -24,6 +30,8 @@ def __getattr__(name: str):
 
 __all__ = [
     "FitResult",
+    "DirectThermodynamicLoss",
+    "DirectThermodynamicTargets",
     "Objective",
     "PhysicsFitResult",
     "TrainingConfig",
@@ -36,5 +44,7 @@ __all__ = [
     "physics_finetune_objective",
     "seed_everything",
     "train_supervised",
+    "build_direct_thermodynamic_targets",
+    "direct_thermodynamic_supervision",
     "with_teacher_forced_fugacity_equilibrium",
 ]

@@ -1,7 +1,7 @@
 extends: ../model/c1_three_view_vanilla.yaml
 name: c1_supervised
 data:
-  root: dataset
+  root: datasets/vle_reference
   pure_property_catalog: ""
   source_filter: ""
   failed_weight: 0.0
@@ -27,6 +27,6 @@ training:
   solver_iterations_eval: 48
   gradient_clip: 5.0
 runtime:
-  output_dir: runs/public/c1_supervised
+  output_dir: experiments/run_records/public/c1_supervised
   device: auto
-  results_file: runs/public/c1_supervised/results.md
+  results_file: experiments/run_records/public/c1_supervised/results.md

@@ -20,83 +20,83 @@ class AblationSource:
 C1_ABLATION_SOURCES = {
     "c0_unimol": AblationSource(
         "C0 Uni-Mol v2 vanilla", "representation",
-        "results/multiview/chemical_attention/formal/runs/"
+        "experiments/vle/ablation/multiview/chemical_attention/formal/runs/"
         "c0_current_vanilla.on.overall_binary_ternary",
     ),
     "v1_rdkit": AblationSource(
         "V1 RDKit descriptors only", "representation",
-        "results/multiview/formal/runs/v1_rdkit_only.on.overall_binary_ternary",
+        "experiments/vle/ablation/multiview/formal/runs/v1_rdkit_only.on.overall_binary_ternary",
     ),
     "v3_fg": AblationSource(
         "V3 functional groups only", "representation",
-        "results/multiview/predictive/runs/"
+        "experiments/vle/ablation/multiview/predictive/runs/"
         "v3_functional_group_only.on.overall_binary_ternary",
     ),
     "v4_rdkit_unimol": AblationSource(
         "V4 RDKit + Uni-Mol", "representation",
-        "results/multiview/predictive/runs/"
+        "experiments/vle/ablation/multiview/predictive/runs/"
         "v4_rdkit_unimol_naive.on.overall_binary_ternary",
     ),
     "c1_final": AblationSource(
         "C1 RDKit + Uni-Mol + FG vanilla", "representation interaction",
-        "results/multiview/chemical_attention/formal/runs/"
+        "experiments/vle/ablation/multiview/chemical_attention/formal/runs/"
         "c1_three_view_vanilla.on.overall_binary_ternary",
     ),
     "c2_chemical_bias": AblationSource(
         "C2 chemical-biased + context pair", "interaction",
-        "results/multiview/chemical_attention/formal/runs/"
+        "experiments/vle/ablation/multiview/chemical_attention/formal/runs/"
         "c2_chemical_bias_full.on.overall_binary_ternary",
     ),
     "c3_context_pair": AblationSource(
         "C3 context pair without attention bias", "interaction",
-        "results/multiview/chemical_attention/formal/runs/"
+        "experiments/vle/ablation/multiview/chemical_attention/formal/runs/"
         "c3_no_pair_bias.on.overall_binary_ternary",
     ),
 }
 
 PHYSICS_RESULT_DIR = (
-    "results/experiments/physics_finetuning/c1_three_view_vanilla_fugacity/"
+    "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/"
     "c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary"
 )
 
 ABLATION_LEAVES = {
     "c0_unimol": (
-        "experiments/ablations/molecular_representation/unimol_v2_only/results.md",
+        "experiments/vle/ablation/study_records/molecular_representation/unimol_v2_only/results.md",
         "Uni-Mol vanilla baseline",
         "The three-view C1 model substantially reduces all four prediction errors relative to this Uni-Mol-only vanilla baseline.",
     ),
     "v1_rdkit": (
-        "experiments/ablations/molecular_representation/rdkit_only/results.md",
+        "experiments/vle/ablation/study_records/molecular_representation/rdkit_only/results.md",
         "RDKit-only representation",
         "RDKit descriptors provide a strong low-dimensional baseline, but the complete three-view model gives lower pressure and isobaric-temperature errors.",
     ),
     "v3_fg": (
-        "experiments/ablations/molecular_representation/functional_groups_only/results.md",
+        "experiments/vle/ablation/study_records/molecular_representation/functional_groups_only/results.md",
         "Functional-group-only representation",
         "Functional-group counts alone are insufficient for VLE prediction. The error values must be interpreted with their reduced valid coverage.",
     ),
     "v4_rdkit_unimol": (
-        "experiments/ablations/molecular_representation/rdkit_unimol/results.md",
+        "experiments/vle/ablation/study_records/molecular_representation/rdkit_unimol/results.md",
         "RDKit + Uni-Mol representation",
         "Adding the functional-group view to this two-view model improves pressure and isobaric-temperature MAE, while vapor-composition changes are small.",
     ),
     "c1_final": (
-        "experiments/ablations/molecular_representation/full_three_view/results.md",
+        "experiments/vle/ablation/study_records/molecular_representation/full_three_view/results.md",
         "Three-view vanilla representation",
         "The three complementary molecular views give the most balanced representation result and define the final C1 architecture.",
     ),
     "c1_final_interaction": (
-        "experiments/ablations/interaction_architecture/vanilla_transformer/results.md",
+        "experiments/vle/ablation/study_records/interaction_architecture/vanilla_transformer/results.md",
         "Three-view vanilla Transformer",
         "C1 is the selected interaction architecture because it balances pressure, temperature, vapor-composition accuracy, and model complexity.",
     ),
     "c2_chemical_bias": (
-        "experiments/ablations/interaction_architecture/chemical_interaction_bias/results.md",
+        "experiments/vle/ablation/study_records/interaction_architecture/chemical_interaction_bias/results.md",
         "Chemical-interaction-biased Transformer",
         "The chemical-attention bias does not consistently improve the three-view vanilla model and is not retained in the final architecture.",
     ),
     "c3_context_pair": (
-        "experiments/ablations/interaction_architecture/context_pair_without_attention_bias/results.md",
+        "experiments/vle/ablation/study_records/interaction_architecture/context_pair_without_attention_bias/results.md",
         "Context pair without attention bias",
         "The context-pair variant improves several vapor-composition metrics but has a larger pressure error than C1, so it is not selected as the balanced final model.",
     ),
@@ -265,7 +265,7 @@ def _write_fugacity_leaf_record(project_root: Path, manifest_path: Path) -> None
         raise RuntimeError("Fugacity report SHA mismatch")
     source_text = source_path.read_text(encoding="utf-8").rstrip()
     canonical_path = (
-        project_root / "experiments/ablations/fugacity_finetuning/results.md"
+        project_root / "experiments/vle/ablation/study_records/fugacity_finetuning/results.md"
     )
     footer = (
         "\n\nMachine-readable stage summary: `"
@@ -277,7 +277,7 @@ def _write_fugacity_leaf_record(project_root: Path, manifest_path: Path) -> None
     atomic_write_text(canonical_path, source_text + footer)
 
 
-def write_c1_ablation_outputs(
+def write_joint_c1_ablation_outputs(
     project_root: Path,
     *,
     output_root: Path | None = None,
@@ -290,8 +290,8 @@ def write_c1_ablation_outputs(
     physics_manifest_path, physics_path, physics = _physics_rows(project_root)
     if publish_canonical_leaves:
         _write_fugacity_leaf_record(project_root, physics_manifest_path)
-    output_root = output_root or project_root / "results/c1_ablation"
-    report_path = report_path or project_root / "reports/c1_ablation_overall_binary_ternary.md"
+    output_root = output_root or project_root / "experiments/vle/ablation/binary_summary"
+    report_path = report_path or project_root / "experiments/data_quality/reports/c1_ablation_overall_binary_ternary.md"
     metrics_path = output_root / "overall_binary_ternary_metrics.csv"
     manifest_path = output_root / "report_manifest.json"
 
@@ -310,42 +310,42 @@ def write_c1_ablation_outputs(
     atomic_write_text(metrics_path, stream.getvalue())
 
     lines = [
-        "# C1 三视图 vanilla 消融实验结果",
+        "# C1 three-view vanilla ablation results",
         "",
-        "所有表征与交互消融均采用固定 `overall_binary_ternary`：二元+三元训练，"
-        "随后在联合二元+三元测试集上评估。结果为 seeds 0--4 的均值 ± 样本标准差。",
+        "All representation and interaction ablations use the fixed `overall_binary_ternary` protocol: joint binary and ternary training, "
+        "followed by evaluation on the joint binary and ternary test set. Values are the mean ± sample standard deviation over seeds 0--4.",
         "",
-        "## 分子表征消融",
+        "## Molecular-representation ablation",
         "",
-        "### 等温任务：输入分子、T、x，预测 P 与 y",
+        "### Isothermal task: molecules, T, x -> P, y",
         "",
         *_table(records, "representation", "isothermal"),
         "",
-        "### 等压任务：输入分子、P、x，预测 T 与 y",
+        "### Isobaric task: molecules, P, x -> T, y",
         "",
         *_table(records, "representation", "isobaric"),
         "",
-        "三视图 C1 相比 Uni-Mol-only 明显降低四类预测误差；FG-only 无法独立支撑 VLE，"
-        "其等温/等压有效覆盖率仅 63.4%/96.7%，不能把其误差与满覆盖模型作脱离覆盖率的比较。"
-        "在 RDKit+Uni-Mol 上增加 FG 后，P 与等压 T 改善，但 y 的变化较小。",
+        "The three-view C1 model reduces all four prediction errors relative to Uni-Mol only. Functional groups alone do not provide adequate VLE predictions; "
+        "their isothermal/isobaric valid coverage is only 63.4%/96.7%, so errors must be interpreted together with coverage. "
+        "Adding functional groups to RDKit and Uni-Mol improves P and isobaric T, with smaller changes in y.",
         "",
-        "## 组分交互模块消融",
+        "## Component-interaction ablation",
         "",
-        "### 等温任务",
+        "### Isothermal task",
         "",
         *_table(records, "interaction", "isothermal"),
         "",
-        "### 等压任务",
+        "### Isobaric task",
         "",
         *_table(records, "interaction", "isobaric"),
         "",
-        "C2 chemical-biased Transformer 没有稳定超过 C1；C3 的 T/y 较好但压力明显较差。"
-        "综合 P、T、y 和参数复杂度，C1 是当前最均衡的最终结构。",
+        "The C2 chemically biased Transformer does not consistently outperform C1. C3 performs better for T/y but substantially worse for pressure. "
+        "Across P, T, y, and parameter complexity, C1 provides the most balanced architecture.",
         "",
-        "## 逸度损失微调消融（seeds 0--4）",
+        "## Fugacity-loss fine-tuning ablation (seeds 0--4)",
         "",
-        "Stage 1 是 C1 数据监督最佳 checkpoint；Stage 2 保留监督损失并只增加"
-        " teacher-forced 逸度平衡损失并微调10个 epoch，checkpoint 仅由验证集选择。",
+        "Stage 1 is the validation-best C1 checkpoint after supervised training; Stage 2 retains the supervised loss and adds only "
+        "the teacher-forced fugacity-equilibrium loss for 10 fine-tuning epochs. Checkpoints are selected only on validation data.",
         "",
         "| Task output | Stage 1 MAE | Stage 1 RMSE | Stage 1 R² | Fugacity Stage 2 MAE | Fugacity Stage 2 RMSE | Fugacity Stage 2 R² |",
         "|---|---:|---:|---:|---:|---:|---:|",
@@ -376,19 +376,19 @@ def write_c1_ablation_outputs(
     lines.extend(
         [
             "",
-            f"验证集在 **{int(counts['stage2'])}/5** 个种子选择 Stage 2，在 "
-            f"**{int(counts['stage1'])}/5** 个种子回退 Stage 1。",
-            "测试集 teacher-forced 逸度残差均值由 "
-            f"`{float(fugacity1['mean']):.6g} ± {float(fugacity1['std']):.6g}` 降至 "
-            f"`{float(fugacity2['mean']):.6g} ± {float(fugacity2['std']):.6g}`。",
-            "按五种子均值，12项 P/T/y 指标中10项改善；T RMSE 与 T R²轻微退化。"
-            "因此逸度微调总体有效但不是每个种子都稳定受益，最终流程必须保留验证集 Stage 1 fallback。",
+            f"Validation selects Stage 2 for **{int(counts['stage2'])}/5** ** seeds and retains Stage 1 for "
+            f"**{int(counts['stage1'])}/5**  seeds.",
+            "The mean teacher-forced fugacity residual on the test set decreases from "
+            f"`{float(fugacity1['mean']):.6g} ± {float(fugacity1['std']):.6g}` to "
+            f"`{float(fugacity2['mean']):.6g} ± {float(fugacity2['std']):.6g}.",
+            "Across five-seed means, 10 of 12 P/T/y metrics improve; T RMSE and T R² deteriorate slightly. "
+            "Fugacity fine-tuning therefore provides an overall benefit but does not improve every seed; the final workflow retains the validation-selected Stage 1 fallback.",
             "",
-            "## 最终选择",
+            "## Final selection",
             "",
-            "最终模型固定为 **C1 RDKit descriptors + Uni-Mol v2 + functional groups + vanilla Transformer**；"
-            "Stage 2 仅保留 teacher-forced 逸度平衡损失。监督阶段的纯端点 Psat 项仍属于数据监督，"
-            "不属于额外物理微调损失。",
+            "The selected model is **C1 RDKit descriptors + Uni-Mol v2 + functional groups + vanilla Transformer**. "
+            "Stage 2 adds only the teacher-forced fugacity-equilibrium loss. The pure-endpoint Psat term in supervised training remains a data-supervision term and "
+            "is not an additional physics fine-tuning loss.",
             "",
         ]
     )
@@ -430,7 +430,7 @@ def write_c1_ablation_outputs(
     }
     if publish_canonical_leaves:
         leaf_paths = [project_root / value[0] for value in ABLATION_LEAVES.values()]
-        leaf_paths.append(project_root / "experiments/ablations/fugacity_finetuning/results.md")
+        leaf_paths.append(project_root / "experiments/vle/ablation/study_records/fugacity_finetuning/results.md")
         manifest["outputs"]["canonical_experiment_leaves"] = [
             {
                 "path": recorded_path(path),
@@ -440,3 +440,14 @@ def write_c1_ablation_outputs(
         ]
     atomic_write_text(manifest_path, json.dumps(manifest, indent=2, sort_keys=True) + "\n")
     return report_path, metrics_path, manifest_path
+
+from .c1_ablation_binary import (
+    AblationSource as BinaryAblationSource,
+    C1_ABLATION_SOURCES as BINARY_C1_ABLATION_SOURCES,
+    collect_c1_ablation_rows as collect_binary_c1_ablation_rows,
+    write_c1_ablation_outputs as write_binary_c1_ablation_outputs,
+)
+
+# Backward-compatible default for the registered binary three-stage report.
+write_c1_ablation_outputs = write_binary_c1_ablation_outputs
+

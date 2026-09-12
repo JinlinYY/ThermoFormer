@@ -1,0 +1,20 @@
+# Joint binary--ternary VLE ablation results
+
+All variants use the release VLE dataset, the registered `vle_overall_binary_ternary` assignments, and seeds 0--4. Values are mean ± sample standard deviation. The C1 row references the completed main VLE benchmark and is shared between the two ablation categories.
+
+## Molecular representation
+
+| Variant | P MAE | P RMSE | P R² | y MAE (isothermal) | y RMSE | y R² | T MAE | T RMSE | T R² | y MAE (isobaric) | y RMSE | y R² | Coverage |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Uni-Mol v2 only | 10.024 ± 2.102 | 23.615 ± 7.281 | 0.964 ± 0.020 | 0.0348 ± 0.0036 | 0.0601 ± 0.0044 | 0.967 ± 0.005 | 3.456 ± 1.059 | 5.775 ± 2.162 | 0.952 ± 0.029 | 0.0469 ± 0.0129 | 0.0700 ± 0.0200 | 0.946 ± 0.029 | 100.0% |
+| RDKit descriptors only | 6.885 ± 0.951 | 16.660 ± 2.426 | 0.982 ± 0.008 | 0.0216 ± 0.0023 | 0.0377 ± 0.0049 | 0.986 ± 0.005 | 2.024 ± 0.424 | 3.485 ± 0.801 | 0.983 ± 0.007 | 0.0244 ± 0.0029 | 0.0422 ± 0.0050 | 0.981 ± 0.003 | 100.0% |
+| RDKit descriptors + Uni-Mol v2 | 8.845 ± 1.584 | 23.984 ± 7.122 | 0.962 ± 0.019 | 0.0238 ± 0.0007 | 0.0433 ± 0.0038 | 0.982 ± 0.005 | 2.202 ± 0.331 | 3.917 ± 0.884 | 0.979 ± 0.007 | 0.0280 ± 0.0051 | 0.0476 ± 0.0102 | 0.975 ± 0.009 | 100.0% |
+| Full three-view representation | 10.118 ± 2.454 | 26.863 ± 8.232 | 0.950 ± 0.029 | 0.0245 ± 0.0028 | 0.0451 ± 0.0080 | 0.980 ± 0.009 | 2.203 ± 0.541 | 3.921 ± 1.130 | 0.979 ± 0.009 | 0.0281 ± 0.0052 | 0.0477 ± 0.0097 | 0.975 ± 0.009 | 100.0% |
+
+## Interaction architecture
+
+| Variant | P MAE | P RMSE | P R² | y MAE (isothermal) | y RMSE | y R² | T MAE | T RMSE | T R² | y MAE (isobaric) | y RMSE | y R² | Coverage |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Vanilla multicomponent Transformer | 10.118 ± 2.454 | 26.863 ± 8.232 | 0.950 ± 0.029 | 0.0245 ± 0.0028 | 0.0451 ± 0.0080 | 0.980 ± 0.009 | 2.203 ± 0.541 | 3.921 ± 1.130 | 0.979 ± 0.009 | 0.0281 ± 0.0052 | 0.0477 ± 0.0097 | 0.975 ± 0.009 | 100.0% |
+| Chemical-interaction-biased Transformer with context-conditioned pair potential | 8.905 ± 2.372 | 23.308 ± 9.407 | 0.962 ± 0.026 | 0.0245 ± 0.0023 | 0.0482 ± 0.0082 | 0.978 ± 0.007 | 2.118 ± 0.380 | 3.865 ± 0.988 | 0.980 ± 0.008 | 0.0267 ± 0.0047 | 0.0465 ± 0.0089 | 0.977 ± 0.008 | 100.0% |
+| Context-conditioned pair potential without attention bias | 9.037 ± 2.469 | 23.377 ± 8.499 | 0.962 ± 0.025 | 0.0232 ± 0.0021 | 0.0425 ± 0.0071 | 0.983 ± 0.007 | 2.156 ± 0.475 | 3.906 ± 1.161 | 0.979 ± 0.009 | 0.0267 ± 0.0050 | 0.0473 ± 0.0121 | 0.975 ± 0.011 | 100.0% |

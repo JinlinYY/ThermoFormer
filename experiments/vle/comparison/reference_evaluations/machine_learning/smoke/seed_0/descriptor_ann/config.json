@@ -1,0 +1,32 @@
+{
+  "capability": {
+    "adaptation_label": null,
+    "citation": "Sun et al., Chemical Engineering Science (2023)",
+    "display_name": "Descriptor ANN",
+    "external_assets_required": true,
+    "implementation_source": "official_architecture_reimplemented_wrapper",
+    "key": "descriptor_ann",
+    "native_component_counts": [
+      2
+    ],
+    "native_directions": [
+      "isobaric"
+    ],
+    "notes": "The executable network consumes 21 author-defined descriptors plus P and x. The author descriptor table is not distributed with an explicit reusable license.",
+    "prediction_target": "direct_vle",
+    "reference_parameter_note": "per direction-specific output head; two heads total 19,842",
+    "reference_trainable_parameters": 9921,
+    "source_revision": "f103380",
+    "source_url": "https://github.com/sungl123456/37lamdaA",
+    "temperature_mode": "variable"
+  },
+  "smoke": {
+    "asset_root": "datasets/molecular_features/upstream_baselines",
+    "epochs": 1,
+    "learning_rate": 0.001,
+    "max_train_rows": 8,
+    "max_validation_rows": 8,
+    "seed": 0,
+    "settings_sha256": "87f91d3132a02bab604a23101a8d52e5cfc7b93a5967d0a2c7e1db0c1e450ab3"
+  }
+}

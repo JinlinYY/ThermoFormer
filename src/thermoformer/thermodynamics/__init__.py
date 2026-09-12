@@ -1,5 +1,7 @@
 """Pure properties, activity coefficients, and differentiable VLE solvers."""
 
+from .lle_solver import LLEEquilibriumState, gmix_dimless, solve_lle, tpd
+
 from .activity_coefficients import activity_coefficients_from_excess_gibbs
 from .vapor_pressure import (
     AntoineParameters,
@@ -31,3 +33,5 @@ __all__ = [
     "solve_isobaric",
     "solve_isothermal",
 ]
+__all__ += ["LLEEquilibriumState", "gmix_dimless", "solve_lle", "tpd"]
+

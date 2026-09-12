@@ -163,6 +163,8 @@ def aggregate_protocol_results(
     protocol_result_dir: Path,
     expected_seeds: Sequence[int] = (0, 1, 2, 3, 4),
     aggregate_kind: Literal["formal", "diagnostic"] = "formal",
+    compatible_training_git_commits: Sequence[str] | None = None,
+    mixed_commit_justification: str | None = None,
 ) -> list[dict[str, Any]]:
     """Aggregate completed seeds without inventing unavailable subgroup metrics.
 
@@ -207,18 +209,52 @@ def aggregate_protocol_results(
     def key(row: dict[str, Any]) -> tuple[Any, ...]:
         return tuple(row.get(field) for field in IDENTITY_FIELDS)
 
+    common_provenance_fields = tuple(
+        field for field in PROVENANCE_FIELDS if field != "git_commit"
+    )
     reference_provenance = {
         field: _provenance_value(manifests[expected[0]], field)
-        for field in PROVENANCE_FIELDS
+        for field in common_provenance_fields
     }
     if any(value in (None, "") for value in reference_provenance.values()):
         raise ValueError("Completed manifest is missing required provenance")
     for seed, manifest in manifests.items():
         provenance = {
-            field: _provenance_value(manifest, field) for field in PROVENANCE_FIELDS
+            field: _provenance_value(manifest, field)
+            for field in common_provenance_fields
         }
         if provenance != reference_provenance:
             raise ValueError(f"Manifest provenance differs for seed {seed}")
+
+    training_git_commits_by_seed = {
+        seed: _provenance_value(manifest, "git_commit")
+        for seed, manifest in manifests.items()
+    }
+    if any(value in (None, "") for value in training_git_commits_by_seed.values()):
+        raise ValueError("Completed manifest is missing required git_commit provenance")
+    training_git_commits = sorted(set(training_git_commits_by_seed.values()))
+    if len(training_git_commits) > 1:
+        if compatible_training_git_commits is None:
+            raise ValueError("Manifest provenance differs for training git_commit")
+        approved = tuple(dict.fromkeys(compatible_training_git_commits))
+        if (
+            not approved
+            or any(not isinstance(value, str) or not value for value in approved)
+            or set(approved) != set(training_git_commits)
+        ):
+            raise ValueError(
+                "Observed training git commits do not exactly match the approved set"
+            )
+        if (
+            not isinstance(mixed_commit_justification, str)
+            or not mixed_commit_justification.strip()
+        ):
+            raise ValueError("Mixed training commits require a non-empty justification")
+        training_git_commit = "mixed-approved"
+    else:
+        training_git_commit = training_git_commits[0]
+        mixed_commit_justification = None
+    reference_provenance["git_commit"] = training_git_commit
     current_commit, code_dirty, dirty_code_paths = _git_aggregate_state()
     if aggregate_kind == "formal":
         if code_dirty:
@@ -324,7 +360,13 @@ def aggregate_protocol_results(
             "aggregate_kind": aggregate_kind,
             "protocol": reference_provenance["protocol"],
             "seeds": list(expected),
-            "training_git_commit": reference_provenance["git_commit"],
+            "training_git_commit": training_git_commit,
+            "training_git_commits": training_git_commits,
+            "training_git_commits_by_seed": {
+                str(seed): commit
+                for seed, commit in training_git_commits_by_seed.items()
+            },
+            "mixed_commit_justification": mixed_commit_justification,
             "aggregation_git_commit": current_commit,
         },
     )
@@ -339,7 +381,13 @@ def aggregate_protocol_results(
         "aggregate_kind": aggregate_kind,
         "protocol": reference_provenance["protocol"],
         "seeds": list(expected),
-        "training_git_commit": reference_provenance["git_commit"],
+        "training_git_commit": training_git_commit,
+        "training_git_commits": training_git_commits,
+        "training_git_commits_by_seed": {
+            str(seed): commit
+            for seed, commit in training_git_commits_by_seed.items()
+        },
+        "mixed_commit_justification": mixed_commit_justification,
         "aggregation_git_commit": current_commit,
         # Backward-compatible alias for the code that produced this aggregate.
         "git_commit": current_commit,
