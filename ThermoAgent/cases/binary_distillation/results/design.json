@@ -1,0 +1,64 @@
+{
+  "specification": {
+    "pressure_kPa": 101.3,
+    "feed_mol_s": 1.0,
+    "feed_heptane_mole_fraction": 0.466,
+    "feed_quality_q": 1.0,
+    "distillate_heptane_mole_fraction": 0.995,
+    "heptane_recovery": 0.98,
+    "distillate_mol_s": 0.45897487437185935,
+    "bottoms_mol_s": 0.5410251256281406,
+    "bottoms_heptane_mole_fraction": 0.017226556694902653,
+    "common_reflux_ratio": 0.9280520481600283
+  },
+  "results": [
+    {
+      "source": "Experimental interpolation",
+      "interpolation": "linear",
+      "minimum_reflux_ratio": 0.47765363128491606,
+      "common_reflux_ratio": 0.9280520481600283,
+      "integer_equilibrium_stages_including_reboiler": 11,
+      "feed_stage_from_top": 5
+    },
+    {
+      "source": "Experimental interpolation",
+      "interpolation": "pchip",
+      "minimum_reflux_ratio": 0.47765363128491606,
+      "common_reflux_ratio": 0.9280520481600283,
+      "integer_equilibrium_stages_including_reboiler": 11,
+      "feed_stage_from_top": 5
+    },
+    {
+      "source": "ThermoFormer",
+      "interpolation": "linear",
+      "minimum_reflux_ratio": 0.6187013654400189,
+      "common_reflux_ratio": 0.9280520481600283,
+      "integer_equilibrium_stages_including_reboiler": 13,
+      "feed_stage_from_top": 6
+    },
+    {
+      "source": "ThermoFormer",
+      "interpolation": "pchip",
+      "minimum_reflux_ratio": 0.6187013654400189,
+      "common_reflux_ratio": 0.9280520481600283,
+      "integer_equilibrium_stages_including_reboiler": 12,
+      "feed_stage_from_top": 6
+    },
+    {
+      "source": "UNIFAC",
+      "interpolation": "linear",
+      "minimum_reflux_ratio": 0.6045793613531424,
+      "common_reflux_ratio": 0.9280520481600283,
+      "integer_equilibrium_stages_including_reboiler": 12,
+      "feed_stage_from_top": 6
+    },
+    {
+      "source": "UNIFAC",
+      "interpolation": "pchip",
+      "minimum_reflux_ratio": 0.6045793613531424,
+      "common_reflux_ratio": 0.9280520481600283,
+      "integer_equilibrium_stages_including_reboiler": 12,
+      "feed_stage_from_top": 6
+    }
+  ]
+}

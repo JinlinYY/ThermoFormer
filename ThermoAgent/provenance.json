@@ -1,0 +1,90 @@
+{
+  "scope": "ThermoFormer manuscript Section 2.2; SI Section S7, Figures S3-S5",
+  "pressure_kPa": 101.3,
+  "binary_distillation": {
+    "reference_DOI": "10.1016/j.fluid.2013.05.016",
+    "checkpoint": "models/vle/prediction/vle_overall_binary/seed_2/best_model.pt",
+    "checkpoint_sha256": "1531e258a1895308bba4640c633f8b2fc0732dfa353d2cd9341f36c8af38fd91",
+    "model": "original UNIFAC",
+    "thermo_version": "0.6.1"
+  },
+  "extractive_distillation": {
+    "reference_DOI": "10.1016/j.fluid.2014.09.021",
+    "checkpoint": "models/vle/prediction/vle_overall_binary_ternary/seed_0/best_model.pt",
+    "checkpoint_sha256": "129b1e11dda1a4658156d6da97527c1b32fd3ad9a7e73134cd3f87e9f94fb2c2",
+    "feature_keys": [
+      "CCC(C)O",
+      "CCC(C)OC(=O)C",
+      "CN(C)C=O"
+    ],
+    "pure_parameters": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        2.0,
+        82.76200103759766,
+        -7955.5,
+        -8.803799629211426,
+        4.2431001929799095e-06,
+        2.0,
+        212.72000122070312,
+        649.5999755859375,
+        0.0,
+        0.0010000000474974513,
+        1.0
+      ]
+    ],
+    "cache_sha256": "5382f004bfc561638721a901e611690bb3e83ff02a56aabfd32e3080fe5bca4d",
+    "catalog_sha256": "0494dd09f9b4bc75a3333e93278474e93d9d5e6562eaba5221085f11e5e57547",
+    "model": "original UNIFAC",
+    "thermo_version": "0.6.1"
+  },
+  "crossflow_extraction": {
+    "reference_DOI": "10.1021/je100908f",
+    "checkpoint": "models/lle/prediction/ternary-system/seed_0/best.pt",
+    "checkpoint_sha256": "ebd7055c4c6f35b1a10f3379c29747225965391061c8257f6c1dcfeea2346299",
+    "model": "LLE-specific UNIFAC",
+    "thermo_version": "0.6.1",
+    "component_order": [
+      "heptane",
+      "furfural",
+      "benzene"
+    ],
+    "UNIFAC_subgroups": [
+      {
+        "1": 2,
+        "2": 5
+      },
+      {
+        "22": 1
+      },
+      {
+        "9": 6
+      }
+    ]
+  }
+}

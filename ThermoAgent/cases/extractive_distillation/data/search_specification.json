@@ -1,0 +1,125 @@
+{
+  "SI_figure": "S4e",
+  "pressure_kPa": 101.3,
+  "feed_mol_s": 1,
+  "feed_composition": [
+    0.5,
+    0.5,
+    0
+  ],
+  "component_order": [
+    "sec-butyl alcohol",
+    "sec-butyl acetate",
+    "DMF"
+  ],
+  "solvent_feed_ratio_basis": "mass",
+  "purity_target": 0.995,
+  "recovery_target": 0.98,
+  "evaluated_ranges": [
+    {
+      "solvent_feed_mass_ratio": [
+        2
+      ],
+      "N": [
+        40,
+        80,
+        160
+      ],
+      "R": [
+        3,
+        5,
+        8,
+        12,
+        20,
+        40
+      ],
+      "solvent_stage": [
+        4,
+        8,
+        16
+      ],
+      "feed_stage_approximate_fraction_N": [
+        0.35,
+        0.6,
+        0.85
+      ]
+    },
+    {
+      "solvent_feed_mass_ratio": [
+        2
+      ],
+      "N": [
+        160,
+        300
+      ],
+      "R": [
+        4.0,
+        4.5,
+        5.0,
+        5.5,
+        6.0,
+        6.5,
+        7.0,
+        7.5,
+        8.0,
+        8.5,
+        9.0,
+        9.5,
+        10.0
+      ],
+      "solvent_stage": [
+        8,
+        20,
+        40
+      ],
+      "feed_stage_N_minus": [
+        20,
+        40,
+        60
+      ]
+    },
+    {
+      "solvent_feed_mass_ratio": [
+        4,
+        8,
+        16,
+        32
+      ],
+      "N": [
+        160
+      ],
+      "feed_stage": [
+        140
+      ],
+      "solvent_stage": [
+        12,
+        24,
+        36
+      ],
+      "R_times_mass_ratio": [
+        1,
+        1.5,
+        2,
+        3
+      ]
+    },
+    {
+      "solvent_feed_mass_ratio": [
+        32
+      ],
+      "R": [
+        48
+      ],
+      "solvent_stage": [
+        16
+      ],
+      "feed_stage_N_minus": [
+        24
+      ],
+      "boundary_N": [
+        182,
+        183
+      ]
+    }
+  ]
+}
