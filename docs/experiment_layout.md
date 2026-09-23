@@ -4,6 +4,7 @@ All result data, tables and figures are stored under `experiments/`.
 
 - `vle/prediction/`, `vle/generalization/`: VLE predictive and extrapolation evaluations.
 - `vle/comparison/`, `vle/ablation/`, `vle/interpretability/`: VLE reference models, controlled experiments and molecular analysis.
+- [`vle/ablation/binary_pair_coverage/`](../experiments/vle/ablation/binary_pair_coverage/): controlled constituent-pair coverage study (Fig. 3i-l and Table S2), F01 source data (Fig. 3h,m), fixed splits, checkpoints and reproduction scripts.
 - `vle/separation_design/`: registered separation-design cases and availability information.
 - `lle/prediction/`, `lle/generalization/`, `lle/thermodynamics/`: liquid coexistence benchmarks and certification results.
 - `summary/`: cross-task five-seed tables in CSV, Markdown and LaTeX.

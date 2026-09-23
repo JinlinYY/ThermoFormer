@@ -1,0 +1,231 @@
+{
+  "design": "Exploratory paired intervention on binary-pair coverage with a fixed ternary test set.",
+  "dataset_sha256": "fdffa94af2bf19c58cfc78b43528fc8d79035e94926f4e25806547572007fea0",
+  "eligible_target_systems": [
+    [
+      "C1CCOCC1",
+      "CC(C)CC(C)(C)C",
+      "CC(C)O"
+    ],
+    [
+      "CC(=O)CC(C)C",
+      "CC(C)CC(C)(C)C",
+      "CC(C)CO"
+    ],
+    [
+      "CC(=O)CC(C)C",
+      "CC(C)O",
+      "CC(C)OC(C)C"
+    ],
+    [
+      "CC(=O)O",
+      "CS(C)=O",
+      "O"
+    ],
+    [
+      "CC(C)=O",
+      "CC(C)CC(C)(C)C",
+      "CCO"
+    ],
+    [
+      "CC(C)CC(C)(C)C",
+      "CC(C)OC(C)C",
+      "CCO"
+    ],
+    [
+      "CC(C)CC(C)(C)C",
+      "CCC(C)=O",
+      "CCO"
+    ],
+    [
+      "CC(C)O",
+      "CCCCCO",
+      "CCCCO"
+    ],
+    [
+      "CCCOC(C)=O",
+      "CCOC(C)=O",
+      "CS(C)=O"
+    ],
+    [
+      "CCO",
+      "CCOC(=O)OCC",
+      "O"
+    ],
+    [
+      "CO",
+      "COC(C)=O",
+      "CS(C)=O"
+    ],
+    [
+      "COCCO",
+      "CS(C)=O",
+      "Cc1ccccc1"
+    ]
+  ],
+  "test_rows": 517,
+  "initial_candidates": [
+    [
+      "C1CCOCC1",
+      "CC(C)CC(C)(C)C",
+      "CC(C)O"
+    ],
+    [
+      "CC(=O)C(C)C",
+      "CC(C)C(C)C",
+      "CC(C)OC(C)C"
+    ],
+    [
+      "CC(=O)C(C)C",
+      "CC(C)CC(C)(C)C",
+      "CC(C)O"
+    ],
+    [
+      "CC(=O)CC(C)C",
+      "CC(C)CC(C)(C)C",
+      "CC(C)CO"
+    ],
+    [
+      "CC(=O)CC(C)C",
+      "CC(C)O",
+      "CC(C)OC(C)C"
+    ],
+    [
+      "CC(=O)O",
+      "CS(C)=O",
+      "O"
+    ],
+    [
+      "CC(C)=O",
+      "CC(C)CC(C)(C)C",
+      "CCO"
+    ],
+    [
+      "CC(C)C(=O)C(C)C",
+      "CC(C)CC(C)(C)C",
+      "CC(C)O"
+    ],
+    [
+      "CC(C)CC(C)(C)C",
+      "CC(C)OC(C)C",
+      "CCO"
+    ],
+    [
+      "CC(C)CC(C)(C)C",
+      "CCC(C)=O",
+      "CCO"
+    ],
+    [
+      "CC(C)O",
+      "CCCCCO",
+      "CCCCO"
+    ],
+    [
+      "CCCCCO",
+      "CCCO",
+      "CCCOCCC"
+    ],
+    [
+      "CCCO",
+      "CCCOCCC",
+      "CCOCCO"
+    ],
+    [
+      "CCCOC(C)=O",
+      "CCOC(C)=O",
+      "CS(C)=O"
+    ],
+    [
+      "CCO",
+      "CCOC(=O)OCC",
+      "O"
+    ],
+    [
+      "CO",
+      "COC(C)=O",
+      "CS(C)=O"
+    ],
+    [
+      "COCCO",
+      "CS(C)=O",
+      "Cc1ccccc1"
+    ]
+  ],
+  "excluded_for_molecular_exposure_confound": [
+    {
+      "system": [
+        "CC(=O)C(C)C",
+        "CC(C)C(C)C",
+        "CC(C)OC(C)C"
+      ],
+      "missing_background_molecules": [
+        "CC(=O)C(C)C",
+        "CC(C)C(C)C"
+      ]
+    },
+    {
+      "system": [
+        "CC(=O)C(C)C",
+        "CC(C)CC(C)(C)C",
+        "CC(C)O"
+      ],
+      "missing_background_molecules": [
+        "CC(=O)C(C)C"
+      ]
+    },
+    {
+      "system": [
+        "CC(C)C(=O)C(C)C",
+        "CC(C)CC(C)(C)C",
+        "CC(C)O"
+      ],
+      "missing_background_molecules": [
+        "CC(C)C(=O)C(C)C"
+      ]
+    },
+    {
+      "system": [
+        "CCCCCO",
+        "CCCO",
+        "CCCOCCC"
+      ],
+      "missing_background_molecules": [
+        "CCCOCCC"
+      ]
+    },
+    {
+      "system": [
+        "CCCO",
+        "CCCOCCC",
+        "CCOCCO"
+      ],
+      "missing_background_molecules": [
+        "CCCOCCC"
+      ]
+    }
+  ],
+  "test_mode_counts": {
+    "isobaric": 310,
+    "isothermal": 207
+  },
+  "background_training_rows": 8238,
+  "validation_rows": 1303,
+  "target_pairs": 34,
+  "maximum_target_rows": 641,
+  "pair_quota_cap": 20,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "target_pair_exclusion": "All target pairs excluded from common training background and fixed validation, including pairs embedded in other ternaries.",
+  "sampling": "Fixed background core, rotating color classes across seeds, nested target-pair additions, binary background rows replaced one-for-one. No replacement sampling.",
+  "limitations": [
+    "Target systems must have all 3 binary pairs available after standard pure-anchor filtering.",
+    "Equal total and binary/ternary training counts; state distributions are not exactly matched.",
+    "Five seeds vary initialization, pair order and target-point subsampling; results describe this intervention, not a universal law.",
+    "Validation contains no target pairs, so target-chemistry validation adaptation is excluded."
+  ]
+}

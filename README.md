@@ -50,6 +50,8 @@ Use `--dry-run` to inspect a command, `--check-splits-only` to audit supported c
 
 The principal VLE and LLE result tables and all five-seed summaries are in `experiments/summary/`. Task-specific results and figures are under `experiments/vle/` and `experiments/lle/`. Read [the experiment directory guide](docs/experiment_layout.md) for their organization.
 
+The [constituent binary-pair coverage study](experiments/vle/ablation/binary_pair_coverage/) provides the controlled mixed-training results in Fig. 3i-l and Supplementary Table S2, together with the F01 source data in Fig. 3h,m, fixed splits, selected checkpoints and reproduction commands.
+
 ## Checkpoints and verification
 
 `models/registry.json` identifies 50 VLE and 55 LLE final checkpoints selected using validation data. Mixed-training models are shared across their binary, ternary and joint test subsets. Baseline-specific weights are obtained separately from their cited upstream sources.
