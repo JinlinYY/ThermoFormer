@@ -1,1 +1,5 @@
-Scientific experiment catalog. Each task/category/experiment JSON declares its original backend, configuration, seed policy, data provenance, and output locations. See ../../docs/reproducibility/README.md.
+# Document location
+
+This guide is maintained at [docs/reference/benchmark_registry.md](./reference/benchmark_registry.md).
+
+The legacy path remains as a compatibility link for existing manifests and experiment records.

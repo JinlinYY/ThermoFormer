@@ -1,0 +1,10 @@
+name: thermoformer-cpu
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+      # Install a CPU-compatible PyTorch build for the host before large campaigns.
+      - -r requirements.txt

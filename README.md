@@ -1,48 +1,55 @@
 # ThermoFormer
 
-ThermoFormer predicts binary and ternary phase equilibria from molecular representations and thermodynamic state variables.
+ThermoFormer predicts binary and ternary vapour–liquid and liquid–liquid phase equilibria from molecular representations and thermodynamic state variables. This repository is organized as a reproducible research release following the open-source conventions used by [PSMI](https://github.com/JinlinYY/PSMI).
 
-- **VLE:** SMILES, temperature and liquid composition to pressure and vapor composition; or SMILES, pressure and liquid composition to temperature and vapor composition.
-- **LLE:** SMILES, temperature and pressure to liquid coexistence endpoints. Ternary predictions are unordered tie-line sets.
-- Baseline comparison, ablation and interpretability studies apply to VLE. LLE benchmarks cover prediction, generalization and thermodynamic stability.
+## Scientific scope
 
-This release accompanies *Agent-driven separation-process design with
-mixture-conditioned molecular thermodynamics*. It follows a paper-aligned
-research-release layout: executable code is in `src/` and `scripts/`, inputs
-and registries are in `configs/` and `datasets/`, and reported studies are
-indexed under `experiments/`. The supplied Supporting Information is mapped in
-[the article experiment index](docs/reproducibility/article_experiment_index.md).
+The release supports VLE prediction, LLE prediction, state and composition generalization, thermodynamic consistency, baseline comparison, ablation, molecular-interaction interpretation, and the separation-design cases reported in the manuscript and Supporting Information. Numerical equilibrium values are produced by the registered ThermoFormer or thermodynamic backends; unavailable external parameters remain explicitly marked.
+
+## Repository navigation
+
+| I want to… | Start here |
+|---|---|
+| Install and run a checkpoint | [`docs/getting_started/`](docs/getting_started/) |
+| Understand the model and interfaces | [`docs/architecture/`](docs/architecture/) |
+| Prepare data or train/evaluate a model | [`docs/guides/`](docs/guides/) |
+| Find code for a paper or SI section | [`experiments/`](experiments/) and [`docs/results/article_experiment_index.md`](docs/results/article_experiment_index.md) |
+| Inspect canonical metrics and tables | [`results/`](results/) and [`experiments/summary/`](experiments/summary/) |
+| Inspect configurations and registries | [`configs/`](configs/) |
+| Inspect datasets and fixed splits | [`datasets/`](datasets/) |
+| Run separation-design reproductions | [`ThermoAgent/`](ThermoAgent/) |
+| Run regression checks | [`tests/`](tests/) |
+
+## Directory map
+
+| Directory | Contents |
+|---|---|
+| `configs/` | Dataset, model, training, protocol, baseline, and checkpoint configurations |
+| `datasets/` | VLE/LLE workbooks, molecular features, labels, parameters, and fixed splits |
+| `src/` | Importable ThermoFormer models, data pipelines, solvers, training, evaluation, and baselines |
+| `scripts/` | Training, evaluation, analysis, experiment, and visualization entry points |
+| `models/` | Validation-selected checkpoints and pretrained resources |
+| `experiments/` | Executable task studies plus paper-section and Supporting Information navigation |
+| `results/` | Public-facing summary tables, manifests, and result navigation |
+| `docs/` | Getting-started guides, architecture, workflows, references, results, development, and legal notes |
+| `ThermoAgent/` | Deterministic separation-design case reproductions from the manuscript and SI |
+| `Web/` | Application-layer boundary; this release documents the interface boundary without shipping a browser frontend |
+| `tests/` | Scientific, interface, and repository-quality regression tests |
 
 ## Installation
-
-Install Git LFS before cloning to download the model weights and molecular feature arrays:
 
 ```bash
 git lfs install
 git clone https://github.com/JinlinYY/ThermoFormer.git
 cd ThermoFormer
 git lfs pull
-```
-
-```bash
 conda env create -f environment.yml
 conda activate ggnn39
 ```
 
-## Repository organization
+For a CPU-only environment, use `environment-cpu.yml` and follow [`docs/getting_started/installation.md`](docs/getting_started/installation.md).
 
-| Directory | Contents |
-|---|---|
-| `configs/` | Experiment registry, model settings and training configurations |
-| `datasets/` | VLE/LLE workbooks, split assignments, molecular resources and thermodynamic labels |
-| `src/thermoformer/` | Scientific models, solvers, training, evaluation and baseline adapters |
-| `scripts/` | Experiment, inference, evaluation and plotting entry points |
-| `models/` | Validation-selected checkpoints and required pretrained resources |
-| `experiments/` | Predictions, metrics, figures and reproducibility records, organized by task and study |
-| `docs/` | Method, dataset, baseline and reproduction documentation |
-| `tests/` | Scientific and interface regression tests |
-
-## Experiments
+## Quick start
 
 Run commands from the repository root:
 
@@ -53,15 +60,15 @@ python scripts/run_experiments.py run vle.prediction.binary --seeds 0 1 2 3 4 --
 python scripts/run_experiments.py run lle.prediction.binary_random --seeds 0 1 2 3 4 --device cuda --run-id v2
 ```
 
-Use `--dry-run` to inspect a command, `--check-splits-only` to audit supported campaign splits, and `--resume` for a matching recorded execution. Use a new run identifier for a new experiment.
+Use `--dry-run` to inspect a command, `--check-splits-only` to audit registered splits, and `--resume` to continue a matching recorded execution.
 
-The principal VLE and LLE result tables and all five-seed summaries are in `experiments/summary/`. Task-specific results and figures are under `experiments/vle/` and `experiments/lle/`. Read [the experiment directory guide](docs/experiment_layout.md) for their organization.
+## Data and experiment contract
 
-The [constituent binary-pair coverage study](experiments/vle/ablation/binary_pair_coverage/) provides the controlled mixed-training results in Fig. 3i-l and Supplementary Table S2, together with the F01 source data in Fig. 3h,m, fixed splits, selected checkpoints and reproduction commands.
+VLE and LLE data, molecular features, thermodynamic labels, split manifests, and provenance are versioned under `datasets/`. Configuration files under `configs/` bind each study to a dataset identity, model, protocol, seed set, and checkpoint registry. The task-organized directories under `experiments/vle/` and `experiments/lle/` remain the executable evidence paths. The paper-aligned navigation under `experiments/section_2_results/` and `experiments/supporting_information/` links each manuscript claim to those canonical paths.
 
-## Checkpoints and verification
+## Results and verification
 
-`models/registry.json` identifies 50 VLE and 55 LLE final checkpoints selected using validation data. Mixed-training models are shared across their binary, ternary and joint test subsets. Baseline-specific weights are obtained separately from their cited upstream sources.
+The public summary bundle is under `results/main_text/summary/`; the task-level evidence remains under `experiments/`. Verify checkpoints and scientific artifacts with:
 
 ```bash
 python scripts/validate_checkpoint_catalog.py --load
@@ -70,20 +77,8 @@ python scripts/run_experiments.py verify
 python -m pytest -q
 ```
 
-LLE uses a two-phase prior, binary RK free-energy parameterization and a continuous parallel tie-line approximation for ternary systems. Finite-grid TPD certification is a numerical stability diagnostic, not a global proof over the continuous composition simplex. Compare metrics only when dataset identity, split protocol and evaluation targets agree.
+The complete article/SI mapping is recorded in [`docs/results/article_experiment_index.md`](docs/results/article_experiment_index.md). Deterministic separation-design reproduction is documented in [`ThermoAgent/readme.md`](ThermoAgent/readme.md).
 
-## Paper and supporting-information map
+## Open-source policy
 
-| Manuscript or SI section | Release entry point |
-|---|---|
-| Main Section 2.1, SI S7 | `ThermoAgent/` and `experiments/vle/separation_design/` |
-| Main Section 3, SI S3 | `experiments/vle/prediction/`, `experiments/vle/generalization/`, `experiments/lle/` |
-| Main Section 3 comparison, SI S4 and S6 | `experiments/vle/comparison/`, `src/thermoformer/baselines/` |
-| Main Section 3 ablations, SI S5 | `experiments/vle/ablation/`, `configs/vle/ablation/` |
-| Main Section 3 interpretation, SI S2 | `experiments/vle/interpretability/`, `src/thermoformer/interpretability/` |
-| SI S1 and S5 | `experiments/data_quality/`, `datasets/`, `docs/dataset.md` |
-| SI S8 | `ThermoAgent/` reliability and case-study records |
-
-The release contains deterministic numerical workflows and archived evidence
-for the reported studies. API keys, private paths, local caches, and
-unpublished raw working directories are excluded.
+Public releases exclude API keys, private paths, local caches, and unpublished working directories. Dataset measurements, baseline implementations, and pretrained resources retain their cited attribution and reuse conditions. See [`CONTRIBUTING.md`](CONTRIBUTING.md), [`CITATION.cff`](CITATION.cff), and [`LICENSE`](LICENSE).
