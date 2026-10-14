@@ -1,0 +1,41 @@
+# Reference metric view
+
+Copied without recalculation from the registered five-seed result table.
+Mean ± sample SD; valid_seeds is the original report count.
+Source: experiments/summary/aggregate_metrics.csv; SHA-256: 796c4400a21c49e5917965b5cbed48cecb36c4b8f1fdbc63af40bf84865030e4.
+
+| Protocol | Subset | Direction | Target | Metric | Mean | Sample SD | n |
+|---|---|---|---|---|---:|---:|---:|
+| mixed-system | all |  | endpoints | conditions | 696.0 | 66.71956234868452 | 5 |
+| mixed-system | all |  | endpoints | failure_penalized_set_distance | 0.08229230392581777 | 0.012013846114512509 | 5 |
+| mixed-system | all |  | endpoints | matched_endpoint_mae_successful_only | 0.07221713578956573 | 0.0057507717514742405 | 5 |
+| mixed-system | all |  | endpoints | matched_endpoint_r2_successful_only | 0.8756239180351411 | 0.019131292896197773 | 5 |
+| mixed-system | all |  | endpoints | matched_endpoint_rmse_successful_only | 0.1165904928162473 | 0.008352003840935408 | 5 |
+| mixed-system | all |  | endpoints | max_equilibrium_rms | 5.582385404465454e-08 | 5.352949411466595e-08 | 5 |
+| mixed-system | all |  | endpoints | min_grid_tpd | -4.381634699512915e-09 | 5.35037465412069e-09 | 5 |
+| mixed-system | all |  | endpoints | observed_coverage_at_0.02 | 0.13579102030206194 | 0.030781701072467957 | 5 |
+| mixed-system | all |  | endpoints | r2_target_met | 0.0 | 0.0 | 5 |
+| mixed-system | all |  | endpoints | success_fraction | 1.0 | 0.0 | 5 |
+| mixed-system | all |  | endpoints | successful_conditions | 696.0 | 66.71956234868452 | 5 |
+| mixed-system | binary |  | endpoints | conditions | 454.4 | 60.86706827176745 | 5 |
+| mixed-system | binary |  | endpoints | failure_penalized_set_distance | 0.08134011594050877 | 0.019475427596105332 | 5 |
+| mixed-system | binary |  | endpoints | matched_endpoint_mae_successful_only | 0.07020566888004226 | 0.015528507646998962 | 5 |
+| mixed-system | binary |  | endpoints | matched_endpoint_r2_successful_only | 0.8903411042734957 | 0.048564949790704165 | 5 |
+| mixed-system | binary |  | endpoints | matched_endpoint_rmse_successful_only | 0.1083734779741485 | 0.024450727335024035 | 5 |
+| mixed-system | binary |  | endpoints | max_equilibrium_rms | 2.6132493916136534e-15 | 1.4700231603215356e-15 | 5 |
+| mixed-system | binary |  | endpoints | min_grid_tpd | -1.903251861667954e-15 | 4.711319021948853e-16 | 5 |
+| mixed-system | binary |  | endpoints | observed_coverage_at_0.02 | 0.16159506690294007 | 0.040911235372476054 | 5 |
+| mixed-system | binary |  | endpoints | r2_target_met | 0.2 | 0.447213595499958 | 5 |
+| mixed-system | binary |  | endpoints | success_fraction | 1.0 | 0.0 | 5 |
+| mixed-system | binary |  | endpoints | successful_conditions | 454.4 | 60.86706827176745 | 5 |
+| mixed-system | ternary |  | endpoints | conditions | 241.6 | 15.43696861433617 | 5 |
+| mixed-system | ternary |  | endpoints | failure_penalized_set_distance | 0.08370952320455867 | 0.005256493188316754 | 5 |
+| mixed-system | ternary |  | endpoints | matched_endpoint_mae_successful_only | 0.07235579473152003 | 0.007124348463347305 | 5 |
+| mixed-system | ternary |  | endpoints | matched_endpoint_r2_successful_only | 0.8712137766370157 | 0.021894495264813837 | 5 |
+| mixed-system | ternary |  | endpoints | matched_endpoint_rmse_successful_only | 0.11710417955468108 | 0.00966578960871181 | 5 |
+| mixed-system | ternary |  | endpoints | max_equilibrium_rms | 5.582385404465454e-08 | 5.352949411466595e-08 | 5 |
+| mixed-system | ternary |  | endpoints | min_grid_tpd | -4.381634699512915e-09 | 5.35037465412069e-09 | 5 |
+| mixed-system | ternary |  | endpoints | observed_coverage_at_0.02 | 0.08900654149174542 | 0.016761609579790948 | 5 |
+| mixed-system | ternary |  | endpoints | r2_target_met | 0.0 | 0.0 | 5 |
+| mixed-system | ternary |  | endpoints | success_fraction | 1.0 | 0.0 | 5 |
+| mixed-system | ternary |  | endpoints | successful_conditions | 241.6 | 15.43696861433617 | 5 |

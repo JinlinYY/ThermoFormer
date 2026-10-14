@@ -1,0 +1,849 @@
+{
+  "experiment": "lle.generalization.binary_pressure_low",
+  "provenance": "lle_nist",
+  "status": "runnable",
+  "notes": "Binary RK / ternary continuous parallel tie-line model; SMILES+T+P only. Includes unchanged activity and finite-grid TPD certification. No LLE comparison/ablation/interpretability.",
+  "sources": [
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low",
+      "exists": true,
+      "kind": "directory",
+      "sha256": null
+    }
+  ],
+  "files": [
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/data_audit.json",
+      "bytes": 931
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/identity.json",
+      "bytes": 3484
+    },
+    {
+      "path": "models/lle/generalization/binary-pressure-low/seed_0/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/completion.json",
+      "bytes": 377
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/features.json",
+      "bytes": 3764
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/history.json",
+      "bytes": 12213
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/predictions.json",
+      "bytes": 57933
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/predictions.partial.json",
+      "bytes": 57933
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/split.json",
+      "bytes": 77517
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/split_check.json",
+      "bytes": 272
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_109/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_109/predictions.json",
+      "bytes": 56959
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_109/predictions.partial.json",
+      "bytes": 56959
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_19/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_19/predictions.json",
+      "bytes": 57128
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_19/predictions.partial.json",
+      "bytes": 57128
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_29/metrics.json",
+      "bytes": 2292
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_29/predictions.json",
+      "bytes": 57072
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_29/predictions.partial.json",
+      "bytes": 57072
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_39/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_39/predictions.json",
+      "bytes": 57048
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_39/predictions.partial.json",
+      "bytes": 57048
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_49/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_49/predictions.json",
+      "bytes": 57089
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_49/predictions.partial.json",
+      "bytes": 57089
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_59/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_59/predictions.json",
+      "bytes": 57112
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_59/predictions.partial.json",
+      "bytes": 57112
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_69/metrics.json",
+      "bytes": 2296
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_69/predictions.json",
+      "bytes": 57092
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_69/predictions.partial.json",
+      "bytes": 57092
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_79/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_79/predictions.json",
+      "bytes": 57046
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_79/predictions.partial.json",
+      "bytes": 57046
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_89/metrics.json",
+      "bytes": 2294
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_89/predictions.json",
+      "bytes": 57067
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_89/predictions.partial.json",
+      "bytes": 57067
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_9/metrics.json",
+      "bytes": 2292
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_9/predictions.json",
+      "bytes": 57074
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_9/predictions.partial.json",
+      "bytes": 57074
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_99/metrics.json",
+      "bytes": 2290
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_99/predictions.json",
+      "bytes": 57109
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_0/validation_epoch_99/predictions.partial.json",
+      "bytes": 57109
+    },
+    {
+      "path": "models/lle/generalization/binary-pressure-low/seed_1/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/completion.json",
+      "bytes": 377
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/features.json",
+      "bytes": 3764
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/history.json",
+      "bytes": 17843
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/predictions.json",
+      "bytes": 57899
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/predictions.partial.json",
+      "bytes": 57899
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/split.json",
+      "bytes": 77517
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/split_check.json",
+      "bytes": 272
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_109/metrics.json",
+      "bytes": 2296
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_109/predictions.json",
+      "bytes": 56982
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_109/predictions.partial.json",
+      "bytes": 56982
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_119/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_119/predictions.json",
+      "bytes": 57045
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_119/predictions.partial.json",
+      "bytes": 57045
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_129/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_129/predictions.json",
+      "bytes": 57092
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_129/predictions.partial.json",
+      "bytes": 57092
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_139/metrics.json",
+      "bytes": 2296
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_139/predictions.json",
+      "bytes": 57007
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_139/predictions.partial.json",
+      "bytes": 57007
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_149/metrics.json",
+      "bytes": 2296
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_149/predictions.json",
+      "bytes": 57087
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_149/predictions.partial.json",
+      "bytes": 57087
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_159/metrics.json",
+      "bytes": 2294
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_159/predictions.json",
+      "bytes": 57043
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_159/predictions.partial.json",
+      "bytes": 57043
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_19/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_19/predictions.json",
+      "bytes": 55669
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_19/predictions.partial.json",
+      "bytes": 55669
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_29/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_29/predictions.json",
+      "bytes": 57248
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_29/predictions.partial.json",
+      "bytes": 57248
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_39/metrics.json",
+      "bytes": 2294
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_39/predictions.json",
+      "bytes": 57200
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_39/predictions.partial.json",
+      "bytes": 57200
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_49/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_49/predictions.json",
+      "bytes": 57117
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_49/predictions.partial.json",
+      "bytes": 57117
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_59/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_59/predictions.json",
+      "bytes": 56927
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_59/predictions.partial.json",
+      "bytes": 56927
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_69/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_69/predictions.json",
+      "bytes": 57126
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_69/predictions.partial.json",
+      "bytes": 57126
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_79/metrics.json",
+      "bytes": 2294
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_79/predictions.json",
+      "bytes": 57063
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_79/predictions.partial.json",
+      "bytes": 57063
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_89/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_89/predictions.json",
+      "bytes": 57022
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_89/predictions.partial.json",
+      "bytes": 57022
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_9/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_9/predictions.json",
+      "bytes": 57009
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_9/predictions.partial.json",
+      "bytes": 57009
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_99/metrics.json",
+      "bytes": 2296
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_99/predictions.json",
+      "bytes": 56982
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_1/validation_epoch_99/predictions.partial.json",
+      "bytes": 56982
+    },
+    {
+      "path": "models/lle/generalization/binary-pressure-low/seed_2/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/completion.json",
+      "bytes": 376
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/features.json",
+      "bytes": 3764
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/history.json",
+      "bytes": 10010
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/metrics.json",
+      "bytes": 2294
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/predictions.json",
+      "bytes": 57951
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/predictions.partial.json",
+      "bytes": 57951
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/split.json",
+      "bytes": 77517
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/split_check.json",
+      "bytes": 272
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_19/metrics.json",
+      "bytes": 2292
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_19/predictions.json",
+      "bytes": 57119
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_19/predictions.partial.json",
+      "bytes": 57119
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_29/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_29/predictions.json",
+      "bytes": 57045
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_29/predictions.partial.json",
+      "bytes": 57045
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_39/metrics.json",
+      "bytes": 2296
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_39/predictions.json",
+      "bytes": 57019
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_39/predictions.partial.json",
+      "bytes": 57019
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_49/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_49/predictions.json",
+      "bytes": 57089
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_49/predictions.partial.json",
+      "bytes": 57089
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_59/metrics.json",
+      "bytes": 2284
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_59/predictions.json",
+      "bytes": 57125
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_59/predictions.partial.json",
+      "bytes": 57125
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_69/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_69/predictions.json",
+      "bytes": 56934
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_69/predictions.partial.json",
+      "bytes": 56934
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_79/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_79/predictions.json",
+      "bytes": 57046
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_79/predictions.partial.json",
+      "bytes": 57046
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_89/metrics.json",
+      "bytes": 2296
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_89/predictions.json",
+      "bytes": 57053
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_89/predictions.partial.json",
+      "bytes": 57053
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_9/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_9/predictions.json",
+      "bytes": 57251
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_2/validation_epoch_9/predictions.partial.json",
+      "bytes": 57251
+    },
+    {
+      "path": "models/lle/generalization/binary-pressure-low/seed_3/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/completion.json",
+      "bytes": 376
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/features.json",
+      "bytes": 3764
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/history.json",
+      "bytes": 8904
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/metrics.json",
+      "bytes": 2292
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/predictions.json",
+      "bytes": 57945
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/predictions.partial.json",
+      "bytes": 57945
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/split.json",
+      "bytes": 77517
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/split_check.json",
+      "bytes": 272
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_19/metrics.json",
+      "bytes": 2294
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_19/predictions.json",
+      "bytes": 57019
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_19/predictions.partial.json",
+      "bytes": 57019
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_29/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_29/predictions.json",
+      "bytes": 57084
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_29/predictions.partial.json",
+      "bytes": 57084
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_39/metrics.json",
+      "bytes": 2294
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_39/predictions.json",
+      "bytes": 57133
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_39/predictions.partial.json",
+      "bytes": 57133
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_49/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_49/predictions.json",
+      "bytes": 57096
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_49/predictions.partial.json",
+      "bytes": 57096
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_59/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_59/predictions.json",
+      "bytes": 57001
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_59/predictions.partial.json",
+      "bytes": 57001
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_69/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_69/predictions.json",
+      "bytes": 56979
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_69/predictions.partial.json",
+      "bytes": 56979
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_79/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_79/predictions.json",
+      "bytes": 57107
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_79/predictions.partial.json",
+      "bytes": 57107
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_9/metrics.json",
+      "bytes": 2296
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_9/predictions.json",
+      "bytes": 57120
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_3/validation_epoch_9/predictions.partial.json",
+      "bytes": 57120
+    },
+    {
+      "path": "models/lle/generalization/binary-pressure-low/seed_4/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/completion.json",
+      "bytes": 376
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/features.json",
+      "bytes": 3764
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/history.json",
+      "bytes": 8901
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/metrics.json",
+      "bytes": 2294
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/predictions.json",
+      "bytes": 57862
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/predictions.partial.json",
+      "bytes": 57862
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/split.json",
+      "bytes": 77517
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/split_check.json",
+      "bytes": 272
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_19/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_19/predictions.json",
+      "bytes": 57010
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_19/predictions.partial.json",
+      "bytes": 57010
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_29/metrics.json",
+      "bytes": 2290
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_29/predictions.json",
+      "bytes": 57023
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_29/predictions.partial.json",
+      "bytes": 57023
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_39/metrics.json",
+      "bytes": 2296
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_39/predictions.json",
+      "bytes": 57004
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_39/predictions.partial.json",
+      "bytes": 57004
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_49/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_49/predictions.json",
+      "bytes": 57037
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_49/predictions.partial.json",
+      "bytes": 57037
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_59/metrics.json",
+      "bytes": 2290
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_59/predictions.json",
+      "bytes": 57076
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_59/predictions.partial.json",
+      "bytes": 57076
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_69/metrics.json",
+      "bytes": 2286
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_69/predictions.json",
+      "bytes": 56986
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_69/predictions.partial.json",
+      "bytes": 56986
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_79/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_79/predictions.json",
+      "bytes": 56957
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_79/predictions.partial.json",
+      "bytes": 56957
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_9/metrics.json",
+      "bytes": 2296
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_9/predictions.json",
+      "bytes": 57067
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/binary-pressure-low/seed_4/validation_epoch_9/predictions.partial.json",
+      "bytes": 57067
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/cache/functional_groups_thermoformer_v1.npz",
+      "bytes": 9289
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/cache/hybrid_rdkit_unimol_84m_functional_v1.npz",
+      "bytes": 1353233
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/cache/hybrid_rdkit_unimol_84m_v1.npz",
+      "bytes": 403616
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/cache/rdkit_2d_raw24_v1.npz",
+      "bytes": 24167
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-pressure-low/cache/unimolv2_84m.npz",
+      "bytes": 1321813
+    }
+  ],
+  "note": "Existence-only inventory; does not certify metrics or completed seed counts."
+}

@@ -1,0 +1,56 @@
+{
+  "metrics": {
+    "tf": {
+      "y_MAE": 0.01720165381214464,
+      "T_MAE_K": 1.5322813976651646,
+      "T_max_error_K": 2.23420157202861,
+      "alpha_MAE": 0.17531961463528484,
+      "direction_agreement": 17
+    },
+    "unifac": {
+      "y_MAE": 0.03505986811184772,
+      "T_MAE_K": 2.3552541173794284,
+      "T_max_error_K": 4.383334408891699,
+      "alpha_MAE": 0.3415934428378082,
+      "direction_agreement": 3
+    }
+  },
+  "configurations": [
+    {
+      "configuration": "thermoformer_182",
+      "N": 182,
+      "feed_stage": 158,
+      "solvent_stage": 16,
+      "ester_purity": 0.9949997640917909,
+      "ester_recovery": 0.979999767648196,
+      "meets_targets": false,
+      "maximum_stage_balance_error_mol_s": 1.1464322824394912e-09,
+      "stages_outside_experimental_composition_hull": 182,
+      "stages_outside_experimental_temperature_interval": 182
+    },
+    {
+      "configuration": "thermoformer_183",
+      "N": 183,
+      "feed_stage": 159,
+      "solvent_stage": 16,
+      "ester_purity": 0.9950863249956244,
+      "ester_recovery": 0.9800850236137808,
+      "meets_targets": true,
+      "maximum_stage_balance_error_mol_s": 1.144709216305273e-09,
+      "stages_outside_experimental_composition_hull": 183,
+      "stages_outside_experimental_temperature_interval": 183
+    },
+    {
+      "configuration": "unifac_183",
+      "N": 183,
+      "feed_stage": 159,
+      "solvent_stage": 16,
+      "ester_purity": 0.2645187884759375,
+      "ester_recovery": 0.260531068046652,
+      "meets_targets": false,
+      "maximum_stage_balance_error_mol_s": 7.916689526155096e-11,
+      "stages_outside_experimental_composition_hull": 183,
+      "stages_outside_experimental_temperature_interval": 183
+    }
+  ]
+}

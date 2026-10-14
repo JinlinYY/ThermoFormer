@@ -1,0 +1,87 @@
+{
+  "experiment": "data.construction.audit",
+  "provenance": "nist_thermoml",
+  "status": "artifact_only",
+  "notes": "Source records, registered dataset records, training-filtered records, and independent conditions must be reported separately.",
+  "sources": [
+    {
+      "path": "datasets/vle/manifest.json",
+      "exists": true,
+      "kind": "file",
+      "sha256": "665470194c9f7e6bb6faba1ca0d33dea92bd45fda08a4b58d47c4d06ca03a1b5"
+    },
+    {
+      "path": "datasets/vle/validation.json",
+      "exists": true,
+      "kind": "file",
+      "sha256": "bebac7dce1a06ad29ceb924ec11dbca3232c959a17b28377afa07593beeab771"
+    },
+    {
+      "path": "datasets/lle/manifest.json",
+      "exists": true,
+      "kind": "file",
+      "sha256": "6a2f2542bde5f695ad0193ee9c2943de4c62b6b4c8ad845ba8c2bdc9ca2cd7e0"
+    },
+    {
+      "path": "experiments/vle/interpretability/molecular_interactions/figures/dataset_distribution/reports",
+      "exists": true,
+      "kind": "directory",
+      "sha256": null
+    }
+  ],
+  "files": [
+    {
+      "path": "datasets/vle/manifest.json",
+      "bytes": 1065
+    },
+    {
+      "path": "datasets/vle/validation.json",
+      "bytes": 1396
+    },
+    {
+      "path": "datasets/lle/manifest.json",
+      "bytes": 475
+    },
+    {
+      "path": "experiments/vle/interpretability/molecular_interactions/figures/dataset_distribution/reports/dataset_distribution_report.md",
+      "bytes": 5086
+    },
+    {
+      "path": "experiments/vle/interpretability/molecular_interactions/figures/dataset_distribution/reports/dataset_schema_audit.md",
+      "bytes": 5975
+    },
+    {
+      "path": "experiments/vle/interpretability/molecular_interactions/figures/dataset_distribution/reports/dataset_statistics.md",
+      "bytes": 5369
+    },
+    {
+      "path": "experiments/vle/interpretability/molecular_interactions/figures/dataset_distribution/reports/Figure_dataset_overview_v3_caption.md",
+      "bytes": 1188
+    },
+    {
+      "path": "experiments/vle/interpretability/molecular_interactions/figures/dataset_distribution/reports/Figure_dataset_overview_v3_manuscript_text.md",
+      "bytes": 3791
+    },
+    {
+      "path": "experiments/vle/interpretability/molecular_interactions/figures/dataset_distribution/reports/figure_visual_qa.md",
+      "bytes": 2426
+    },
+    {
+      "path": "experiments/vle/interpretability/molecular_interactions/figures/dataset_distribution/reports/phase_equilibrium_dataset_analysis.md",
+      "bytes": 1666
+    },
+    {
+      "path": "experiments/vle/interpretability/molecular_interactions/figures/dataset_distribution/reports/phase_equilibrium_dataset_analysis.tex",
+      "bytes": 5487
+    },
+    {
+      "path": "experiments/vle/interpretability/molecular_interactions/figures/dataset_distribution/reports/archive/Figure_dataset_overview_v1_caption.md",
+      "bytes": 1281
+    },
+    {
+      "path": "experiments/vle/interpretability/molecular_interactions/figures/dataset_distribution/reports/archive/Figure_dataset_overview_v2_caption.md",
+      "bytes": 1212
+    }
+  ],
+  "note": "Existence-only inventory; does not certify metrics or completed seed counts."
+}

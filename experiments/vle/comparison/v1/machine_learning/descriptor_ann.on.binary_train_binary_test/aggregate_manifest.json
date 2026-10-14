@@ -1,0 +1,103 @@
+{
+  "analysis_status": "coverage_audit",
+  "baseline": "descriptor_ann",
+  "benchmark": "binary_train_binary_test",
+  "input_manifests": {
+    "0": {
+      "path": "experiments/vle/comparison/v1/machine_learning/descriptor_ann.on.binary_train_binary_test/seed_0/manifest.json",
+      "sha256": "e41dc6431611e6c6ccc419effa57b9c9d776ebfd6d4f1c47c3be9fdc5e61c23c"
+    },
+    "1": {
+      "path": "experiments/vle/comparison/v1/machine_learning/descriptor_ann.on.binary_train_binary_test/seed_1/manifest.json",
+      "sha256": "4311ab904511d39ef0d22f6b7e8607bfc315e1bd31f71e5ddc671eb66ba05f1f"
+    },
+    "2": {
+      "path": "experiments/vle/comparison/v1/machine_learning/descriptor_ann.on.binary_train_binary_test/seed_2/manifest.json",
+      "sha256": "51bdcf2bdc883889a25c905963600896f39ae9efb837d5e38cda4483c15f4d6e"
+    },
+    "3": {
+      "path": "experiments/vle/comparison/v1/machine_learning/descriptor_ann.on.binary_train_binary_test/seed_3/manifest.json",
+      "sha256": "06e002ea569cf42aec356c91835dbb1a1e151c18ca451c35a756647145af2758"
+    },
+    "4": {
+      "path": "experiments/vle/comparison/v1/machine_learning/descriptor_ann.on.binary_train_binary_test/seed_4/manifest.json",
+      "sha256": "db57cb2988ff057ff2e230d65c60ce1f4eb64e6bf3bc08fb46cdd529506ebc4f"
+    }
+  },
+  "output": {
+    "path": "metrics_summary.csv",
+    "sha256": "8cd98d27d90eef55fa19b8ef1d8cd63e6fd85ea2b7c105cd5f3936b4d61f83a6"
+  },
+  "provenance": {
+    "config": {
+      "device": "cuda",
+      "epochs": 200,
+      "fixed_temperature_tolerance_k": 0.5,
+      "gdi_weight": 0.01,
+      "learning_rate": 0.001,
+      "mc_dropout_samples": 32,
+      "minimum_composition": 1e-05,
+      "patience": 25,
+      "spt_adapted_attention_heads": 4,
+      "spt_adapted_batch_size": 32,
+      "spt_adapted_dropout": 0.1,
+      "spt_adapted_embedding_dimension": 128,
+      "spt_adapted_epochs": 300,
+      "spt_adapted_feedforward_dimension": 256,
+      "spt_adapted_label_fit_evaluations": 250,
+      "spt_adapted_label_regularization": 0.001,
+      "spt_adapted_learning_rate": 0.0003,
+      "spt_adapted_max_sequence_length": 128,
+      "spt_adapted_minimum_pair_rows": 5,
+      "spt_adapted_patience": 30,
+      "spt_adapted_transformer_layers": 2
+    },
+    "dataset_sha256": "fdffa94af2bf19c58cfc78b43528fc8d79035e94926f4e25806547572007fea0",
+    "environment": {
+      "path": "environment.yml",
+      "requirements_path": "requirements.txt",
+      "requirements_sha256": "ed875989e22267f49b631924cdda980bbabec68917b1f1d56eae574855a8b0f5",
+      "sha256": "88f063806981a4025837ea6048b50a372c816796340ca2d46e92c22fe9c322b7"
+    },
+    "feature_cache": {
+      "policy": "deterministic_on_the_fly_from_registered_rows",
+      "used": false
+    },
+    "feature_definitions": {
+      "src/thermoformer/baselines/machine_learning/formal.py": "39945745fd2f26f6507283c60a0b57a5b42d6ee3f005e360f2178016a320be0c",
+      "src/thermoformer/baselines/machine_learning/models.py": "1aec963e87371a1a3300b6c0e8f3eff17b6c3cf98d87298093ecbb544daaa3f7",
+      "src/thermoformer/baselines/machine_learning/smoke.py": "7a26bcaf8f20a297373c81998e58d120cdb7fdc33d6cc554bf7d4187c62ff834"
+    },
+    "git_commit": "44b121cdb16ffee0488553f7fa04b9d4068211fc",
+    "model_assets": {},
+    "parameter_accounting": {},
+    "runtime": {
+      "cuda": "12.6",
+      "cudnn": "90501",
+      "device": "cuda",
+      "execution_profile": "native_project_environment",
+      "gpu": "NVIDIA GeForce RTX 3090 Ti",
+      "hanna_dependencies": {},
+      "numpy": "1.26.4",
+      "python": "3.9.25",
+      "tennetsac_dependencies": {},
+      "torch": "2.6.0+cu126",
+      "upstream_environment_parity": "not_applicable"
+    },
+    "settings_sha256": "a9433e6c64c051ba3be120c3e7257b3b5522b5f67e8f34d2375763264103eaed",
+    "source_workbooks": {
+      "datasets/vle/binary_vle_english.xlsx": "1fdd6bd4417970a023a4917882a0faa14a747f232cff06f33fd5394672029788",
+      "datasets/vle/ternary_vle_english.xlsx": "f7fcd62064f0f192b3a2d14f57860a03cae9606744fcb3b3a5efd019eafcaf8b"
+    },
+    "split_protocol": "vle_overall_binary"
+  },
+  "schema_version": 1,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "status": "not_evaluated"
+}

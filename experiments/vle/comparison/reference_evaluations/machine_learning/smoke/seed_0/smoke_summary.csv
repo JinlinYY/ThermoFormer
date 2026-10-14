@@ -1,0 +1,9 @@
+baseline,display_name,status,implementation_source,native_component_counts,native_directions,temperature_mode,trainable_parameters,reference_trainable_parameters,reference_parameter_note,detail
+descriptor_ann,Descriptor ANN,passed_architecture_only,official_architecture_reimplemented_wrapper,2,isobaric,variable,9921,9921,"per direction-specific output head; two heads total 19,842",architecture update passed; formal reproduction still requires the author-defined 21-descriptor table
+smiles_rnn,SMILES-RNN,passed,reimplemented_from_official,2,isothermal/isobaric,variable,21306,,,finite forward/backward update on train-only rows
+ualf_gnn,UALF-GNN,passed,paper_reimplemented,2,isobaric,variable,114052,,,finite forward/backward update on train-only rows
+solvgnn,SolvGNN,passed_architecture_only,official_port,2/3,isothermal,fixed_298k,174209,,,architecture update passed; native evaluation remains restricted to 298.15 K rows
+gdi_gnn,GDI-GNN,passed_architecture_only,official_port,2,isothermal,fixed_298k,174273,,,architecture update passed; native evaluation remains restricted to 298.15 K rows
+ge_gnn,GE-GNN,passed_architecture_only,official_port,2,isothermal,fixed_298k,174273,,,architecture update passed; native evaluation remains restricted to 298.15 K rows
+hanna,HANNA (current multicomponent),blocked_external_assets,official_pretrained,2/3,isothermal/isobaric,variable,0,651900,"ten-head ensemble; 65,190 per head; frozen ChemBERTa excluded",official checkpoint and overlap inventory are required
+tennet_sac,TeNNet-SAC,blocked_external_assets,official_pretrained,2/3,isothermal/isobaric,variable,0,2743206,profile + geometry + one segment model; frozen language encoders excluded,official checkpoint and overlap inventory are required

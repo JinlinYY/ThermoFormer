@@ -1,0 +1,1 @@
+Task-specific result discovery and managed execution outputs. Historical metrics remain explicitly versioned. sources.json references original artifacts without moving them. VLE and LLE have separate scopes; historical baselines and release-data benchmarks are not automatically comparable.

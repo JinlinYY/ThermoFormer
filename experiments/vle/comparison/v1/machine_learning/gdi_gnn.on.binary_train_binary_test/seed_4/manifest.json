@@ -1,0 +1,98 @@
+{
+  "analysis_status": "confirmatory",
+  "artifacts": {
+    "checkpoint": {
+      "path": "models/vle/comparison/v1/machine_learning/gdi_gnn.on.binary_train_binary_test/seed_4/best_model.pt",
+      "sha256": "a7400834c41deb96f953970d5e2faef842050198d5c9230f5a5ed5bc337c0c3a"
+    },
+    "history": {
+      "path": "history.csv",
+      "sha256": "07336af7589ef6a3c1e8b4de0e96ba9fd0989e3b0d2ddfaa017b641fd1f9e0cd"
+    },
+    "metrics": {
+      "path": "metrics.csv",
+      "sha256": "f92c9487c0fa830f87d96891677bdf8305c37f899d73af70478a67ab5543e67f"
+    },
+    "predictions": {
+      "path": "predictions.csv",
+      "sha256": "88f19abf0e3d77f6511e044fa817ec2228c5dc68a660b78e2272c1ceb277a5f8"
+    }
+  },
+  "baseline": "gdi_gnn",
+  "benchmark": "binary_train_binary_test",
+  "config": {
+    "device": "cuda",
+    "epochs": 200,
+    "fixed_temperature_tolerance_k": 0.5,
+    "gdi_weight": 0.01,
+    "learning_rate": 0.001,
+    "mc_dropout_samples": 32,
+    "minimum_composition": 1e-05,
+    "patience": 25,
+    "spt_adapted_attention_heads": 4,
+    "spt_adapted_batch_size": 32,
+    "spt_adapted_dropout": 0.1,
+    "spt_adapted_embedding_dimension": 128,
+    "spt_adapted_epochs": 300,
+    "spt_adapted_feedforward_dimension": 256,
+    "spt_adapted_label_fit_evaluations": 250,
+    "spt_adapted_label_regularization": 0.001,
+    "spt_adapted_learning_rate": 0.0003,
+    "spt_adapted_max_sequence_length": 128,
+    "spt_adapted_minimum_pair_rows": 5,
+    "spt_adapted_patience": 30,
+    "spt_adapted_transformer_layers": 2
+  },
+  "dataset_sha256": "fdffa94af2bf19c58cfc78b43528fc8d79035e94926f4e25806547572007fea0",
+  "environment": {
+    "path": "environment.yml",
+    "requirements_path": "requirements.txt",
+    "requirements_sha256": "ed875989e22267f49b631924cdda980bbabec68917b1f1d56eae574855a8b0f5",
+    "sha256": "88f063806981a4025837ea6048b50a372c816796340ca2d46e92c22fe9c322b7"
+  },
+  "evaluation_partition": "test",
+  "feature_cache": {
+    "policy": "deterministic_on_the_fly_from_registered_rows",
+    "used": false
+  },
+  "feature_definitions": {
+    "src/thermoformer/baselines/machine_learning/formal.py": "9e6d4c1ce89a1d80b675a605dda3d02e3f24ab5065217c621805bae11870e4ad",
+    "src/thermoformer/baselines/machine_learning/models.py": "1aec963e87371a1a3300b6c0e8f3eff17b6c3cf98d87298093ecbb544daaa3f7",
+    "src/thermoformer/baselines/machine_learning/smoke.py": "7a26bcaf8f20a297373c81998e58d120cdb7fdc33d6cc554bf7d4187c62ff834"
+  },
+  "git_commit": "e9560bbbcde5790ca0a7fad46561372f049ddf2a",
+  "model_assets": {},
+  "parameter_accounting": {},
+  "runtime": {
+    "cuda": "12.6",
+    "cudnn": "90501",
+    "device": "cuda",
+    "execution_profile": "native_project_environment",
+    "gpu": "NVIDIA GeForce RTX 3090 Ti",
+    "hanna_dependencies": {},
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "tennetsac_dependencies": {},
+    "torch": "2.6.0+cu126",
+    "upstream_environment_parity": "not_applicable"
+  },
+  "schema_version": 1,
+  "seed": 4,
+  "selection_partition": "validation",
+  "settings_sha256": "a9433e6c64c051ba3be120c3e7257b3b5522b5f67e8f34d2375763264103eaed",
+  "source_workbooks": {
+    "datasets/vle/binary_vle_english.xlsx": "1fdd6bd4417970a023a4917882a0faa14a747f232cff06f33fd5394672029788",
+    "datasets/vle/ternary_vle_english.xlsx": "f7fcd62064f0f192b3a2d14f57860a03cae9606744fcb3b3a5efd019eafcaf8b"
+  },
+  "split_protocol": "vle_overall_binary",
+  "split_sha256": "3a53ac3aafcc1e341226dda66e419a09d9ab6a0272194c76dc9f827d24bf55f5",
+  "status": "completed",
+  "test_labels_used_for_selection": false,
+  "test_sample_ids_sha256": "71c1932839991b9b0f00d33d4859cb12a3bdfbb2b25e0dc4d7b1f621707918c9",
+  "test_system_ids_sha256": "ac50fda7654d432fda4d7dbef669d3335a9f0ba1604b7607b2412dcefd6983ec",
+  "train_sample_ids_sha256": "a7a0218374a617580813200828cca75c3e65359ed81b512bcb1247b26bbb22a9",
+  "train_system_ids_sha256": "8a337f1f8219c568f7d353da443c1895509e81f6d899d5e1acc56166c423b3a8",
+  "trainable_parameters": 174273,
+  "validation_sample_ids_sha256": "92a2fe0755019061b1a97b697abd651d10f67e67a1d0b4879bd8ffe1f0bf7e41",
+  "validation_system_ids_sha256": "c39e46345518e6c852e36e860eeab2f5b78ec8836dc5af04326f57f102f23751"
+}

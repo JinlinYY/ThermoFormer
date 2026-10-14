@@ -1,0 +1,32 @@
+# Reference metric view
+
+Copied without recalculation from the registered five-seed result table.
+Mean ± sample SD; valid_seeds is the original report count.
+Source: experiments/summary/aggregate_metrics.csv; SHA-256: 796c4400a21c49e5917965b5cbed48cecb36c4b8f1fdbc63af40bf84865030e4.
+
+| Protocol | Subset | Direction | Target | Metric | Mean | Sample SD | n |
+|---|---|---|---|---|---:|---:|---:|
+| vle_binary_state_temperature_low_extrapolation | 2 | isobaric | T | mae | 0.7863736545436998 | 0.17028786994030973 | 5 |
+| vle_binary_state_temperature_low_extrapolation | 2 | isobaric | T | r2 | 0.9959798030263943 | 0.0020403313065979057 | 5 |
+| vle_binary_state_temperature_low_extrapolation | 2 | isobaric | T | rmse | 1.5533508237843403 | 0.3647685606975311 | 5 |
+| vle_binary_state_temperature_low_extrapolation | 2 | isobaric | y | mae | 0.008685001971845355 | 0.0005715434331221172 | 5 |
+| vle_binary_state_temperature_low_extrapolation | 2 | isobaric | y | r2 | 0.9973209879937684 | 0.0005698837716149593 | 5 |
+| vle_binary_state_temperature_low_extrapolation | 2 | isobaric | y | rmse | 0.020861832089161862 | 0.0021654813871963123 | 5 |
+| vle_binary_state_temperature_low_extrapolation | 2 | isothermal | P | mae | 2.388828060483416 | 0.2877791947153012 | 5 |
+| vle_binary_state_temperature_low_extrapolation | 2 | isothermal | P | r2 | 0.9936334357893679 | 0.002026329733379449 | 5 |
+| vle_binary_state_temperature_low_extrapolation | 2 | isothermal | P | rmse | 6.5434419836599815 | 1.1284017387628797 | 5 |
+| vle_binary_state_temperature_low_extrapolation | 2 | isothermal | y | mae | 0.014493208557095783 | 0.002099342024643333 | 5 |
+| vle_binary_state_temperature_low_extrapolation | 2 | isothermal | y | r2 | 0.9944751056192681 | 0.0016119489017730514 | 5 |
+| vle_binary_state_temperature_low_extrapolation | 2 | isothermal | y | rmse | 0.022774613399738748 | 0.003173746887664255 | 5 |
+| vle_binary_state_temperature_low_extrapolation | all | isobaric | T | mae | 0.7863736545436998 | 0.17028786994030973 | 5 |
+| vle_binary_state_temperature_low_extrapolation | all | isobaric | T | r2 | 0.9959798030263943 | 0.0020403313065979057 | 5 |
+| vle_binary_state_temperature_low_extrapolation | all | isobaric | T | rmse | 1.5533508237843403 | 0.3647685606975311 | 5 |
+| vle_binary_state_temperature_low_extrapolation | all | isobaric | y | mae | 0.008685001971845355 | 0.0005715434331221172 | 5 |
+| vle_binary_state_temperature_low_extrapolation | all | isobaric | y | r2 | 0.9973209879937684 | 0.0005698837716149593 | 5 |
+| vle_binary_state_temperature_low_extrapolation | all | isobaric | y | rmse | 0.020861832089161862 | 0.0021654813871963123 | 5 |
+| vle_binary_state_temperature_low_extrapolation | all | isothermal | P | mae | 2.388828060483416 | 0.2877791947153012 | 5 |
+| vle_binary_state_temperature_low_extrapolation | all | isothermal | P | r2 | 0.9936334357893679 | 0.002026329733379449 | 5 |
+| vle_binary_state_temperature_low_extrapolation | all | isothermal | P | rmse | 6.5434419836599815 | 1.1284017387628797 | 5 |
+| vle_binary_state_temperature_low_extrapolation | all | isothermal | y | mae | 0.014493208557095783 | 0.002099342024643333 | 5 |
+| vle_binary_state_temperature_low_extrapolation | all | isothermal | y | r2 | 0.9944751056192681 | 0.0016119489017730514 | 5 |
+| vle_binary_state_temperature_low_extrapolation | all | isothermal | y | rmse | 0.022774613399738748 | 0.003173746887664255 | 5 |

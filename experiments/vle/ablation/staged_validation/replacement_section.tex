@@ -1,0 +1,27 @@
+\subsubsection{Staged thermodynamic optimization}
+
+To isolate the contribution of each optimization stage, the saved Stage~0--3 checkpoints were evaluated on their original validation partitions using physical diagnostics of fugacity consistency, pressure closure, and activity-coefficient fidelity. All diagnostics were recomputed from the validation-selected checkpoint of each stage across five random seeds, without retraining, checkpoint reselection, or test-set evaluation.
+
+\begin{table*}[!thbp]
+\centering
+\caption{Physical diagnostics of the staged thermodynamic optimization on the updated VLE dataset. $r^{f}$ denotes the component-wise log-fugacity residual evaluated at the experimental equilibrium state. Results are reported as mean $\pm$ sample standard deviation over five random seeds; lower values indicate better physical consistency. Bold values indicate the best result for each metric.}
+\label{tab:staged_thermodynamic_ablation}
+\footnotesize
+\setlength{\tabcolsep}{5.0pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{tabular}{@{}C{1.7cm}C{3.2cm}C{3.2cm}C{3.2cm}C{3.2cm}@{}}
+\toprule[0.8pt]
+\makecell[c]{Optimization\\stage} & \makecell[c]{Mean\\$|r^{f}|$} & \makecell[c]{P95\\$|r^{f}|$} & \makecell[c]{Relative pressure-\\closure residual} & \makecell[c]{$\ln\gamma$\\reference error} \\
+\midrule[0.6pt]
+Stage 0 & $0.45512\pm0.09866$ & $1.72280\pm0.64971$ & $0.45359\pm0.09936$ & $0.11237\pm0.01430$ \\
+\cmidrule(lr){1-5}
+Stage 1 & $\mathbf{0.44157\pm0.08840}$ & $\mathbf{1.70663\pm0.61805}$ & $\mathbf{0.43946\pm0.08312}$ & $0.10785\pm0.01086$ \\
+\cmidrule(lr){1-5}
+Stage 2 & $0.44755\pm0.06903$ & $1.77686\pm0.62317$ & $0.44477\pm0.06722$ & $\mathbf{0.10478\pm0.01115}$ \\
+\cmidrule(lr){1-5}
+Stage 3 & $0.44315\pm0.06854$ & $1.77712\pm0.61262$ & $0.44114\pm0.06570$ & $0.10507\pm0.01144$ \\
+\bottomrule[0.8pt]
+\end{tabular}
+\end{table*}
+
+The updated-data diagnostics show that the optimization stages have modest and non-monotonic effects (Table~\ref{tab:staged_thermodynamic_ablation}). Stage~1 gives the lowest mean and P95 log-fugacity residuals and the lowest relative pressure-closure residual, while also reducing the $\ln\gamma$ reference error relative to Stage~0. Stage~2 yields the lowest $\ln\gamma$ reference error, but its equilibrium-level residuals do not improve on Stage~1. Stage~3 recovers part of the Stage~1 advantage in the mean log-fugacity and pressure-closure residuals while approximately preserving the Stage~2 activity-coefficient fidelity, but it does not attain the best value for any reported metric. These results support complementary calibration effects across stages, but they do not support a strictly monotonic improvement or the claim that Stage~3 provides the strongest overall validation-set physical consistency.

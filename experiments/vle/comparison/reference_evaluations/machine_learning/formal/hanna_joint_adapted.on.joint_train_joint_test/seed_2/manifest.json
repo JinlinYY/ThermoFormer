@@ -1,0 +1,22 @@
+{
+  "status": "completed",
+  "baseline": "hanna_joint_adapted",
+  "benchmark": "joint_train_joint_test",
+  "seed": 2,
+  "selection_partition": "validation",
+  "evaluation_partition": "test",
+  "test_labels_used_for_selection": false,
+  "config": {
+    "hidden_dimension": 32,
+    "dropout": 0.05,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "batch_size": 256,
+    "epochs": 100,
+    "patience": 15,
+    "minimum_composition": 1e-05
+  },
+  "train_rows": 6790,
+  "validation_rows": 1544,
+  "base_predictions_cached": 57833
+}

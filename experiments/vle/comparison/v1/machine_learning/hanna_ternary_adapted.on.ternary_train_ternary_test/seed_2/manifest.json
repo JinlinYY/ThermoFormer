@@ -1,0 +1,36 @@
+{
+  "status": "completed",
+  "baseline": "hanna_ternary_adapted",
+  "benchmark": "ternary_train_ternary_test",
+  "seed": 2,
+  "selection_partition": "validation",
+  "evaluation_partition": "test",
+  "test_labels_used_for_selection": false,
+  "config": {
+    "hidden_dimension": 32,
+    "dropout": 0.05,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "batch_size": 256,
+    "epochs": 100,
+    "patience": 15,
+    "minimum_composition": 1e-05
+  },
+  "train_rows": 964,
+  "validation_rows": 231,
+  "vapor_pressure_calibration": {
+    "partition": "registered_training_only",
+    "eligible_rows": "near-pure endpoints with x >= 0.999",
+    "calibration_rows_scanned": 7897,
+    "binary_mixture_activity_labels_used": false
+  },
+  "base_predictions_cached": 9083,
+  "source_commit": "44b121cdb16ffee0488553f7fa04b9d4068211fc",
+  "dataset_sha256": "fdffa94af2bf19c58cfc78b43528fc8d79035e94926f4e25806547572007fea0",
+  "split_protocol": "vle_overall_binary_ternary",
+  "split_sha256": "b8172ca8f1bd59a6e8836d3512031c2203b267ddb4b3d6ee479fa59ca8968180",
+  "checkpoint": {
+    "path": "models/vle/comparison/v1/machine_learning/hanna_ternary_adapted.on.ternary_train_ternary_test/seed_2/best_model.pt",
+    "sha256": "ec353122b7f79b45e051aab5558e1ead21a2a6cad4895bae88e6b7c2602979c0"
+  }
+}

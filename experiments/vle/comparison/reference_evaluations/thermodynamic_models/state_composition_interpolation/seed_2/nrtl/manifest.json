@@ -1,0 +1,104 @@
+{
+  "artifacts": {
+    "metrics": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_composition_interpolation/seed_2/nrtl/metrics.json",
+      "sha256": "d90b4565a0465a6e17d40d318151e7861d8ed5d1c7113045f57827010ac8a0c0"
+    },
+    "parameters": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_composition_interpolation/seed_2/nrtl/parameters.json",
+      "sha256": "9c3b3635a1c16b602ec0e0e4bc467986e677b917452b31c84f8df94d37040d06"
+    },
+    "predictions": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_composition_interpolation/seed_2/nrtl/predictions.csv",
+      "sha256": "2c2b8c915cd2c5f0b4624f8c8c3f2d8ddcc026ecdc3d5f96e133c08ae9f2860a"
+    },
+    "vapor_pressure_fits": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_composition_interpolation/seed_2/vapor_pressure_fits.json",
+      "sha256": "12bf077c5d236ac99192e718658305eef0bf8b8566f3f6f40006cecc3ff643b7"
+    }
+  },
+  "config_sources": [
+    {
+      "path": "configs/model/c1_three_view_vanilla.yaml",
+      "sha256": "b49471ea53d6222c65c8e89b59095d09f827978b025c49a508c1e0bf849ee6d7"
+    },
+    {
+      "path": "configs/training/supervised.yaml",
+      "sha256": "7acefbcf4da404b4cbbe4e09c8bc3cc21c5bebe509b624c3cb981b8509184e71"
+    },
+    {
+      "path": "configs/training/fugacity_finetuning.yaml",
+      "sha256": "eaf09983d015da25b7979adb585c3a6ef8070e83bb32164f560ef21eea138aaf"
+    },
+    {
+      "path": "configs/protocols/state_generalization.yaml",
+      "sha256": "9b6493d4673a8e150b992d51328a2a7918d662e5c7d1d4af2370e9063541ed6e"
+    },
+    {
+      "path": "configs/vle/comparison/studies/thermodynamic_models/config.json",
+      "sha256": "d1f2aeefcba75779d5f615f336197486233ab67e7bd93bdccf07607e17edd78a"
+    }
+  ],
+  "counts": {
+    "fitted_systems": 170,
+    "parameter_coverage_by_component_count": {
+      "2": {
+        "attempted_systems": 144,
+        "coverage": 1.0,
+        "fitted_systems": 144
+      },
+      "3": {
+        "attempted_systems": 26,
+        "coverage": 1.0,
+        "fitted_systems": 26
+      }
+    },
+    "requested_systems": 170,
+    "system_parameter_coverage": 1.0,
+    "test_rows": 745,
+    "training_rows": 9521,
+    "validation_rows": 745
+  },
+  "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+  "dataset_workbooks": [
+    {
+      "path": "datasets/vle_reference/binary_vle_english.xlsx",
+      "sha256": "d122177fe42b5b41ca2e782cc77b3e6a7a0ebf922bb0e589f18edde622bf3efc"
+    },
+    {
+      "path": "datasets/vle_reference/ternary_vle_english.xlsx",
+      "sha256": "52fe356da44cc5e78f32b881a614ac95ea98e55002aaba464cfcf35069764c67"
+    }
+  ],
+  "elapsed_seconds": 6.522919178009033,
+  "evaluation_partition": "test",
+  "experiment": "thermodynamic_model_state_generalization",
+  "git_commit": "fbc03969621d4cfec0f4cf26377643874e2b3978",
+  "model": "nrtl",
+  "protocol": "state_composition_interpolation",
+  "resolved_config_sha256": "15cf42b0a5bd46fa7b4309d7876d5e7f8efbc8bd90fb7efaa3119a136bad6fdd",
+  "run_kind": "formal",
+  "runtime": {
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "scipy": "1.13.1",
+    "thermo": "0.6.0"
+  },
+  "schema_version": 1,
+  "seed": 2,
+  "selection_partition": "train",
+  "settings_sha256": "0d451968bcf82c7115fc8d1af1629199b60a453f5b0223faf2b57cea7b8ca60f",
+  "split": {
+    "path": "datasets/splits/vle/state_composition_interpolation/seed_2.json",
+    "sha256": "8fbccc53d82822d1f58e8001dd515e7248288133070ce5c431841554c26f8968"
+  },
+  "split_sha256": "8fbccc53d82822d1f58e8001dd515e7248288133070ce5c431841554c26f8968",
+  "status": "completed",
+  "temperature_solver_bounds_k": [
+    150.0,
+    859.01
+  ],
+  "test_labels_used_for_case_selection": false,
+  "test_labels_used_for_fitting": false,
+  "vapor_pressure_fits_sha256": "12bf077c5d236ac99192e718658305eef0bf8b8566f3f6f40006cecc3ff643b7"
+}

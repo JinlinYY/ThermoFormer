@@ -1,0 +1,1137 @@
+{
+  "experiment": "lle.generalization.binary_temperature_low",
+  "provenance": "lle_nist",
+  "status": "runnable",
+  "notes": "Binary RK / ternary continuous parallel tie-line model; SMILES+T+P only. Includes unchanged activity and finite-grid TPD certification. No LLE comparison/ablation/interpretability.",
+  "sources": [
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low",
+      "exists": true,
+      "kind": "directory",
+      "sha256": null
+    }
+  ],
+  "files": [
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/data_audit.json",
+      "bytes": 931
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/identity.json",
+      "bytes": 3490
+    },
+    {
+      "path": "models/lle/generalization/binary-temperature-low/seed_0/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/completion.json",
+      "bytes": 377
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/features.json",
+      "bytes": 6457
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/history.json",
+      "bytes": 17873
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/predictions.json",
+      "bytes": 550433
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/predictions.partial.json",
+      "bytes": 550433
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/split.json",
+      "bytes": 779280
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/split_check.json",
+      "bytes": 277
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_109/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_109/predictions.json",
+      "bytes": 552430
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_109/predictions.partial.json",
+      "bytes": 552430
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_119/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_119/predictions.json",
+      "bytes": 552433
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_119/predictions.partial.json",
+      "bytes": 552433
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_129/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_129/predictions.json",
+      "bytes": 552712
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_129/predictions.partial.json",
+      "bytes": 552712
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_139/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_139/predictions.json",
+      "bytes": 552564
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_139/predictions.partial.json",
+      "bytes": 552564
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_149/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_149/predictions.json",
+      "bytes": 552409
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_149/predictions.partial.json",
+      "bytes": 552409
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_159/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_159/predictions.json",
+      "bytes": 552472
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_159/predictions.partial.json",
+      "bytes": 552472
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_19/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_19/predictions.json",
+      "bytes": 552175
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_19/predictions.partial.json",
+      "bytes": 552175
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_29/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_29/predictions.json",
+      "bytes": 552365
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_29/predictions.partial.json",
+      "bytes": 552365
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_39/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_39/predictions.json",
+      "bytes": 552263
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_39/predictions.partial.json",
+      "bytes": 552263
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_49/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_49/predictions.json",
+      "bytes": 552185
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_49/predictions.partial.json",
+      "bytes": 552185
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_59/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_59/predictions.json",
+      "bytes": 552523
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_59/predictions.partial.json",
+      "bytes": 552523
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_69/metrics.json",
+      "bytes": 2314
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_69/predictions.json",
+      "bytes": 552484
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_69/predictions.partial.json",
+      "bytes": 552484
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_79/metrics.json",
+      "bytes": 2318
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_79/predictions.json",
+      "bytes": 552558
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_79/predictions.partial.json",
+      "bytes": 552558
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_89/metrics.json",
+      "bytes": 2314
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_89/predictions.json",
+      "bytes": 552420
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_89/predictions.partial.json",
+      "bytes": 552420
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_9/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_9/predictions.json",
+      "bytes": 552387
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_9/predictions.partial.json",
+      "bytes": 552387
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_99/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_99/predictions.json",
+      "bytes": 552114
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_0/validation_epoch_99/predictions.partial.json",
+      "bytes": 552114
+    },
+    {
+      "path": "models/lle/generalization/binary-temperature-low/seed_1/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/completion.json",
+      "bytes": 377
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/features.json",
+      "bytes": 6457
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/history.json",
+      "bytes": 16742
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/predictions.json",
+      "bytes": 550398
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/predictions.partial.json",
+      "bytes": 550398
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/split.json",
+      "bytes": 779280
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/split_check.json",
+      "bytes": 277
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_109/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_109/predictions.json",
+      "bytes": 552778
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_109/predictions.partial.json",
+      "bytes": 552778
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_119/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_119/predictions.json",
+      "bytes": 552499
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_119/predictions.partial.json",
+      "bytes": 552499
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_129/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_129/predictions.json",
+      "bytes": 552636
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_129/predictions.partial.json",
+      "bytes": 552636
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_139/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_139/predictions.json",
+      "bytes": 552725
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_139/predictions.partial.json",
+      "bytes": 552725
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_149/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_149/predictions.json",
+      "bytes": 552340
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_149/predictions.partial.json",
+      "bytes": 552340
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_19/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_19/predictions.json",
+      "bytes": 552418
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_19/predictions.partial.json",
+      "bytes": 552418
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_29/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_29/predictions.json",
+      "bytes": 552119
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_29/predictions.partial.json",
+      "bytes": 552119
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_39/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_39/predictions.json",
+      "bytes": 552511
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_39/predictions.partial.json",
+      "bytes": 552511
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_49/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_49/predictions.json",
+      "bytes": 552477
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_49/predictions.partial.json",
+      "bytes": 552477
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_59/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_59/predictions.json",
+      "bytes": 552758
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_59/predictions.partial.json",
+      "bytes": 552758
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_69/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_69/predictions.json",
+      "bytes": 552681
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_69/predictions.partial.json",
+      "bytes": 552681
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_79/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_79/predictions.json",
+      "bytes": 552477
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_79/predictions.partial.json",
+      "bytes": 552477
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_89/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_89/predictions.json",
+      "bytes": 552451
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_89/predictions.partial.json",
+      "bytes": 552451
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_9/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_9/predictions.json",
+      "bytes": 552440
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_9/predictions.partial.json",
+      "bytes": 552440
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_99/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_99/predictions.json",
+      "bytes": 552413
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_1/validation_epoch_99/predictions.partial.json",
+      "bytes": 552413
+    },
+    {
+      "path": "models/lle/generalization/binary-temperature-low/seed_2/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/completion.json",
+      "bytes": 377
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/features.json",
+      "bytes": 6457
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/history.json",
+      "bytes": 14481
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/predictions.json",
+      "bytes": 550195
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/predictions.partial.json",
+      "bytes": 550195
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/split.json",
+      "bytes": 779280
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/split_check.json",
+      "bytes": 277
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_109/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_109/predictions.json",
+      "bytes": 552477
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_109/predictions.partial.json",
+      "bytes": 552477
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_119/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_119/predictions.json",
+      "bytes": 552316
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_119/predictions.partial.json",
+      "bytes": 552316
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_129/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_129/predictions.json",
+      "bytes": 552416
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_129/predictions.partial.json",
+      "bytes": 552416
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_19/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_19/predictions.json",
+      "bytes": 552258
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_19/predictions.partial.json",
+      "bytes": 552258
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_29/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_29/predictions.json",
+      "bytes": 552206
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_29/predictions.partial.json",
+      "bytes": 552206
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_39/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_39/predictions.json",
+      "bytes": 552314
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_39/predictions.partial.json",
+      "bytes": 552314
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_49/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_49/predictions.json",
+      "bytes": 552344
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_49/predictions.partial.json",
+      "bytes": 552344
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_59/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_59/predictions.json",
+      "bytes": 552590
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_59/predictions.partial.json",
+      "bytes": 552590
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_69/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_69/predictions.json",
+      "bytes": 552504
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_69/predictions.partial.json",
+      "bytes": 552504
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_79/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_79/predictions.json",
+      "bytes": 552460
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_79/predictions.partial.json",
+      "bytes": 552460
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_89/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_89/predictions.json",
+      "bytes": 552448
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_89/predictions.partial.json",
+      "bytes": 552448
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_9/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_9/predictions.json",
+      "bytes": 551992
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_9/predictions.partial.json",
+      "bytes": 551992
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_99/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_99/predictions.json",
+      "bytes": 552034
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_2/validation_epoch_99/predictions.partial.json",
+      "bytes": 552034
+    },
+    {
+      "path": "models/lle/generalization/binary-temperature-low/seed_3/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/completion.json",
+      "bytes": 377
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/features.json",
+      "bytes": 6457
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/history.json",
+      "bytes": 17868
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/predictions.json",
+      "bytes": 550789
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/predictions.partial.json",
+      "bytes": 550789
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/split.json",
+      "bytes": 779280
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/split_check.json",
+      "bytes": 277
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_109/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_109/predictions.json",
+      "bytes": 552639
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_109/predictions.partial.json",
+      "bytes": 552639
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_119/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_119/predictions.json",
+      "bytes": 552654
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_119/predictions.partial.json",
+      "bytes": 552654
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_129/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_129/predictions.json",
+      "bytes": 552480
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_129/predictions.partial.json",
+      "bytes": 552480
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_139/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_139/predictions.json",
+      "bytes": 552705
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_139/predictions.partial.json",
+      "bytes": 552705
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_149/metrics.json",
+      "bytes": 2316
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_149/predictions.json",
+      "bytes": 552322
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_149/predictions.partial.json",
+      "bytes": 552322
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_159/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_159/predictions.json",
+      "bytes": 552865
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_159/predictions.partial.json",
+      "bytes": 552865
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_19/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_19/predictions.json",
+      "bytes": 552292
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_19/predictions.partial.json",
+      "bytes": 552292
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_29/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_29/predictions.json",
+      "bytes": 552316
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_29/predictions.partial.json",
+      "bytes": 552316
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_39/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_39/predictions.json",
+      "bytes": 552388
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_39/predictions.partial.json",
+      "bytes": 552388
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_49/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_49/predictions.json",
+      "bytes": 552251
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_49/predictions.partial.json",
+      "bytes": 552251
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_59/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_59/predictions.json",
+      "bytes": 552429
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_59/predictions.partial.json",
+      "bytes": 552429
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_69/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_69/predictions.json",
+      "bytes": 552186
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_69/predictions.partial.json",
+      "bytes": 552186
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_79/metrics.json",
+      "bytes": 2290
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_79/predictions.json",
+      "bytes": 552518
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_79/predictions.partial.json",
+      "bytes": 552518
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_89/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_89/predictions.json",
+      "bytes": 552551
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_89/predictions.partial.json",
+      "bytes": 552551
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_9/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_9/predictions.json",
+      "bytes": 552525
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_9/predictions.partial.json",
+      "bytes": 552525
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_99/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_99/predictions.json",
+      "bytes": 552626
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_3/validation_epoch_99/predictions.partial.json",
+      "bytes": 552626
+    },
+    {
+      "path": "models/lle/generalization/binary-temperature-low/seed_4/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/completion.json",
+      "bytes": 377
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/features.json",
+      "bytes": 6457
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/history.json",
+      "bytes": 17868
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/predictions.json",
+      "bytes": 550223
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/predictions.partial.json",
+      "bytes": 550223
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/split.json",
+      "bytes": 779280
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/split_check.json",
+      "bytes": 277
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_109/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_109/predictions.json",
+      "bytes": 552572
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_109/predictions.partial.json",
+      "bytes": 552572
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_119/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_119/predictions.json",
+      "bytes": 552712
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_119/predictions.partial.json",
+      "bytes": 552712
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_129/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_129/predictions.json",
+      "bytes": 552409
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_129/predictions.partial.json",
+      "bytes": 552409
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_139/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_139/predictions.json",
+      "bytes": 552295
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_139/predictions.partial.json",
+      "bytes": 552295
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_149/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_149/predictions.json",
+      "bytes": 552451
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_149/predictions.partial.json",
+      "bytes": 552451
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_159/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_159/predictions.json",
+      "bytes": 552759
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_159/predictions.partial.json",
+      "bytes": 552759
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_19/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_19/predictions.json",
+      "bytes": 552062
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_19/predictions.partial.json",
+      "bytes": 552062
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_29/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_29/predictions.json",
+      "bytes": 552098
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_29/predictions.partial.json",
+      "bytes": 552098
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_39/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_39/predictions.json",
+      "bytes": 552406
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_39/predictions.partial.json",
+      "bytes": 552406
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_49/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_49/predictions.json",
+      "bytes": 552231
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_49/predictions.partial.json",
+      "bytes": 552231
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_59/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_59/predictions.json",
+      "bytes": 552367
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_59/predictions.partial.json",
+      "bytes": 552367
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_69/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_69/predictions.json",
+      "bytes": 552072
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_69/predictions.partial.json",
+      "bytes": 552072
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_79/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_79/predictions.json",
+      "bytes": 552621
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_79/predictions.partial.json",
+      "bytes": 552621
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_89/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_89/predictions.json",
+      "bytes": 552486
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_89/predictions.partial.json",
+      "bytes": 552486
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_9/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_9/predictions.json",
+      "bytes": 552170
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_9/predictions.partial.json",
+      "bytes": 552170
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_99/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_99/predictions.json",
+      "bytes": 552238
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/binary-temperature-low/seed_4/validation_epoch_99/predictions.partial.json",
+      "bytes": 552238
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/cache/functional_groups_thermoformer_v1.npz",
+      "bytes": 9289
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/cache/hybrid_rdkit_unimol_84m_functional_v1.npz",
+      "bytes": 1353233
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/cache/hybrid_rdkit_unimol_84m_v1.npz",
+      "bytes": 403616
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/cache/rdkit_2d_raw24_v1.npz",
+      "bytes": 24167
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-temperature-low/cache/unimolv2_84m.npz",
+      "bytes": 1321813
+    }
+  ],
+  "note": "Existence-only inventory; does not certify metrics or completed seed counts."
+}

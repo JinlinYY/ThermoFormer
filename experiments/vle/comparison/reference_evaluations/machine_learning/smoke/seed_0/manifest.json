@@ -1,0 +1,252 @@
+{
+  "analysis_status": "diagnostic",
+  "benchmark_assignments": {
+    "binary_train_binary_test": {
+      "split_protocol": "overall_binary",
+      "test_sample_id_sha256": "a22f03c58aff03f31e5f8f09d9521c20713e7229377714f88d89383076795d33",
+      "test_samples": 1502,
+      "test_systems": 53,
+      "train_sample_id_sha256": "e03a842d638119bcf9cb162b1c6489f013a4c03060b505a5e7f68dea2f6a8b5e",
+      "train_samples": 6911,
+      "train_systems": 224,
+      "validation_sample_id_sha256": "625226662e82b81376aa2698e510cb355934bd5c889f9990fe5affb9e4890cb1",
+      "validation_samples": 1492,
+      "validation_systems": 44
+    },
+    "joint_train_binary_test": {
+      "split_protocol": "overall_binary_ternary",
+      "test_sample_id_sha256": "a22f03c58aff03f31e5f8f09d9521c20713e7229377714f88d89383076795d33",
+      "test_samples": 1502,
+      "test_systems": 53,
+      "train_sample_id_sha256": "f8cc8d0d79b648cfe9c8f15eab6737c93a4953eb22a50e5b6a7d453aec6803c2",
+      "train_samples": 7684,
+      "train_systems": 243,
+      "validation_sample_id_sha256": "625226662e82b81376aa2698e510cb355934bd5c889f9990fe5affb9e4890cb1",
+      "validation_samples": 1492,
+      "validation_systems": 44
+    },
+    "joint_train_ternary_test": {
+      "split_protocol": "overall_binary_ternary",
+      "test_sample_id_sha256": "698a9300f41e92acebbdf7b5ba975e181afad916452e91148644e863c73df3b6",
+      "test_samples": 168,
+      "test_systems": 4,
+      "train_sample_id_sha256": "f8cc8d0d79b648cfe9c8f15eab6737c93a4953eb22a50e5b6a7d453aec6803c2",
+      "train_samples": 7684,
+      "train_systems": 243,
+      "validation_sample_id_sha256": "c6d2499247846d01fec007820138665f895b772ca4373bf63beb042e198a2227",
+      "validation_samples": 168,
+      "validation_systems": 3
+    }
+  },
+  "config": {
+    "asset_root": "datasets/molecular_features/upstream_baselines",
+    "epochs": 1,
+    "learning_rate": 0.001,
+    "max_train_rows": 8,
+    "max_validation_rows": 8,
+    "seed": 0,
+    "settings_sha256": "87f91d3132a02bab604a23101a8d52e5cfc7b93a5967d0a2c7e1db0c1e450ab3"
+  },
+  "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+  "evaluation_partition": "validation",
+  "model_config_artifacts": {
+    "descriptor_ann": {
+      "path": "descriptor_ann/config.json",
+      "sha256": "411fdd6670103fd2220553fe8695ea1560c25ff85d1f4e2fa718df10a01e8d63"
+    },
+    "gdi_gnn": {
+      "path": "gdi_gnn/config.json",
+      "sha256": "dda97556e51e27419e2fb215881e47ab3af004dfb556577ef7aa9567eae52df2"
+    },
+    "ge_gnn": {
+      "path": "ge_gnn/config.json",
+      "sha256": "d06cf89e621815fcdfb3fc0920704154f67b467d1448a41c8fb9df79b69b1564"
+    },
+    "hanna": {
+      "path": "hanna/config.json",
+      "sha256": "79f883551738d4c287f66ecac6a174c27038c6ae97f189f3ae6eed129deeb713"
+    },
+    "smiles_rnn": {
+      "path": "smiles_rnn/config.json",
+      "sha256": "ea5924ef270f7b112a6b47d0c1792d4ce5c6498a1060a5da2adf1798c0c7141b"
+    },
+    "solvgnn": {
+      "path": "solvgnn/config.json",
+      "sha256": "956e1106800af8f79661537216a9875bcb8d5037e4f7ca7760c91e7c5686bb80"
+    },
+    "tennet_sac": {
+      "path": "tennet_sac/config.json",
+      "sha256": "d13ed0ae83409cb8c4a79c77e9b8ea55efcee678699806402fa13debc74b873d"
+    },
+    "ualf_gnn": {
+      "path": "ualf_gnn/config.json",
+      "sha256": "752e095ac1fead082d14e8255d07f76f1950a57f8d87069d60486aed45b6f008"
+    }
+  },
+  "models": [
+    {
+      "baseline": "descriptor_ann",
+      "detail": "architecture update passed; formal reproduction still requires the author-defined 21-descriptor table",
+      "display_name": "Descriptor ANN",
+      "implementation_source": "official_architecture_reimplemented_wrapper",
+      "native_component_counts": "2",
+      "native_directions": "isobaric",
+      "reference_parameter_note": "per direction-specific output head; two heads total 19,842",
+      "reference_trainable_parameters": 9921,
+      "status": "passed_architecture_only",
+      "temperature_mode": "variable",
+      "trainable_parameters": 9921
+    },
+    {
+      "baseline": "smiles_rnn",
+      "detail": "finite forward/backward update on train-only rows",
+      "display_name": "SMILES-RNN",
+      "implementation_source": "reimplemented_from_official",
+      "native_component_counts": "2",
+      "native_directions": "isothermal/isobaric",
+      "reference_parameter_note": "",
+      "reference_trainable_parameters": "",
+      "status": "passed",
+      "temperature_mode": "variable",
+      "trainable_parameters": 21306
+    },
+    {
+      "baseline": "ualf_gnn",
+      "detail": "finite forward/backward update on train-only rows",
+      "display_name": "UALF-GNN",
+      "implementation_source": "paper_reimplemented",
+      "native_component_counts": "2",
+      "native_directions": "isobaric",
+      "reference_parameter_note": "",
+      "reference_trainable_parameters": "",
+      "status": "passed",
+      "temperature_mode": "variable",
+      "trainable_parameters": 114052
+    },
+    {
+      "baseline": "solvgnn",
+      "detail": "architecture update passed; native evaluation remains restricted to 298.15 K rows",
+      "display_name": "SolvGNN",
+      "implementation_source": "official_port",
+      "native_component_counts": "2/3",
+      "native_directions": "isothermal",
+      "reference_parameter_note": "",
+      "reference_trainable_parameters": "",
+      "status": "passed_architecture_only",
+      "temperature_mode": "fixed_298k",
+      "trainable_parameters": 174209
+    },
+    {
+      "baseline": "gdi_gnn",
+      "detail": "architecture update passed; native evaluation remains restricted to 298.15 K rows",
+      "display_name": "GDI-GNN",
+      "implementation_source": "official_port",
+      "native_component_counts": "2",
+      "native_directions": "isothermal",
+      "reference_parameter_note": "",
+      "reference_trainable_parameters": "",
+      "status": "passed_architecture_only",
+      "temperature_mode": "fixed_298k",
+      "trainable_parameters": 174273
+    },
+    {
+      "baseline": "ge_gnn",
+      "detail": "architecture update passed; native evaluation remains restricted to 298.15 K rows",
+      "display_name": "GE-GNN",
+      "implementation_source": "official_port",
+      "native_component_counts": "2",
+      "native_directions": "isothermal",
+      "reference_parameter_note": "",
+      "reference_trainable_parameters": "",
+      "status": "passed_architecture_only",
+      "temperature_mode": "fixed_298k",
+      "trainable_parameters": 174273
+    },
+    {
+      "baseline": "hanna",
+      "detail": "official checkpoint and overlap inventory are required",
+      "display_name": "HANNA (current multicomponent)",
+      "implementation_source": "official_pretrained",
+      "native_component_counts": "2/3",
+      "native_directions": "isothermal/isobaric",
+      "reference_parameter_note": "ten-head ensemble; 65,190 per head; frozen ChemBERTa excluded",
+      "reference_trainable_parameters": 651900,
+      "status": "blocked_external_assets",
+      "temperature_mode": "variable",
+      "trainable_parameters": 0
+    },
+    {
+      "baseline": "tennet_sac",
+      "detail": "official checkpoint and overlap inventory are required",
+      "display_name": "TeNNet-SAC",
+      "implementation_source": "official_pretrained",
+      "native_component_counts": "2/3",
+      "native_directions": "isothermal/isobaric",
+      "reference_parameter_note": "profile + geometry + one segment model; frozen language encoders excluded",
+      "reference_trainable_parameters": 2743206,
+      "status": "blocked_external_assets",
+      "temperature_mode": "variable",
+      "trainable_parameters": 0
+    }
+  ],
+  "protocol": "overall_binary_ternary",
+  "runtime": {
+    "device": "cpu",
+    "git_commit": "acaee2516d1cd130c9fe39e78a9bab47fe2fb3c8",
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "rdkit": "2025.03.5",
+    "torch": "2.6.0+cu126"
+  },
+  "schema_version": 1,
+  "seed": 0,
+  "selection_partition": "validation",
+  "split_sha256": "df98bbb7d2b1f5b902d3355bcdef9d10a4e52100c28f38bfa36ffea5bf28beda",
+  "status": "diagnostic_smoke",
+  "summary": {
+    "path": "smoke_summary.csv",
+    "sha256": "fb5dfacbeb07e40f302cdaa8485d5c0885c45d8ba51f425036053313d6898dd4"
+  },
+  "test_ids_audited": true,
+  "test_labels_consumed": false,
+  "train_sample_ids": [
+    "state_00030141ceb1bf208cf724d0",
+    "state_001108a9e833611b5e1fc9ff",
+    "state_001c6a924aa7e81dde33eab7",
+    "state_0025749c9b72ecc800f38667",
+    "state_002e7a8538a0d437c5736b3f",
+    "state_0031ada83b9bc3f816aa297b",
+    "state_003c8db287f34692c6425aa5",
+    "state_003dee8ace7ff270e28e91ea"
+  ],
+  "train_system_ids": [
+    "2c_3429cbe6e222c2d5b300",
+    "2c_4cf4774918df9099eea7",
+    "2c_634f7acb12353da4f13b",
+    "2c_679d20c0c097df83b478",
+    "2c_74bb0ea508c8aa0f9f59",
+    "2c_c93b4fec031a47ca2d3f",
+    "2c_e4eaf71c64f10438e3e9",
+    "2c_eb2e4911a3e045b6cf1d"
+  ],
+  "validation_sample_ids": [
+    "state_008468fcb64b5afd8efef450",
+    "state_009789814ea15389c2621d06",
+    "state_00a9f676b135a9f5ca08a63a",
+    "state_00c971e70895fe0b05655e01",
+    "state_00fb16c74cebc3c6438cd82b",
+    "state_00fdecd4bf321176dc6dbb40",
+    "state_01137d0f503039cf1b91a2c6",
+    "state_0125fd17136e647479514462"
+  ],
+  "validation_system_ids": [
+    "2c_045f196d049de4abb690",
+    "2c_784276d4500715f79c89",
+    "2c_7e396008deb1d14f8e15",
+    "2c_9478a219a5c540597926",
+    "2c_decb34b3a10a038f9be3",
+    "2c_f6f5f309e3d6c1952684",
+    "3c_485aadc678c8a7fb274c",
+    "3c_954c33e76e33ef115670"
+  ]
+}

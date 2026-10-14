@@ -1,0 +1,2005 @@
+{
+  "experiment": "vle.ablation.joint",
+  "provenance": "vle_nist",
+  "status": "runnable",
+  "notes": "All variants use identical release-data split assignments. The completed C1 main-benchmark result is reused; five unique variants are trained.",
+  "sources": [
+    {
+      "path": "configs/vle/ablation/studies/vle_joint",
+      "exists": true,
+      "kind": "directory",
+      "sha256": null
+    },
+    {
+      "path": "experiments/vle/ablation/joint",
+      "exists": true,
+      "kind": "directory",
+      "sha256": null
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary",
+      "exists": true,
+      "kind": "directory",
+      "sha256": null
+    }
+  ],
+  "files": [
+    {
+      "path": "docs/vle/ablation/study_records/vle_joint/README.md",
+      "bytes": 1090
+    },
+    {
+      "path": "configs/vle/ablation/studies/vle_joint/stage0_base.yaml",
+      "bytes": 206
+    },
+    {
+      "path": "configs/vle/ablation/studies/vle_joint/three_stage_base.yaml",
+      "bytes": 210
+    },
+    {
+      "path": "configs/vle/ablation/studies/vle_joint/stage0/c0_current_vanilla.yaml",
+      "bytes": 261
+    },
+    {
+      "path": "configs/vle/ablation/studies/vle_joint/stage0/c1_three_view_vanilla.yaml",
+      "bytes": 57
+    },
+    {
+      "path": "configs/vle/ablation/studies/vle_joint/stage0/c2_chemical_bias_full.yaml",
+      "bytes": 131
+    },
+    {
+      "path": "configs/vle/ablation/studies/vle_joint/stage0/c3_no_pair_bias.yaml",
+      "bytes": 126
+    },
+    {
+      "path": "configs/vle/ablation/studies/vle_joint/stage0/v1_rdkit_only.yaml",
+      "bytes": 255
+    },
+    {
+      "path": "configs/vle/ablation/studies/vle_joint/stage0/v4_rdkit_unimol_naive.yaml",
+      "bytes": 262
+    },
+    {
+      "path": "configs/vle/ablation/studies/vle_joint/three_stage/c0_current_vanilla.yaml",
+      "bytes": 266
+    },
+    {
+      "path": "configs/vle/ablation/studies/vle_joint/three_stage/c1_three_view_vanilla.yaml",
+      "bytes": 62
+    },
+    {
+      "path": "configs/vle/ablation/studies/vle_joint/three_stage/c2_chemical_bias_full.yaml",
+      "bytes": 136
+    },
+    {
+      "path": "configs/vle/ablation/studies/vle_joint/three_stage/c3_no_pair_bias.yaml",
+      "bytes": 131
+    },
+    {
+      "path": "configs/vle/ablation/studies/vle_joint/three_stage/v1_rdkit_only.yaml",
+      "bytes": 260
+    },
+    {
+      "path": "configs/vle/ablation/studies/vle_joint/three_stage/v4_rdkit_unimol_naive.yaml",
+      "bytes": 267
+    },
+    {
+      "path": "experiments/vle/ablation/joint/manifest.json",
+      "bytes": 788
+    },
+    {
+      "path": "experiments/vle/ablation/joint/per_seed_metrics.csv",
+      "bytes": 38727
+    },
+    {
+      "path": "experiments/vle/ablation/joint/README.md",
+      "bytes": 948
+    },
+    {
+      "path": "experiments/vle/ablation/joint/reference_metrics.csv",
+      "bytes": 3233
+    },
+    {
+      "path": "experiments/vle/ablation/joint/reference_metrics.md",
+      "bytes": 4224
+    },
+    {
+      "path": "experiments/vle/ablation/joint/results.md",
+      "bytes": 2668
+    },
+    {
+      "path": "experiments/vle/ablation/joint/results.tex",
+      "bytes": 2174
+    },
+    {
+      "path": "experiments/vle/ablation/joint/sources.json",
+      "bytes": 17917
+    },
+    {
+      "path": "experiments/vle/ablation/joint/summary.csv",
+      "bytes": 4836
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 7198
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10225
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 786832
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 3531
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 7201
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 10230
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 804344
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 3531
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 7200
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10210
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 782393
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 3531
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 7187
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 10223
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 787749
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 3531
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 7184
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10218
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 808360
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 3531
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 14172
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10247
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 787183
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 10289
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 14178
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 10232
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 804304
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 10289
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 14176
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10227
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 782895
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 10289
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 14178
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 10234
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 787482
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 10289
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 14170
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10243
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 808277
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 10289
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 14112
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10238
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 787029
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 10279
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 14117
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 10234
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 804525
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 10279
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 14114
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10226
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 782899
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 10279
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 14122
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 10240
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 787461
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 10279
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 14118
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10248
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 808490
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 10279
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 12966
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10239
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 787113
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 9273
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 12978
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 10247
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 804778
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 9273
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 12975
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10217
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 782625
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 9273
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 12978
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 10239
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 787736
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 9273
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 12974
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10234
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 808019
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 9273
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 13213
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10219
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 787214
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 9401
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 13216
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 10231
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 804525
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 9401
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 13222
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10234
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 783031
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 9401
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 13210
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 10208
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 787774
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 9401
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 13220
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10236
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 807879
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/stage0/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 9401
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/aggregate_manifest.json",
+      "bytes": 4812
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/metrics_by_seed.csv",
+      "bytes": 14895
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/metrics_summary.csv",
+      "bytes": 11965
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 15001
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10213
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 3189
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 787526
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 4237
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/stage0_predictions.csv",
+      "bytes": 788192
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/stage1_predictions.csv",
+      "bytes": 787587
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/stage2_predictions.csv",
+      "bytes": 787690
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/stage3_predictions.csv",
+      "bytes": 787526
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/stage_comparison.json",
+      "bytes": 57617
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 14991
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 10229
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 3186
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 777290
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 4237
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/stage0_predictions.csv",
+      "bytes": 777486
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/stage1_predictions.csv",
+      "bytes": 777646
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/stage2_predictions.csv",
+      "bytes": 777290
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/stage3_predictions.csv",
+      "bytes": 778171
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_1/stage_comparison.json",
+      "bytes": 57651
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 14978
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10201
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 3168
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 786928
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 4237
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/stage0_predictions.csv",
+      "bytes": 787154
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/stage1_predictions.csv",
+      "bytes": 786286
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/stage2_predictions.csv",
+      "bytes": 787057
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/stage3_predictions.csv",
+      "bytes": 786928
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_2/stage_comparison.json",
+      "bytes": 57594
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 14984
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 9044
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 3176
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 803784
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 4237
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/stage0_predictions.csv",
+      "bytes": 804213
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/stage1_predictions.csv",
+      "bytes": 803845
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/stage2_predictions.csv",
+      "bytes": 803784
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/stage3_predictions.csv",
+      "bytes": 804310
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_3/stage_comparison.json",
+      "bytes": 52176
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 14993
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10202
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 3188
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 778295
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 4237
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/stage0_predictions.csv",
+      "bytes": 778076
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/stage1_predictions.csv",
+      "bytes": 777770
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/stage2_predictions.csv",
+      "bytes": 778146
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/stage3_predictions.csv",
+      "bytes": 778295
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_4/stage_comparison.json",
+      "bytes": 57603
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/aggregate_manifest.json",
+      "bytes": 4824
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/metrics_by_seed.csv",
+      "bytes": 14993
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/metrics_summary.csv",
+      "bytes": 12006
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 22033
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10228
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 3184
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 788150
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 10995
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/stage0_predictions.csv",
+      "bytes": 788061
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/stage1_predictions.csv",
+      "bytes": 788256
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/stage2_predictions.csv",
+      "bytes": 787945
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/stage3_predictions.csv",
+      "bytes": 788150
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/stage_comparison.json",
+      "bytes": 57763
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 22034
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 10233
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 3182
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 777731
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 10995
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/stage0_predictions.csv",
+      "bytes": 777357
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/stage1_predictions.csv",
+      "bytes": 777453
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/stage2_predictions.csv",
+      "bytes": 777731
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/stage3_predictions.csv",
+      "bytes": 777776
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_1/stage_comparison.json",
+      "bytes": 57710
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 22027
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10231
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 3178
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 787291
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 10995
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/stage0_predictions.csv",
+      "bytes": 787269
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/stage1_predictions.csv",
+      "bytes": 786790
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/stage2_predictions.csv",
+      "bytes": 786853
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/stage3_predictions.csv",
+      "bytes": 787291
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_2/stage_comparison.json",
+      "bytes": 57784
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 22049
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 9057
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 3190
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 804047
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 10995
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/stage0_predictions.csv",
+      "bytes": 803690
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/stage1_predictions.csv",
+      "bytes": 803912
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/stage2_predictions.csv",
+      "bytes": 804047
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/stage3_predictions.csv",
+      "bytes": 803706
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_3/stage_comparison.json",
+      "bytes": 52296
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 22039
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10238
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 3180
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 778483
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 10995
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/stage0_predictions.csv",
+      "bytes": 778386
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/stage1_predictions.csv",
+      "bytes": 778353
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/stage2_predictions.csv",
+      "bytes": 778483
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/stage3_predictions.csv",
+      "bytes": 778205
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_4/stage_comparison.json",
+      "bytes": 57762
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/aggregate_manifest.json",
+      "bytes": 4800
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/metrics_by_seed.csv",
+      "bytes": 14981
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/metrics_summary.csv",
+      "bytes": 12000
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 21920
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10230
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 3182
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 787700
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 10985
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/stage0_predictions.csv",
+      "bytes": 787752
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/stage1_predictions.csv",
+      "bytes": 787784
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/stage2_predictions.csv",
+      "bytes": 787700
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/stage3_predictions.csv",
+      "bytes": 788187
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_0/stage_comparison.json",
+      "bytes": 57700
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 21920
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 10228
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 3187
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 777460
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 10985
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/stage0_predictions.csv",
+      "bytes": 777239
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/stage1_predictions.csv",
+      "bytes": 777687
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/stage2_predictions.csv",
+      "bytes": 777460
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/stage3_predictions.csv",
+      "bytes": 777725
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_1/stage_comparison.json",
+      "bytes": 57672
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 21908
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10239
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 3174
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 787344
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 10985
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/stage0_predictions.csv",
+      "bytes": 787057
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/stage1_predictions.csv",
+      "bytes": 787279
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/stage2_predictions.csv",
+      "bytes": 787085
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/stage3_predictions.csv",
+      "bytes": 787344
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_2/stage_comparison.json",
+      "bytes": 57741
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 21916
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 9043
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 3181
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 804179
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 10985
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/stage0_predictions.csv",
+      "bytes": 803743
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/stage1_predictions.csv",
+      "bytes": 803833
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/stage2_predictions.csv",
+      "bytes": 804074
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/stage3_predictions.csv",
+      "bytes": 804179
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_3/stage_comparison.json",
+      "bytes": 52202
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 21919
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10235
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 3185
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 778294
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 10985
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/stage0_predictions.csv",
+      "bytes": 778100
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/stage1_predictions.csv",
+      "bytes": 778498
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/stage2_predictions.csv",
+      "bytes": 777921
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/stage3_predictions.csv",
+      "bytes": 778294
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c3_no_pair_bias.on.vle_overall_binary_ternary/seed_4/stage_comparison.json",
+      "bytes": 57706
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/aggregate_manifest.json",
+      "bytes": 4792
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/metrics_by_seed.csv",
+      "bytes": 14964
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/metrics_summary.csv",
+      "bytes": 12035
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 20718
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10238
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 3194
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 787691
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 9979
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/stage0_predictions.csv",
+      "bytes": 787241
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/stage1_predictions.csv",
+      "bytes": 787416
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/stage2_predictions.csv",
+      "bytes": 787691
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/stage3_predictions.csv",
+      "bytes": 787852
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_0/stage_comparison.json",
+      "bytes": 57703
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 20712
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 10213
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 3185
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 777687
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 9979
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/stage0_predictions.csv",
+      "bytes": 778223
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/stage1_predictions.csv",
+      "bytes": 778289
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/stage2_predictions.csv",
+      "bytes": 777645
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/stage3_predictions.csv",
+      "bytes": 777687
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_1/stage_comparison.json",
+      "bytes": 57622
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 20706
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10231
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 3179
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 786929
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 9979
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/stage0_predictions.csv",
+      "bytes": 787190
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/stage1_predictions.csv",
+      "bytes": 787125
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/stage2_predictions.csv",
+      "bytes": 786929
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/stage3_predictions.csv",
+      "bytes": 787415
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_2/stage_comparison.json",
+      "bytes": 57643
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 20716
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 9054
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 3187
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 804038
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 9979
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/stage0_predictions.csv",
+      "bytes": 804409
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/stage1_predictions.csv",
+      "bytes": 803654
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/stage2_predictions.csv",
+      "bytes": 804038
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/stage3_predictions.csv",
+      "bytes": 803598
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_3/stage_comparison.json",
+      "bytes": 52183
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 20712
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10222
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 3185
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 778336
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 9979
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/stage0_predictions.csv",
+      "bytes": 778254
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/stage1_predictions.csv",
+      "bytes": 778079
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/stage2_predictions.csv",
+      "bytes": 778447
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/stage3_predictions.csv",
+      "bytes": 778336
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v1_rdkit_only.on.vle_overall_binary_ternary/seed_4/stage_comparison.json",
+      "bytes": 57617
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/aggregate_manifest.json",
+      "bytes": 4824
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/metrics_by_seed.csv",
+      "bytes": 14990
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/metrics_summary.csv",
+      "bytes": 12033
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 21054
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10227
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 3195
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 787584
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 10107
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/stage0_predictions.csv",
+      "bytes": 788046
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/stage1_predictions.csv",
+      "bytes": 787537
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/stage2_predictions.csv",
+      "bytes": 787584
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/stage3_predictions.csv",
+      "bytes": 787862
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_0/stage_comparison.json",
+      "bytes": 57666
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 21050
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 10241
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 3191
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 778421
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 10107
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/stage0_predictions.csv",
+      "bytes": 777485
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/stage1_predictions.csv",
+      "bytes": 777685
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/stage2_predictions.csv",
+      "bytes": 777612
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/stage3_predictions.csv",
+      "bytes": 778421
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_1/stage_comparison.json",
+      "bytes": 57666
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 21042
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10238
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 3176
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 787175
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 10107
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/stage0_predictions.csv",
+      "bytes": 787104
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/stage1_predictions.csv",
+      "bytes": 786623
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/stage2_predictions.csv",
+      "bytes": 787175
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/stage3_predictions.csv",
+      "bytes": 786826
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_2/stage_comparison.json",
+      "bytes": 57778
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 21042
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 9047
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 3186
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 804136
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 10107
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/stage0_predictions.csv",
+      "bytes": 803989
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/stage1_predictions.csv",
+      "bytes": 804184
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/stage2_predictions.csv",
+      "bytes": 804136
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/stage3_predictions.csv",
+      "bytes": 804232
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_3/stage_comparison.json",
+      "bytes": 52206
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 21039
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10231
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 3186
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 778131
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 10107
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/stage0_predictions.csv",
+      "bytes": 778725
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/stage1_predictions.csv",
+      "bytes": 778136
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/stage2_predictions.csv",
+      "bytes": 777763
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/stage3_predictions.csv",
+      "bytes": 778131
+    },
+    {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/v4_rdkit_unimol_naive.on.vle_overall_binary_ternary/seed_4/stage_comparison.json",
+      "bytes": 57699
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 19573
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10060
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 793207
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/stage0/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 3525
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 26617
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 9601
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 793002
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/stage0/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 10283
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 24146
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10067
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 792650
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 4235
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/stage0_predictions.csv",
+      "bytes": 793123
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/stage1_predictions.csv",
+      "bytes": 792321
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/stage2_predictions.csv",
+      "bytes": 792650
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/stage3_predictions.csv",
+      "bytes": 792865
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/seed_0/stage_comparison.json",
+      "bytes": 56022
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 31254
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 9597
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 88
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 793179
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 10993
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/stage0_predictions.csv",
+      "bytes": 793179
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/stage1_predictions.csv",
+      "bytes": 792844
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/stage2_predictions.csv",
+      "bytes": 792582
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/stage3_predictions.csv",
+      "bytes": 792411
+    },
+    {
+      "path": "experiments/vle/ablation/joint/smoke/three_stage/c2_chemical_bias_full.on.vle_overall_binary_ternary/seed_0/stage_comparison.json",
+      "bytes": 56309
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_0/manifest.json",
+      "bytes": 21876
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_0/metrics.json",
+      "bytes": 10234
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_0/physical_consistency.json",
+      "bytes": 3176
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_0/predictions.csv",
+      "bytes": 787734
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_0/resolved_config.json",
+      "bytes": 11445
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_0/stage0_predictions.csv",
+      "bytes": 788042
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_0/stage1_predictions.csv",
+      "bytes": 787632
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_0/stage2_predictions.csv",
+      "bytes": 787734
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_0/stage3_predictions.csv",
+      "bytes": 787885
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_0/stage_comparison.json",
+      "bytes": 57729
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_1/manifest.json",
+      "bytes": 21880
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_1/metrics.json",
+      "bytes": 10219
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_1/physical_consistency.json",
+      "bytes": 3181
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_1/predictions.csv",
+      "bytes": 777616
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_1/resolved_config.json",
+      "bytes": 11445
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_1/stage0_predictions.csv",
+      "bytes": 777475
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_1/stage1_predictions.csv",
+      "bytes": 777901
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_1/stage2_predictions.csv",
+      "bytes": 777616
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_1/stage3_predictions.csv",
+      "bytes": 777802
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_1/stage_comparison.json",
+      "bytes": 57630
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_2/manifest.json",
+      "bytes": 21879
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_2/metrics.json",
+      "bytes": 10236
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_2/physical_consistency.json",
+      "bytes": 3175
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_2/predictions.csv",
+      "bytes": 786665
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_2/resolved_config.json",
+      "bytes": 11445
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_2/stage0_predictions.csv",
+      "bytes": 786766
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_2/stage1_predictions.csv",
+      "bytes": 787402
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_2/stage2_predictions.csv",
+      "bytes": 787211
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_2/stage3_predictions.csv",
+      "bytes": 786665
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_2/stage_comparison.json",
+      "bytes": 57708
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_3/manifest.json",
+      "bytes": 21894
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_3/metrics.json",
+      "bytes": 9047
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_3/physical_consistency.json",
+      "bytes": 3184
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_3/predictions.csv",
+      "bytes": 804282
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_3/resolved_config.json",
+      "bytes": 11445
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_3/stage0_predictions.csv",
+      "bytes": 803852
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_3/stage1_predictions.csv",
+      "bytes": 804236
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_3/stage2_predictions.csv",
+      "bytes": 804282
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_3/stage3_predictions.csv",
+      "bytes": 804171
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_3/stage_comparison.json",
+      "bytes": 52156
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_4/manifest.json",
+      "bytes": 21886
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_4/metrics.json",
+      "bytes": 10224
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_4/physical_consistency.json",
+      "bytes": 3179
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_4/predictions.csv",
+      "bytes": 778071
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_4/resolved_config.json",
+      "bytes": 11445
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_4/stage0_predictions.csv",
+      "bytes": 778276
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_4/stage1_predictions.csv",
+      "bytes": 778042
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_4/stage2_predictions.csv",
+      "bytes": 778340
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_4/stage3_predictions.csv",
+      "bytes": 778071
+    },
+    {
+      "path": "experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_overall_binary_ternary/seed_4/stage_comparison.json",
+      "bytes": 57628
+    }
+  ],
+  "note": "Existence-only inventory; does not certify metrics or completed seed counts."
+}

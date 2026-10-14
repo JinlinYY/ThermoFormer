@@ -1,0 +1,178 @@
+{
+  "aggregate_kind": "formal",
+  "aggregation_git_commit": "71fad83d035dbbbcf83bb9118d183310471c90d2",
+  "artifact_path_schema": "project-relative-v1",
+  "dirty_code_paths": [],
+  "git_commit": "71fad83d035dbbbcf83bb9118d183310471c90d2",
+  "git_dirty": false,
+  "input_manifest_sha256": {
+    "0": "fad25e23de1e28aea11c2a4e184ae293706033c293cdc2f9d2cfe55d4ba0b4c2",
+    "1": "af617388d3a3349b129dbcff6f8caf914dcf053eb397465901b8863f9aeb8b21",
+    "2": "515ec5ce0378491a39c1c392f648c9cb6509917110c22d864cc980e725843f04",
+    "3": "20ce8cedffbf90c9f33f3d50506bfd9dcc61b49936bf01b29cb926674a32a37b",
+    "4": "8bfa6ff5d08252863363f853db9ea1ed15801bb4bff5ef9805602ba8e09efe40"
+  },
+  "input_provenance": {
+    "dataset_sha256": "fdffa94af2bf19c58cfc78b43528fc8d79035e94926f4e25806547572007fea0",
+    "environment_sha256": "28e589adc3ad2d802ec4fb4076888689ac53071c9e057f5562be17e28a2281d9",
+    "feature_cache_sha256": "299c5c53c5ad0c72c69ba3daccc197541339e4661d44df20058627c71d818d5c",
+    "feature_definition_sha256": "5b73c738ea27729b4a3f7ce51a5cc19ea9e425e71a27203791bfcd6b516d5a46",
+    "git_commit": "71fad83d035dbbbcf83bb9118d183310471c90d2",
+    "protocol": "c0_current_vanilla.on.vle_overall_binary_ternary",
+    "pure_property_catalog_sha256": "0494dd09f9b4bc75a3333e93278474e93d9d5e6562eaba5221085f11e5e57547",
+    "resolved_config_sha256": "ef14ab9f3cd84afb876b15a821e7f503b18e0b4e009ceb84097972fe5e011bc4"
+  },
+  "mixed_commit_justification": null,
+  "outputs": {
+    "metrics_by_seed": {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/metrics_by_seed.csv",
+      "sha256": "89a4e89eb2c526d6095098ba5e1953d5769ae036c41d570c71c12b16b143fe32"
+    },
+    "metrics_summary": {
+      "path": "experiments/vle/ablation/joint/formal/three_stage/c0_current_vanilla.on.vle_overall_binary_ternary/metrics_summary.csv",
+      "sha256": "15e9a317b161ddf3fd5c6154942c008c501573689c77f5c3b9208aecdc855011"
+    }
+  },
+  "protocol": "c0_current_vanilla.on.vle_overall_binary_ternary",
+  "runtime": {
+    "numpy": "1.26.4",
+    "python": "3.9.25"
+  },
+  "scope_availability": [
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": null,
+      "scope": "all",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 2,
+      "direction": null,
+      "scope": "cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 3,
+      "direction": null,
+      "scope": "cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": "isobaric",
+      "scope": "direction",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": null,
+      "direction": "isothermal",
+      "scope": "direction",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 2,
+      "direction": "isobaric",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 3,
+      "direction": "isobaric",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "component_count": 2,
+      "direction": "isothermal",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    },
+    {
+      "available_seeds": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "component_count": 3,
+      "direction": "isothermal",
+      "scope": "direction_cardinality",
+      "subgroup": null
+    }
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "status": "completed",
+  "training_git_commit": "71fad83d035dbbbcf83bb9118d183310471c90d2",
+  "training_git_commits": [
+    "71fad83d035dbbbcf83bb9118d183310471c90d2"
+  ],
+  "training_git_commits_by_seed": {
+    "0": "71fad83d035dbbbcf83bb9118d183310471c90d2",
+    "1": "71fad83d035dbbbcf83bb9118d183310471c90d2",
+    "2": "71fad83d035dbbbcf83bb9118d183310471c90d2",
+    "3": "71fad83d035dbbbcf83bb9118d183310471c90d2",
+    "4": "71fad83d035dbbbcf83bb9118d183310471c90d2"
+  }
+}

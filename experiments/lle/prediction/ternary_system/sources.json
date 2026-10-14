@@ -1,0 +1,1065 @@
+{
+  "experiment": "lle.prediction.ternary_system",
+  "provenance": "lle_nist",
+  "status": "runnable",
+  "notes": "Binary RK / ternary continuous parallel tie-line model; SMILES+T+P only. Includes unchanged activity and finite-grid TPD certification. No LLE comparison/ablation/interpretability.",
+  "sources": [
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system",
+      "exists": true,
+      "kind": "directory",
+      "sha256": null
+    }
+  ],
+  "files": [
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/data_audit.json",
+      "bytes": 931
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/identity.json",
+      "bytes": 3474
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/cache/functional_groups_thermoformer_v1.npz",
+      "bytes": 9289
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/cache/hybrid_rdkit_unimol_84m_functional_v1.npz",
+      "bytes": 1353233
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/cache/hybrid_rdkit_unimol_84m_v1.npz",
+      "bytes": 403616
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/cache/rdkit_2d_raw24_v1.npz",
+      "bytes": 24167
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/cache/unimolv2_84m.npz",
+      "bytes": 1321813
+    },
+    {
+      "path": "models/lle/prediction/ternary-system/seed_0/best.pt",
+      "bytes": 3023323
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/completion.json",
+      "bytes": 377
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/features.json",
+      "bytes": 11651
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/history.json",
+      "bytes": 13310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/predictions.json",
+      "bytes": 5999697
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/predictions.partial.json",
+      "bytes": 5999697
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/split.json",
+      "bytes": 1408325
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/split_check.json",
+      "bytes": 167
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_109/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_109/predictions.json",
+      "bytes": 6550628
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_109/predictions.partial.json",
+      "bytes": 6550628
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_119/metrics.json",
+      "bytes": 2307
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_119/predictions.json",
+      "bytes": 6550706
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_119/predictions.partial.json",
+      "bytes": 6550706
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_19/metrics.json",
+      "bytes": 2305
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_19/predictions.json",
+      "bytes": 6550614
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_19/predictions.partial.json",
+      "bytes": 6550614
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_29/metrics.json",
+      "bytes": 2303
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_29/predictions.json",
+      "bytes": 6548232
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_29/predictions.partial.json",
+      "bytes": 6548232
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_39/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_39/predictions.json",
+      "bytes": 6542525
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_39/predictions.partial.json",
+      "bytes": 6542525
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_49/metrics.json",
+      "bytes": 2309
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_49/predictions.json",
+      "bytes": 6545490
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_49/predictions.partial.json",
+      "bytes": 6545490
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_59/metrics.json",
+      "bytes": 2309
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_59/predictions.json",
+      "bytes": 6552340
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_59/predictions.partial.json",
+      "bytes": 6552340
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_69/metrics.json",
+      "bytes": 2313
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_69/predictions.json",
+      "bytes": 6549993
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_69/predictions.partial.json",
+      "bytes": 6549993
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_79/metrics.json",
+      "bytes": 2305
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_79/predictions.json",
+      "bytes": 6545937
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_79/predictions.partial.json",
+      "bytes": 6545937
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_89/metrics.json",
+      "bytes": 2307
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_89/predictions.json",
+      "bytes": 6545211
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_89/predictions.partial.json",
+      "bytes": 6545211
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_9/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_9/predictions.json",
+      "bytes": 6548624
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_9/predictions.partial.json",
+      "bytes": 6548624
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_99/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_99/predictions.json",
+      "bytes": 6550375
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_0/validation_epoch_99/predictions.partial.json",
+      "bytes": 6550375
+    },
+    {
+      "path": "models/lle/prediction/ternary-system/seed_1/best.pt",
+      "bytes": 3023323
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/completion.json",
+      "bytes": 377
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/features.json",
+      "bytes": 11650
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/history.json",
+      "bytes": 16633
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/predictions.json",
+      "bytes": 5890550
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/predictions.partial.json",
+      "bytes": 5890550
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/split.json",
+      "bytes": 1408325
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/split_check.json",
+      "bytes": 167
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_109/metrics.json",
+      "bytes": 2307
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_109/predictions.json",
+      "bytes": 5677276
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_109/predictions.partial.json",
+      "bytes": 5677276
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_119/metrics.json",
+      "bytes": 2305
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_119/predictions.json",
+      "bytes": 5677704
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_119/predictions.partial.json",
+      "bytes": 5677704
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_129/metrics.json",
+      "bytes": 2299
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_129/predictions.json",
+      "bytes": 5683724
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_129/predictions.partial.json",
+      "bytes": 5683724
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_139/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_139/predictions.json",
+      "bytes": 5680098
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_139/predictions.partial.json",
+      "bytes": 5680098
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_149/metrics.json",
+      "bytes": 2305
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_149/predictions.json",
+      "bytes": 5681073
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_149/predictions.partial.json",
+      "bytes": 5681073
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_19/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_19/predictions.json",
+      "bytes": 5675924
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_19/predictions.partial.json",
+      "bytes": 5675924
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_29/metrics.json",
+      "bytes": 2303
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_29/predictions.json",
+      "bytes": 5679281
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_29/predictions.partial.json",
+      "bytes": 5679281
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_39/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_39/predictions.json",
+      "bytes": 5677819
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_39/predictions.partial.json",
+      "bytes": 5677819
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_49/metrics.json",
+      "bytes": 2305
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_49/predictions.json",
+      "bytes": 5675993
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_49/predictions.partial.json",
+      "bytes": 5675993
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_59/metrics.json",
+      "bytes": 2299
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_59/predictions.json",
+      "bytes": 5678751
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_59/predictions.partial.json",
+      "bytes": 5678751
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_69/metrics.json",
+      "bytes": 2313
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_69/predictions.json",
+      "bytes": 5677829
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_69/predictions.partial.json",
+      "bytes": 5677829
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_79/metrics.json",
+      "bytes": 2303
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_79/predictions.json",
+      "bytes": 5678148
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_79/predictions.partial.json",
+      "bytes": 5678148
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_89/metrics.json",
+      "bytes": 2309
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_89/predictions.json",
+      "bytes": 5677188
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_89/predictions.partial.json",
+      "bytes": 5677188
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_9/metrics.json",
+      "bytes": 2301
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_9/predictions.json",
+      "bytes": 5679801
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_9/predictions.partial.json",
+      "bytes": 5679801
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_99/metrics.json",
+      "bytes": 2303
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_99/predictions.json",
+      "bytes": 5677535
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_1/validation_epoch_99/predictions.partial.json",
+      "bytes": 5677535
+    },
+    {
+      "path": "models/lle/prediction/ternary-system/seed_2/best.pt",
+      "bytes": 3023323
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/completion.json",
+      "bytes": 376
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/features.json",
+      "bytes": 11771
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/history.json",
+      "bytes": 17793
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/predictions.json",
+      "bytes": 5462569
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/predictions.partial.json",
+      "bytes": 5462569
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/split.json",
+      "bytes": 1408325
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/split_check.json",
+      "bytes": 167
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_109/metrics.json",
+      "bytes": 2297
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_109/predictions.json",
+      "bytes": 6172748
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_109/predictions.partial.json",
+      "bytes": 6172748
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_119/metrics.json",
+      "bytes": 2307
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_119/predictions.json",
+      "bytes": 6173132
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_119/predictions.partial.json",
+      "bytes": 6173132
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_129/metrics.json",
+      "bytes": 2309
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_129/predictions.json",
+      "bytes": 6175521
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_129/predictions.partial.json",
+      "bytes": 6175521
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_139/metrics.json",
+      "bytes": 2313
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_139/predictions.json",
+      "bytes": 6174672
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_139/predictions.partial.json",
+      "bytes": 6174672
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_149/metrics.json",
+      "bytes": 2313
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_149/predictions.json",
+      "bytes": 6175624
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_149/predictions.partial.json",
+      "bytes": 6175624
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_159/metrics.json",
+      "bytes": 2301
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_159/predictions.json",
+      "bytes": 6172828
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_159/predictions.partial.json",
+      "bytes": 6172828
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_19/metrics.json",
+      "bytes": 2309
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_19/predictions.json",
+      "bytes": 6166483
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_19/predictions.partial.json",
+      "bytes": 6166483
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_29/metrics.json",
+      "bytes": 2309
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_29/predictions.json",
+      "bytes": 6168960
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_29/predictions.partial.json",
+      "bytes": 6168960
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_39/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_39/predictions.json",
+      "bytes": 6167824
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_39/predictions.partial.json",
+      "bytes": 6167824
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_49/metrics.json",
+      "bytes": 2303
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_49/predictions.json",
+      "bytes": 6168693
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_49/predictions.partial.json",
+      "bytes": 6168693
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_59/metrics.json",
+      "bytes": 2305
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_59/predictions.json",
+      "bytes": 6170653
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_59/predictions.partial.json",
+      "bytes": 6170653
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_69/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_69/predictions.json",
+      "bytes": 6173876
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_69/predictions.partial.json",
+      "bytes": 6173876
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_79/metrics.json",
+      "bytes": 2297
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_79/predictions.json",
+      "bytes": 6175775
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_79/predictions.partial.json",
+      "bytes": 6175775
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_89/metrics.json",
+      "bytes": 2303
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_89/predictions.json",
+      "bytes": 6167895
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_89/predictions.partial.json",
+      "bytes": 6167895
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_9/metrics.json",
+      "bytes": 2303
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_9/predictions.json",
+      "bytes": 6162122
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_9/predictions.partial.json",
+      "bytes": 6162122
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_99/metrics.json",
+      "bytes": 2309
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_99/predictions.json",
+      "bytes": 6174793
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_2/validation_epoch_99/predictions.partial.json",
+      "bytes": 6174793
+    },
+    {
+      "path": "models/lle/prediction/ternary-system/seed_3/best.pt",
+      "bytes": 3023323
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/completion.json",
+      "bytes": 377
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/features.json",
+      "bytes": 11564
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/history.json",
+      "bytes": 12185
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/metrics.json",
+      "bytes": 2305
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/predictions.json",
+      "bytes": 5869344
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/predictions.partial.json",
+      "bytes": 5869344
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/split.json",
+      "bytes": 1408325
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/split_check.json",
+      "bytes": 167
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_109/metrics.json",
+      "bytes": 2309
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_109/predictions.json",
+      "bytes": 5817675
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_109/predictions.partial.json",
+      "bytes": 5817675
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_19/metrics.json",
+      "bytes": 2307
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_19/predictions.json",
+      "bytes": 5818089
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_19/predictions.partial.json",
+      "bytes": 5818089
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_29/metrics.json",
+      "bytes": 2305
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_29/predictions.json",
+      "bytes": 5817568
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_29/predictions.partial.json",
+      "bytes": 5817568
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_39/metrics.json",
+      "bytes": 2307
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_39/predictions.json",
+      "bytes": 5818076
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_39/predictions.partial.json",
+      "bytes": 5818076
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_49/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_49/predictions.json",
+      "bytes": 5816636
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_49/predictions.partial.json",
+      "bytes": 5816636
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_59/metrics.json",
+      "bytes": 2307
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_59/predictions.json",
+      "bytes": 5816492
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_59/predictions.partial.json",
+      "bytes": 5816492
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_69/metrics.json",
+      "bytes": 2295
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_69/predictions.json",
+      "bytes": 5814752
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_69/predictions.partial.json",
+      "bytes": 5814752
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_79/metrics.json",
+      "bytes": 2301
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_79/predictions.json",
+      "bytes": 5815789
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_79/predictions.partial.json",
+      "bytes": 5815789
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_89/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_89/predictions.json",
+      "bytes": 5817294
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_89/predictions.partial.json",
+      "bytes": 5817294
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_9/metrics.json",
+      "bytes": 2305
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_9/predictions.json",
+      "bytes": 5818910
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_9/predictions.partial.json",
+      "bytes": 5818910
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_99/metrics.json",
+      "bytes": 2305
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_99/predictions.json",
+      "bytes": 5818820
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_3/validation_epoch_99/predictions.partial.json",
+      "bytes": 5818820
+    },
+    {
+      "path": "models/lle/prediction/ternary-system/seed_4/best.pt",
+      "bytes": 3023323
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/completion.json",
+      "bytes": 377
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/features.json",
+      "bytes": 11582
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/history.json",
+      "bytes": 17758
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/metrics.json",
+      "bytes": 2309
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/predictions.json",
+      "bytes": 5893500
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/predictions.partial.json",
+      "bytes": 5893500
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/split.json",
+      "bytes": 1408325
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/split_check.json",
+      "bytes": 167
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_109/metrics.json",
+      "bytes": 2313
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_109/predictions.json",
+      "bytes": 5802675
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_109/predictions.partial.json",
+      "bytes": 5802675
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_119/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_119/predictions.json",
+      "bytes": 5798757
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_119/predictions.partial.json",
+      "bytes": 5798757
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_129/metrics.json",
+      "bytes": 2307
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_129/predictions.json",
+      "bytes": 5799654
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_129/predictions.partial.json",
+      "bytes": 5799654
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_139/metrics.json",
+      "bytes": 2305
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_139/predictions.json",
+      "bytes": 5800251
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_139/predictions.partial.json",
+      "bytes": 5800251
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_149/metrics.json",
+      "bytes": 2305
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_149/predictions.json",
+      "bytes": 5803785
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_149/predictions.partial.json",
+      "bytes": 5803785
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_159/metrics.json",
+      "bytes": 2313
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_159/predictions.json",
+      "bytes": 5802896
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_159/predictions.partial.json",
+      "bytes": 5802896
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_19/metrics.json",
+      "bytes": 2307
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_19/predictions.json",
+      "bytes": 5794016
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_19/predictions.partial.json",
+      "bytes": 5794016
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_29/metrics.json",
+      "bytes": 2309
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_29/predictions.json",
+      "bytes": 5798622
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_29/predictions.partial.json",
+      "bytes": 5798622
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_39/metrics.json",
+      "bytes": 2305
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_39/predictions.json",
+      "bytes": 5796642
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_39/predictions.partial.json",
+      "bytes": 5796642
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_49/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_49/predictions.json",
+      "bytes": 5799589
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_49/predictions.partial.json",
+      "bytes": 5799589
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_59/metrics.json",
+      "bytes": 2309
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_59/predictions.json",
+      "bytes": 5801931
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_59/predictions.partial.json",
+      "bytes": 5801931
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_69/metrics.json",
+      "bytes": 2309
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_69/predictions.json",
+      "bytes": 5800159
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_69/predictions.partial.json",
+      "bytes": 5800159
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_79/metrics.json",
+      "bytes": 2309
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_79/predictions.json",
+      "bytes": 5800694
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_79/predictions.partial.json",
+      "bytes": 5800694
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_89/metrics.json",
+      "bytes": 2307
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_89/predictions.json",
+      "bytes": 5801056
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_89/predictions.partial.json",
+      "bytes": 5801056
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_9/metrics.json",
+      "bytes": 2313
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_9/predictions.json",
+      "bytes": 5791534
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_9/predictions.partial.json",
+      "bytes": 5791534
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_99/metrics.json",
+      "bytes": 2311
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_99/predictions.json",
+      "bytes": 5802269
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/ternary-system/ternary-system/seed_4/validation_epoch_99/predictions.partial.json",
+      "bytes": 5802269
+    }
+  ],
+  "note": "Existence-only inventory; does not certify metrics or completed seed counts."
+}

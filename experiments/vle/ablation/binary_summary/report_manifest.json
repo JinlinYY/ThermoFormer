@@ -1,0 +1,146 @@
+{
+  "inputs": {
+    "c0_unimol": {
+      "aggregate_manifest": {
+        "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/aggregate_manifest.json",
+        "sha256": "b75acf9eb7b471749c07027b45fc901f318f5d4121c69439f7560496d2824940"
+      },
+      "metrics_summary": {
+        "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c0_current_vanilla.on.overall_binary_ternary/metrics_summary.csv",
+        "sha256": "7f06046047f6404c1f1e66ee7616eaecc6209d91b34c594665fdd2a4400562f2"
+      }
+    },
+    "c1_final": {
+      "aggregate_manifest": {
+        "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/aggregate_manifest.json",
+        "sha256": "3212420da464a7266caf3273db56ae47f241978b5c7d60053343dc916813f34f"
+      },
+      "metrics_summary": {
+        "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c1_three_view_vanilla.on.overall_binary_ternary/metrics_summary.csv",
+        "sha256": "43cccc6b6e638d0b052885f2b9e101a0bd67f22e3026e24f802a470256e63a0f"
+      }
+    },
+    "c2_chemical_bias": {
+      "aggregate_manifest": {
+        "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/aggregate_manifest.json",
+        "sha256": "8e90bfa39d811207d0e166d7c0cbc25c395e55a22d6a36307bec357a5308bba8"
+      },
+      "metrics_summary": {
+        "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c2_chemical_bias_full.on.overall_binary_ternary/metrics_summary.csv",
+        "sha256": "32d8cf09f3f58c450f1519df6b23e1490c47d67798a41892b0cc0e1f60cb274d"
+      }
+    },
+    "c3_context_pair": {
+      "aggregate_manifest": {
+        "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/aggregate_manifest.json",
+        "sha256": "ed9d8881419039a002b2377176f0539eb2d8ae9320d23a3fba401be2eeaea88f"
+      },
+      "metrics_summary": {
+        "path": "experiments/vle/ablation/multiview/chemical_attention/formal/runs/c3_no_pair_bias.on.overall_binary_ternary/metrics_summary.csv",
+        "sha256": "b6ae71e9a466fdf57f178231c55256ae995c6c285cf522e277bedcbcdbc8bd00"
+      }
+    },
+    "v1_rdkit": {
+      "aggregate_manifest": {
+        "path": "experiments/vle/ablation/multiview/formal/runs/v1_rdkit_only.on.overall_binary_ternary/aggregate_manifest.json",
+        "sha256": "440a35e1df76de4e9cd1c6add89b93462fef8b2d61ced70b535f5fe40035e999"
+      },
+      "metrics_summary": {
+        "path": "experiments/vle/ablation/multiview/formal/runs/v1_rdkit_only.on.overall_binary_ternary/metrics_summary.csv",
+        "sha256": "7d2dc9b845d5dd51b94f32350b2f8d72850b0be7934ff2e8ac6638a57a18ba2d"
+      }
+    },
+    "v3_fg": {
+      "aggregate_manifest": {
+        "path": "experiments/vle/ablation/multiview/predictive/runs/v3_functional_group_only.on.overall_binary_ternary/aggregate_manifest.json",
+        "sha256": "3a086e91bc3d814d3e5bd36bacdb04d93387b1fd1950938c703ea412f4aa14c2"
+      },
+      "metrics_summary": {
+        "path": "experiments/vle/ablation/multiview/predictive/runs/v3_functional_group_only.on.overall_binary_ternary/metrics_summary.csv",
+        "sha256": "b92734427b5ae73b72800d2567ee9df25865a3f0d253410cffb2f743eb80e94f"
+      }
+    },
+    "v4_rdkit_unimol": {
+      "aggregate_manifest": {
+        "path": "experiments/vle/ablation/multiview/predictive/runs/v4_rdkit_unimol_naive.on.overall_binary_ternary/aggregate_manifest.json",
+        "sha256": "44c9803cc818515d63b5c1312709b6a684487102c9d245212a4a24855c59fec1"
+      },
+      "metrics_summary": {
+        "path": "experiments/vle/ablation/multiview/predictive/runs/v4_rdkit_unimol_naive.on.overall_binary_ternary/metrics_summary.csv",
+        "sha256": "19b8ef2ea6a6c9df9e28fc8c01855a53d0628484d9339b7da2c6a7b477f2334f"
+      }
+    }
+  },
+  "outputs": {
+    "canonical_experiment_leaves": [
+      {
+        "path": "experiments/vle/ablation/study_records/molecular_representation/unimol_v2_only/results.md",
+        "sha256": "30a80d062e5b3119eeed5576a4b7c21d4a97d76e2487b426da5f004c97751839"
+      },
+      {
+        "path": "experiments/vle/ablation/study_records/molecular_representation/rdkit_only/results.md",
+        "sha256": "402121fec7e858403f6a631d6bfc5ca29775068de9b95a34bf3b0b50ec0d7f83"
+      },
+      {
+        "path": "experiments/vle/ablation/study_records/molecular_representation/functional_groups_only/results.md",
+        "sha256": "5b88efeb96ddb388c5b698d2c23ba3536e199b3fee8012ea9f9c5f911adbc89d"
+      },
+      {
+        "path": "experiments/vle/ablation/study_records/molecular_representation/rdkit_unimol/results.md",
+        "sha256": "a9ff05e2786ce374320cb740804eadaad19737974d380c9ecf3ab84fd863af7e"
+      },
+      {
+        "path": "experiments/vle/ablation/study_records/molecular_representation/full_three_view/results.md",
+        "sha256": "dd95d7c19e63a3f7088bea59e9cd890c0b37e4496482202c8fce4f4a1b638696"
+      },
+      {
+        "path": "experiments/vle/ablation/study_records/interaction_architecture/vanilla_transformer/results.md",
+        "sha256": "71aa8f28aa28453772bc45125a94f8018aec7f800faf9b51cc282d2d0ac46ff8"
+      },
+      {
+        "path": "experiments/vle/ablation/study_records/interaction_architecture/chemical_interaction_bias/results.md",
+        "sha256": "41ecd03dcfd532c9ad08655a086af5029eac263174049a162955608c67f5a32a"
+      },
+      {
+        "path": "experiments/vle/ablation/study_records/interaction_architecture/context_pair_without_attention_bias/results.md",
+        "sha256": "e0ac8e30171e6157fbb7e32c69deef7fbd862483441ea53405b55e5dafbdf202"
+      },
+      {
+        "path": "experiments/vle/ablation/study_records/fugacity_finetuning/results.md",
+        "sha256": "aa857c8bd73ada662ab1b6d00ba79b598418ee7a122bb7fd31e06ee1c5e50409"
+      }
+    ],
+    "metrics": {
+      "path": "experiments/vle/ablation/binary_summary/overall_binary_ternary_metrics.csv",
+      "sha256": "31c99cf7cf29603d0e6ee95e897edb5d1243fef7834e54b802e13dafc4a2b8e5"
+    },
+    "report": {
+      "path": "experiments/data_quality/reports/c1_ablation_overall_binary_ternary.md",
+      "sha256": "e2b33b0e86697b7afdeb2dd315e9b96c74b75fb37da4817ccfd46f5aa0b82d4c"
+    }
+  },
+  "physics_finetuning_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "physics_report_manifest": {
+    "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/report_manifest.json",
+    "sha256": "1417a79ae933da279d9fb9142b5e4f3dca858314ddc70a474bdde456da02a6b2"
+  },
+  "physics_stage_comparison": {
+    "path": "experiments/vle/generalization/evaluations/physics_finetuning/c1_three_view_vanilla_fugacity/c1_three_view_vanilla_fugacity_finetune.on.overall_binary_ternary/stage_comparison_summary.json",
+    "sha256": "55c3ccda6e092b1d1e9bf536448bf692855598e66c8d696c07f1fd77f7433735"
+  },
+  "protocol": "overall_binary_ternary",
+  "representation_and_interaction_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "status": "completed"
+}

@@ -1,0 +1,2262 @@
+[
+  {
+    "epoch": 1,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.007348384721366818,
+      "direct_thermodynamic_total": 0.004847544964455717,
+      "excess_gibbs": 0.0011733526378516555,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.09785011442179345,
+      "total": 0.004847544964455717
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.952425140013179,
+      "isobaric_y_mae": 0.02446799211761447,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 7.329924898415745,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.012959065753128655
+    },
+    "validation_composite": 0.8994656865993002,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.037094501784811745,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.08400983085924704
+    }
+  },
+  {
+    "epoch": 2,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.005367245656859247,
+      "direct_thermodynamic_total": 0.003679853807305036,
+      "excess_gibbs": 0.0009962309589396675,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.06413635721881161,
+      "total": 0.003679853807305036
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.9778613439635955,
+      "isobaric_y_mae": 0.024059997509465147,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 8.164538558302777,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.013498117103791417
+    },
+    "validation_composite": 0.9319669640848731,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.03843066970462302,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.08727815841317069
+    }
+  },
+  {
+    "epoch": 3,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.005834142782387488,
+      "direct_thermodynamic_total": 0.003980462198834376,
+      "excess_gibbs": 0.0010633908146450827,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.07530201757524732,
+      "total": 0.003980462198834376
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.284272508453287,
+      "isobaric_y_mae": 0.023184071021286234,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.928246684382222,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.018975908482819614
+    },
+    "validation_composite": 1.0968913927654285,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04464697446315502,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09503049781668606
+    }
+  },
+  {
+    "epoch": 4,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.00484437364318438,
+      "direct_thermodynamic_total": 0.003328885172848289,
+      "excess_gibbs": 0.0009066983404825856,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.06280129027221808,
+      "total": 0.003328885172848289
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.8987153259220777,
+      "isobaric_y_mae": 0.023888166366336974,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.508648623710107,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.01866466255366627
+    },
+    "validation_composite": 1.037655169535808,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.03918196424622498,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.088909095853594
+    }
+  },
+  {
+    "epoch": 5,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.005122078683064043,
+      "direct_thermodynamic_total": 0.0035206791397579076,
+      "excess_gibbs": 0.0009596397839475823,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.06516170282523549,
+      "total": 0.0035206791397579076
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.9131599659605973,
+      "isobaric_y_mae": 0.023262575846442313,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.875469326385648,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.017452012050339753
+    },
+    "validation_composite": 1.0264860517320689,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04391024181553894,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09298033430513979
+    }
+  },
+  {
+    "epoch": 6,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.004422796929068163,
+      "direct_thermodynamic_total": 0.003106188765932537,
+      "excess_gibbs": 0.0008947903318408772,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.049125895188625125,
+      "total": 0.003106188765932537
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.6180394704569494,
+      "isobaric_y_mae": 0.022448012672433588,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 8.619948102977489,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.018539755771183088
+    },
+    "validation_composite": 0.9593775343069306,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.036219860459778076,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.08135122216640021
+    }
+  },
+  {
+    "epoch": 7,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.004585265808857036,
+      "direct_thermodynamic_total": 0.003220349981020926,
+      "excess_gibbs": 0.0009277170884460944,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.053629156616956886,
+      "total": 0.003220349981020926
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.2169960634304062,
+      "isobaric_y_mae": 0.025622559669502755,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 10.655516596735584,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.022101880503287815
+    },
+    "validation_composite": 1.180542806945736,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.047396962936980265,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.10111619718876694
+    }
+  },
+  {
+    "epoch": 8,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.006501752517272246,
+      "direct_thermodynamic_total": 0.004334648536182945,
+      "excess_gibbs": 0.0010837722743139986,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.07358330514498587,
+      "total": 0.004334648536182945
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.2371580402137408,
+      "isobaric_y_mae": 0.028977722248047216,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 10.235814094634105,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.026814148194798274
+    },
+    "validation_composite": 1.2730284888578343,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.043003283432628936,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09098099759293635
+    }
+  },
+  {
+    "epoch": 9,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.004640792290275199,
+      "direct_thermodynamic_total": 0.0032501076590587697,
+      "excess_gibbs": 0.0009297114942674554,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.05561026047170593,
+      "total": 0.0032501076590587697
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.011734167740678,
+      "isobaric_y_mae": 0.029531594620611556,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 10.84915968997691,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.0245654130128251
+    },
+    "validation_composite": 1.2350777836033942,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04634807117933055,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.10062462279557967
+    }
+  },
+  {
+    "epoch": 10,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.005785142456655226,
+      "direct_thermodynamic_total": 0.0038752334650647945,
+      "excess_gibbs": 0.0009826622431986193,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.06979437409163314,
+      "total": 0.0038752334650647945
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.4190626787498553,
+      "isobaric_y_mae": 0.03162527539202575,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 11.219213372832952,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.02688264791976743
+    },
+    "validation_composite": 1.3525971589912322,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04022883288857621,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.0859884575103402
+    }
+  },
+  {
+    "epoch": 11,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.004259626285276315,
+      "direct_thermodynamic_total": 0.002967971597420265,
+      "excess_gibbs": 0.0008381584305375099,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.050021027059380226,
+      "total": 0.002967971597420265
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.066963480046992,
+      "isobaric_y_mae": 0.029437372812593184,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.871255596376175,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.027119891020787216
+    },
+    "validation_composite": 1.2494821947503976,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04162010229862425,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.08818016899287755
+    }
+  },
+  {
+    "epoch": 12,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.00408537340242722,
+      "direct_thermodynamic_total": 0.0029026361564865985,
+      "excess_gibbs": 0.0008599494620080376,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.04595389535463646,
+      "total": 0.0029026361564865985
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.916374715357827,
+      "isobaric_y_mae": 0.027955352958446446,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 10.65021697501192,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.02535921166668932
+    },
+    "validation_composite": 1.2134289532986386,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04277799313092691,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09010804591681959
+    }
+  },
+  {
+    "epoch": 13,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.004062373237185975,
+      "direct_thermodynamic_total": 0.0029505259677442314,
+      "excess_gibbs": 0.0009193393529239236,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.046814430611720484,
+      "total": 0.0029505259677442314
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.338187927868325,
+      "isobaric_y_mae": 0.02947756774026065,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 10.627120106374157,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.02795082169661464
+    },
+    "validation_composite": 1.3193929424633835,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.03966094460654772,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.08567709520768216
+    }
+  },
+  {
+    "epoch": 14,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.005495356246457258,
+      "direct_thermodynamic_total": 0.0036801816553463647,
+      "excess_gibbs": 0.0009325035305013236,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.06626473075398,
+      "total": 0.0036801816553463647
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.651769440291214,
+      "isobaric_y_mae": 0.02582438670770646,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 7.969949536952407,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.016945121707722156
+    },
+    "validation_composite": 0.9531838187502197,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.038747431400273154,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.08483789889419047
+    }
+  },
+  {
+    "epoch": 15,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.005167036821036865,
+      "direct_thermodynamic_total": 0.0035811098574365452,
+      "excess_gibbs": 0.0009975914616005197,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.057086713851577965,
+      "total": 0.0035811098574365452
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.987960861248481,
+      "isobaric_y_mae": 0.03078453796815448,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.563403841891146,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.017662176804788467
+    },
+    "validation_composite": 1.1028802781071858,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.042302934459219704,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09145820818041982
+    }
+  },
+  {
+    "epoch": 16,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.0040432572576826475,
+      "direct_thermodynamic_total": 0.0029013107162634906,
+      "excess_gibbs": 0.0008796820890301602,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.05016581953813273,
+      "total": 0.0029013107162634906
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.372188641510152,
+      "isobaric_y_mae": 0.031959564558462356,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.267171245167045,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.017943965846367527
+    },
+    "validation_composite": 1.1581514314927572,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04573451338645961,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09333280403405508
+    }
+  },
+  {
+    "epoch": 17,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.004235558042360127,
+      "direct_thermodynamic_total": 0.0030329022986292095,
+      "excess_gibbs": 0.0009151232812207732,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.05148947949496728,
+      "total": 0.0030329022986292095
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.8974598650008703,
+      "isobaric_y_mae": 0.028142734304659134,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.038286142356798,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.017041641912361665
+    },
+    "validation_composite": 1.0406019293510833,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.038954295563940824,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.08647308702185091
+    }
+  },
+  {
+    "epoch": 18,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.003835394224906,
+      "direct_thermodynamic_total": 0.0027799983435646512,
+      "excess_gibbs": 0.0008623012367690923,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.042018055023169125,
+      "total": 0.0027799983435646512
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.8205947494153327,
+      "isobaric_y_mae": 0.026181084172779295,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 8.851667097359837,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.016501173574434373
+    },
+    "validation_composite": 0.998103399465939,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04104472266453174,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09010537741311075
+    }
+  },
+  {
+    "epoch": 19,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.003877813941198338,
+      "direct_thermodynamic_total": 0.002793049580028422,
+      "excess_gibbs": 0.0008541426103721603,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.04044242537725099,
+      "total": 0.002793049580028422
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.038478218764481,
+      "isobaric_y_mae": 0.02916004464604527,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 8.128929527932348,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.017856692602665685
+    },
+    "validation_composite": 1.0529342131790946,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.03946321372402619,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.08786028886937794
+    }
+  },
+  {
+    "epoch": 20,
+    "stage": "stage1_direct_ge",
+    "train": {
+      "activity_coefficient": 0.0038570995693584533,
+      "direct_thermodynamic_total": 0.0027759911617048494,
+      "excess_gibbs": 0.0008474413919774317,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.043184936615577284,
+      "total": 0.0027759911617048494
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.9333589552772403,
+      "isobaric_y_mae": 0.025113486017661897,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.279527674238752,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.01766052639615805
+    },
+    "validation_composite": 1.0321303516206302,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04217728078027814,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09288643909210123
+    }
+  },
+  {
+    "epoch": 1,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.006223881771126418,
+      "direct_thermodynamic_total": 0.00418231373336841,
+      "excess_gibbs": 0.0010703728529238385,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 4.459499488788635,
+      "total": 0.022332904857683293,
+      "vle_pressure": 0.008746129406483007,
+      "vle_pure_vapor_pressure": 0.01696522391864872,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.01815059121255244,
+      "vle_vapor_composition": 0.0009218498528339805
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.6008980879195893,
+      "isobaric_y_mae": 0.02831505131897335,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.695461011153872,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.01982313627132505
+    },
+    "validation_composite": 1.1924503631308667,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04469097544895833,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09994116207841713
+    }
+  },
+  {
+    "epoch": 2,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.005709305259062094,
+      "direct_thermodynamic_total": 0.0038309712539458503,
+      "excess_gibbs": 0.0009763186341132737,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 3.560621421048156,
+      "total": 0.01853723671057768,
+      "vle_pressure": 0.0069685146430254604,
+      "vle_pure_vapor_pressure": 0.013722039976835871,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.014706265411372299,
+      "vle_vapor_composition": 0.0008767307696916273
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.7731098707480177,
+      "isobaric_y_mae": 0.02441211178542095,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 10.156728460104159,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015526777567112689
+    },
+    "validation_composite": 0.9998912593414416,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.03874527895032077,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.0874286992147874
+    }
+  },
+  {
+    "epoch": 3,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.005415895121322397,
+      "direct_thermodynamic_total": 0.0036775791812294787,
+      "excess_gibbs": 0.0009696316251481135,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 3.0483639457510634,
+      "total": 0.014891465262143227,
+      "vle_pressure": 0.0050894141834070825,
+      "vle_pure_vapor_pressure": 0.0107107813140587,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.011213886033499003,
+      "vle_vapor_composition": 0.0007690812334074875
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.6079715364613503,
+      "isobaric_y_mae": 0.0223064044390881,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 12.292854960949587,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.01887812260942709
+    },
+    "validation_composite": 1.0728833139383043,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04200198588257873,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09430060072779332
+    }
+  },
+  {
+    "epoch": 4,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.005180993716449415,
+      "direct_thermodynamic_total": 0.003560694821271116,
+      "excess_gibbs": 0.0009701979600821321,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 3.7241556853312425,
+      "total": 0.016652532326892566,
+      "vle_pressure": 0.00585792932279424,
+      "vle_pure_vapor_pressure": 0.012899384428961174,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.013091837419412822,
+      "vle_vapor_composition": 0.0007842159395207441
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.7662570674072489,
+      "isobaric_y_mae": 0.023525955551282864,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.921171584444709,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.0167033993657919
+    },
+    "validation_composite": 1.0007353520451092,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.043405295295866536,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09585811277033511
+    }
+  },
+  {
+    "epoch": 5,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.0049031376437948665,
+      "direct_thermodynamic_total": 0.0034167486388965826,
+      "excess_gibbs": 0.0009651798029902472,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 2.9993702500437878,
+      "total": 0.01620825560653562,
+      "vle_pressure": 0.006033491317750814,
+      "vle_pure_vapor_pressure": 0.012060015883952991,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.01279150701502011,
+      "vle_vapor_composition": 0.0007280077213565729
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.7314251352616004,
+      "isobaric_y_mae": 0.02422334202055848,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.584646794120866,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.01668113535925142
+    },
+    "validation_composite": 0.992607300107325,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.044923787883831987,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09738638327936529
+    }
+  },
+  {
+    "epoch": 6,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.0051117613643068644,
+      "direct_thermodynamic_total": 0.0035599285756481073,
+      "excess_gibbs": 0.001004047881644146,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 4.231751442727133,
+      "total": 0.015691928323882283,
+      "vle_pressure": 0.005810586859202761,
+      "vle_pure_vapor_pressure": 0.011180098949413502,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.012131999737453889,
+      "vle_vapor_composition": 0.0007313635416802313
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.259514795962698,
+      "isobaric_y_mae": 0.026165838516911146,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 11.753159241787749,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.01934169314491018
+    },
+    "validation_composite": 1.1834465453918819,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.047914504194853665,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.10346856474123955
+    }
+  },
+  {
+    "epoch": 7,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.0050236212237598395,
+      "direct_thermodynamic_total": 0.003463743501087501,
+      "excess_gibbs": 0.0009519329160130762,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 2.6133868906809687,
+      "total": 0.01573730521396396,
+      "vle_pressure": 0.005688029292789454,
+      "vle_pure_vapor_pressure": 0.011645282233793408,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.012273561723661222,
+      "vle_vapor_composition": 0.0007628912676589742
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.2381719625648038,
+      "isobaric_y_mae": 0.02751963365197171,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.034247280623179,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.016805578648636098
+    },
+    "validation_composite": 1.074009723029678,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.039784823444124526,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.08936884899844556
+    }
+  },
+  {
+    "epoch": 8,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.004557270402567236,
+      "direct_thermodynamic_total": 0.0032281362003439636,
+      "excess_gibbs": 0.000949501004178983,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 3.392729374584665,
+      "total": 0.01545877031299171,
+      "vle_pressure": 0.005565494271301767,
+      "vle_pure_vapor_pressure": 0.011950113027986157,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.012230634191313644,
+      "vle_vapor_composition": 0.0006900833230429954
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.6557934242227335,
+      "isobaric_y_mae": 0.021607989413265322,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 11.13428766704975,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015594346656425633
+    },
+    "validation_composite": 0.988323658206857,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04103544762828477,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.0902873633464679
+    }
+  },
+  {
+    "epoch": 9,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.004615231331853783,
+      "direct_thermodynamic_total": 0.0032540687656481037,
+      "excess_gibbs": 0.0009464530986772798,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 3.114509470517283,
+      "total": 0.0135921465681792,
+      "vle_pressure": 0.004692573813603809,
+      "vle_pure_vapor_pressure": 0.01005662256237017,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.010338077733564195,
+      "vle_vapor_composition": 0.0006171927180047324
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.6986779909602348,
+      "isobaric_y_mae": 0.021794237740084262,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 10.83594037115267,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015765041472621234
+    },
+    "validation_composite": 0.9890694800054901,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04341076832530453,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09250305438493156
+    }
+  },
+  {
+    "epoch": 10,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.005009792111479964,
+      "direct_thermodynamic_total": 0.0034488983169986844,
+      "excess_gibbs": 0.0009440022469803988,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 2.9750187355623035,
+      "total": 0.012789907383131462,
+      "vle_pressure": 0.004043611048257136,
+      "vle_pure_vapor_pressure": 0.009376100811106227,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.009341009016562816,
+      "vle_vapor_composition": 0.0006093475492824691
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.8229339345060545,
+      "isobaric_y_mae": 0.022932085344547437,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.227144430968783,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015916530863011143
+    },
+    "validation_composite": 0.9694399505064482,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04162921937918744,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09370463941417588
+    }
+  },
+  {
+    "epoch": 11,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.004461957522085228,
+      "direct_thermodynamic_total": 0.003203396243635928,
+      "excess_gibbs": 0.0009724174833988892,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 3.455029282911789,
+      "total": 0.014520749102437119,
+      "vle_pressure": 0.005205119878044505,
+      "vle_pure_vapor_pressure": 0.010969248230415236,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.011317352863111621,
+      "vle_vapor_composition": 0.000627608911351609
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.5270479303029454,
+      "isobaric_y_mae": 0.026468958140951276,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 13.751276305336527,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.02063867274678234
+    },
+    "validation_composite": 1.2999580898732435,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.05331281870434805,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.11899626330280218
+    }
+  },
+  {
+    "epoch": 12,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.004687367488995425,
+      "direct_thermodynamic_total": 0.0032566327631877914,
+      "excess_gibbs": 0.0009129490133083538,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 2.8018531945698655,
+      "total": 0.012310970112795076,
+      "vle_pressure": 0.0040160075878971765,
+      "vle_pure_vapor_pressure": 0.008928971324145087,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.009054337429367103,
+      "vle_vapor_composition": 0.0005738441794226391
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.830610034790608,
+      "isobaric_y_mae": 0.02174294906394924,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 11.369811264801024,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.016967778348014
+    },
+    "validation_composite": 1.0392705430227565,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.045401782438682134,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09850369540284194
+    }
+  },
+  {
+    "epoch": 13,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.006472477057233716,
+      "direct_thermodynamic_total": 0.0042648947840180145,
+      "excess_gibbs": 0.0010286562572827613,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 3.5709847939007537,
+      "total": 0.015298074086018645,
+      "vle_pressure": 0.0051533561210679564,
+      "vle_pure_vapor_pressure": 0.010218786782621992,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.011033179280465311,
+      "vle_vapor_composition": 0.0007704297580916516
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.7469315449146319,
+      "isobaric_y_mae": 0.02201202080043998,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.895225398677411,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.016179548065916326
+    },
+    "validation_composite": 0.9749845294196099,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04473923982067259,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09520243587958264
+    }
+  },
+  {
+    "epoch": 14,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.004850742037254226,
+      "direct_thermodynamic_total": 0.0033974206090697603,
+      "excess_gibbs": 0.0009720495626942457,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 4.325603996979766,
+      "total": 0.014478278767030889,
+      "vle_pressure": 0.005716570467032957,
+      "vle_pure_vapor_pressure": 0.009389523258955385,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.01108085828296364,
+      "vle_vapor_composition": 0.000669526131250843
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.8665564111916435,
+      "isobaric_y_mae": 0.023711783202377816,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 11.513722796634637,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.016373040579476736
+    },
+    "validation_composite": 1.0585166364725271,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04401368955793629,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09522646240977364
+    }
+  },
+  {
+    "epoch": 15,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.0043723084108549,
+      "direct_thermodynamic_total": 0.0030964244215788673,
+      "excess_gibbs": 0.0009102701902909338,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 2.541711471136471,
+      "total": 0.011764666574659207,
+      "vle_pressure": 0.0038671616653030557,
+      "vle_pure_vapor_pressure": 0.008516067269104373,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.00866824209919574,
+      "vle_vapor_composition": 0.0005430467652630572
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.7129601926335163,
+      "isobaric_y_mae": 0.02263740307350494,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 10.705214369450937,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015177578524115247
+    },
+    "validation_composite": 0.9864104097235166,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04338033499021087,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09563952937010067
+    }
+  },
+  {
+    "epoch": 16,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.00410608862725264,
+      "direct_thermodynamic_total": 0.002943765950982699,
+      "excess_gibbs": 0.0008907216322209038,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 2.797962565797238,
+      "total": 0.01221772053522522,
+      "vle_pressure": 0.003995230563499771,
+      "vle_pure_vapor_pressure": 0.009452057596363962,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.009273954556224717,
+      "vle_vapor_composition": 0.000552695121939138
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.2035146848662706,
+      "isobaric_y_mae": 0.02721842593877508,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 10.583744615872073,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.01992424255737532
+    },
+    "validation_composite": 1.159877329275115,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04579762235233225,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.10193745911497593
+    }
+  },
+  {
+    "epoch": 17,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.0045789415396627125,
+      "direct_thermodynamic_total": 0.0032344525558715065,
+      "excess_gibbs": 0.0009449817987862303,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 4.119140761856196,
+      "total": 0.014479862898911462,
+      "vle_pressure": 0.00515084033494528,
+      "vle_pure_vapor_pressure": 0.01094449034441852,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.0112454102114371,
+      "vle_vapor_composition": 0.0006223246907787858
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.8313450440131918,
+      "isobaric_y_mae": 0.02444960116754969,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.156973299128468,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.016991982495778303
+    },
+    "validation_composite": 0.9991257841612546,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04147226637649104,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.08992114886171222
+    }
+  },
+  {
+    "epoch": 18,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.004584717957679013,
+      "direct_thermodynamic_total": 0.0032658650391172894,
+      "excess_gibbs": 0.0009735060629739072,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 3.2459310497856912,
+      "total": 0.014518327592654676,
+      "vle_pressure": 0.005239433383948036,
+      "vle_pure_vapor_pressure": 0.010686804008386471,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.01125246259445281,
+      "vle_vapor_composition": 0.0006696271473125091
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.7034237509684158,
+      "isobaric_y_mae": 0.022307930296573502,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 11.871844446412643,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.01586958976481663
+    },
+    "validation_composite": 1.0275691218809504,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.045683485870318126,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09724429494309146
+    }
+  },
+  {
+    "epoch": 19,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.004185166781687079,
+      "direct_thermodynamic_total": 0.0030159485829552735,
+      "excess_gibbs": 0.0009233651787763369,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 2.7472440966781866,
+      "total": 0.011395068417713025,
+      "vle_pressure": 0.003751420308244467,
+      "vle_pure_vapor_pressure": 0.00815161386230518,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.00837911988001307,
+      "vle_vapor_composition": 0.0005518926389996013
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.7422188332657573,
+      "isobaric_y_mae": 0.020580216482817867,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 8.878309404975589,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.016364744609523526
+    },
+    "validation_composite": 0.9324240929009037,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04324677589930603,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09450014998398996
+    }
+  },
+  {
+    "epoch": 20,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.0041115481165436545,
+      "direct_thermodynamic_total": 0.0029417006693573523,
+      "excess_gibbs": 0.000885926609477532,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 3.090539293617467,
+      "total": 0.0117440603989736,
+      "vle_pressure": 0.0038179629934924184,
+      "vle_pure_vapor_pressure": 0.008841935856634736,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.008802359656338915,
+      "vle_vapor_composition": 0.0005634287962390152
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.8311901074852301,
+      "isobaric_y_mae": 0.022486569421105277,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 11.586414334072451,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.01622444044771392
+    },
+    "validation_composite": 1.0421039493645015,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.0407842979560757,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.08865946171195578
+    }
+  },
+  {
+    "epoch": 21,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.004502211786908418,
+      "direct_thermodynamic_total": 0.003187604270749374,
+      "excess_gibbs": 0.0009364983632757397,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 7.178661006083887,
+      "total": 0.018433498327359278,
+      "vle_pressure": 0.0073761407412278246,
+      "vle_pure_vapor_pressure": 0.01442049641112587,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.015245894039401853,
+      "vle_vapor_composition": 0.0006595050957007967
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.9386318961241589,
+      "isobaric_y_mae": 0.02238534672151564,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 11.712203612378566,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.016795634617189054
+    },
+    "validation_composite": 1.0669966832186337,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04155006981112004,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09282889916511997
+    }
+  },
+  {
+    "epoch": 22,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.004541411637671548,
+      "direct_thermodynamic_total": 0.003222218405389415,
+      "excess_gibbs": 0.0009515125808961998,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 5.302992929431583,
+      "total": 0.014943584499518056,
+      "vle_pressure": 0.005471638713173713,
+      "vle_pure_vapor_pressure": 0.011129108758140565,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.011721366173880041,
+      "vle_vapor_composition": 0.0006851730462265252
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.766697439170748,
+      "isobaric_y_mae": 0.02143736040613919,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 8.945503713426495,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.016288081356906008
+    },
+    "validation_composite": 0.9447632487225397,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04190227763974113,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09191601226951111
+    }
+  },
+  {
+    "epoch": 23,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.004007963623730913,
+      "direct_thermodynamic_total": 0.0029051706285607155,
+      "excess_gibbs": 0.000901188822217999,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 2.2383989385693686,
+      "total": 0.010286477326445383,
+      "vle_pressure": 0.002968755414163102,
+      "vle_pure_vapor_pressure": 0.007753684583352003,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.007381306606309048,
+      "vle_vapor_composition": 0.0005357088918575011
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.5962453626857158,
+      "isobaric_y_mae": 0.02105843737771367,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.855269767984069,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015343343226544855
+    },
+    "validation_composite": 0.9330113944509923,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.041555851259155965,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09179468344094197
+    }
+  },
+  {
+    "epoch": 24,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.003993614428316475,
+      "direct_thermodynamic_total": 0.002912455263995076,
+      "excess_gibbs": 0.0009156480463346133,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 2.6343224482416314,
+      "total": 0.01044526993395911,
+      "vle_pressure": 0.003179290199152304,
+      "vle_pure_vapor_pressure": 0.007668716534379654,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.007532814598841917,
+      "vle_vapor_composition": 0.0005191661468102354
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.0550061974158687,
+      "isobaric_y_mae": 0.01993532839656322,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 10.818021621647448,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.016267170714249393
+    },
+    "validation_composite": 1.0229571919042626,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04187527086294656,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09089307982820558
+    }
+  },
+  {
+    "epoch": 25,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.003931396318026295,
+      "direct_thermodynamic_total": 0.0028376438090259018,
+      "excess_gibbs": 0.0008719456524336892,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 4.392885442617349,
+      "total": 0.013149503224949862,
+      "vle_pressure": 0.004669891482615188,
+      "vle_pure_vapor_pressure": 0.010188654134637846,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.010311859345879451,
+      "vle_vapor_composition": 0.0005476407576923658
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.762674654447117,
+      "isobaric_y_mae": 0.02682372472908277,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 14.05289858333852,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.021665826577561453
+    },
+    "validation_composite": 1.357597636649026,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.0429719048610225,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09422071137011212
+    }
+  },
+  {
+    "epoch": 26,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.004028788721417894,
+      "direct_thermodynamic_total": 0.002884896536104665,
+      "excess_gibbs": 0.0008705021931754578,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 3.8554489022912337,
+      "total": 0.014794070859856435,
+      "vle_pressure": 0.005047935210348608,
+      "vle_pure_vapor_pressure": 0.012509271358095361,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.011909174450901077,
+      "vle_vapor_composition": 0.0006066035906023041
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.7150346740779232,
+      "isobaric_y_mae": 0.02097354698978482,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 10.979189021882917,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.016589978863664964
+    },
+    "validation_composite": 0.9997280133578451,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04447902558479007,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09587333694678153
+    }
+  },
+  {
+    "epoch": 27,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.003915647105342798,
+      "direct_thermodynamic_total": 0.0028527385988372407,
+      "excess_gibbs": 0.0008949150644809653,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 2.88309139219329,
+      "total": 0.010161037364810822,
+      "vle_pressure": 0.0031598388415113783,
+      "vle_pure_vapor_pressure": 0.007297580647380634,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.0073082988166043115,
+      "vle_vapor_composition": 0.000499669640087734
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.7548830331089966,
+      "isobaric_y_mae": 0.02291631055970515,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.81905805292035,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.017458178614009872
+    },
+    "validation_composite": 1.001475252797894,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04033994019909056,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.08905617958581373
+    }
+  },
+  {
+    "epoch": 28,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.0038931591714828524,
+      "direct_thermodynamic_total": 0.0028311624024672196,
+      "excess_gibbs": 0.0008845828172940632,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 3.1110722184405355,
+      "total": 0.010636023603113557,
+      "vle_pressure": 0.003212959037032899,
+      "vle_pure_vapor_pressure": 0.00812617323415487,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.00780486120494835,
+      "vle_vapor_composition": 0.0005288155995976662
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.1328045648640264,
+      "isobaric_y_mae": 0.022548419126043353,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 10.603654951088027,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.018468288943486354
+    },
+    "validation_composite": 1.0844393744123162,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04494639316474595,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09850009010115435
+    }
+  },
+  {
+    "epoch": 29,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.004049682600447536,
+      "direct_thermodynamic_total": 0.0029476957159920826,
+      "excess_gibbs": 0.0009228544168459227,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 2.949103045953227,
+      "total": 0.010920792448146891,
+      "vle_pressure": 0.00349345903926213,
+      "vle_pure_vapor_pressure": 0.007902124064732294,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.007973096738624666,
+      "vle_vapor_composition": 0.0005285756387007642
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.527765067933994,
+      "isobaric_y_mae": 0.019449290550160078,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 10.8142192192833,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015407993772259388
+    },
+    "validation_composite": 0.9386529641792631,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.040856778014151725,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.0893251803460908
+    }
+  },
+  {
+    "epoch": 30,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.003944572508507531,
+      "direct_thermodynamic_total": 0.0028475372474732205,
+      "excess_gibbs": 0.0008752509911989404,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 4.3473737857091415,
+      "total": 0.012862700698602247,
+      "vle_pressure": 0.004452736798511655,
+      "vle_pure_vapor_pressure": 0.010008361543722403,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.010015163498543771,
+      "vle_vapor_composition": 0.0005582459025798348
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 2.084214550509734,
+      "isobaric_y_mae": 0.023887315290499103,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 11.23695409337412,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.016653454124300908
+    },
+    "validation_composite": 1.0835501997385741,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04300381508175946,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09525830386671749
+    }
+  },
+  {
+    "early_stopped": true,
+    "epoch": 31,
+    "stage": "stage2_joint_vle",
+    "train": {
+      "activity_coefficient": 0.003738382028195967,
+      "direct_thermodynamic_total": 0.002754582842383054,
+      "excess_gibbs": 0.0008853918474041909,
+      "fugacity_warmup_scale": 0.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 4.924762239406521,
+      "total": 0.012450965151561456,
+      "vle_pressure": 0.004565934784686363,
+      "vle_pure_vapor_pressure": 0.009183771934145822,
+      "vle_teacher_forced_fugacity": 0.0,
+      "vle_temperature": 0.0,
+      "vle_total": 0.009696382341498217,
+      "vle_vapor_composition": 0.0005385615708808059
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.8823578848144993,
+      "isobaric_y_mae": 0.022235471962757263,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 12.364220990934468,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.017677130750382068
+    },
+    "validation_composite": 1.0912337241548553,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04599716223244759,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09962115188887573
+    }
+  },
+  {
+    "epoch": 1,
+    "stage": "stage3_fugacity",
+    "train": {
+      "activity_coefficient": 0.0037195417959387644,
+      "direct_thermodynamic_total": 0.002736696450127094,
+      "excess_gibbs": 0.0008769255618561821,
+      "fugacity_warmup_scale": 0.5,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 1.4908633330049699,
+      "total": 0.009110855369400024,
+      "vle_pressure": 0.0023584630955113027,
+      "vle_pure_vapor_pressure": 0.0071295026462392585,
+      "vle_teacher_forced_fugacity": 0.001585475557599845,
+      "vle_temperature": 0.0,
+      "vle_total": 0.007951707015876002,
+      "vle_vapor_composition": 0.000443017022521363
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.7990063634948465,
+      "isobaric_y_mae": 0.020553566549588224,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.791017581951028,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.016135763627885113
+    },
+    "validation_composite": 0.9635658961742264,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.042613605950723825,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09301076094452812
+    }
+  },
+  {
+    "epoch": 2,
+    "stage": "stage3_fugacity",
+    "train": {
+      "activity_coefficient": 0.0036133482388447293,
+      "direct_thermodynamic_total": 0.002675827579680019,
+      "excess_gibbs": 0.0008691534707643305,
+      "fugacity_warmup_scale": 1.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 1.272369239590297,
+      "total": 0.0083923276434274,
+      "vle_pressure": 0.002030615500278991,
+      "vle_pure_vapor_pressure": 0.006488756251107607,
+      "vle_teacher_forced_fugacity": 0.0014318303418371882,
+      "vle_temperature": 0.0,
+      "vle_total": 0.007134012129407787,
+      "vle_vapor_composition": 0.0004271880748935568
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.7143901168073752,
+      "isobaric_y_mae": 0.02015048289637084,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.779969912107864,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015558812478906335
+    },
+    "validation_composite": 0.940035909865861,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.041958216565111624,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09107998236543537
+    }
+  },
+  {
+    "epoch": 3,
+    "stage": "stage3_fugacity",
+    "train": {
+      "activity_coefficient": 0.003493133172015548,
+      "direct_thermodynamic_total": 0.0026232184190646576,
+      "excess_gibbs": 0.0008766518461262988,
+      "fugacity_warmup_scale": 1.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 1.308686452662631,
+      "total": 0.007958075014025992,
+      "vle_pressure": 0.0019182810460619446,
+      "vle_pure_vapor_pressure": 0.005961275901693914,
+      "vle_teacher_forced_fugacity": 0.001371246605175624,
+      "vle_temperature": 0.0,
+      "vle_total": 0.006692390792618167,
+      "vle_vapor_composition": 0.00042222519105139744
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.7588394428072887,
+      "isobaric_y_mae": 0.020416048014060738,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.855647102193549,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.01564411376927306
+    },
+    "validation_composite": 0.9518016010160921,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04211362909487663,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09150224596235106
+    }
+  },
+  {
+    "epoch": 4,
+    "stage": "stage3_fugacity",
+    "train": {
+      "activity_coefficient": 0.0035177101422248958,
+      "direct_thermodynamic_total": 0.0026391027336002144,
+      "excess_gibbs": 0.0008802476437643304,
+      "fugacity_warmup_scale": 1.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 1.16626574829682,
+      "total": 0.007779858377873267,
+      "vle_pressure": 0.0018779201154770328,
+      "vle_pure_vapor_pressure": 0.005656485769349197,
+      "vle_teacher_forced_fugacity": 0.001348739053157688,
+      "vle_temperature": 0.0,
+      "vle_total": 0.00647600729172413,
+      "vle_vapor_composition": 0.00042110518454073297
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.6981607816482294,
+      "isobaric_y_mae": 0.02018634360854387,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.79092540975514,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015431982837298719
+    },
+    "validation_composite": 0.9367805450060531,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.041824937271774824,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.0907926131627708
+    }
+  },
+  {
+    "epoch": 5,
+    "stage": "stage3_fugacity",
+    "train": {
+      "activity_coefficient": 0.0034221035938163157,
+      "direct_thermodynamic_total": 0.0025733446175295114,
+      "excess_gibbs": 0.0008622928094411724,
+      "fugacity_warmup_scale": 1.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 1.3762001730577085,
+      "total": 0.007728242959492049,
+      "vle_pressure": 0.0018360609380490076,
+      "vle_pure_vapor_pressure": 0.0057643654365345754,
+      "vle_teacher_forced_fugacity": 0.001317887892960071,
+      "vle_temperature": 0.0,
+      "vle_total": 0.0064596073270395795,
+      "vle_vapor_composition": 0.00042347574611532277
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.6631417685465435,
+      "isobaric_y_mae": 0.020085668428019347,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.86694298724184,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015419633531106246
+    },
+    "validation_composite": 0.9334867227796735,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.041928915988278415,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.091147377858622
+    }
+  },
+  {
+    "epoch": 6,
+    "stage": "stage3_fugacity",
+    "train": {
+      "activity_coefficient": 0.003428847386017412,
+      "direct_thermodynamic_total": 0.002555559975010939,
+      "excess_gibbs": 0.0008411362914313013,
+      "fugacity_warmup_scale": 1.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 0.988019909305589,
+      "total": 0.007587205044524343,
+      "vle_pressure": 0.0018047705149043126,
+      "vle_pure_vapor_pressure": 0.005594798677059692,
+      "vle_teacher_forced_fugacity": 0.0013066896627122891,
+      "vle_temperature": 0.0,
+      "vle_total": 0.00632526784448833,
+      "vle_vapor_composition": 0.00041640838490787483
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.6793263291296212,
+      "isobaric_y_mae": 0.02009864837939284,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 10.04963002095742,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015599018482909547
+    },
+    "validation_composite": 0.9438515633367741,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.041979156426098174,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09111286843543229
+    }
+  },
+  {
+    "epoch": 7,
+    "stage": "stage3_fugacity",
+    "train": {
+      "activity_coefficient": 0.003411846098696135,
+      "direct_thermodynamic_total": 0.0025647180365926604,
+      "excess_gibbs": 0.0008587949809135153,
+      "fugacity_warmup_scale": 1.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 1.3541951283903042,
+      "total": 0.007627917496953025,
+      "vle_pressure": 0.0017822316786622087,
+      "vle_pure_vapor_pressure": 0.005693202806242826,
+      "vle_teacher_forced_fugacity": 0.0012851465368661217,
+      "vle_temperature": 0.0,
+      "vle_total": 0.00633549442861708,
+      "vle_vapor_composition": 0.0004215148165671585
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.6550265963945943,
+      "isobaric_y_mae": 0.020025297148546433,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.72487714215647,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015178834327746015
+    },
+    "validation_composite": 0.9239985421115535,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04168793420694422,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09013327571913614
+    }
+  },
+  {
+    "epoch": 8,
+    "stage": "stage3_fugacity",
+    "train": {
+      "activity_coefficient": 0.003452672790428084,
+      "direct_thermodynamic_total": 0.002606623560863588,
+      "excess_gibbs": 0.0008802871346683204,
+      "fugacity_warmup_scale": 1.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 1.458644709994088,
+      "total": 0.00773716037393536,
+      "vle_pressure": 0.0017756933072364733,
+      "vle_pure_vapor_pressure": 0.005857065509673933,
+      "vle_teacher_forced_fugacity": 0.0012655844841178098,
+      "vle_temperature": 0.0,
+      "vle_total": 0.006383465441131796,
+      "vle_vapor_composition": 0.00041365486611479925
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.6511443554415999,
+      "isobaric_y_mae": 0.020024747608820073,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.724709307479857,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015186757878934557
+    },
+    "validation_composite": 0.923614612710937,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04166962133798567,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09023173506782332
+    }
+  },
+  {
+    "epoch": 9,
+    "stage": "stage3_fugacity",
+    "train": {
+      "activity_coefficient": 0.0034427438764677333,
+      "direct_thermodynamic_total": 0.0025921863940955633,
+      "excess_gibbs": 0.0008708144561316249,
+      "fugacity_warmup_scale": 1.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 1.1611761947781805,
+      "total": 0.007522292532608541,
+      "vle_pressure": 0.0017240620032014315,
+      "vle_pure_vapor_pressure": 0.005552595500673454,
+      "vle_teacher_forced_fugacity": 0.0012497317198692692,
+      "vle_temperature": 0.0,
+      "vle_total": 0.0061673404929490595,
+      "vle_vapor_composition": 0.00041724906264449844
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.6816812430762729,
+      "isobaric_y_mae": 0.020145411928858787,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.891964347714717,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015394840329676257
+    },
+    "validation_composite": 0.936802945929595,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04195611237939595,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09084493561410173
+    }
+  },
+  {
+    "epoch": 10,
+    "stage": "stage3_fugacity",
+    "train": {
+      "activity_coefficient": 0.003395513962801532,
+      "direct_thermodynamic_total": 0.0025392428630932524,
+      "excess_gibbs": 0.0008414858940849767,
+      "fugacity_warmup_scale": 1.0,
+      "gamma_component_coverage": 0.6402227364767139,
+      "ge_state_coverage": 0.5183685276251084,
+      "gradient_norm": 1.1470456791641328,
+      "total": 0.0073861209865598056,
+      "vle_pressure": 0.0017099004147381953,
+      "vle_pure_vapor_pressure": 0.005413669391837222,
+      "vle_teacher_forced_fugacity": 0.0012377309323322715,
+      "vle_temperature": 0.0,
+      "vle_total": 0.0060722317549569485,
+      "vle_vapor_composition": 0.0004177657364666115
+    },
+    "validation": {
+      "isobaric_coverage": 1.0,
+      "isobaric_solver_failure_rate": 0.0,
+      "isobaric_temperature_mae_k": 1.6191950237850457,
+      "isobaric_y_mae": 0.01989731115668208,
+      "isothermal_coverage": 1.0,
+      "isothermal_pressure_mae_kpa": 9.819144068527223,
+      "isothermal_solver_failure_rate": 0.0,
+      "isothermal_y_mae": 0.015199982108144586
+    },
+    "validation_composite": 0.9213854520299795,
+    "validation_labels": {
+      "excess_gibbs_rt_mae": 0.04164198179342199,
+      "gamma_label_coverage": 0.7077217613273772,
+      "gamma_labeled_components": 2218.0,
+      "ge_label_coverage": 0.5634971282705807,
+      "ge_labeled_states": 883.0,
+      "log_gamma_mae": 0.09012681261927723
+    }
+  }
+]

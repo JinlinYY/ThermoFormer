@@ -1,0 +1,104 @@
+{
+  "artifacts": {
+    "metrics": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_composition_interpolation/seed_3/uniquac/metrics.json",
+      "sha256": "38716658c8b9e2e3d3b0869fdfa8551a25d62ffdb582032dab762e8f1ad3807a"
+    },
+    "parameters": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_composition_interpolation/seed_3/uniquac/parameters.json",
+      "sha256": "c01db87d74e1e5c87f4a1b694541e01016a24a4ea30374de24dfc5264b222277"
+    },
+    "predictions": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_composition_interpolation/seed_3/uniquac/predictions.csv",
+      "sha256": "648318eca3cb51f35892133e75e8d1d5589af16f397851881e96acf999f138c8"
+    },
+    "vapor_pressure_fits": {
+      "path": "experiments/vle/comparison/reference_evaluations/thermodynamic_models/state_composition_interpolation/seed_3/vapor_pressure_fits.json",
+      "sha256": "12a5574b9f7f1433bb2602980fd3215861a5568e0a99a4402b00a7cb6ed07056"
+    }
+  },
+  "config_sources": [
+    {
+      "path": "configs/model/c1_three_view_vanilla.yaml",
+      "sha256": "b49471ea53d6222c65c8e89b59095d09f827978b025c49a508c1e0bf849ee6d7"
+    },
+    {
+      "path": "configs/training/supervised.yaml",
+      "sha256": "7acefbcf4da404b4cbbe4e09c8bc3cc21c5bebe509b624c3cb981b8509184e71"
+    },
+    {
+      "path": "configs/training/fugacity_finetuning.yaml",
+      "sha256": "eaf09983d015da25b7979adb585c3a6ef8070e83bb32164f560ef21eea138aaf"
+    },
+    {
+      "path": "configs/protocols/state_generalization.yaml",
+      "sha256": "9b6493d4673a8e150b992d51328a2a7918d662e5c7d1d4af2370e9063541ed6e"
+    },
+    {
+      "path": "configs/vle/comparison/studies/thermodynamic_models/config.json",
+      "sha256": "d1f2aeefcba75779d5f615f336197486233ab67e7bd93bdccf07607e17edd78a"
+    }
+  ],
+  "counts": {
+    "fitted_systems": 71,
+    "parameter_coverage_by_component_count": {
+      "2": {
+        "attempted_systems": 144,
+        "coverage": 0.4513888888888889,
+        "fitted_systems": 65
+      },
+      "3": {
+        "attempted_systems": 26,
+        "coverage": 0.23076923076923078,
+        "fitted_systems": 6
+      }
+    },
+    "requested_systems": 170,
+    "system_parameter_coverage": 0.4176470588235294,
+    "test_rows": 745,
+    "training_rows": 9521,
+    "validation_rows": 745
+  },
+  "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+  "dataset_workbooks": [
+    {
+      "path": "datasets/vle_reference/binary_vle_english.xlsx",
+      "sha256": "d122177fe42b5b41ca2e782cc77b3e6a7a0ebf922bb0e589f18edde622bf3efc"
+    },
+    {
+      "path": "datasets/vle_reference/ternary_vle_english.xlsx",
+      "sha256": "52fe356da44cc5e78f32b881a614ac95ea98e55002aaba464cfcf35069764c67"
+    }
+  ],
+  "elapsed_seconds": 3.5205624103546143,
+  "evaluation_partition": "test",
+  "experiment": "thermodynamic_model_state_generalization",
+  "git_commit": "fbc03969621d4cfec0f4cf26377643874e2b3978",
+  "model": "uniquac",
+  "protocol": "state_composition_interpolation",
+  "resolved_config_sha256": "15cf42b0a5bd46fa7b4309d7876d5e7f8efbc8bd90fb7efaa3119a136bad6fdd",
+  "run_kind": "formal",
+  "runtime": {
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "scipy": "1.13.1",
+    "thermo": "0.6.0"
+  },
+  "schema_version": 1,
+  "seed": 3,
+  "selection_partition": "train",
+  "settings_sha256": "0d451968bcf82c7115fc8d1af1629199b60a453f5b0223faf2b57cea7b8ca60f",
+  "split": {
+    "path": "datasets/splits/vle/state_composition_interpolation/seed_3.json",
+    "sha256": "6cc40516486c2a39fe936b189eb95dae6f097d6b0151e2e39a44c0e22c9466c7"
+  },
+  "split_sha256": "6cc40516486c2a39fe936b189eb95dae6f097d6b0151e2e39a44c0e22c9466c7",
+  "status": "completed",
+  "temperature_solver_bounds_k": [
+    150.0,
+    859.01
+  ],
+  "test_labels_used_for_case_selection": false,
+  "test_labels_used_for_fitting": false,
+  "vapor_pressure_fits_sha256": "12a5574b9f7f1433bb2602980fd3215861a5568e0a99a4402b00a7cb6ed07056"
+}

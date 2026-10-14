@@ -1,0 +1,34 @@
+{
+  "capability": {
+    "adaptation_label": null,
+    "citation": "Yang and Lin, Journal of Chemical Information and Modeling (2025)",
+    "display_name": "TeNNet-SAC",
+    "external_assets_required": true,
+    "implementation_source": "official_pretrained",
+    "key": "tennet_sac",
+    "native_component_counts": [
+      2,
+      3
+    ],
+    "native_directions": [
+      "isothermal",
+      "isobaric"
+    ],
+    "notes": "Author pretrained/fine-tuned modules are required; quantum-chemistry pretraining is not repeated.",
+    "prediction_target": "log_gamma",
+    "reference_parameter_note": "profile + geometry + one segment model; frozen language encoders excluded",
+    "reference_trainable_parameters": 2743206,
+    "source_revision": "2367e89",
+    "source_url": "https://github.com/yueyue2299/TeNNet-SAC",
+    "temperature_mode": "variable"
+  },
+  "smoke": {
+    "asset_root": "datasets/molecular_features/upstream_baselines",
+    "epochs": 1,
+    "learning_rate": 0.001,
+    "max_train_rows": 8,
+    "max_validation_rows": 8,
+    "seed": 0,
+    "settings_sha256": "87f91d3132a02bab604a23101a8d52e5cfc7b93a5967d0a2c7e1db0c1e450ab3"
+  }
+}

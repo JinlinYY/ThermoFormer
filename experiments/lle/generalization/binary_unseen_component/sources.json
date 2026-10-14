@@ -1,0 +1,849 @@
+{
+  "experiment": "lle.generalization.binary_unseen_component",
+  "provenance": "lle_nist",
+  "status": "runnable",
+  "notes": "Binary RK / ternary continuous parallel tie-line model; SMILES+T+P only. Includes unchanged activity and finite-grid TPD certification. No LLE comparison/ablation/interpretability.",
+  "sources": [
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component",
+      "exists": true,
+      "kind": "directory",
+      "sha256": null
+    }
+  ],
+  "files": [
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/data_audit.json",
+      "bytes": 931
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/identity.json",
+      "bytes": 3492
+    },
+    {
+      "path": "models/lle/generalization/binary-unseen-component/seed_0/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/completion.json",
+      "bytes": 376
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/features.json",
+      "bytes": 5544
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/history.json",
+      "bytes": 11090
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/predictions.json",
+      "bytes": 335117
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/predictions.partial.json",
+      "bytes": 335117
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/split.json",
+      "bytes": 800280
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/split_check.json",
+      "bytes": 1070
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_19/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_19/predictions.json",
+      "bytes": 507493
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_19/predictions.partial.json",
+      "bytes": 507493
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_29/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_29/predictions.json",
+      "bytes": 507540
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_29/predictions.partial.json",
+      "bytes": 507540
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_39/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_39/predictions.json",
+      "bytes": 507827
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_39/predictions.partial.json",
+      "bytes": 507827
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_49/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_49/predictions.json",
+      "bytes": 507985
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_49/predictions.partial.json",
+      "bytes": 507985
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_59/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_59/predictions.json",
+      "bytes": 508094
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_59/predictions.partial.json",
+      "bytes": 508094
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_69/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_69/predictions.json",
+      "bytes": 507845
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_69/predictions.partial.json",
+      "bytes": 507845
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_79/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_79/predictions.json",
+      "bytes": 508033
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_79/predictions.partial.json",
+      "bytes": 508033
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_89/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_89/predictions.json",
+      "bytes": 508231
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_89/predictions.partial.json",
+      "bytes": 508231
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_9/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_9/predictions.json",
+      "bytes": 507475
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_9/predictions.partial.json",
+      "bytes": 507475
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_99/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_99/predictions.json",
+      "bytes": 508172
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_0/validation_epoch_99/predictions.partial.json",
+      "bytes": 508172
+    },
+    {
+      "path": "models/lle/generalization/binary-unseen-component/seed_1/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/completion.json",
+      "bytes": 376
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/features.json",
+      "bytes": 5572
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/history.json",
+      "bytes": 11111
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/predictions.json",
+      "bytes": 480431
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/predictions.partial.json",
+      "bytes": 480431
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/split.json",
+      "bytes": 800103
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/split_check.json",
+      "bytes": 893
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_19/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_19/predictions.json",
+      "bytes": 491270
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_19/predictions.partial.json",
+      "bytes": 491270
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_29/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_29/predictions.json",
+      "bytes": 491594
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_29/predictions.partial.json",
+      "bytes": 491594
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_39/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_39/predictions.json",
+      "bytes": 491647
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_39/predictions.partial.json",
+      "bytes": 491647
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_49/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_49/predictions.json",
+      "bytes": 491527
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_49/predictions.partial.json",
+      "bytes": 491527
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_59/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_59/predictions.json",
+      "bytes": 491668
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_59/predictions.partial.json",
+      "bytes": 491668
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_69/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_69/predictions.json",
+      "bytes": 491787
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_69/predictions.partial.json",
+      "bytes": 491787
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_79/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_79/predictions.json",
+      "bytes": 491435
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_79/predictions.partial.json",
+      "bytes": 491435
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_89/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_89/predictions.json",
+      "bytes": 491496
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_89/predictions.partial.json",
+      "bytes": 491496
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_9/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_9/predictions.json",
+      "bytes": 491412
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_9/predictions.partial.json",
+      "bytes": 491412
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_99/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_99/predictions.json",
+      "bytes": 491296
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_1/validation_epoch_99/predictions.partial.json",
+      "bytes": 491296
+    },
+    {
+      "path": "models/lle/generalization/binary-unseen-component/seed_2/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/completion.json",
+      "bytes": 376
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/features.json",
+      "bytes": 5690
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/history.json",
+      "bytes": 12218
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/predictions.json",
+      "bytes": 407771
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/predictions.partial.json",
+      "bytes": 407771
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/split.json",
+      "bytes": 800122
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/split_check.json",
+      "bytes": 912
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_109/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_109/predictions.json",
+      "bytes": 501158
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_109/predictions.partial.json",
+      "bytes": 501158
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_19/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_19/predictions.json",
+      "bytes": 501211
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_19/predictions.partial.json",
+      "bytes": 501211
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_29/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_29/predictions.json",
+      "bytes": 501191
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_29/predictions.partial.json",
+      "bytes": 501191
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_39/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_39/predictions.json",
+      "bytes": 501274
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_39/predictions.partial.json",
+      "bytes": 501274
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_49/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_49/predictions.json",
+      "bytes": 501364
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_49/predictions.partial.json",
+      "bytes": 501364
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_59/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_59/predictions.json",
+      "bytes": 501277
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_59/predictions.partial.json",
+      "bytes": 501277
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_69/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_69/predictions.json",
+      "bytes": 501467
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_69/predictions.partial.json",
+      "bytes": 501467
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_79/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_79/predictions.json",
+      "bytes": 501492
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_79/predictions.partial.json",
+      "bytes": 501492
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_89/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_89/predictions.json",
+      "bytes": 501635
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_89/predictions.partial.json",
+      "bytes": 501635
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_9/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_9/predictions.json",
+      "bytes": 501363
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_9/predictions.partial.json",
+      "bytes": 501363
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_99/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_99/predictions.json",
+      "bytes": 501392
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_2/validation_epoch_99/predictions.partial.json",
+      "bytes": 501392
+    },
+    {
+      "path": "models/lle/generalization/binary-unseen-component/seed_3/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/completion.json",
+      "bytes": 376
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/features.json",
+      "bytes": 5683
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/history.json",
+      "bytes": 9983
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/metrics.json",
+      "bytes": 2310
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/predictions.json",
+      "bytes": 379321
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/predictions.partial.json",
+      "bytes": 379321
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/split.json",
+      "bytes": 800191
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/split_check.json",
+      "bytes": 981
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_19/metrics.json",
+      "bytes": 2300
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_19/predictions.json",
+      "bytes": 535579
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_19/predictions.partial.json",
+      "bytes": 535579
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_29/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_29/predictions.json",
+      "bytes": 535827
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_29/predictions.partial.json",
+      "bytes": 535827
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_39/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_39/predictions.json",
+      "bytes": 535475
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_39/predictions.partial.json",
+      "bytes": 535475
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_49/metrics.json",
+      "bytes": 2306
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_49/predictions.json",
+      "bytes": 535682
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_49/predictions.partial.json",
+      "bytes": 535682
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_59/metrics.json",
+      "bytes": 2304
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_59/predictions.json",
+      "bytes": 535644
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_59/predictions.partial.json",
+      "bytes": 535644
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_69/metrics.json",
+      "bytes": 2298
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_69/predictions.json",
+      "bytes": 535798
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_69/predictions.partial.json",
+      "bytes": 535798
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_79/metrics.json",
+      "bytes": 2312
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_79/predictions.json",
+      "bytes": 535691
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_79/predictions.partial.json",
+      "bytes": 535691
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_89/metrics.json",
+      "bytes": 2302
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_89/predictions.json",
+      "bytes": 535474
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_89/predictions.partial.json",
+      "bytes": 535474
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_9/metrics.json",
+      "bytes": 2308
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_9/predictions.json",
+      "bytes": 535650
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_3/validation_epoch_9/predictions.partial.json",
+      "bytes": 535650
+    },
+    {
+      "path": "models/lle/generalization/binary-unseen-component/seed_4/best.pt",
+      "bytes": 2305229
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/completion.json",
+      "bytes": 377
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/features.json",
+      "bytes": 5711
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/history.json",
+      "bytes": 13361
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/metrics.json",
+      "bytes": 2276
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/predictions.json",
+      "bytes": 339843
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/predictions.partial.json",
+      "bytes": 339843
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/split.json",
+      "bytes": 800191
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/split_check.json",
+      "bytes": 981
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_109/metrics.json",
+      "bytes": 2250
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_109/predictions.json",
+      "bytes": 528748
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_109/predictions.partial.json",
+      "bytes": 528748
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_119/metrics.json",
+      "bytes": 2248
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_119/predictions.json",
+      "bytes": 528956
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_119/predictions.partial.json",
+      "bytes": 528956
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_19/metrics.json",
+      "bytes": 2260
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_19/predictions.json",
+      "bytes": 529012
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_19/predictions.partial.json",
+      "bytes": 529012
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_29/metrics.json",
+      "bytes": 2248
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_29/predictions.json",
+      "bytes": 528983
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_29/predictions.partial.json",
+      "bytes": 528983
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_39/metrics.json",
+      "bytes": 2256
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_39/predictions.json",
+      "bytes": 528851
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_39/predictions.partial.json",
+      "bytes": 528851
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_49/metrics.json",
+      "bytes": 2252
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_49/predictions.json",
+      "bytes": 529132
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_49/predictions.partial.json",
+      "bytes": 529132
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_59/metrics.json",
+      "bytes": 2254
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_59/predictions.json",
+      "bytes": 529042
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_59/predictions.partial.json",
+      "bytes": 529042
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_69/metrics.json",
+      "bytes": 2260
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_69/predictions.json",
+      "bytes": 528873
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_69/predictions.partial.json",
+      "bytes": 528873
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_79/metrics.json",
+      "bytes": 2260
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_79/predictions.json",
+      "bytes": 528813
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_79/predictions.partial.json",
+      "bytes": 528813
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_89/metrics.json",
+      "bytes": 2260
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_89/predictions.json",
+      "bytes": 529145
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_89/predictions.partial.json",
+      "bytes": 529145
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_9/metrics.json",
+      "bytes": 2256
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_9/predictions.json",
+      "bytes": 528826
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_9/predictions.partial.json",
+      "bytes": 528826
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_99/metrics.json",
+      "bytes": 2258
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_99/predictions.json",
+      "bytes": 528921
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/binary-unseen-component/seed_4/validation_epoch_99/predictions.partial.json",
+      "bytes": 528921
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/cache/functional_groups_thermoformer_v1.npz",
+      "bytes": 9289
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/cache/hybrid_rdkit_unimol_84m_functional_v1.npz",
+      "bytes": 1353233
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/cache/hybrid_rdkit_unimol_84m_v1.npz",
+      "bytes": 403616
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/cache/rdkit_2d_raw24_v1.npz",
+      "bytes": 24167
+    },
+    {
+      "path": "experiments/lle/training_records/v1/formal/binary-unseen-component/cache/unimolv2_84m.npz",
+      "bytes": 1321813
+    }
+  ],
+  "note": "Existence-only inventory; does not certify metrics or completed seed counts."
+}

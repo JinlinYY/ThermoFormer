@@ -1,0 +1,118 @@
+{
+  "analysis_status": "external_pretrained_overlap_unknown",
+  "artifacts": {
+    "checkpoint": {
+      "path": "models/vle/comparisons/machine_learning/formal/hanna.on.official_pretrained_to_joint_test/seed_2/best_model.pt",
+      "sha256": "c4cd45c4a9bec3842fd470972e02adef766580d9d0c1cd7c0d4961692a7e01be"
+    },
+    "history": {
+      "path": "history.csv",
+      "sha256": "551e1c75457ee37d99a6e41bbb961e01249e235c3fae09bab4361b5eea746022"
+    },
+    "metrics": {
+      "path": "metrics.csv",
+      "sha256": "b8b55f150c00789e312b10b05f2d95f808b7ebb65ab3c72f1674d6bf0b655bff"
+    },
+    "predictions": {
+      "path": "predictions.csv",
+      "sha256": "3533f469899a5223fe7342cd2a40b558f222171dfe4518ccf4c4ab4735116890"
+    }
+  },
+  "baseline": "hanna",
+  "benchmark": "official_pretrained_to_joint_test",
+  "config": {
+    "device": "cuda",
+    "epochs": 200,
+    "fixed_temperature_tolerance_k": 0.5,
+    "gdi_weight": 0.01,
+    "learning_rate": 0.001,
+    "mc_dropout_samples": 32,
+    "minimum_composition": 1e-05,
+    "patience": 25
+  },
+  "dataset_sha256": "cd264320244c3c17637b61c09cda24a907d68700ba571d76240dcfb388c3272e",
+  "environment": {
+    "path": "environment.yml",
+    "requirements_path": "requirements.txt",
+    "requirements_sha256": "eab168b5df9dda6620579d2797db743863c24bd7dda7d5a319ab5828f8d92ed5",
+    "sha256": "505e06ece39ae0a83e1bc217ba357cb6b6c816a2d3d5ffa3ce93bb0a90c282af"
+  },
+  "evaluation_partition": "test",
+  "feature_cache": {
+    "policy": "deterministic_on_the_fly_from_registered_rows",
+    "used": false
+  },
+  "feature_definitions": {
+    "src/thermoformer/baselines/machine_learning/formal.py": "9ae2227607c83694405b407fa8b979d6ab0083c7317e9519ae88e6107c214df6",
+    "src/thermoformer/baselines/machine_learning/hanna.py": "588daf37707429c89a5d0b416ba44c16b255d872fc0918dfbe7b3e28022ac170",
+    "src/thermoformer/baselines/machine_learning/models.py": "85bea39c337386776bc745a7d07d69952b0fc215e3024f3dece6a81d1c285a34",
+    "src/thermoformer/baselines/machine_learning/smoke.py": "eba41a59444a89dfd0560c46bc6bb486e23104797e19e208879bdfd2f9b5c7b2"
+  },
+  "git_commit": "ccc1e4faa4ac1001ba7b7f080b6688ea5828adaf",
+  "model_assets": {
+    "files": {
+      "models/baselines/hanna_official/LICENSE": "ed0688dd478bdd5ffb643599535de2e8768232bbbf3ad004f1cd23a66968ebb5",
+      "models/baselines/hanna_official/models/ChemBERTa/config.json": "f8925a6309f321a5781576a7e757b3c64afa12ef5e81537ba9083b75610b03fb",
+      "models/baselines/hanna_official/models/ChemBERTa/model.safetensors": "73ef313bb1499948e022e1e02a0420f2bcdff4bc7fdc6fd92a6c8c33f853692d",
+      "models/baselines/hanna_official/models/ChemBERTa/vocab.json": "0c9afbd534ab59fa51718c998027da0e7932293c9a51de03317d4c83d3fe48f6",
+      "models/baselines/hanna_official/models/HANNA/HANNA.py": "17af3815d4d5197f40250fe4bfcb09ecf416d10399cf7af0c3be5c03285d5c9f",
+      "models/baselines/hanna_official/models/HANNA/ensemble/HANNA_parameters_binary0.pt": "96bf2c1ef512d0b1baf51b0f6e6ad222c2e7e10b58ee2cd96b82679405fb039b",
+      "models/baselines/hanna_official/models/HANNA/ensemble/HANNA_parameters_binary1.pt": "0d08a33e88d10a9f1a8023f9e48b134d7d17523a29324527449c7786ae866353",
+      "models/baselines/hanna_official/models/HANNA/ensemble/HANNA_parameters_binary2.pt": "255775c91528beaca5f9348d89827dcdf4b677f7945d437e93346c0a7ed23ee7",
+      "models/baselines/hanna_official/models/HANNA/ensemble/HANNA_parameters_binary3.pt": "4d443d876ce83a22e1880005536ace6f17c02961028ab4d0564910093e3ea37f",
+      "models/baselines/hanna_official/models/HANNA/ensemble/HANNA_parameters_binary4.pt": "c5a0b96b316ca7cb4ea19df22bd26c630f65e8704f6449cf39c63d93c2a0262f",
+      "models/baselines/hanna_official/models/HANNA/ensemble/HANNA_parameters_binary5.pt": "742e15ee6adfcb1cee12c6e94303a7930bedfb835793bfe79af6cde67d4897fe",
+      "models/baselines/hanna_official/models/HANNA/ensemble/HANNA_parameters_binary6.pt": "261b3b7a1f950405532e6e3d1885d020fea55341fc557d4b479d1a702089e73e",
+      "models/baselines/hanna_official/models/HANNA/ensemble/HANNA_parameters_binary7.pt": "d5a34271a6eb9f69ae63a3f7b022adf78b921042cab2e4e24e46b2042fae8617",
+      "models/baselines/hanna_official/models/HANNA/ensemble/HANNA_parameters_binary8.pt": "4261bac8a46250e0eace57cc8b52965b9ff2358df6a6c556661c74847e8cbc27",
+      "models/baselines/hanna_official/models/HANNA/ensemble/HANNA_parameters_binary9.pt": "3ddb2c87193092afbead3c23cae26462a3f5a863ab8f497ea42d917554f65e71",
+      "models/baselines/hanna_official/utils/scalers/bert_scaler.pkl": "9df0119935cc2864e5d8d0b13c9bccfc1f4d297b0949054fef1e9bf3678282d0",
+      "models/baselines/hanna_official/utils/scalers/temperature_scaler.pkl": "d7b3d55740dd120d7e2bbf4040d2080ecdb463b7fbc0cedfccad1de02c720d16"
+    },
+    "source_revision": "6fe873ca1a92c306eb9b5be3e9adb2ebbbb95365",
+    "training_system_overlap": "unknown_official_training_inventory_not_published"
+  },
+  "parameter_accounting": {
+    "chemberta_total": 3427440,
+    "ensemble_total": 651900,
+    "optimized": 0
+  },
+  "runtime": {
+    "cuda": "12.6",
+    "cudnn": "90501",
+    "device": "cuda",
+    "execution_profile": "thermoformer_ggnn39_compatibility",
+    "gpu": "NVIDIA GeForce RTX 3090 Ti",
+    "hanna_dependencies": {
+      "pandas": "1.5.3",
+      "rdkit": "2025.3.5",
+      "safetensors": "0.7.0",
+      "scikit-learn": "1.6.1",
+      "tokenizers": "0.21.0",
+      "transformers": "4.47.1"
+    },
+    "numpy": "1.26.4",
+    "python": "3.9.25",
+    "torch": "2.6.0+cu126",
+    "upstream_environment_parity": "not_established"
+  },
+  "schema_version": 1,
+  "seed": 2,
+  "selection_partition": "not_applicable_official_pretrained",
+  "settings_sha256": "df3f3da3ab4c73f8ff9172ed63b0d4473a44841b79c66c379ff7e0ea1210099d",
+  "source_workbooks": {
+    "datasets/vle_reference/binary_vle_english.xlsx": "d122177fe42b5b41ca2e782cc77b3e6a7a0ebf922bb0e589f18edde622bf3efc",
+    "datasets/vle_reference/ternary_vle_english.xlsx": "52fe356da44cc5e78f32b881a614ac95ea98e55002aaba464cfcf35069764c67"
+  },
+  "split_protocol": "overall_binary_ternary",
+  "split_sha256": "eb82a50d930bce7d706ca55379754f9991f7b64c2a8db3aaced2e231609ac2a9",
+  "status": "completed",
+  "test_labels_used_for_selection": false,
+  "test_sample_ids_sha256": "3c18fbfc06f6aeffac9d40d9426325cae2a1eb5916cee0d59b6d647267fe7810",
+  "test_system_ids_sha256": "4c3cd7ce9847e9afb5d23bbdb9a2451c189251b6aaf5b66801f0fa9757565914",
+  "train_sample_ids_sha256": "6c0cbb0e09502e5acf92aa2fa310b8bd18a8b74f91e871fe29efcc9ebaa1d803",
+  "train_system_ids_sha256": "05bd4bdfd7cffcb86fe0f3a6f5795343889834920567eff19d0bcb8f8dc07a8c",
+  "trainable_parameters": 0,
+  "validation_sample_ids_sha256": "5511e41aad75d15a45c711b675dcc82c253092fb3f2b2f1188b01d9b4d8fdcac",
+  "validation_system_ids_sha256": "38d1ce758675b49744d39148bf1a07c16d4d649bfe7bd858579467bbaecac246"
+}

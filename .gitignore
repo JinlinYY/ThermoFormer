@@ -1,0 +1,24 @@
+# Python environments and generated caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+# Local credentials
+.env
+.env.*
+!.env.example
+# Local experiment caches and generated reproduction outputs
+**/__pycache__/
+**/cache/
+ThermoAgent/generated/
+*.out.log
+*.err.log

@@ -1,0 +1,122 @@
+{
+  "data": {
+    "failed_weight": 0.0,
+    "max_pressure_kpa": 500.0,
+    "minimum_pure_anchor_temperatures": 2,
+    "pure_property_catalog": "experiments/vle/interpretability/molecular_interactions/figures/thermodynamic_labels/external_psat_catalog.json",
+    "root": "datasets/vle",
+    "source_filter": ""
+  },
+  "encoder": {
+    "batch_size": 16,
+    "chemical_attention_bias": false,
+    "context_pair_interaction": false,
+    "fusion_mode": "legacy",
+    "model_size": "84m",
+    "representation": "unimol_v2",
+    "use_functional_groups": false,
+    "use_rdkit_descriptors": false,
+    "use_unimol": true
+  },
+  "evaluation": {
+    "folds": 5,
+    "mode": "kfold",
+    "test_fraction": 0.15,
+    "validation_fraction": 0.15
+  },
+  "model": {
+    "activity_mode": "excess_gibbs",
+    "chemical_attention_bias": false,
+    "chemical_bias_apply_to": "all",
+    "chemical_bias_bound": 4.0,
+    "chemical_bias_dropout": 0.0,
+    "chemical_bias_functional_group_gate_init": 0.1,
+    "chemical_bias_gate_init": 0.03,
+    "chemical_bias_headwise": false,
+    "chemical_bias_hidden_dim": 0,
+    "chemical_bias_modality_gate_init": 0.95,
+    "chemical_bias_modality_gates": false,
+    "chemical_bias_shared_gate": false,
+    "chemical_bias_warmup_end": 0,
+    "chemical_bias_warmup_start": 0,
+    "context_pair_interaction": false,
+    "decoder_mode": "thermodynamic",
+    "dropout": 0.0,
+    "feature_dim": 768,
+    "feedforward_multiplier": 4,
+    "film_scale": 0.1,
+    "functional_group_feature_dim": 0,
+    "fusion_mode": "legacy",
+    "heads": 6,
+    "hidden_dim": 192,
+    "interaction_mode": "full",
+    "layers": 3,
+    "pair_hidden_dim": 192,
+    "pure_hidden_dim": 192,
+    "rdkit_feature_dim": 0,
+    "unimol_feature_dim": 0,
+    "use_composition_context": true,
+    "use_film": true,
+    "use_mixture_token": true,
+    "use_transformer": true
+  },
+  "molecular_feature_preprocessing": {
+    "block_order": [
+      "unimol_v2"
+    ],
+    "feature_definition_sha256": "5b73c738ea27729b4a3f7ce51a5cc19ea9e425e71a27203791bfcd6b516d5a46",
+    "source_cache_sha256": {
+      "unimol_v2": "299c5c53c5ad0c72c69ba3daccc197541339e4661d44df20058627c71d818d5c"
+    },
+    "view_dimensions": {
+      "functional_groups": 0,
+      "rdkit_2d": 0,
+      "unimol_v2": 768
+    }
+  },
+  "name": "c0_current_vanilla",
+  "paper_protocol": {
+    "analysis_status": "confirmatory",
+    "dataset_sha256": "fdffa94af2bf19c58cfc78b43528fc8d79035e94926f4e25806547572007fea0",
+    "name": "c0_current_vanilla.on.vle_overall_binary_ternary",
+    "seed": 0,
+    "split_file": "datasets/splits/vle/vle_overall_binary_ternary/seed_0.json",
+    "split_protocol": "vle_overall_binary_ternary"
+  },
+  "protocol": {
+    "evaluation_partition": "validation",
+    "registered_splits": [
+      "vle_overall_binary_ternary"
+    ],
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "runtime": {
+    "device": "auto",
+    "output_dir": "experiments/run_records/phase_equilibrium/vle/stage0",
+    "results_file": "experiments/data_quality/reports/phase_equilibrium/vle.md"
+  },
+  "seed": 0,
+  "task_mode": "vle",
+  "training": {
+    "batch_size": 128,
+    "early_stopping_patience": 12,
+    "epochs_physics": 0,
+    "epochs_supervised": 80,
+    "gradient_clip": 5.0,
+    "learning_rate": 0.0002,
+    "minimum_physics_epochs": 0,
+    "minimum_supervised_epochs": 10,
+    "pressure_weight": 1.0,
+    "pure_weight": 0.5,
+    "seed": 0,
+    "solver_iterations_eval": 48,
+    "validation_min_delta": 0.0,
+    "weight_decay": 0.0001
+  }
+}
