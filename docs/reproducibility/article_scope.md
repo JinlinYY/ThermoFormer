@@ -9,9 +9,15 @@ The active repository contains experiments required by the supplied ThermoFormer
 - joint binary--ternary molecular-representation and interaction-architecture ablations;
 - Stage 0--3 thermodynamic optimization diagnostics;
 - VLE molecular-view and composition-dependent interaction analyses;
-- the registered scope of ThermoEqui-Agent separation-design case studies.
+- the deterministic ThermoEqui-Agent separation-design case studies in
+  `ThermoAgent/`, including the binary distillation, extractive distillation,
+  and crossflow-extraction calculations described in SI S7;
+- the execution and evidence-review records associated with SI S8.
 
-The ThermoEqui-Agent implementation and its article case artifacts are unavailable. The registry records this explicitly and does not substitute an unrelated workflow.
+The release separates deterministic numerical reproduction from optional LLM
+orchestration and external DWSIM integration. The former is runnable from the
+bundled `ThermoAgent/reproduce.py`; the latter is not required for the
+reported numerical values and is not used as a hidden substitute.
 
 Independent experiments for mixtures above ternary order and a separate closed-loop entrainer-screening framework are outside this repository scope. Runtime caches, smoke-run outputs, redundant checkpoint collections, and source-reference collections are also excluded from the active tree. Binary-to-ternary transfer material remains because it is referenced by the registered generalization report and supports the article's discussion of interaction transfer.
 

@@ -55929,4 +55929,4 @@
 {"evaluated": 657, "total": 657, "run": "seed_4"}
 {"completed": "mixed-random", "seed": 4, "test": {"conditions": 657, "successful_conditions": 657, "success_fraction": 1.0, "failure_penalized_set_distance": 0.04085223371037657, "observed_coverage_at_0.02": 0.3353397764927445, "matched_endpoint_r2_successful_only": 0.9317890915113853, "matched_endpoint_mae_successful_only": 0.04961438488078273, "matched_endpoint_rmse_successful_only": 0.08636551224509834, "max_equilibrium_rms": 7.091240724814532e-08, "min_grid_tpd": -7.020877212937648e-10, "r2_target_met": false}}
 
-$ E:\anaconda\envs\ggnn39\python.exe -m src.thermoformer.lle_tp.verified_fast_campaign --output D:\VLE\VLE\phase_equilibrium\runs\phase_equilibrium\v1\lle\formal\mixed-random --dataset D:\VLE\VLE\phase_equilibrium\datasets/lle --protocol mixed-random --seeds 0 1 2 3 4 --device cuda
+$ python -m src.thermoformer.lle_tp.verified_fast_campaign --output phase_equilibrium\runs\phase_equilibrium\v1\lle\formal\mixed-random --dataset phase_equilibrium\datasets/lle --protocol mixed-random --seeds 0 1 2 3 4 --device cuda

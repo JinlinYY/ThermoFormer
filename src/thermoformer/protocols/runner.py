@@ -263,7 +263,7 @@ def _git_state() -> tuple[bool, bool, list[str]]:
     )
     paths = []
     for line in completed.stdout.splitlines():
-        path = line[3:].strip().replace("\\", "/")
+        path = line[3:].strip().replace("/", "/")
         if " -> " in path:
             path = path.split(" -> ", 1)[1]
         paths.append(path)

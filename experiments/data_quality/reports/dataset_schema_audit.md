@@ -4,7 +4,7 @@ This audit was generated from the two workbooks themselves. The source files wer
 
 ## binary_vle_english.xlsx
 
-- Absolute path: `D:\VLE\VLE\dataset\binary_vle_english.xlsx`
+- Absolute path: `datasets/binary_vle_english.xlsx`
 - Format: `.xlsx`; size: 1,398,278 bytes
 - SHA-256: `d122177fe42b5b41ca2e782cc77b3e6a7a0ebf922bb0e589f18edde622bf3efc`
 - Sheets: 2; detected VLE sheet: `binary_vle_data`
@@ -39,7 +39,7 @@ This audit was generated from the two workbooks themselves. The source files wer
 
 ## ternary_vle_english.xlsx
 
-- Absolute path: `D:\VLE\VLE\dataset\ternary_vle_english.xlsx`
+- Absolute path: `datasets/ternary_vle_english.xlsx`
 - Format: `.xlsx`; size: 442,714 bytes
 - SHA-256: `52fe356da44cc5e78f32b881a614ac95ea98e55002aaba464cfcf35069764c67`
 - Sheets: 4; detected VLE sheet: `ternary_vle_data`

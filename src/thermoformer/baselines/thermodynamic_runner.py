@@ -211,7 +211,7 @@ def _require_clean_scientific_code(project_root: Path) -> None:
     ignored_prefixes = ("results/", "runs/", "figures/", "reports/")
     dirty = []
     for line in completed.stdout.splitlines():
-        value = line[3:].strip().replace("\\", "/")
+        value = line[3:].strip().replace("/", "/")
         if " -> " in value:
             value = value.split(" -> ", 1)[1]
         if not value.startswith(ignored_prefixes):
@@ -496,10 +496,10 @@ def run_state_protocol_baseline(
             "temperature_solver_bounds_k": list(bounds),
             "elapsed_seconds": time.time() - started,
             "artifacts": {
-                "vapor_pressure_fits": {"path": str(vapor_path.relative_to(project_root)).replace("\\", "/"), "sha256": artifact_sha256(vapor_path)},
-                "predictions": {"path": str(predictions_path.relative_to(project_root)).replace("\\", "/"), "sha256": artifact_sha256(predictions_path)},
-                "metrics": {"path": str(metrics_path.relative_to(project_root)).replace("\\", "/"), "sha256": artifact_sha256(metrics_path)},
-                "parameters": {"path": str(parameters_path.relative_to(project_root)).replace("\\", "/"), "sha256": artifact_sha256(parameters_path)},
+                "vapor_pressure_fits": {"path": str(vapor_path.relative_to(project_root)).replace("/", "/"), "sha256": artifact_sha256(vapor_path)},
+                "predictions": {"path": str(predictions_path.relative_to(project_root)).replace("/", "/"), "sha256": artifact_sha256(predictions_path)},
+                "metrics": {"path": str(metrics_path.relative_to(project_root)).replace("/", "/"), "sha256": artifact_sha256(metrics_path)},
+                "parameters": {"path": str(parameters_path.relative_to(project_root)).replace("/", "/"), "sha256": artifact_sha256(parameters_path)},
             },
         }
         atomic_write_json(manifest_path, manifest)
@@ -618,7 +618,7 @@ def aggregate_state_baselines(
                         "protocol": protocol,
                         "model": model,
                         "seed": seed,
-                        "path": str(manifest_path.relative_to(project_root)).replace("\\", "/"),
+                        "path": str(manifest_path.relative_to(project_root)).replace("/", "/"),
                         "sha256": artifact_sha256(manifest_path),
                     }
                 )
@@ -915,8 +915,8 @@ def aggregate_state_baselines(
             "provenance": common_provenance,
             "inputs": input_manifests,
             "outputs": {
-                "summary": {"path": str(summary_path.relative_to(project_root)).replace("\\", "/"), "sha256": artifact_sha256(summary_path)},
-                "report": {"path": str(report_path.relative_to(project_root)).replace("\\", "/"), "sha256": artifact_sha256(report_path)},
+                "summary": {"path": str(summary_path.relative_to(project_root)).replace("/", "/"), "sha256": artifact_sha256(summary_path)},
+                "report": {"path": str(report_path.relative_to(project_root)).replace("/", "/"), "sha256": artifact_sha256(report_path)},
             },
         },
     )

@@ -13,7 +13,7 @@ Run or resume the complete formal campaign:
 
 ```powershell
 conda activate ggnn39
-cd D:\VLE\paper_structure_worktree
+cd .
 New-Item -ItemType Directory -Force logs | Out-Null
 $log = "logs\direct_ge_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
 python -u scripts\run_c1_direct_ge_training.py --device cuda 2>&1 |

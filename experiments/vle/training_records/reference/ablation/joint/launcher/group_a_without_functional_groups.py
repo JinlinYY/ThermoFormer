@@ -1,8 +1,8 @@
 import subprocess
 import sys
 from pathlib import Path
-root = Path(r"D:\VLE\VLE\.vle_ablation_release_worktree")
-python = r"E:\anaconda\envs\ggnn39\python.exe"
+root = Path(__file__).resolve().parents[7]
+python = sys.executable
 script = "scripts/run_vle_joint_ablations.py"
 out_path = root / "experiments/vle/training_records/reference/ablation/joint/launcher/group_a.out.log"
 err_path = root / "experiments/vle/training_records/reference/ablation/joint/launcher/group_a.err.log"

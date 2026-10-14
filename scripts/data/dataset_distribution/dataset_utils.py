@@ -372,7 +372,7 @@ def markdown_table(frame: pd.DataFrame, float_format: str = ".4g") -> str:
         "| " + " | ".join("---" for _ in headers) + " |",
     ]
     for row in display.itertuples(index=False, name=None):
-        values = [str(value).replace("|", "\\|").replace("\n", " ") for value in row]
+        values = [str(value).replace("|", "/|").replace("\n", " ") for value in row]
         lines.append("| " + " | ".join(values) + " |")
     return "\n".join(lines)
 
