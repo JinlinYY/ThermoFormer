@@ -3524,4 +3524,4 @@
 {"evaluated": 92, "total": 92, "run": "seed_4"}
 {"completed": "binary-pressure-high", "seed": 4, "test": {"conditions": 92, "successful_conditions": 92, "success_fraction": 1.0, "failure_penalized_set_distance": 0.10215765789218956, "observed_coverage_at_0.02": 0.20652173913043478, "matched_endpoint_r2_successful_only": 0.8412611520087608, "matched_endpoint_mae_successful_only": 0.08379132234198636, "matched_endpoint_rmse_successful_only": 0.12821624500223272, "max_equilibrium_rms": 4.0319295152450285e-14, "min_grid_tpd": -3.552713678800501e-15, "r2_target_met": false}}
 
-$ E:\anaconda\envs\ggnn39\python.exe -m src.thermoformer.lle_tp.verified_fast_campaign --output D:\VLE\VLE\phase_equilibrium\runs\phase_equilibrium\v1\lle\formal\binary-pressure-high --dataset D:\VLE\VLE\phase_equilibrium\datasets/lle --protocol binary-pressure-high --seeds 0 1 2 3 4 --device cuda
+$ python -m src.thermoformer.lle_tp.verified_fast_campaign --output phase_equilibrium\runs\phase_equilibrium\v1\lle\formal\binary-pressure-high --dataset phase_equilibrium\datasets/lle --protocol binary-pressure-high --seeds 0 1 2 3 4 --device cuda

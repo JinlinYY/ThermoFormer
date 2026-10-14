@@ -13,6 +13,10 @@ This map links each article result to its runnable implementation and registered
 | Molecular and interaction ablation | Joint binary--ternary ablation | `scripts/benchmarks/vle/run_ablation.py` | `experiments/vle/ablation/joint/` |
 | Staged thermodynamic optimization | Stage 0--3 validation diagnostics | `scripts/evaluate_staged_thermodynamic_optimization.py` | `experiments/vle/ablation/staged_validation/` |
 | Learned multicomponent thermodynamics | Molecular-view and composition-dependent attribution | `scripts/benchmarks/vle/generate_interpretability.py` | `experiments/vle/interpretability/molecular_interactions/` |
-| Agent-assisted separation design | ThermoEqui-Agent case studies | implementation and case artifacts unavailable | `experiments/vle/separation_design/` |
+| Agent-assisted separation design | ThermoEqui-Agent case studies | `ThermoAgent/reproduce.py` and `ThermoAgent/cases/` | `experiments/vle/separation_design/` |
 
 The validation-selected VLE and LLE prediction/generalization checkpoints are listed in `models/registry.json`. Comparison, ablation, and interpretability checkpoints are optional and are not distributed.
+
+External baseline weights and unsupported parameter rows remain explicitly
+unavailable; the release records those states instead of substituting a
+different model or fabricated value.

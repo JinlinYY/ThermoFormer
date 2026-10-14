@@ -16,3 +16,9 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+# Local experiment caches and generated reproduction outputs
+**/__pycache__/
+**/cache/
+ThermoAgent/generated/
+*.out.log
+*.err.log

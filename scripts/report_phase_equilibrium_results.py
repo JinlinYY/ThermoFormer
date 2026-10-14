@@ -82,13 +82,13 @@ def main():
         writer = csv.DictWriter(handle, fieldnames=("protocol", "subset", "direction", "target", "metric", "mean", "sample_std", "valid_seeds"))
         writer.writeheader(); writer.writerows(aggregate)
     lines = ["# VLE/LLE benchmark results", "", "Values are mean ± sample standard deviation across seeds 0–4. Undefined R² values are omitted rather than replaced by zero.", "", "| Protocol | Subset | Direction | Target | Metric | Mean ± SD | n |", "|---|---|---|---|---|---:|---:|"]
-    tex = [r"\begin{tabular}{lllllrr}", r"Protocol & Subset & Direction & Target & Metric & Mean $\pm$ SD & n \\", r"\hline"]
+    tex = [r"\begin{tabular}{lllllrr}", r"Protocol & Subset & Direction & Target & Metric & Mean $\pm$ SD & n /", r"\hline"]
     for row in aggregate:
         mean = "NA" if row["mean"] is None else f'{row["mean"]:.6g}'
         sd = "NA" if row["sample_std"] is None else f'{row["sample_std"]:.6g}'
         lines.append(f'| {row["protocol"]} | {row["subset"]} | {row["direction"]} | {row["target"]} | {row["metric"]} | {mean} ± {sd} | {row["valid_seeds"]} |')
         escaped = row["protocol"].replace("_", r"\_")
-        tex.append(f'{escaped} & {row["subset"]} & {row["direction"]} & {row["target"]} & {row["metric"]} & {mean} $\\pm$ {sd} & {row["valid_seeds"]} \\\\')
+        tex.append(f'{escaped} & {row["subset"]} & {row["direction"]} & {row["target"]} & {row["metric"]} & {mean} $/pm$ {sd} & {row["valid_seeds"]} //')
     tex.append(r"\end{tabular}")
     (args.output / "results.md").write_text("\n".join(lines), encoding="utf-8")
     (args.output / "results.tex").write_text("\n".join(tex), encoding="utf-8")

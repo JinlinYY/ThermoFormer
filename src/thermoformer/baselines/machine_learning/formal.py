@@ -1091,13 +1091,13 @@ def run_formal_seed(
         "history": {"path": "history.csv", "sha256": artifact_sha256(history_path)},
     }
     if checkpoint_path.is_file():
-        artifacts["checkpoint"] = {"path": str(checkpoint_path.relative_to(project_root)).replace("\\", "/"), "sha256": artifact_sha256(checkpoint_path)}
+        artifacts["checkpoint"] = {"path": str(checkpoint_path.relative_to(project_root)).replace("/", "/"), "sha256": artifact_sha256(checkpoint_path)}
     source_workbooks = {
-        str(path.relative_to(project_root)).replace("\\", "/"): artifact_sha256(path)
+        str(path.relative_to(project_root)).replace("/", "/"): artifact_sha256(path)
         for path in discover_vle_workbooks(project_root / "datasets" / "vle", "_vle_")
     }
     feature_definitions = {
-        str(path.relative_to(project_root)).replace("\\", "/"): artifact_sha256(path)
+        str(path.relative_to(project_root)).replace("/", "/"): artifact_sha256(path)
         for path in (
             Path(__file__).with_name("models.py"),
             Path(__file__).with_name("formal.py"),
@@ -1161,9 +1161,9 @@ def run_formal_seed(
         "feature_cache": {"used": False, "policy": "deterministic_on_the_fly_from_registered_rows"},
         "model_assets": model_assets,
         "environment": {
-            "path": str(environment_path.relative_to(project_root)).replace("\\", "/"),
+            "path": str(environment_path.relative_to(project_root)).replace("/", "/"),
             "sha256": artifact_sha256(environment_path),
-            "requirements_path": str(requirements_path.relative_to(project_root)).replace("\\", "/"),
+            "requirements_path": str(requirements_path.relative_to(project_root)).replace("/", "/"),
             "requirements_sha256": artifact_sha256(requirements_path),
         },
         "train_sample_ids_sha256": hashlib.sha256("\n".join(map(sample_id, train)).encode()).hexdigest(),
@@ -1298,7 +1298,7 @@ def aggregate_formal_baseline(project_root: Path, baseline: str, result_root: Pa
                 raise ValueError(f"Seed {seed} artifact failed verification: {name}")
         seed_files.append(seed_root / "metrics.csv")
         input_manifests[str(seed)] = {
-            "path": str(manifest_path.relative_to(project_root)).replace("\\", "/"),
+            "path": str(manifest_path.relative_to(project_root)).replace("/", "/"),
             "sha256": artifact_sha256(manifest_path),
         }
     output = experiment_root / "metrics_summary.csv"

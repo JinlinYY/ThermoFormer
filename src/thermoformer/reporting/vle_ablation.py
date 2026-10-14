@@ -164,7 +164,7 @@ def _latex(summary: list[dict[str, Any]]) -> str:
     lines = [
         r"\begin{tabular}{llcccc}",
         r"\toprule",
-        r"Category & Variant & $P$ (kPa), isothermal & $y$, isothermal & $T$ (K), isobaric & $y$, isobaric \\",
+        r"Category & Variant & $P$ (kPa), isothermal & $y$, isothermal & $T$ (K), isobaric & $y$, isobaric /",
         r"\midrule",
     ]
     for row in summary:
@@ -172,7 +172,7 @@ def _latex(summary: list[dict[str, Any]]) -> str:
             base = "state" if state else "y"
             digits = 3 if state else 4
             return " / ".join(_cell(row, direction, f"{base}_{metric}", digits) for metric in ("mae", "rmse", "r2"))
-        lines.append(" & ".join((str(row["category"]), str(row["variant"]), triple("isothermal", True), triple("isothermal", False), triple("isobaric", True), triple("isobaric", False))) + r" \\")
+        lines.append(" & ".join((str(row["category"]), str(row["variant"]), triple("isothermal", True), triple("isothermal", False), triple("isobaric", True), triple("isobaric", False))) + r" /")
     lines += [r"\bottomrule", r"\end{tabular}"]
     return "\n".join(lines) + "\n"
 

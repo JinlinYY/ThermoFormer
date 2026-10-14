@@ -78,7 +78,7 @@ class BinaryGeneralizationCampaignTests(unittest.TestCase):
         formal = artifact_roots(PROJECT_ROOT, "state", "three_stage", smoke=False)
         smoke = artifact_roots(PROJECT_ROOT, "state", "three_stage", smoke=True)
         self.assertNotEqual(formal, smoke)
-        self.assertTrue(all("experiments/run_records/smoke".replace("/", "\\") in str(path) for path in smoke))
+        self.assertTrue(all("experiments/run_records/smoke".replace("/", "/") in str(path) for path in smoke))
         overrides = smoke_overrides("direct")
         self.assertIn("direct_ge_supervision.pretrain_epochs=1", overrides)
         self.assertIn("training.epochs_supervised=1", overrides)

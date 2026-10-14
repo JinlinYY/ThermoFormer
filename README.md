@@ -6,6 +6,13 @@ ThermoFormer predicts binary and ternary phase equilibria from molecular represe
 - **LLE:** SMILES, temperature and pressure to liquid coexistence endpoints. Ternary predictions are unordered tie-line sets.
 - Baseline comparison, ablation and interpretability studies apply to VLE. LLE benchmarks cover prediction, generalization and thermodynamic stability.
 
+This release accompanies *Agent-driven separation-process design with
+mixture-conditioned molecular thermodynamics*. It follows a paper-aligned
+research-release layout: executable code is in `src/` and `scripts/`, inputs
+and registries are in `configs/` and `datasets/`, and reported studies are
+indexed under `experiments/`. The supplied Supporting Information is mapped in
+[the article experiment index](docs/reproducibility/article_experiment_index.md).
+
 ## Installation
 
 Install Git LFS before cloning to download the model weights and molecular feature arrays:
@@ -64,3 +71,19 @@ python -m pytest -q
 ```
 
 LLE uses a two-phase prior, binary RK free-energy parameterization and a continuous parallel tie-line approximation for ternary systems. Finite-grid TPD certification is a numerical stability diagnostic, not a global proof over the continuous composition simplex. Compare metrics only when dataset identity, split protocol and evaluation targets agree.
+
+## Paper and supporting-information map
+
+| Manuscript or SI section | Release entry point |
+|---|---|
+| Main Section 2.1, SI S7 | `ThermoAgent/` and `experiments/vle/separation_design/` |
+| Main Section 3, SI S3 | `experiments/vle/prediction/`, `experiments/vle/generalization/`, `experiments/lle/` |
+| Main Section 3 comparison, SI S4 and S6 | `experiments/vle/comparison/`, `src/thermoformer/baselines/` |
+| Main Section 3 ablations, SI S5 | `experiments/vle/ablation/`, `configs/vle/ablation/` |
+| Main Section 3 interpretation, SI S2 | `experiments/vle/interpretability/`, `src/thermoformer/interpretability/` |
+| SI S1 and S5 | `experiments/data_quality/`, `datasets/`, `docs/dataset.md` |
+| SI S8 | `ThermoAgent/` reliability and case-study records |
+
+The release contains deterministic numerical workflows and archived evidence
+for the reported studies. API keys, private paths, local caches, and
+unpublished raw working directories are excluded.

@@ -275,7 +275,7 @@ def markdown_cell(value: str) -> str:
 
 def tex_cell(value: str) -> str:
     lines = [line.replace("±", r"$\pm$").replace("%", r"\%").replace("R2:", r"$R^2$:") for line in value.splitlines()]
-    return r"\shortstack[l]{" + r" \\ ".join(lines) + "}"
+    return r"\shortstack[l]{" + r" / ".join(lines) + "}"
 
 
 def main() -> None:
@@ -315,7 +315,7 @@ def main() -> None:
     md_path = OUT_ROOT / "VLE_comparison_matrix.md"
     md_path.write_text("\n".join(md) + "\n", encoding="utf-8")
 
-    tex = [r"\begin{tabular}{lllllrrrrr}", r"Model & Train--test & Dir. & $n_c$ & Seeds & State MAE & State RMSE & State $R^2$ & $y$ MAE & Coverage \\", r"\hline"]
+    tex = [r"\begin{tabular}{lllllrrrrr}", r"Model & Train--test & Dir. & $n_c$ & Seeds & State MAE & State RMSE & State $R^2$ & $y$ MAE & Coverage /", r"\hline"]
     for row in rows:
         values = [
             row["model"].replace("_", r"\_"), f"{row['training_scope']}--{row['evaluation_scope']}",
@@ -326,8 +326,8 @@ def main() -> None:
             fmt(row["y_mae_mean"], row["y_mae_sample_std"]),
             fmt(row["coverage_mean"], row["coverage_sample_std"]),
         ]
-        tex.append(" & ".join(values).replace("±", r"$\pm$") + r" \\")
-    tex.extend((r"\hline", r"\multicolumn{10}{l}{UALF-GNN isothermal: N/A; registered native direction is isobaric only.} \\", r"\end{tabular}"))
+        tex.append(" & ".join(values).replace("±", r"$\pm$") + r" /")
+    tex.extend((r"\hline", r"\multicolumn{10}{l}{UALF-GNN isothermal: N/A; registered native direction is isobaric only.} /", r"\end{tabular}"))
     tex_path = OUT_ROOT / "VLE_comparison_matrix.tex"
     tex_path.write_text("\n".join(tex) + "\n", encoding="utf-8")
 
@@ -363,20 +363,20 @@ def main() -> None:
 
     compact_tex = [
         r"\begin{tabular}{llllll}",
-        r"Model & P (kPa), isothermal & $y$, isothermal & T (K), isobaric & $y$, isobaric & Coverage (\%) \\",
+        r"Model & P (kPa), isothermal & $y$, isothermal & T (K), isobaric & $y$, isobaric & Coverage (\%) /",
         r"\hline",
     ]
     for protocol in PROTOCOLS:
-        compact_tex.append(r"\multicolumn{6}{l}{\textbf{" + protocol.replace("→", r"$\to$").replace("±", r"$\pm$") + r"}} \\")
+        compact_tex.append(r"\multicolumn{6}{l}{\textbf{" + protocol.replace("→", r"$\to$").replace("±", r"$\pm$") + r"}} /")
         group = [row for row in compact_rows if row["Evaluation protocol"] == protocol]
         if not group:
-            compact_tex.append(r"\multicolumn{6}{l}{\emph{No completed metric row in the source matrix.}} \\")
+            compact_tex.append(r"\multicolumn{6}{l}{\emph{No completed metric row in the source matrix.}} /")
         for row in group:
             compact_tex.append(" & ".join((
                 row["Model"].replace("_", r"\_"), tex_cell(row["P (kPa), isothermal"]),
                 tex_cell(row["y, isothermal"]), tex_cell(row["T (K), isobaric"]),
                 tex_cell(row["y, isobaric"]), tex_cell(row["Coverage (%)"]),
-            )) + r" \\")
+            )) + r" /")
         compact_tex.append(r"\hline")
     compact_tex.append(r"\end{tabular}")
     compact_tex_path = OUT_ROOT / "VLE_comparison_table.tex"

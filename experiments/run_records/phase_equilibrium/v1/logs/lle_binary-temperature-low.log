@@ -33685,4 +33685,4 @@
 {"evaluated": 413, "total": 413, "run": "seed_4"}
 {"completed": "binary-temperature-low", "seed": 4, "test": {"conditions": 413, "successful_conditions": 413, "success_fraction": 1.0, "failure_penalized_set_distance": 0.08003979643649542, "observed_coverage_at_0.02": 0.34624697336561744, "matched_endpoint_r2_successful_only": 0.9231461596389187, "matched_endpoint_mae_successful_only": 0.07405229626431932, "matched_endpoint_rmse_successful_only": 0.10620897198298337, "max_equilibrium_rms": 1.0088301116229014e-14, "min_grid_tpd": -1.8283985436795547e-15, "r2_target_met": false}}
 
-$ E:\anaconda\envs\ggnn39\python.exe -m src.thermoformer.lle_tp.verified_fast_campaign --output D:\VLE\VLE\phase_equilibrium\runs\phase_equilibrium\v1\lle\formal\binary-temperature-low --dataset D:\VLE\VLE\phase_equilibrium\datasets/lle --protocol binary-temperature-low --seeds 0 1 2 3 4 --device cuda
+$ python -m src.thermoformer.lle_tp.verified_fast_campaign --output phase_equilibrium\runs\phase_equilibrium\v1\lle\formal\binary-temperature-low --dataset phase_equilibrium\datasets/lle --protocol binary-temperature-low --seeds 0 1 2 3 4 --device cuda

@@ -1,7 +1,7 @@
 # ThermoEqui-Agent: separation-design case studies
 
 Numerical code, equilibrium data, process results, and figures for the three
-applications in **ThermoFormer, Section 2.2 and Supplementary Information S7**.
+applications in **ThermoFormer, Main Section 2.1 and Supplementary Information S7**.
 The case studies couple ThermoFormer phase-equilibrium predictions to material
 balances and equilibrium-stage calculations. This directory contains the
 deterministic scientific calculations underlying those applications.

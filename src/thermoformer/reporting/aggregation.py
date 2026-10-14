@@ -67,7 +67,7 @@ def _git_aggregate_state() -> tuple[str, bool, list[str]]:
     artifact_prefixes = ("results/", "figures/", "runs/", "checkpoints/", "cache/")
     code_paths: list[str] = []
     for line in status.splitlines():
-        path = line[3:].strip().replace("\\", "/")
+        path = line[3:].strip().replace("/", "/")
         if " -> " in path:
             path = path.split(" -> ", 1)[1]
         if not path.startswith(artifact_prefixes):

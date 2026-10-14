@@ -37,7 +37,7 @@ class RegisteredRunnerTests(unittest.TestCase):
                         "seed": 2,
                         "artifacts": {
                             "checkpoint": {
-                                "path": str(checkpoint.relative_to(project_root)).replace("\\", "/"),
+                                "path": str(checkpoint.relative_to(project_root)).replace("/", "/"),
                                 "sha256": digest,
                             }
                         },
@@ -84,7 +84,7 @@ class RegisteredRunnerTests(unittest.TestCase):
         self.assertIn("single_smoke", str(run_root))
         self.assertIn("single_smoke", str(checkpoint_root))
         self.assertIn("single_smoke", str(results_root))
-        self.assertNotEqual(results_root, Path("D:/VLE/VLE/results"))
+        self.assertNotEqual(results_root, Path("results"))
 
     def test_end_to_end_run_exports_checkpoint_predictions_metrics_and_provenance(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
