@@ -1,3 +1,5 @@
-# Web application boundary
+# ThermoFormer web boundary
 
-PSMI distributes a browser application under `Web/`. ThermoFormer currently distributes command-line and Python interfaces through `scripts/` and `ThermoAgent/`; no browser frontend is claimed in this release. This directory records that application-layer boundary so the repository layout remains explicit without fabricating an unsupported interface.
+The released browser application lives in [`ThermoFormer-web/`](ThermoFormer-web/). It is split into a FastAPI backend and a Next.js frontend so the service can be run, tested, and reviewed independently, matching the PSMI web-release layout.
+
+See [`ThermoFormer-web/README.md`](ThermoFormer-web/README.md) for installation, launch commands, configuration, and validation checks.
