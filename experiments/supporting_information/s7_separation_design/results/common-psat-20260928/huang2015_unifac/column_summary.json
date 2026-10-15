@@ -1,0 +1,116 @@
+[
+  {
+    "initialization": "unifac_183",
+    "accepted": true,
+    "final": {
+      "iteration": 2,
+      "inner_solver_success": true,
+      "validation": {
+        "passed": true,
+        "composition_passed": true,
+        "numerical_residual": 1.5705214906347464e-12,
+        "residual_tolerance": 1e-07,
+        "material_residual": 6.154721177153988e-11,
+        "temperature_passed": true,
+        "global_stability": "not_certified",
+        "empirical_accuracy": "not_established_by_residuals"
+      },
+      "maximum_stage_balance_mol_s": 6.154721177153988e-11,
+      "global_balance_mol_s": [
+        -6.994405055138486e-15,
+        -7.097065990446794e-13,
+        -1.4210854715202004e-14
+      ],
+      "xD": [
+        5.875670653779109e-06,
+        0.9998375912684011,
+        0.00015653306242263823
+      ],
+      "xB": [
+        0.01185973649586846,
+        0.00018068813080563548,
+        0.9879595753733259
+      ],
+      "ester_purity": 0.9998375912684011,
+      "ester_recovery": 0.9847646627568171,
+      "temperature_range_K": [
+        384.9499969655335,
+        423.53549418587136
+      ]
+    },
+    "coverage": {
+      "ester_correlation": {
+        "name": "Huang 2015, as quoted in Yin 2019 Table 3",
+        "a": 6.52785,
+        "b": 1550.251,
+        "c": -42.1408,
+        "source_doi": "10.1016/j.fluid.2015.05.032; coefficient access: 10.1021/acs.jced.9b00430",
+        "observed_temperature_range_K": null
+      },
+      "ester_range_verified": false,
+      "ester_outside_correlation_range": null,
+      "temperature_range_K": [
+        384.9499969655335,
+        423.53549418587136
+      ],
+      "global_stability": "not_certified"
+    }
+  },
+  {
+    "initialization": "thermoformer_183",
+    "accepted": true,
+    "final": {
+      "iteration": 2,
+      "inner_solver_success": true,
+      "validation": {
+        "passed": true,
+        "composition_passed": true,
+        "numerical_residual": 1.574518293523397e-12,
+        "residual_tolerance": 1e-07,
+        "material_residual": 6.157208076729148e-11,
+        "temperature_passed": true,
+        "global_stability": "not_certified",
+        "empirical_accuracy": "not_established_by_residuals"
+      },
+      "maximum_stage_balance_mol_s": 6.157208076729148e-11,
+      "global_balance_mol_s": [
+        -7.716050021144838e-15,
+        -7.418041875206782e-13,
+        1.4210854715202004e-14
+      ],
+      "xD": [
+        5.875670653779114e-06,
+        0.9998375912684012,
+        0.00015653306242254694
+      ],
+      "xB": [
+        0.011859736495868477,
+        0.0001806881308063955,
+        0.9879595753733251
+      ],
+      "ester_purity": 0.9998375912684012,
+      "ester_recovery": 0.9847646627568172,
+      "temperature_range_K": [
+        384.9499969655335,
+        423.53549418587136
+      ]
+    },
+    "coverage": {
+      "ester_correlation": {
+        "name": "Huang 2015, as quoted in Yin 2019 Table 3",
+        "a": 6.52785,
+        "b": 1550.251,
+        "c": -42.1408,
+        "source_doi": "10.1016/j.fluid.2015.05.032; coefficient access: 10.1021/acs.jced.9b00430",
+        "observed_temperature_range_K": null
+      },
+      "ester_range_verified": false,
+      "ester_outside_correlation_range": null,
+      "temperature_range_K": [
+        384.9499969655335,
+        423.53549418587136
+      ],
+      "global_stability": "not_certified"
+    }
+  }
+]

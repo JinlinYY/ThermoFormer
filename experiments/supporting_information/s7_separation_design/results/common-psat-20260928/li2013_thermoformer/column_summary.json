@@ -1,0 +1,122 @@
+[
+  {
+    "initialization": "unifac_183",
+    "accepted": true,
+    "final": {
+      "iteration": 1,
+      "inner_solver_success": true,
+      "validation": {
+        "passed": true,
+        "composition_passed": true,
+        "numerical_residual": 1.9767520953450912e-12,
+        "residual_tolerance": 1e-07,
+        "material_residual": 1.189228271414322e-09,
+        "temperature_passed": true,
+        "global_stability": "not_certified",
+        "empirical_accuracy": "not_established_by_residuals"
+      },
+      "maximum_stage_balance_mol_s": 1.189228271414322e-09,
+      "global_balance_mol_s": [
+        -1.81551509936817e-11,
+        2.1280921469468694e-11,
+        -4.078515303262975e-12
+      ],
+      "xD": [
+        0.9004372416134402,
+        0.09956275837032451,
+        1.8164999231010884e-11
+      ],
+      "xB": [
+        0.0013417850168408903,
+        0.010696811145040076,
+        0.987961403838119
+      ],
+      "ester_purity": 0.09956275837032451,
+      "ester_recovery": 0.09806181226423921,
+      "temperature_range_K": [
+        372.4292563779636,
+        423.5868972037315
+      ]
+    },
+    "coverage": {
+      "ester_correlation": {
+        "name": "Li 2013 Table 3, published rounded coefficients",
+        "a": 4.36,
+        "b": 487.96,
+        "c": -175.67,
+        "source_doi": "10.1016/S1004-9541(13)60534-0",
+        "observed_temperature_range_K": [
+          329.0,
+          384.0
+        ]
+      },
+      "ester_range_verified": true,
+      "ester_outside_correlation_range": 169,
+      "temperature_range_K": [
+        372.4292563779636,
+        423.5868972037315
+      ],
+      "global_stability": "not_certified"
+    }
+  },
+  {
+    "initialization": "thermoformer_183",
+    "accepted": true,
+    "final": {
+      "iteration": 1,
+      "inner_solver_success": true,
+      "validation": {
+        "passed": true,
+        "composition_passed": true,
+        "numerical_residual": 1.9559909247846008e-12,
+        "residual_tolerance": 1e-07,
+        "material_residual": 1.1891714279954613e-09,
+        "temperature_passed": true,
+        "global_stability": "not_certified",
+        "empirical_accuracy": "not_established_by_residuals"
+      },
+      "maximum_stage_balance_mol_s": 1.1891714279954613e-09,
+      "global_balance_mol_s": [
+        -1.786613912369006e-11,
+        2.097888529561942e-11,
+        -4.078515303262975e-12
+      ],
+      "xD": [
+        0.9004372416128862,
+        0.09956275837090482,
+        1.816499923376736e-11
+      ],
+      "xB": [
+        0.0013417850168405054,
+        0.010696811145040461,
+        0.987961403838119
+      ],
+      "ester_purity": 0.09956275837090482,
+      "ester_recovery": 0.09806181226481077,
+      "temperature_range_K": [
+        372.4292563779636,
+        423.5868972037315
+      ]
+    },
+    "coverage": {
+      "ester_correlation": {
+        "name": "Li 2013 Table 3, published rounded coefficients",
+        "a": 4.36,
+        "b": 487.96,
+        "c": -175.67,
+        "source_doi": "10.1016/S1004-9541(13)60534-0",
+        "observed_temperature_range_K": [
+          329.0,
+          384.0
+        ]
+      },
+      "ester_range_verified": true,
+      "ester_outside_correlation_range": 169,
+      "temperature_range_K": [
+        372.4292563779636,
+        423.5868972037315
+      ],
+      "global_stability": "not_certified"
+    }
+  }
+]

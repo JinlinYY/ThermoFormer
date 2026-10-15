@@ -12,7 +12,15 @@ This guide documents the optional DWSIM bridge in the ThermoFormer web workbench
 | Curated `.dwxmz` examples | [`ThermoAgent/cases/dwsim_exports/flowsheets/`](../../../ThermoAgent/cases/dwsim_exports/flowsheets/) |
 | API and format notes | The four documents in this directory |
 
-The repository keeps the 20 named flow examples generated for the paper workflow. The 186 timestamped files under the working tree's `data/exports/extractive/` directory are runtime outputs and are intentionally excluded from the release.
+The repository keeps the 21 named flow examples generated for the paper workflow, including the
+paper-aligned n-heptane/n-nonane binary column
+(`n_heptane_n_nonane_binary_column_x0p466.dwxmz`) and its provenance JSON. The 186 timestamped
+files under the working tree's `data/exports/extractive/` directory are runtime outputs and are
+intentionally excluded from the release.
+
+The exact sec-butyl alcohol/sec-butyl acetate/DMF and n-heptane/benzene/furfural flow sheets from
+the SI were not present in the supplied source tree. The repository therefore keeps their
+deterministic ThermoFormer protocols and common-Psat audit, without inventing DWSIM projects.
 
 ## Prerequisites
 

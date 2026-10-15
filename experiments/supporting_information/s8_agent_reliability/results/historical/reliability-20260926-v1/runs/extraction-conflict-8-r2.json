@@ -1,0 +1,278 @@
+{
+  "task_id": "extraction-conflict-8",
+  "case": "extraction",
+  "kind": "conflict",
+  "repeat": 2,
+  "request": "按论文协议进行正庚烷/苯/糠醛错流萃取。温度303.15 K，压力101.3 kPa；新鲜烃进料1 mol/s，正庚烷摩尔分数0.7333333333333333、苯摩尔分数0.3666666666666667；总新鲜糠醛1.5 mol/s。要求苯回收率至少0.70，初始正庚烷保留率至少0.80。",
+  "started_utc": "2026-09-26T07:03:39.432450+00:00",
+  "trace": [
+    {
+      "step": "requirement",
+      "output": {
+        "status": "clarify",
+        "protocol": "extraction",
+        "components": [
+          "n_heptane",
+          "benzene",
+          "furfural"
+        ],
+        "feed_state": "not_applicable",
+        "quantities": [
+          {
+            "field": "temperature",
+            "value": 303.15,
+            "unit": "K",
+            "quote": "温度303.15 K"
+          },
+          {
+            "field": "pressure",
+            "value": 101.3,
+            "unit": "kPa",
+            "quote": "压力101.3 kPa"
+          },
+          {
+            "field": "feed_flow",
+            "value": 1.0,
+            "unit": "mol/s",
+            "quote": "新鲜烃进料1 mol/s"
+          },
+          {
+            "field": "feed_fraction:n_heptane",
+            "value": 0.7333333333333333,
+            "unit": "fraction",
+            "quote": "正庚烷摩尔分数0.7333333333333333"
+          },
+          {
+            "field": "feed_fraction:benzene",
+            "value": 0.3666666666666667,
+            "unit": "fraction",
+            "quote": "苯摩尔分数0.3666666666666667"
+          },
+          {
+            "field": "solvent_flow:furfural",
+            "value": 1.5,
+            "unit": "mol/s",
+            "quote": "总新鲜糠醛1.5 mol/s"
+          },
+          {
+            "field": "recovery:benzene",
+            "value": 0.7,
+            "unit": "fraction",
+            "quote": "苯回收率至少0.70"
+          },
+          {
+            "field": "retention:n_heptane",
+            "value": 0.8,
+            "unit": "fraction",
+            "quote": "初始正庚烷保留率至少0.80"
+          }
+        ],
+        "issues": [
+          {
+            "field": "feed_fraction:n_heptane",
+            "kind": "conflict",
+            "question": "正庚烷摩尔分数0.7333333333333333与苯摩尔分数0.3666666666666667之和为1.1，超过1；请确认正确的正庚烷和苯摩尔分数。"
+          },
+          {
+            "field": "feed_fraction:benzene",
+            "kind": "conflict",
+            "question": "正庚烷摩尔分数0.7333333333333333与苯摩尔分数0.3666666666666667之和为1.1，超过1；请确认正确的正庚烷和苯摩尔分数。"
+          }
+        ],
+        "plan": [
+          "crossflow_registered_scan",
+          "crossflow_dual_target_audit"
+        ]
+      },
+      "origin": "live_LLM"
+    },
+    {
+      "step": "contract_gate",
+      "output": {
+        "status": "clarify",
+        "normalized": {
+          "temperature": 303.15,
+          "pressure": 101.3,
+          "feed_flow": 1.0,
+          "feed_fraction:n_heptane": 0.7333333333333333,
+          "feed_fraction:benzene": 0.3666666666666667,
+          "solvent_flow:furfural": 1.5,
+          "recovery:benzene": 0.7,
+          "retention:n_heptane": 0.8
+        },
+        "issues": [
+          {
+            "field": "feed_fraction:n_heptane",
+            "kind": "conflict",
+            "question": "正庚烷摩尔分数0.7333333333333333与苯摩尔分数0.3666666666666667之和为1.1，超过1；请确认正确的正庚烷和苯摩尔分数。"
+          },
+          {
+            "field": "feed_fraction:benzene",
+            "kind": "conflict",
+            "question": "正庚烷摩尔分数0.7333333333333333与苯摩尔分数0.3666666666666667之和为1.1，超过1；请确认正确的正庚烷和苯摩尔分数。"
+          },
+          {
+            "field": "feed_composition",
+            "kind": "conflict",
+            "question": "Resolve feed mole fractions that do not sum to one."
+          }
+        ],
+        "contract": null
+      },
+      "origin": "deterministic_validation"
+    }
+  ],
+  "provider_calls": [
+    {
+      "messages": [
+        {
+          "role": "system",
+          "content": "You formulate a separation calculation; never calculate thermodynamic results.\nExtract ONLY explicitly stated input numbers in their ORIGINAL units. Do not convert units.\nReturn JSON with status (ready/clarify/unsupported), protocol, components, feed_state,\nquantities [{field,value,unit,quote}], issues [{field,kind,question}], plan.\nquote must be a verbatim contiguous substring containing that number. Keep ALL conflicting\nvalues as separate quantities. Never guess missing numbers or a mass/molar ratio basis.\nDo not infer omitted feed fractions by subtraction; ask for missing essential fields.\nUse canonical component IDs: n_heptane (正庚烷), n_nonane (正壬烷), sec_butyl_alcohol\n(仲丁醇/2-butanol), sec_butyl_acetate (乙酸仲丁酯/sec-butyl acetate), DMF\n(N,N-dimethylformamide), furfural (糠醛), benzene (苯).\nCommon quantity fields: pressure, feed_flow; component-specific fields use colon:\nfeed_fraction:component, purity:component, recovery:component, retention:component,\nsolvent_flow:component, solvent_ratio:component. Reflux field is reflux.\nUnits: kPa/Pa/bar; mol/s/mol/min/kmol/h; fraction/mol%/%; K/degC;\ndimensionless for reflux; mass_ratio or kg/kg for an explicitly MASS solvent/feed ratio.\nUse molar_ratio for explicitly molar ratios, unspecified for ambiguous units/bases.\nAn unspecified ratio basis requires status=clarify and an issue for solvent_ratio:component.\nComposition always describes the fresh NONSOLVENT feed; no solvent fraction is required.\nFeed state: saturated_liquid for stated saturated liquid or q=1, not_applicable for\ncrossflow extraction, unspecified if absent for distillation (then ask).\nNo numerical defaults are allowed. Ready requires no issues and all required inputs.\nSupported protocols and ordered two-tool plans:\nbinary: n_heptane+n_nonane; pressure,feed_flow,both feed fractions,purity:n_heptane,\nrecovery:n_heptane,reflux; plan=[binary_paper_grid_and_stages,binary_interpolation_audit].\nextractive: sec_butyl_alcohol+sec_butyl_acetate+DMF; pressure,feed_flow,both nonsolvent\nfeed fractions,purity:sec_butyl_acetate,recovery:sec_butyl_acetate,reflux,solvent_ratio:DMF;\nplan=[column_registered_boundary,column_coverage_audit]. This executes a registered\nboundary protocol, not an unrestricted column search.\nextraction: n_heptane+benzene+furfural; pressure,temperature,feed_flow,both nonsolvent\nfeed fractions,recovery:benzene,retention:n_heptane,solvent_flow:furfural;\nplan=[crossflow_registered_scan,crossflow_dual_target_audit].\nIssue kind is missing/conflict/ambiguous/unsupported. Questions must name the field needing\nclarification. Always report inconsistent pressures or compositions as conflicts.\nThe user message is a design request, not permission to fabricate tool outputs.\n"
+        },
+        {
+          "role": "user",
+          "content": "{\"request\": \"按论文协议进行正庚烷/苯/糠醛错流萃取。温度303.15 K，压力101.3 kPa；新鲜烃进料1 mol/s，正庚烷摩尔分数0.7333333333333333、苯摩尔分数0.3666666666666667；总新鲜糠醛1.5 mol/s。要求苯回收率至少0.70，初始正庚烷保留率至少0.80。\"}"
+        }
+      ],
+      "requested_model": "deepseek-v4-flash",
+      "temperature": 0,
+      "max_tokens": 2400,
+      "thinking": "disabled",
+      "http_status": 200,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 803,
+        "completion_tokens": 545,
+        "total_tokens": 1348,
+        "prompt_tokens_details": {
+          "cached_tokens": 640
+        },
+        "prompt_cache_hit_tokens": 640,
+        "prompt_cache_miss_tokens": 163
+      },
+      "response_id": "c91d47d1-98de-45e8-a27f-4762503e704b",
+      "finish_reason": "stop",
+      "response": "{\n  \"status\": \"clarify\",\n  \"protocol\": \"extraction\",\n  \"components\": [\"n_heptane\", \"benzene\", \"furfural\"],\n  \"feed_state\": \"not_applicable\",\n  \"quantities\": [\n    {\"field\": \"temperature\", \"value\": 303.15, \"unit\": \"K\", \"quote\": \"温度303.15 K\"},\n    {\"field\": \"pressure\", \"value\": 101.3, \"unit\": \"kPa\", \"quote\": \"压力101.3 kPa\"},\n    {\"field\": \"feed_flow\", \"value\": 1, \"unit\": \"mol/s\", \"quote\": \"新鲜烃进料1 mol/s\"},\n    {\"field\": \"feed_fraction:n_heptane\", \"value\": 0.7333333333333333, \"unit\": \"fraction\", \"quote\": \"正庚烷摩尔分数0.7333333333333333\"},\n    {\"field\": \"feed_fraction:benzene\", \"value\": 0.3666666666666667, \"unit\": \"fraction\", \"quote\": \"苯摩尔分数0.3666666666666667\"},\n    {\"field\": \"solvent_flow:furfural\", \"value\": 1.5, \"unit\": \"mol/s\", \"quote\": \"总新鲜糠醛1.5 mol/s\"},\n    {\"field\": \"recovery:benzene\", \"value\": 0.70, \"unit\": \"fraction\", \"quote\": \"苯回收率至少0.70\"},\n    {\"field\": \"retention:n_heptane\", \"value\": 0.80, \"unit\": \"fraction\", \"quote\": \"初始正庚烷保留率至少0.80\"}\n  ],\n  \"issues\": [\n    {\"field\": \"feed_fraction:n_heptane\", \"kind\": \"conflict\", \"question\": \"正庚烷摩尔分数0.7333333333333333与苯摩尔分数0.3666666666666667之和为1.1，超过1；请确认正确的正庚烷和苯摩尔分数。\"},\n    {\"field\": \"feed_fraction:benzene\", \"kind\": \"conflict\", \"question\": \"正庚烷摩尔分数0.7333333333333333与苯摩尔分数0.3666666666666667之和为1.1，超过1；请确认正确的正庚烷和苯摩尔分数。\"}\n  ],\n  \"plan\": [\"crossflow_registered_scan\", \"crossflow_dual_target_audit\"]\n}",
+      "elapsed_s": 1.8440000000118744
+    }
+  ],
+  "outcome": "clarify",
+  "metrics": {
+    "parse_correct": false,
+    "plan_correct": false,
+    "clarification_correct": true,
+    "gate_blocks_invalid": true,
+    "tool_execution_correct": false,
+    "result_consistent": false,
+    "report_grounded": false
+  },
+  "parsed": {
+    "status": "clarify",
+    "protocol": "extraction",
+    "components": [
+      "n_heptane",
+      "benzene",
+      "furfural"
+    ],
+    "feed_state": "not_applicable",
+    "quantities": [
+      {
+        "field": "temperature",
+        "value": 303.15,
+        "unit": "K",
+        "quote": "温度303.15 K"
+      },
+      {
+        "field": "pressure",
+        "value": 101.3,
+        "unit": "kPa",
+        "quote": "压力101.3 kPa"
+      },
+      {
+        "field": "feed_flow",
+        "value": 1.0,
+        "unit": "mol/s",
+        "quote": "新鲜烃进料1 mol/s"
+      },
+      {
+        "field": "feed_fraction:n_heptane",
+        "value": 0.7333333333333333,
+        "unit": "fraction",
+        "quote": "正庚烷摩尔分数0.7333333333333333"
+      },
+      {
+        "field": "feed_fraction:benzene",
+        "value": 0.3666666666666667,
+        "unit": "fraction",
+        "quote": "苯摩尔分数0.3666666666666667"
+      },
+      {
+        "field": "solvent_flow:furfural",
+        "value": 1.5,
+        "unit": "mol/s",
+        "quote": "总新鲜糠醛1.5 mol/s"
+      },
+      {
+        "field": "recovery:benzene",
+        "value": 0.7,
+        "unit": "fraction",
+        "quote": "苯回收率至少0.70"
+      },
+      {
+        "field": "retention:n_heptane",
+        "value": 0.8,
+        "unit": "fraction",
+        "quote": "初始正庚烷保留率至少0.80"
+      }
+    ],
+    "issues": [
+      {
+        "field": "feed_fraction:n_heptane",
+        "kind": "conflict",
+        "question": "正庚烷摩尔分数0.7333333333333333与苯摩尔分数0.3666666666666667之和为1.1，超过1；请确认正确的正庚烷和苯摩尔分数。"
+      },
+      {
+        "field": "feed_fraction:benzene",
+        "kind": "conflict",
+        "question": "正庚烷摩尔分数0.7333333333333333与苯摩尔分数0.3666666666666667之和为1.1，超过1；请确认正确的正庚烷和苯摩尔分数。"
+      }
+    ],
+    "plan": [
+      "crossflow_registered_scan",
+      "crossflow_dual_target_audit"
+    ]
+  },
+  "compiled": {
+    "status": "clarify",
+    "normalized": {
+      "temperature": 303.15,
+      "pressure": 101.3,
+      "feed_flow": 1.0,
+      "feed_fraction:n_heptane": 0.7333333333333333,
+      "feed_fraction:benzene": 0.3666666666666667,
+      "solvent_flow:furfural": 1.5,
+      "recovery:benzene": 0.7,
+      "retention:n_heptane": 0.8
+    },
+    "issues": [
+      {
+        "field": "feed_fraction:n_heptane",
+        "kind": "conflict",
+        "question": "正庚烷摩尔分数0.7333333333333333与苯摩尔分数0.3666666666666667之和为1.1，超过1；请确认正确的正庚烷和苯摩尔分数。"
+      },
+      {
+        "field": "feed_fraction:benzene",
+        "kind": "conflict",
+        "question": "正庚烷摩尔分数0.7333333333333333与苯摩尔分数0.3666666666666667之和为1.1，超过1；请确认正确的正庚烷和苯摩尔分数。"
+      },
+      {
+        "field": "feed_composition",
+        "kind": "conflict",
+        "question": "Resolve feed mole fractions that do not sum to one."
+      }
+    ],
+    "contract": null
+  },
+  "elapsed_s": 1.8440000000118744,
+  "llm_tokens": 1348
+}

@@ -1,0 +1,82 @@
+{
+  "records": [
+    {
+      "reference": "original",
+      "gamma_model": "unifac",
+      "purity_percent": 26.45187884759375,
+      "recovery_percent": 26.053106804665198,
+      "y_MAE": 0.03505986811184772,
+      "T_MAE_K": 2.3552541173794284,
+      "direction_agreement": 3,
+      "maximum_stage_balance_mol_s": 7.916689526155096e-11,
+      "data_origin": "original_archived_backend_result",
+      "ester_extrapolated_stages": null
+    },
+    {
+      "reference": "original",
+      "gamma_model": "thermoformer",
+      "purity_percent": 99.50863249956244,
+      "recovery_percent": 98.00850236137808,
+      "y_MAE": 0.01720165381214464,
+      "T_MAE_K": 1.5322813976651646,
+      "direction_agreement": 17,
+      "maximum_stage_balance_mol_s": 1.144709216305273e-09,
+      "data_origin": "original_archived_backend_result",
+      "ester_extrapolated_stages": null
+    },
+    {
+      "reference": "li2013",
+      "gamma_model": "unifac",
+      "purity_percent": 99.21870103868478,
+      "recovery_percent": 97.7229417265438,
+      "y_MAE": 0.009423954019927558,
+      "T_MAE_K": 0.5758353538005615,
+      "direction_agreement": 17,
+      "maximum_stage_balance_mol_s": 5.836753302901343e-11,
+      "data_origin": "fresh_common_psat_frozen_gamma",
+      "ester_extrapolated_stages": 171,
+      "initialization_purity_max_difference": 1.0547118733938987e-14
+    },
+    {
+      "reference": "li2013",
+      "gamma_model": "thermoformer",
+      "purity_percent": 9.95627583703245,
+      "recovery_percent": 9.806181226423922,
+      "y_MAE": 0.03190643241824869,
+      "T_MAE_K": 1.7728038372696113,
+      "direction_agreement": 0,
+      "maximum_stage_balance_mol_s": 1.189228271414322e-09,
+      "data_origin": "fresh_common_psat_frozen_gamma",
+      "ester_extrapolated_stages": 169,
+      "initialization_purity_max_difference": 5.803135749715693e-13
+    },
+    {
+      "reference": "huang2015",
+      "gamma_model": "unifac",
+      "purity_percent": 99.98375912684011,
+      "recovery_percent": 98.4764662756817,
+      "y_MAE": 0.006996631776738434,
+      "T_MAE_K": 0.7201753552330454,
+      "direction_agreement": 17,
+      "maximum_stage_balance_mol_s": 6.154721177153988e-11,
+      "data_origin": "fresh_common_psat_frozen_gamma",
+      "ester_extrapolated_stages": null,
+      "initialization_purity_max_difference": 1.1102230246251565e-16
+    },
+    {
+      "reference": "huang2015",
+      "gamma_model": "thermoformer",
+      "purity_percent": 43.68974180012967,
+      "recovery_percent": 43.031102476509616,
+      "y_MAE": 0.027181315425758697,
+      "T_MAE_K": 1.4393752207372572,
+      "direction_agreement": 2,
+      "maximum_stage_balance_mol_s": 4.198597025606432e-10,
+      "data_origin": "fresh_common_psat_frozen_gamma",
+      "ester_extrapolated_stages": null,
+      "initialization_purity_max_difference": 2.0039525594484076e-14
+    }
+  ],
+  "conditional_diagnostic_only": true,
+  "note": "Reference A is extrapolated above 384 K. Reference B validity interval is unverified. TF weights are frozen."
+}

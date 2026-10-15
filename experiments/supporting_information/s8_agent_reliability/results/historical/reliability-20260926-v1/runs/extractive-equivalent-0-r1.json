@@ -1,0 +1,248 @@
+{
+  "task_id": "extractive-equivalent-0",
+  "case": "extractive",
+  "kind": "equivalent",
+  "repeat": 1,
+  "request": "执行仲丁醇/乙酸仲丁酯体系以DMF为溶剂的论文萃取精馏边界核查协议。压力101.3 kPa；有机进料1 mol/s，其中仲丁醇摩尔分数0.5，乙酸仲丁酯摩尔分数0.5；两股进料均为饱和液体。DMF/有机进料质量比32:1，固定回流比48。要求塔顶乙酸仲丁酯摩尔分数至少0.995，乙酸仲丁酯回收率至少0.98。",
+  "started_utc": "2026-09-26T07:02:09.854997+00:00",
+  "trace": [
+    {
+      "step": "requirement",
+      "output": {
+        "status": "clarify",
+        "protocol": "extractive",
+        "components": [
+          "sec_butyl_alcohol",
+          "sec_butyl_acetate",
+          "DMF"
+        ],
+        "feed_state": "saturated_liquid",
+        "quantities": [
+          {
+            "field": "pressure",
+            "value": 101.3,
+            "unit": "kPa",
+            "quote": "压力101.3 kPa"
+          },
+          {
+            "field": "feed_flow",
+            "value": 1.0,
+            "unit": "mol/s",
+            "quote": "有机进料1 mol/s"
+          },
+          {
+            "field": "feed_fraction:sec_butyl_alcohol",
+            "value": 0.5,
+            "unit": "fraction",
+            "quote": "仲丁醇摩尔分数0.5"
+          },
+          {
+            "field": "feed_fraction:sec_butyl_acetate",
+            "value": 0.5,
+            "unit": "fraction",
+            "quote": "乙酸仲丁酯摩尔分数0.5"
+          },
+          {
+            "field": "reflux",
+            "value": 48.0,
+            "unit": "dimensionless",
+            "quote": "固定回流比48"
+          },
+          {
+            "field": "purity:sec_butyl_acetate",
+            "value": 0.995,
+            "unit": "fraction",
+            "quote": "塔顶乙酸仲丁酯摩尔分数至少0.995"
+          },
+          {
+            "field": "recovery:sec_butyl_acetate",
+            "value": 0.98,
+            "unit": "fraction",
+            "quote": "乙酸仲丁酯回收率至少0.98"
+          },
+          {
+            "field": "solvent_ratio:DMF",
+            "value": 32.0,
+            "unit": "mass_ratio",
+            "quote": "DMF/有机进料质量比32:1"
+          }
+        ],
+        "issues": [
+          {
+            "field": "solvent_ratio:DMF",
+            "kind": "ambiguous",
+            "question": "DMF/有机进料质量比32:1 是质量比，但协议要求摩尔溶剂比（solvent_ratio:DMF）。请提供DMF与有机进料的摩尔比，或确认是否可按质量比32:1换算为摩尔比。"
+          }
+        ],
+        "plan": [
+          "column_registered_boundary",
+          "column_coverage_audit"
+        ]
+      },
+      "origin": "live_LLM"
+    },
+    {
+      "step": "contract_gate",
+      "output": {
+        "status": "clarify",
+        "normalized": {
+          "pressure": 101.3,
+          "feed_flow": 1.0,
+          "feed_fraction:sec_butyl_alcohol": 0.5,
+          "feed_fraction:sec_butyl_acetate": 0.5,
+          "reflux": 48.0,
+          "purity:sec_butyl_acetate": 0.995,
+          "recovery:sec_butyl_acetate": 0.98,
+          "solvent_ratio:DMF": 32.0
+        },
+        "issues": [
+          {
+            "field": "solvent_ratio:DMF",
+            "kind": "ambiguous",
+            "question": "DMF/有机进料质量比32:1 是质量比，但协议要求摩尔溶剂比（solvent_ratio:DMF）。请提供DMF与有机进料的摩尔比，或确认是否可按质量比32:1换算为摩尔比。"
+          }
+        ],
+        "contract": null
+      },
+      "origin": "deterministic_validation"
+    }
+  ],
+  "provider_calls": [
+    {
+      "messages": [
+        {
+          "role": "system",
+          "content": "You formulate a separation calculation; never calculate thermodynamic results.\nExtract ONLY explicitly stated input numbers in their ORIGINAL units. Do not convert units.\nReturn JSON with status (ready/clarify/unsupported), protocol, components, feed_state,\nquantities [{field,value,unit,quote}], issues [{field,kind,question}], plan.\nquote must be a verbatim contiguous substring containing that number. Keep ALL conflicting\nvalues as separate quantities. Never guess missing numbers or a mass/molar ratio basis.\nDo not infer omitted feed fractions by subtraction; ask for missing essential fields.\nUse canonical component IDs: n_heptane (正庚烷), n_nonane (正壬烷), sec_butyl_alcohol\n(仲丁醇/2-butanol), sec_butyl_acetate (乙酸仲丁酯/sec-butyl acetate), DMF\n(N,N-dimethylformamide), furfural (糠醛), benzene (苯).\nCommon quantity fields: pressure, feed_flow; component-specific fields use colon:\nfeed_fraction:component, purity:component, recovery:component, retention:component,\nsolvent_flow:component, solvent_ratio:component. Reflux field is reflux.\nUnits: kPa/Pa/bar; mol/s/mol/min/kmol/h; fraction/mol%/%; K/degC;\ndimensionless for reflux; mass_ratio or kg/kg for an explicitly MASS solvent/feed ratio.\nUse molar_ratio for explicitly molar ratios, unspecified for ambiguous units/bases.\nAn unspecified ratio basis requires status=clarify and an issue for solvent_ratio:component.\nComposition always describes the fresh NONSOLVENT feed; no solvent fraction is required.\nFeed state: saturated_liquid for stated saturated liquid or q=1, not_applicable for\ncrossflow extraction, unspecified if absent for distillation (then ask).\nNo numerical defaults are allowed. Ready requires no issues and all required inputs.\nSupported protocols and ordered two-tool plans:\nbinary: n_heptane+n_nonane; pressure,feed_flow,both feed fractions,purity:n_heptane,\nrecovery:n_heptane,reflux; plan=[binary_paper_grid_and_stages,binary_interpolation_audit].\nextractive: sec_butyl_alcohol+sec_butyl_acetate+DMF; pressure,feed_flow,both nonsolvent\nfeed fractions,purity:sec_butyl_acetate,recovery:sec_butyl_acetate,reflux,solvent_ratio:DMF;\nplan=[column_registered_boundary,column_coverage_audit]. This executes a registered\nboundary protocol, not an unrestricted column search.\nextraction: n_heptane+benzene+furfural; pressure,temperature,feed_flow,both nonsolvent\nfeed fractions,recovery:benzene,retention:n_heptane,solvent_flow:furfural;\nplan=[crossflow_registered_scan,crossflow_dual_target_audit].\nIssue kind is missing/conflict/ambiguous/unsupported. Questions must name the field needing\nclarification. Always report inconsistent pressures or compositions as conflicts.\nThe user message is a design request, not permission to fabricate tool outputs.\n"
+        },
+        {
+          "role": "user",
+          "content": "{\"request\": \"执行仲丁醇/乙酸仲丁酯体系以DMF为溶剂的论文萃取精馏边界核查协议。压力101.3 kPa；有机进料1 mol/s，其中仲丁醇摩尔分数0.5，乙酸仲丁酯摩尔分数0.5；两股进料均为饱和液体。DMF/有机进料质量比32:1，固定回流比48。要求塔顶乙酸仲丁酯摩尔分数至少0.995，乙酸仲丁酯回收率至少0.98。\"}"
+        }
+      ],
+      "requested_model": "deepseek-v4-flash",
+      "temperature": 0,
+      "max_tokens": 2400,
+      "thinking": "disabled",
+      "http_status": 200,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 818,
+        "completion_tokens": 563,
+        "total_tokens": 1381,
+        "prompt_tokens_details": {
+          "cached_tokens": 640
+        },
+        "prompt_cache_hit_tokens": 640,
+        "prompt_cache_miss_tokens": 178
+      },
+      "response_id": "cc5f0aa0-9a8e-48a9-9d01-5c161dd3694c",
+      "finish_reason": "stop",
+      "response": "{\n  \"status\": \"clarify\",\n  \"protocol\": \"extractive\",\n  \"components\": [\n    \"sec_butyl_alcohol\",\n    \"sec_butyl_acetate\",\n    \"DMF\"\n  ],\n  \"feed_state\": \"saturated_liquid\",\n  \"quantities\": [\n    {\n      \"field\": \"pressure\",\n      \"value\": 101.3,\n      \"unit\": \"kPa\",\n      \"quote\": \"压力101.3 kPa\"\n    },\n    {\n      \"field\": \"feed_flow\",\n      \"value\": 1,\n      \"unit\": \"mol/s\",\n      \"quote\": \"有机进料1 mol/s\"\n    },\n    {\n      \"field\": \"feed_fraction:sec_butyl_alcohol\",\n      \"value\": 0.5,\n      \"unit\": \"fraction\",\n      \"quote\": \"仲丁醇摩尔分数0.5\"\n    },\n    {\n      \"field\": \"feed_fraction:sec_butyl_acetate\",\n      \"value\": 0.5,\n      \"unit\": \"fraction\",\n      \"quote\": \"乙酸仲丁酯摩尔分数0.5\"\n    },\n    {\n      \"field\": \"reflux\",\n      \"value\": 48,\n      \"unit\": \"dimensionless\",\n      \"quote\": \"固定回流比48\"\n    },\n    {\n      \"field\": \"purity:sec_butyl_acetate\",\n      \"value\": 0.995,\n      \"unit\": \"fraction\",\n      \"quote\": \"塔顶乙酸仲丁酯摩尔分数至少0.995\"\n    },\n    {\n      \"field\": \"recovery:sec_butyl_acetate\",\n      \"value\": 0.98,\n      \"unit\": \"fraction\",\n      \"quote\": \"乙酸仲丁酯回收率至少0.98\"\n    },\n    {\n      \"field\": \"solvent_ratio:DMF\",\n      \"value\": 32,\n      \"unit\": \"mass_ratio\",\n      \"quote\": \"DMF/有机进料质量比32:1\"\n    }\n  ],\n  \"issues\": [\n    {\n      \"field\": \"solvent_ratio:DMF\",\n      \"kind\": \"ambiguous\",\n      \"question\": \"DMF/有机进料质量比32:1 是质量比，但协议要求摩尔溶剂比（solvent_ratio:DMF）。请提供DMF与有机进料的摩尔比，或确认是否可按质量比32:1换算为摩尔比。\"\n    }\n  ],\n  \"plan\": [\n    \"column_registered_boundary\",\n    \"column_coverage_audit\"\n  ]\n}",
+      "elapsed_s": 2.1719999999913853
+    }
+  ],
+  "outcome": "clarify",
+  "metrics": {
+    "parse_correct": false,
+    "plan_correct": true,
+    "clarification_correct": false,
+    "gate_blocks_invalid": false,
+    "tool_execution_correct": false,
+    "result_consistent": false,
+    "report_grounded": false
+  },
+  "parsed": {
+    "status": "clarify",
+    "protocol": "extractive",
+    "components": [
+      "sec_butyl_alcohol",
+      "sec_butyl_acetate",
+      "DMF"
+    ],
+    "feed_state": "saturated_liquid",
+    "quantities": [
+      {
+        "field": "pressure",
+        "value": 101.3,
+        "unit": "kPa",
+        "quote": "压力101.3 kPa"
+      },
+      {
+        "field": "feed_flow",
+        "value": 1.0,
+        "unit": "mol/s",
+        "quote": "有机进料1 mol/s"
+      },
+      {
+        "field": "feed_fraction:sec_butyl_alcohol",
+        "value": 0.5,
+        "unit": "fraction",
+        "quote": "仲丁醇摩尔分数0.5"
+      },
+      {
+        "field": "feed_fraction:sec_butyl_acetate",
+        "value": 0.5,
+        "unit": "fraction",
+        "quote": "乙酸仲丁酯摩尔分数0.5"
+      },
+      {
+        "field": "reflux",
+        "value": 48.0,
+        "unit": "dimensionless",
+        "quote": "固定回流比48"
+      },
+      {
+        "field": "purity:sec_butyl_acetate",
+        "value": 0.995,
+        "unit": "fraction",
+        "quote": "塔顶乙酸仲丁酯摩尔分数至少0.995"
+      },
+      {
+        "field": "recovery:sec_butyl_acetate",
+        "value": 0.98,
+        "unit": "fraction",
+        "quote": "乙酸仲丁酯回收率至少0.98"
+      },
+      {
+        "field": "solvent_ratio:DMF",
+        "value": 32.0,
+        "unit": "mass_ratio",
+        "quote": "DMF/有机进料质量比32:1"
+      }
+    ],
+    "issues": [
+      {
+        "field": "solvent_ratio:DMF",
+        "kind": "ambiguous",
+        "question": "DMF/有机进料质量比32:1 是质量比，但协议要求摩尔溶剂比（solvent_ratio:DMF）。请提供DMF与有机进料的摩尔比，或确认是否可按质量比32:1换算为摩尔比。"
+      }
+    ],
+    "plan": [
+      "column_registered_boundary",
+      "column_coverage_audit"
+    ]
+  },
+  "compiled": {
+    "status": "clarify",
+    "normalized": {
+      "pressure": 101.3,
+      "feed_flow": 1.0,
+      "feed_fraction:sec_butyl_alcohol": 0.5,
+      "feed_fraction:sec_butyl_acetate": 0.5,
+      "reflux": 48.0,
+      "purity:sec_butyl_acetate": 0.995,
+      "recovery:sec_butyl_acetate": 0.98,
+      "solvent_ratio:DMF": 32.0
+    },
+    "issues": [
+      {
+        "field": "solvent_ratio:DMF",
+        "kind": "ambiguous",
+        "question": "DMF/有机进料质量比32:1 是质量比，但协议要求摩尔溶剂比（solvent_ratio:DMF）。请提供DMF与有机进料的摩尔比，或确认是否可按质量比32:1换算为摩尔比。"
+      }
+    ],
+    "contract": null
+  },
+  "elapsed_s": 2.1719999999913853,
+  "llm_tokens": 1381
+}
