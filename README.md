@@ -13,6 +13,7 @@ The release supports VLE prediction, LLE prediction, state and composition gener
 | Install and run a checkpoint | [`docs/getting_started/`](docs/getting_started/) |
 | Understand the model and interfaces | [`docs/architecture/`](docs/architecture/) |
 | Prepare data or train/evaluate a model | [`docs/guides/`](docs/guides/) |
+| Use the optional DWSIM bridge | [`docs/guides/dwsim/`](docs/guides/dwsim/) and [`ThermoAgent/cases/dwsim_exports/`](ThermoAgent/cases/dwsim_exports/) |
 | Find code for a paper or SI section | [`experiments/`](experiments/) and [`docs/results/article_experiment_index.md`](docs/results/article_experiment_index.md) |
 | Inspect canonical metrics and tables | [`results/`](results/) and [`experiments/summary/`](experiments/summary/) |
 | Inspect configurations and registries | [`configs/`](configs/) |
