@@ -18,6 +18,7 @@ The release supports VLE prediction, LLE prediction, state and composition gener
 | Inspect configurations and registries | [`configs/`](configs/) |
 | Inspect datasets and fixed splits | [`datasets/`](datasets/) |
 | Run separation-design reproductions | [`ThermoAgent/`](ThermoAgent/) |
+| Run the browser workbench | [`Web/ThermoFormer-web/`](Web/ThermoFormer-web/) |
 | Run regression checks | [`tests/`](tests/) |
 
 ## Directory map
@@ -33,7 +34,7 @@ The release supports VLE prediction, LLE prediction, state and composition gener
 | `results/` | Public-facing summary tables, manifests, and result navigation |
 | `docs/` | Getting-started guides, architecture, workflows, references, results, development, and legal notes |
 | `ThermoAgent/` | Deterministic separation-design case reproductions from the manuscript and SI |
-| `Web/` | Application-layer boundary; this release documents the interface boundary without shipping a browser frontend |
+| `Web/ThermoFormer-web/` | Runnable FastAPI + Next.js engineering workbench, organized like the PSMI web release |
 | `tests/` | Scientific, interface, and repository-quality regression tests |
 
 ## Installation
@@ -61,6 +62,10 @@ python scripts/run_experiments.py run lle.prediction.binary_random --seeds 0 1 2
 ```
 
 Use `--dry-run` to inspect a command, `--check-splits-only` to audit registered splits, and `--resume` to continue a matching recorded execution.
+
+## Browser workbench
+
+The browser workbench is a real release component rather than a placeholder. Follow [`Web/ThermoFormer-web/README.md`](Web/ThermoFormer-web/README.md) to install the FastAPI and Next.js dependencies, start both services, and run the web-package checks. The backend reuses the same deterministic thermodynamic engine and validation contracts as the scientific release.
 
 ## Data and experiment contract
 
