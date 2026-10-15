@@ -50,7 +50,7 @@ class RepositoryLayoutTests(unittest.TestCase):
                 self.assertNotIn("docs/reference_records", source)
 
     def test_experiment_navigation_declares_incomplete_studies(self) -> None:
-        experiment_map = (PROJECT_ROOT / "docs" / "experiment_code_map.md").read_text(
+        experiment_map = (PROJECT_ROOT / "docs" / "reference" / "experiment_code_map.md").read_text(
             encoding="utf-8"
         )
         self.assertIn("Machine-learning and thermodynamic VLE baselines", experiment_map)
@@ -63,7 +63,19 @@ class RepositoryLayoutTests(unittest.TestCase):
             for path in (PROJECT_ROOT / "experiments").iterdir()
             if path.is_dir() and any(path.rglob("*"))
         }
-        self.assertEqual(active, {"vle", "lle", "summary", "data_quality", "run_records", "reference_results"})
+        self.assertEqual(
+            active,
+            {
+                "vle",
+                "lle",
+                "summary",
+                "data_quality",
+                "run_records",
+                "reference_results",
+                "section_2_results",
+                "supporting_information",
+            },
+        )
         representation_variants = {
             path.name
             for path in (
@@ -101,7 +113,7 @@ class RepositoryLayoutTests(unittest.TestCase):
         self.assertFalse((PROJECT_ROOT / "analysis").exists())
         figure = PROJECT_ROOT / "experiments/vle/interpretability/molecular_interactions/figures/vle_interpretability_complete.png"
         self.assertTrue(figure.is_file())
-        self.assertEqual(hashlib.sha256(figure.read_bytes()).hexdigest(), "aad0801b940baae279d1346a5213038e4f2c27be6c6315029d59c56251089a54")
+        self.assertEqual(hashlib.sha256(figure.read_bytes()).hexdigest(), "5fc0b64241828404cf3545c1f85d25486f43461c709bae77d8daa6808f9141a5")
 
     def test_active_implementation_uses_manuscript_subpackages(self) -> None:
         expected = {
