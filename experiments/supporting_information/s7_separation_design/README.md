@@ -34,5 +34,4 @@ equilibrium residuals, property-package coverage, and phase stability.
 
 - Deterministic cases: [`ThermoAgent/readme.md`](../../../ThermoAgent/readme.md)
 - DWSIM bridge and acceptance checks: [`docs/guides/dwsim/`](../../../docs/guides/dwsim/)
-- Archived generator sources: [`scripts/reproduce/dwsim_paper_cases/`](../../../scripts/reproduce/dwsim_paper_cases/)
 - Plot the common-Psat audit: `python scripts/reproduce/plot_paper_common_psat.py`

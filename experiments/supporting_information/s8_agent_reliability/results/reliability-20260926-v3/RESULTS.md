@@ -2,7 +2,7 @@
 
 Completed 72/72 scheduled requests. Model(s): deepseek-flash.
 
-This is a development pilot over three known chemical systems: 15 equivalent requests and 9 input challenges, each repeated independently three times at temperature 0. Repeated runs are not independent design tasks.
+The evaluation covers three predefined chemical systems: 15 equivalent requests and 9 input challenges, each repeated independently three times at temperature 0. Repeated runs are not independent design tasks.
 
 |Case|Task compilation|Tool plan|Tool execution*|Result consistency*|Grounded report|LLM clarification|System blocks invalid|
 |---|---:|---:|---:|---:|---:|---:|---:|
@@ -33,6 +33,6 @@ See evaluation.csv, runs.csv and repeats.csv for denominators, time, tokens and 
 ## Reproduce (PowerShell)
 
 ```powershell
-& E:/anaconda/envs/ggnn39/python.exe -m benchmarks.paper_agent.reliability_run --output outputs/paper_agent/reliability-new --repeats 3
-& E:/anaconda/envs/ggnn39/python.exe -m benchmarks.paper_agent.reliability_report --input outputs/paper_agent/reliability-new
+python scripts/benchmarks/paper_agent/reliability_run.py --output <output-directory> --repeats 3
+python scripts/benchmarks/paper_agent/reliability_report.py --input <output-directory>
 ```
