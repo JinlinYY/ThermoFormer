@@ -2,13 +2,12 @@
 
 VLE / Controlled ablations
 
-Status: runnable · Data: registered_vle_dataset
-
 Fixed joint split/seeds 0–4. Uni-Mol-only and full C1 controls live in the interaction suite; reuse controls rather than duplicate training.
 
-## Original artifacts
+## Protocol and results
 
-- [available: experiments/vle/ablation/multiview/predictive](../../../../results/multiview/predictive)
+Configuration: `configs/vle/ablation/molecular_representation.json`.
 
-New executions: executions/<run-id>/<formal|split_checks>/.
-Source artifacts remain at their registered paths. Compare only matching data identities.
+- [experiments/vle/ablation/multiview/predictive](../multiview/predictive)
+
+Inspect the command with `python scripts/run_experiments.py show vle.ablation.molecular_representation`.

@@ -1,37 +1,50 @@
-# Training protocol
+# Training protocols
 
-## Stage 1: supervised optimization
+## Manuscript three-stage optimization
 
-Stage 1 optimizes pressure, temperature, vapor composition, and the supervised
-pure-component endpoint vapor-pressure term. Group-disjoint validation selects
-the checkpoint. The pure endpoint term is a data target, not an additional
-Stage-2 physical constraint.
+The VLE thermodynamic references are inferred from experimental states and
+temperature-valid external saturation-pressure correlations. They are not
+independently measured activity coefficients. Reference masks exclude unidentifiable
+activities and retain exact pure endpoints as described in SI S2.5.
 
-## Stage 2: fugacity-constrained fine-tuning
+Supervised initialization minimizes the equilibrium-data objective before the three stages:
 
-Stage 2 loads the best Stage-1 validation checkpoint and minimizes
+| Stage | Objective | Epoch budget |
+|---|---|---:|
+| 1 | L_thermo = SmoothL1(gE - gE_ref) + 0.5 SmoothL1(ln gamma - ln gamma_ref) | 20 |
+| 2 | L_thermo + L_VLE | 80 |
+| 3 | L_thermo + L_VLE + lambda(e) L_fug | 10 |
 
-```text
-L_total = L_supervised + lambda_fugacity L_teacher_forced_fugacity.
-```
+L_VLE combines vapor-composition error, squared logarithmic pressure error, and
+0.5 times the pure-component pressure objective. L_fug uses the observed T, P, x,
+and y, with pressure-normalized component fugacity residuals. The Stage-3 weight
+is `0.01 * min(1, e / 2)`. Bubble temperature is obtained by inversion rather than
+as an independent temperature regression target.
 
-The fugacity residual uses observed `T`, `P`, `x`, and `y`:
+Stage 1 freezes the vapor-pressure branch. Stage 2 restores joint optimization.
+Stage 3 updates selected interaction, FiLM, mixture-token, and vapor-pressure
+parameters while freezing the molecular projections and Transformer. Each stage
+starts from the preceding validation-selected checkpoint; test data do not select it.
 
-```text
-x_i gamma_i P_i^sat(T) - y_i P.
-```
+Implementation: `src/thermoformer/training/direct_ge.py` and
+`direct_ge_pipeline.py`. Registered configurations:
+`configs/vle/ablation/studies/overall_binary_three_stage/` and
+`configs/vle/ablation/studies/three_stage_training/`.
 
-It is therefore named `teacher_forced_fugacity` and is not presented as a free
-solver residual. The additional loss is warmed up over two epochs. Fine-tuning
-runs for 10 epochs and updates only:
+## Supervised/fugacity fine-tuning comparison
+
+The separate supervised-plus-fugacity comparison uses `supervised.py` and
+`fugacity_finetuning.py`. Its two optimization steps must not be confused with
+the three-stage thermodynamic-reference protocol above. The fine-tuning branch
+uses 10 epochs, a two-epoch warmup, and the following parameter groups:
 
 | Parameter group | Learning rate |
 |---|---:|
-| `pair_potential` | `2e-5` |
-| `vapor_pressure` | `1e-5` |
-| `film` | `5e-6` |
-| `mixture_token` | `5e-6` |
+| pair_potential | 2e-5 |
+| vapor_pressure | 1e-5 |
+| film | 5e-6 |
+| mixture_token | 5e-6 |
 
-The Stage-1 checkpoint is included as epoch zero. Validation may retain Stage 1
-when Stage 2 reduces predictive performance. The test partition is evaluated
-once after checkpoint selection.
+The initial checkpoint remains a validation candidate. The test partition is
+evaluated after selection. Fixed splits, feature scaling fitted on training
+data, and seeds 0-4 are required for the five-seed comparisons.

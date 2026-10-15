@@ -1,0 +1,88 @@
+{
+  "case": "binary",
+  "condition": "constraint_not_met",
+  "repeat": 1,
+  "packet": {
+    "case": "binary",
+    "source": "cached validated ThermoFormer / paper solver outputs; no new numerical inference",
+    "design": {
+      "reflux": 0.9280520481600283,
+      "pchip_stages": 12,
+      "linear_stages": 13,
+      "feed_stage": 6.0
+    },
+    "numerical_validation": {
+      "available": true,
+      "passed": true,
+      "global_phase_stability": "not_certified"
+    },
+    "experimental_process_confirmation": false,
+    "global_optimality_proven": false,
+    "targets": {
+      "stage_cap": 12,
+      "required_to_hold_for_both_reported_interpolations": true
+    },
+    "target_check": {
+      "all_required_targets_met": false,
+      "interpolation_sensitive_feasibility": true
+    },
+    "limitation": "Stage requirement depends on interpolation; retain both counts.",
+    "intervention": "Counterfactual stage cap only; original paper inputs and results are unchanged."
+  },
+  "llm_calls": [
+    {
+      "messages": [
+        {
+          "role": "system",
+          "content": "Choose the next engineering action from a supplied numerical tool packet.\nNever calculate or invent equilibrium values. Use the tool's unrounded target assessment.\nActions:\nreport_preliminary: numerical checks available and passed, all required targets met;\nretain the stated limitations and do not imply experimental confirmation or global optimality.\nrequest_verification: necessary numerical diagnostics are unavailable; request the tool check.\nwithhold_target_claim: a computed candidate does not meet all requirements (including any\nexplicit interpolation-robust requirement); do not claim global infeasibility.\nclaim_experimental_confirmation: only if independent experimental process confirmation exists.\nReturn JSON {action:string,evidence_ids:[string],retain_limits:bool}.\nevidence_ids name supporting top-level keys of the packet. Cite all facts essential to the\ndecision, including design, target_check, numerical_validation and limitation when reporting.\nWhen a verification tool response is supplied, decide using the updated current_packet.\nSet retain_limits=true when retaining all stated applicability limits, for every action.\n"
+        },
+        {
+          "role": "user",
+          "content": "{\"current_packet\": {\"case\": \"binary\", \"source\": \"cached validated ThermoFormer / paper solver outputs; no new numerical inference\", \"design\": {\"reflux\": 0.9280520481600283, \"pchip_stages\": 12, \"linear_stages\": 13, \"feed_stage\": 6.0}, \"numerical_validation\": {\"available\": true, \"passed\": true, \"global_phase_stability\": \"not_certified\"}, \"experimental_process_confirmation\": false, \"global_optimality_proven\": false, \"targets\": {\"stage_cap\": 12, \"required_to_hold_for_both_reported_interpolations\": true}, \"target_check\": {\"all_required_targets_met\": false, \"interpolation_sensitive_feasibility\": true}, \"limitation\": \"Stage requirement depends on interpolation; retain both counts.\", \"intervention\": \"Counterfactual stage cap only; original paper inputs and results are unchanged.\"}}"
+        }
+      ],
+      "requested_model": "deepseek-v4-flash",
+      "temperature": 0,
+      "max_tokens": 2400,
+      "thinking": "disabled",
+      "http_status": 200,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 451,
+        "completion_tokens": 43,
+        "total_tokens": 494,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "prompt_cache_hit_tokens": 256,
+        "prompt_cache_miss_tokens": 195
+      },
+      "response_id": "7c28620f-4963-4f0f-9639-26be7832108e",
+      "finish_reason": "stop",
+      "response": "{\"action\": \"withhold_target_claim\", \"evidence_ids\": [\"design\", \"targets\", \"target_check\", \"numerical_validation\", \"limitation\"], \"retain_limits\": true}",
+      "elapsed_s": 0.5320000000065193
+    }
+  ],
+  "outcome": "completed",
+  "passed": true,
+  "restored_passed": false,
+  "verification_requests": 0,
+  "decision": {
+    "action": "withhold_target_claim",
+    "evidence_ids": [
+      "design",
+      "targets",
+      "target_check",
+      "numerical_validation",
+      "limitation"
+    ],
+    "retain_limits": true
+  },
+  "assessment": {
+    "action_correct": true,
+    "evidence_bound": true,
+    "passed": true
+  },
+  "elapsed_s": 0.5320000000065193,
+  "tokens": 494
+}

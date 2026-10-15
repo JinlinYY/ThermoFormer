@@ -2,13 +2,12 @@
 
 VLE / Baseline comparison
 
-Status: runnable · Data: registered_vle_dataset
-
 Native output paths retained. Joint checkpoint supplies joint and ternary subset comparison; not a fourth training trajectory.
 
-## Original artifacts
+## Protocol and results
 
-- [available: experiments/vle/comparison/reference_evaluations/machine_learning](../../../../results/comparisons/machine_learning)
+Configuration: `configs/vle/comparison/ternary_activity.json`.
 
-New executions: executions/<run-id>/<formal|split_checks>/.
-Source artifacts remain at their registered paths. Compare only matching data identities.
+- [experiments/vle/comparison/reference_evaluations/machine_learning](../reference_evaluations/machine_learning)
+
+Inspect the command with `python scripts/run_experiments.py show vle.comparison.ternary_activity`.

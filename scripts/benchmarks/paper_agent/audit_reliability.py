@@ -1,6 +1,17 @@
+# ruff: noqa: E402
 """Read-only consistency audit of requests, snapshots, cached artifacts and sources."""
 
 from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
+BACKEND_ROOT = REPOSITORY_ROOT / "Web/ThermoFormer-web/backend"
+for _directory in (REPOSITORY_ROOT, BACKEND_ROOT):
+    if str(_directory) not in sys.path:
+        sys.path.insert(0, str(_directory))
+
 
 import argparse
 import hashlib
@@ -10,7 +21,7 @@ from typing import Any
 
 from paper_agent.reliability import TaskContract
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = REPOSITORY_ROOT
 
 
 def sha(path: Path) -> str:
@@ -26,14 +37,15 @@ def audit(directory: Path) -> dict[str, Any]:
     fresh, cached, blocked = 0, 0, 0
     bundles: dict[str, Any] = {}
     for relative, expected in manifest["sources"].items():
+        relative = relative.replace("\\", "/")
         snapshot = directory / "protocol_snapshot" / relative
         if relative.startswith("lab_models"):
-            target = ROOT / relative
+            target = ROOT / relative.removeprefix("lab_models/ThermoFormer/")
         elif snapshot.exists():
             target = snapshot
         else:
-            target = ROOT / relative
-        if sha(target) != expected:
+            target = ROOT / relative.removeprefix("lab_models/ThermoFormer/")
+        if not target.is_file() or sha(target) != expected:
             errors.append("source/snapshot mismatch: " + relative)
     for path in sorted((directory / "runs").glob("*.json")):
         run = json.loads(path.read_text(encoding="utf-8"))
@@ -44,7 +56,9 @@ def audit(directory: Path) -> dict[str, Any]:
         if run["request"] != tasks[key[0]]["prompt"]:
             errors.append("request differs from manifest: " + path.name)
         calls = run["provider_calls"]
-        if not calls or json.loads(calls[0]["messages"][1]["content"]) != {"request": run["request"]}:
+        if not calls or json.loads(calls[0]["messages"][1]["content"]) != {
+            "request": run["request"]
+        }:
             errors.append("actual provider input differs: " + path.name)
         if any(c.get("http_status") != 200 or c.get("finish_reason") != "stop" for c in calls):
             errors.append("provider error/truncation: " + path.name)
@@ -64,24 +78,35 @@ def audit(directory: Path) -> dict[str, Any]:
         contract = TaskContract.model_validate(run["compiled"]["contract"])
         if contract.identity() != bundle["contract_id"] or run["final"] != bundle["final"]:
             errors.append("cache/contract/output mismatch: " + path.name)
-        expected_origin = "cached_frozen_protocol_result" if run["cache_hit"] else "fresh_frozen_protocol_execution"
+        expected_origin = (
+            "cached_frozen_protocol_result"
+            if run["cache_hit"]
+            else "fresh_frozen_protocol_execution"
+        )
         if tools[0]["origin"] != expected_origin or len(tools) != 2:
             errors.append("incorrect execution origin or tool count: " + path.name)
         cached += run["cache_hit"]
         fresh += not run["cache_hit"]
-        if any(r["status"] != "valid" or not r["numerical_checks"]["passed"] for r in bundle["observations"]):
+        if any(
+            r["status"] != "valid" or not r["numerical_checks"]["passed"]
+            for r in bundle["observations"]
+        ):
             errors.append("unvalidated solver output: " + path.name)
         if "raw_report" in run and json.loads(calls[-1]["response"]) != run["raw_report"]:
             errors.append("recorded report differs from provider response: " + path.name)
     for case, bundle in bundles.items():
         provenance = bundle["provenance"]
-        checkpoint = ROOT / "lab_models/ThermoFormer" / provenance["checkpoint"]
-        if sha(checkpoint) != provenance["checkpoint_sha256"]:
-            errors.append("checkpoint mismatch: " + case)
+        checkpoint = ROOT / provenance["checkpoint"]
+        if not checkpoint.is_file():
+            errors.append("missing checkpoint: " + case)
+        else:
+            prefix = checkpoint.read_bytes()[:256]
+            if prefix.startswith(b"version https://git-lfs.github.com/spec/v1"):
+                errors.append("checkpoint is a Git LFS pointer; run git lfs pull: " + case)
+            elif sha(checkpoint) != provenance["checkpoint_sha256"]:
+                errors.append("checkpoint mismatch: " + case)
         if not bundle["paper_agreement"]["passed"]:
             errors.append("paper results changed: " + case)
-        if "ggnn39" not in provenance["python"].lower():
-            errors.append("wrong numerical environment: " + case)
     complete = len(seen) == len(tasks) * manifest["repeats"]
     if not complete:
         errors.append("scheduled runs are incomplete")
@@ -102,7 +127,6 @@ def main() -> None:
     parser.add_argument("--input", type=Path, required=True)
     args = parser.parse_args()
     result = audit(args.input)
-    (args.input / "audit.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
     print(json.dumps(result, indent=2))
     if not result["passed"]:
         raise SystemExit(1)

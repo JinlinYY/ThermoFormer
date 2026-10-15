@@ -1,14 +1,13 @@
-# Historical dataset distribution
+# Dataset coverage and distribution
 
 DATA / Data curation and audit
 
-Status: runnable · Data: registered_dataset
+Summarize the distributed VLE workbooks using their registered schema and component identities.
 
-Historical workbook schema and counts. Do not substitute release input without checking loader scope.
+## Protocol and results
 
-## Original artifacts
+Configuration: `configs/data/construction/distribution.json`.
 
-- [available: experiments/vle/interpretability/molecular_interactions/figures/dataset_distribution/reports](../../../../analysis/dataset_distribution/reports)
+- [experiments/data_quality/construction/dataset_distribution/reports](../dataset_distribution/reports)
 
-New executions: executions/<run-id>/<formal|split_checks>/.
-Source artifacts remain at their registered paths. Compare only matching data identities.
+Inspect the command with `python scripts/run_experiments.py show data.construction.distribution`.

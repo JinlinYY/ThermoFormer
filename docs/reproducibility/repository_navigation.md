@@ -24,4 +24,4 @@ Recommended order:
 6. Run VLE comparisons, ablations, and interpretability analyses when their optional external assets are available.
 7. Validate distributed models with `python scripts/validate_checkpoint_catalog.py --load`.
 
-The complete file inventory is `docs/reproducibility/repository_files.txt`; the navigational tree is `docs/reproducibility/directory_tree.txt`; principal path mappings are in `docs/reproducibility/path_mapping.csv`.
+Use `docs/results/article_experiment_index.md` to locate the code and evidence for each paper section.

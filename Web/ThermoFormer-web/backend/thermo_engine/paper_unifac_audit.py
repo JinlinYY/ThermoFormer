@@ -22,8 +22,8 @@ from scipy.optimize import brentq
 
 from thermo_engine.paper_validation import validate_equilibrium_result
 
-ROOT = Path(__file__).resolve().parents[1]
-LEGACY = ROOT / "lab_models/ThermoFormer/ThermoAgent"
+ROOT = Path(__file__).resolve().parents[4]
+LEGACY = ROOT / "ThermoAgent"
 CASE = LEGACY / "cases/extractive_distillation"
 CAS = ["78-92-2", "105-46-4", "68-12-2"]
 PRESSURE_PA = 101300.0

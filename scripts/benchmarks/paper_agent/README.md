@@ -1,18 +1,13 @@
-# Paper-agent reliability runner
+# Agent evaluation commands
 
-The Python files in this directory are the final task definitions, runner, report generator, and
-audit utility for the S8 reliability evaluation.
+The commands implement manuscript Section 2.2 and SI S8:
 
-The final records are in [`experiments/supporting_information/s8_agent_reliability/results/reliability-20260926-v3/`](../../../experiments/supporting_information/s8_agent_reliability/results/reliability-20260926-v3/).
-The runner uses the backend implementation under `Web/ThermoFormer-web/backend/` and a configured
-DeepSeek endpoint; it is therefore an archival reproduction entry point rather than a zero-config
-offline test. Do not place API keys in source files or output directories.
+- `reliability_tasks.py`: task variants and scoring labels.
+- `reliability_run.py`: task compilation, numerical execution/cache, and reporting.
+- `audit_reliability.py --input <directory>`: read-only record/checkpoint validation.
+- `main_figure_experiment.py`: paired gate replay, clarification recovery, and evidence decisions.
+- `reliability_report.py` and `main_figure_report.py`: numerical report generation.
+- `agent_publication_figure.py`: the final six-panel Fig. 3 and its source tables.
 
-For a local audit of an existing batch, use:
-
-```powershell
-python scripts/benchmarks/paper_agent/audit_reliability.py <batch-directory>
-```
-
-The result package records the exact command-line options, source hashes, prompts, responses, and
-evidence bindings used for the paper-aligned run.
+See the [S8 guide](../../../experiments/supporting_information/s8_agent_reliability/README.md)
+for installation and complete commands. API keys belong in environment variables.

@@ -24,7 +24,7 @@ def separation_capabilities() -> list[SeparationCapability]:
             method="extractive_distillation",
             label="萃取精馏",
             availability="legacy_specialized",
-            limitation="已有专用设计入口；尚未纳入本轮统一比较与溶剂回收闭环。",
+            limitation="该专用设计入口不支持统一模型比较和溶剂回收闭环。",
         ),
         SeparationCapability(
             method="liquid_extraction",

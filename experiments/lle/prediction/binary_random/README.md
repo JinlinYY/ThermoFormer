@@ -2,13 +2,12 @@
 
 LLE / Predictive benchmarks
 
-Status: runnable · Data: lle_nist
+Binary RK / ternary continuous parallel tie-line model; SMILES+T+P only. Includes activity residual and finite-grid TPD screening. No LLE comparison/ablation/interpretability.
 
-Binary RK / ternary continuous parallel tie-line model; SMILES+T+P only. Includes unchanged activity and finite-grid TPD certification. No LLE comparison/ablation/interpretability.
+## Protocol and results
 
-## Original artifacts
+Configuration: `configs/lle/prediction/binary_random.json`.
 
-- [available: experiments/lle/training_records/v1/formal/binary-random](../../../../runs/phase_equilibrium/v1/lle/formal/binary-random)
+- [experiments/lle/training_records/v1/formal/binary-random](../../training_records/v1/formal/binary-random)
 
-New executions: executions/<run-id>/<formal|split_checks>/.
-Source artifacts remain at their registered paths. Compare only matching data identities.
+Inspect the command with `python scripts/run_experiments.py show lle.prediction.binary_random`.

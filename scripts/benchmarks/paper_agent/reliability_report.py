@@ -1,6 +1,17 @@
+# ruff: noqa: E402
 """Tables and scientific figures derived only from the immutable reliability logs."""
 
 from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
+BACKEND_ROOT = REPOSITORY_ROOT / "Web/ThermoFormer-web/backend"
+for _directory in (REPOSITORY_ROOT, BACKEND_ROOT):
+    if str(_directory) not in sys.path:
+        sys.path.insert(0, str(_directory))
+
 
 import argparse
 import csv
@@ -15,7 +26,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-NAMES = {"binary": "Binary distillation", "extractive": "Extractive distillation", "extraction": "Crossflow extraction"}
+NAMES = {
+    "binary": "Binary distillation",
+    "extractive": "Extractive distillation",
+    "extraction": "Crossflow extraction",
+}
 
 
 def csv_write(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -32,7 +47,10 @@ def export(fig: Any, directory: Path, name: str) -> None:
 
 
 def build_report(directory: Path) -> None:
-    runs = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((directory / "runs").glob("*.json"))]
+    runs = [
+        json.loads(p.read_text(encoding="utf-8"))
+        for p in sorted((directory / "runs").glob("*.json"))
+    ]
     manifest = json.loads((directory / "manifest.json").read_text(encoding="utf-8"))
     expected_total = len(manifest["tasks"]) * manifest["repeats"]
     figures = directory / "figures"
@@ -45,7 +63,9 @@ def build_report(directory: Path) -> None:
             continue
         eligible_reports = [r for r in good if "report_audit" in r]
         case_runs = good + bad
-        row: dict[str, Any] = dict(case=case, equivalent_requests=len(good), challenge_requests=len(bad))
+        row: dict[str, Any] = dict(
+            case=case, equivalent_requests=len(good), challenge_requests=len(bad)
+        )
         for metric in (
             "parse_correct",
             "plan_correct",
@@ -60,7 +80,9 @@ def build_report(directory: Path) -> None:
             fresh_protocol_runs=sum(r.get("cache_hit") is False for r in good),
             cached_protocol_runs=sum(r.get("cache_hit") is True for r in good),
             generated_reports=len(eligible_reports),
-            unsupported_claims=sum(len(r["report_audit"]["unsupported_claims"]) for r in eligible_reports),
+            unsupported_claims=sum(
+                len(r["report_audit"]["unsupported_claims"]) for r in eligible_reports
+            ),
             total_claims=sum(len(r["raw_report"]["claims"]) for r in eligible_reports),
             mean_llm_tokens=mean(r["llm_tokens"] for r in case_runs),
             median_request_wall_s=median(r["elapsed_s"] for r in case_runs),
@@ -111,9 +133,23 @@ def build_report(directory: Path) -> None:
             "axes.spines.right": False,
         }
     )
-    fig, axes = plt.subplots(1, 2, figsize=(13.2, 4.4), gridspec_kw={"width_ratios": [2, 1]}, layout="constrained")
-    metrics = ["parse_correct", "plan_correct", "tool_execution_correct", "result_consistent", "report_grounded"]
-    labels = ["Task\ncompilation", "Tool\nplan", "Tool\nexecution*", "Paper result\nconsistency*", "Grounded\nreport"]
+    fig, axes = plt.subplots(
+        1, 2, figsize=(13.2, 4.4), gridspec_kw={"width_ratios": [2, 1]}, layout="constrained"
+    )
+    metrics = [
+        "parse_correct",
+        "plan_correct",
+        "tool_execution_correct",
+        "result_consistent",
+        "report_grounded",
+    ]
+    labels = [
+        "Task\ncompilation",
+        "Tool\nplan",
+        "Tool\nexecution*",
+        "Paper result\nconsistency*",
+        "Grounded\nreport",
+    ]
     for ax, fields, names, denominator in (
         (axes[0], metrics, labels, "equivalent_requests"),
         (
@@ -123,7 +159,9 @@ def build_report(directory: Path) -> None:
             "challenge_requests",
         ),
     ):
-        data = np.array([[row[m] / row[denominator] if row[denominator] else 0 for m in fields] for row in rows])
+        data = np.array(
+            [[row[m] / row[denominator] if row[denominator] else 0 for m in fields] for row in rows]
+        )
         ax.imshow(data, vmin=0, vmax=1, cmap="Blues", aspect="auto")
         ax.set_xticks(range(len(fields)), names)
         ax.set_yticks(range(len(rows)), [NAMES[r["case"]] for r in rows])
@@ -138,19 +176,34 @@ def build_report(directory: Path) -> None:
                     color="white" if data[y, x] > 0.6 else "black",
                     fontsize=12,
                 )
-    axes[0].set_title("a  Equivalent requests (5 per case, each repeated 3 times)", loc="left", pad=14)
+    axes[0].set_title(
+        "a  Equivalent requests (5 per case, each repeated 3 times)", loc="left", pad=14
+    )
     axes[1].set_title("b  Incomplete / conflicting inputs", loc="left", pad=14)
     axes[1].set_yticklabels([])
     fig.supxlabel(
-        "*First matching contract runs fresh physics; later equivalent requests reuse its recorded result.\n"
-        "Counts describe this 24-request development pilot; repetitions are not independent chemical tasks.",
+        (
+            "*First matching contract runs fresh physics; later equivalent req"
+            "uests reuse its recorded result.\nCounts describe 24 request varia"
+            "nts; repetitions are not independent chemical tasks."
+        ),
         fontsize=9,
     )
     export(fig, figures, "reliability")
     fig, axes = plt.subplots(3, 5, figsize=(16.4, 8.5))
-    headers = ["Requirement", "Compiled plan", "Numerical tools", "Evidence review", "Bounded report"]
+    headers = [
+        "Requirement",
+        "Compiled plan",
+        "Numerical tools",
+        "Evidence review",
+        "Bounded report",
+    ]
     for row_idx, case in enumerate(NAMES):
-        options = [r for r in runs if r["case"] == case and r["kind"] == "equivalent" and r["outcome"] == "reported"]
+        options = [
+            r
+            for r in runs
+            if r["case"] == case and r["kind"] == "equivalent" and r["outcome"] == "reported"
+        ]
         if not options:
             continue
         run = min(options, key=lambda r: (r.get("cache_hit", True), r["repeat"], r["task_id"]))
@@ -158,36 +211,49 @@ def build_report(directory: Path) -> None:
         compiled = run.get("compiled", {}).get("contract")
         if case == "binary":
             requirement = (
-                "n-Heptane / n-nonane\n1 mol/s; 101.3 kPa\nPurity >=99.5 mol%\nRecovery >=98%\nFixed paper reflux"
+                "n-Heptane / n-nonane\n1 mol/s; 101.3 kPa\nPurity >=99.5 mol%\nRecove"
+                "ry >=98%\nFixed paper reflux"
             )
             numerical = (
                 f"Original 16-state grid\nPCHIP: {final.get('pchip_stages', '?')} stages\n"
-                f"Linear: {final.get('linear_stages', '?')} stages\nFeed stage: {final.get('feed_stage', '?')}"
+                f"Linear: {final.get('linear_stages', '?')} stages\nFeed stage: {final.get('feed_stage', '?')}"  # noqa: E501 -- fixed report text or request text
             )
             review = (
-                "Composition + balances\nBubble pressure residual\nInterpolation sensitivity\nPreliminary model scope"
+                "Composition + balances\nBubble pressure residual\nInterpolation sen"
+                "sitivity\nPreliminary model scope"
             )
         elif case == "extractive":
             requirement = (
-                "Alcohol / ester / DMF\n1 mol/s; 101.3 kPa\nMass S/F=32; reflux=48\nPurity >=99.5 mol%\nRecovery >=98%"
+                "Alcohol / ester / DMF\n1 mol/s; 101.3 kPa\nMass S/F=32; reflux=48\nP"
+                "urity >=99.5 mol%\nRecovery >=98%"
             )
             numerical = (
                 "Fresh direct bubbles\n182 / 183 stage boundary\n"
                 f"Selected purity: {100 * final.get('purity', 0):.6f}%\n"
                 f"Recovery: {100 * final.get('recovery', 0):.6f}%"
             )
-            review = "Unrounded target check\nStage + global balances\nExperimental coverage\nNo process certification"
+            review = (
+                "Unrounded target check\nStage + global balances\nExperimental cover"
+                "age\nNo process certification"
+            )
         else:
             requirement = (
-                "Heptane / benzene\nFurfural: 1.5 mol/s\n303.15 K; 101.3 kPa\nRecovery >=70%\nHeptane retention >=80%"
+                "Heptane / benzene\nFurfural: 1.5 mol/s\n303.15 K; 101.3 kPa\nRecover"
+                "y >=70%\nHeptane retention >=80%"
             )
             numerical = (
                 f"Selected stages: {final.get('stages', '?')}\n"
                 f"Recovery: {100 * final.get('recovery', 0):.4f}%\n"
                 f"Retention: {100 * final.get('retention', 0):.4f}%\nRegistered allocation scan"
             )
-            review = "Stagewise balances\nLLE residual / grid TPD\nBoth product targets\nFinite candidate scope"
-        plan = "Normalize units\nBind component identities\nCheck required fields\nSelect registered protocol"
+            review = (
+                "Stagewise balances\nLLE residual / grid TPD\nBoth product targets\nF"
+                "inite candidate scope"
+            )
+        plan = (
+            "Normalize units\nBind component identities\nCheck required fields\nS"
+            "elect registered protocol"
+        )
         if compiled is None:
             plan = "No executable contract\n" + run["outcome"]
         report = (
@@ -222,10 +288,19 @@ def build_report(directory: Path) -> None:
                     annotation_clip=False,
                 )
         axes[row_idx, 0].text(
-            0, 1.08, NAMES[case], transform=axes[row_idx, 0].transAxes, fontsize=11, fontweight="bold"
+            0,
+            1.08,
+            NAMES[case],
+            transform=axes[row_idx, 0].transAxes,
+            fontsize=11,
+            fontweight="bold",
         )
         axes[row_idx, 0].text(
-            0, -0.03, f"{run['task_id']}; repetition {run['repeat']}", transform=axes[row_idx, 0].transAxes, fontsize=8
+            0,
+            -0.03,
+            f"{run['task_id']}; repetition {run['repeat']}",
+            transform=axes[row_idx, 0].transAxes,
+            fontsize=8,
         )
     fig.suptitle("Recorded Agent executions under frozen paper protocols", fontsize=15, y=1.01)
     fig.text(
@@ -239,9 +314,16 @@ def build_report(directory: Path) -> None:
     fig.tight_layout(w_pad=1.5, h_pad=3)
     export(fig, figures, "trajectories")
     numerical_bundles = [
-        json.loads(p.read_text(encoding="utf-8")) for p in sorted((directory / "numerical").glob("*.json"))
+        json.loads(p.read_text(encoding="utf-8"))
+        for p in sorted((directory / "numerical").glob("*.json"))
     ]
-    models = sorted({c.get("model", c.get("requested_model", "unknown")) for r in runs for c in r["provider_calls"]})
+    models = sorted(
+        {
+            c.get("model", c.get("requested_model", "unknown"))
+            for r in runs
+            for c in r["provider_calls"]
+        }
+    )
     failures = [
         dict(
             task_id=r["task_id"],
@@ -267,14 +349,20 @@ def build_report(directory: Path) -> None:
         paper_agreement={b["protocol"]: b["paper_agreement"] for b in numerical_bundles},
         failures=failures,
     )
-    (directory / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+    (directory / "summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     text = [
         "# Agent reliability experiment: results and reproduction record",
         "",
-        f"Completed {len(runs)}/{expected_total} scheduled requests. Model(s): {', '.join(models)}.",
+        f"Completed {len(runs)}/{expected_total} scheduled requests. Model(s): {', '.join(models)}.",  # noqa: E501 -- fixed report text or request text
         "",
-        "This is a development pilot over three known chemical systems: 15 equivalent requests and 9 input challenges, "
-        "each repeated independently three times at temperature 0. Repeated runs are not independent design tasks.",
+        (
+            "The evaluation covers three predefined chemical systems: 15 equiv"
+            "alent requests and 9 input challenges, each repeated independentl"
+            "y three times at temperature 0. Repeated runs are not independent"
+            " design tasks."
+        ),
         "",
         "|Case|Task compilation|Tool plan|Tool execution*|Result consistency*|Grounded report|"
         "LLM clarification|System blocks invalid|",
@@ -282,13 +370,19 @@ def build_report(directory: Path) -> None:
     ]
     for row in rows:
         values = [f"{row[m]}/{row['equivalent_requests']}" for m in metrics]
-        values += [f"{row[m]}/{row['challenge_requests']}" for m in ("clarification_correct", "gate_blocks_invalid")]
+        values += [
+            f"{row[m]}/{row['challenge_requests']}"
+            for m in ("clarification_correct", "gate_blocks_invalid")
+        ]
         text.append("|" + NAMES[row["case"]] + "|" + "|".join(values) + "|")
     text += [
         "",
-        "*First matching contract invokes fresh ThermoFormer/process calculations. Later matches reuse the "
-        "same hashed numerical artifact. Cached equivalence is a routing/reproducibility check, not independent "
-        "numerical validation or repeated model inference.",
+        (
+            "*First matching contract invokes fresh ThermoFormer/process calcu"
+            "lations. Later matches reuse the same hashed numerical artifact. "
+            "Cached equivalence is a routing/reproducibility check, not indepe"
+            "ndent numerical validation or repeated model inference."
+        ),
         "",
         "## Paper result checks",
         "",
@@ -301,38 +395,54 @@ def build_report(directory: Path) -> None:
     text += [
         "",
         "Unrounded extractive-column targets are checked separately from floating-point agreement. "
-        "Original scientific source files, weights, and archived paper outputs are not overwritten.",
+        "Original scientific source files, weights, and archived paper outputs are not overwritten.",  # noqa: E501 -- fixed report text or request text
         "",
         "## Interpretation",
         "",
-        "Task compilation includes deterministic unit conversion and source/applicability checks. "
-        "LLM clarification is scored on its raw status, issue type and named field; system blocking is separate. "
-        "Grounding is scored on the LLM's raw structured claims before the output gate. Reports use a constrained "
-        "claim catalog and evidence IDs; this does not measure unrestricted prose hallucination.",
+        (
+            "Task compilation includes deterministic unit conversion and sourc"
+            "e/applicability checks. LLM clarification is scored on its raw st"
+            "atus, issue type and named field; system blocking is separate. Gr"
+            "ounding is scored on the LLM's raw structured claims before the o"
+            "utput gate. Reports use a constrained claim catalog and evidence "
+            "IDs; this does not measure unrestricted prose hallucination."
+        ),
         "",
-        "No fixed/rule/LLM search competition, new process optimization, held-out molecular generalization, "
-        "independent process experiments, or DWSIM certification is claimed. "
-        "Reference agreement does not establish physical accuracy or global phase stability.",
+        (
+            "No fixed/rule/LLM search competition, new process optimization, h"
+            "eld-out molecular generalization, independent process experiments"
+            ", or DWSIM certification is claimed. Reference agreement does not"
+            " establish physical accuracy or global phase stability."
+        ),
         "",
-        f"Provider calls: {summary['llm_calls']}; provider-reported total tokens: {summary['llm_tokens']}.",
+        f"Provider calls: {summary['llm_calls']}; provider-reported total tokens: {summary['llm_tokens']}.",  # noqa: E501 -- fixed report text or request text
         "",
-        "See evaluation.csv, runs.csv and repeats.csv for denominators, time, tokens and cache counts. "
-        "See summary.json for all failures (including empty lists), manifest.json for pre-run inputs and hashes, "
-        "source_integrity.json for the end-of-run integrity check, runs/ for exact requests/responses/tool provenance, "
-        "and numerical/ for complete solver observations.",
+        (
+            "See evaluation.csv, runs.csv and repeats.csv for denominators, ti"
+            "me, tokens and cache counts. See summary.json for all failures (i"
+            "ncluding empty lists), manifest.json for pre-run inputs and hashe"
+            "s, source_integrity.json for the end-of-run integrity check, runs"
+            "/ for exact requests/responses/tool provenance, and numerical/ fo"
+            "r complete solver observations."
+        ),
         "",
         "## Reproduce (PowerShell)",
         "",
         "```powershell",
-        "& E:/anaconda/envs/ggnn39/python.exe -m benchmarks.paper_agent.reliability_run "
+        "python -m scripts.benchmarks.paper_agent.reliability_run "
         "--output outputs/paper_agent/reliability-new --repeats 3",
-        "& E:/anaconda/envs/ggnn39/python.exe -m benchmarks.paper_agent.reliability_report "
+        "python -m scripts.benchmarks.paper_agent.reliability_report "
         "--input outputs/paper_agent/reliability-new",
         "```",
         "",
     ]
     (directory / "RESULTS.md").write_text("\n".join(text), encoding="utf-8")
-    print(json.dumps({k: summary[k] for k in ("complete", "completed", "llm_calls", "llm_tokens", "models")}, indent=2))
+    print(
+        json.dumps(
+            {k: summary[k] for k in ("complete", "completed", "llm_calls", "llm_tokens", "models")},
+            indent=2,
+        )
+    )
 
 
 def main() -> None:

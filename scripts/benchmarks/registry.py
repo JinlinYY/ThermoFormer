@@ -4,6 +4,7 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -189,10 +190,11 @@ def index_entry(entry):
         "note":"Existence-only inventory; does not certify metrics or completed seed counts."})
     lines = ["# "+entry["title"],"",entry["section"],"",
              f"Status: {entry['status']} · Data: {entry['provenance']}","",
-             entry["notes"],"","## Original artifacts",""]
+             entry["notes"],"","## Final artifacts",""]
     for s in sources:
         p = ROOT/s["path"]
-        lines.append(f"- [{'available' if s['exists'] else 'missing'}: {s['path']}]({p.as_posix()})")
+        relative_link = Path(os.path.relpath(p, home)).as_posix()
+        lines.append(f"- [{'available' if s['exists'] else 'missing'}: {s['path']}]({relative_link})")
     lines += ["","New executions: executions/<run-id>/<formal|split_checks>/.",
               "Source artifacts remain at their registered paths. Compare only matching data identities."]
     (home/"README.md").write_text("\n".join(lines)+"\n",encoding="utf-8")

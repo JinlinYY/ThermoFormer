@@ -49,9 +49,9 @@ outside 298.15 +/- 0.5 K, and unavailable upstream assets remain explicit N/A or
 blocked cells and contribute to valid-coverage reporting.
 
 Detailed source and license auditing is recorded in
-[`docs/ml_vle_baseline_source_audit.md`](../../../docs/ml_vle_baseline_source_audit.md).
+[`docs/ml_vle_baseline_source_audit.md`](../../../../guides/ml_vle_baseline_source_audit.md).
 The TeNNet-SAC and SPT-NRTL API, equation, asset and license audit is recorded in
-[`docs/tennetsac_sptnrtl_source_audit.md`](../../../docs/tennetsac_sptnrtl_source_audit.md).
+[`docs/tennetsac_sptnrtl_source_audit.md`](../../../../guides/tennetsac_sptnrtl_source_audit.md).
 
 HANNA is evaluated with the unchanged official ten-model ensemble bundled from the
 pinned MIT-licensed source revision. Its binary-trained Muggianu projection is used

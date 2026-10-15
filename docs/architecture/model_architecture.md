@@ -24,9 +24,10 @@ and projected to the Transformer hidden dimension.
 
 ## Thermodynamic decoder
 
-The final C1 model uses a vanilla Transformer, a mixture token, state FiLM, and
-a symmetric pair potential. It does not use chemical-attention bias or the
-context-conditioned pair-interaction variant.
+The model uses a component-permutation-equivariant Transformer, a mixture token,
+state FiLM, and symmetric, composition-dependent effective pair potentials.
+The registered molecular and interaction ablations are defined separately in
+`configs/vle/ablation/`.
 
 The excess Gibbs energy is
 
@@ -49,3 +50,29 @@ The active implementation is organized as follows:
 | Activity coefficients and differentiable VLE solvers | `src.thermoformer.thermodynamics` |
 | Supervised and fugacity-constrained optimization | `src.thermoformer.training` |
 | Prediction metrics and consistency analysis | `src.thermoformer.evaluation` |
+
+## Liquid-liquid equilibrium
+
+The LLE decoder receives molecular features, temperature, and pressure. It returns
+an unordered pair of binary coexistence endpoints or a ternary tie-line family;
+an overall feed composition is required only for a downstream phase-split calculation.
+Binary surfaces use a two-parameter Redlich-Kister expansion. Ternary surfaces use
+a continuous binodal with parallel tie lines. Activity equality, endpoint separation,
+and finite-grid tangent-plane-distance checks screen candidate states. A finite
+grid does not certify global stability over the continuous simplex.
+
+The implementation is in `src/thermoformer/lle_tp/model.py`,
+`hybrid_binodal_model.py`, `binodal_model.py`, and `solver_certified.py`.
+
+## Training and agent interfaces
+
+The manuscript's staged thermodynamic objectives are implemented in
+`src/thermoformer/training/direct_ge_pipeline.py` and `direct_ge.py`;
+see [training](../guides/training.md) for initialization, the three losses,
+checkpoint selection, and the separate fine-tuning comparison protocol.
+
+The task compiler, unit/source checks, and evidence-linked reports are implemented
+in `Web/ThermoFormer-web/backend/paper_agent/reliability.py`. Numerical calls go
+through `Web/ThermoFormer-web/backend/thermo_engine/paper_reliability.py` and
+`paper_tools.py`. Clarification recovery and evidence-action experiments are
+defined in `scripts/benchmarks/paper_agent/main_figure_experiment.py`.

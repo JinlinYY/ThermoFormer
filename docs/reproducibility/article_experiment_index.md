@@ -1,31 +1,34 @@
 # Article experiment index
 
-This index connects the supplied manuscript and Supporting Information (SI)
-to the public repository. Commands are run from the repository root after the
-environment in `environment.yml` is activated.
+Run commands from the repository root. The scientific environment is specified in
+`environment.yml`; the browser workbench has a separate Python 3.11+ environment.
 
-| Paper location | Scientific question | Code and configuration | Evidence |
+| Paper location | Method or experiment | Implementation / entry point | Final evidence |
 |---|---|---|---|
-| Main Section 2.1; SI S7.2 | Binary n-heptane/n-nonane distillation | `ThermoAgent/reproduce.py --case binary` | `ThermoAgent/cases/binary_distillation/` and `experiments/vle/separation_design/` |
-| Main Section 2.1; SI S7.3 | DMF-assisted extractive distillation | `ThermoAgent/reproduce.py --case extractive` | `ThermoAgent/cases/extractive_distillation/` |
-| Main Section 2.1; SI S7.4 | Furfural crossflow extraction | `ThermoAgent/reproduce.py --case extraction` | `ThermoAgent/cases/crossflow_extraction/` |
-| Main Section 3; SI S3 | VLE prediction and state/system generalization | `scripts/run_experiments.py` with `configs/vle/prediction/` and `configs/vle/generalization/` | `experiments/vle/prediction/` and `experiments/vle/generalization/` |
-| Main Section 3; SI S3 | LLE prediction, extrapolation, and stability | `scripts/run_experiments.py` with `configs/lle/` | `experiments/lle/` |
-| Main Section 3; SI S4 and S6 | Comparison with thermodynamic and learned baselines | `configs/vle/comparison/` and `scripts/run_ml_baselines_formal.py` | `experiments/vle/comparison/` |
-| Main Section 3; SI S5 | Molecular, interaction, and staged-optimization ablations | `configs/vle/ablation/` and `scripts/run_*ablation*.py` | `experiments/vle/ablation/` |
-| Main Section 3; SI S2 | Molecular interaction interpretation | `scripts/benchmarks/vle/generate_interpretability.py` | `experiments/vle/interpretability/` |
-| SI S1 and S5 | Dataset coverage, construction, and audit | `scripts/audit_dataset.py` and `scripts/data/` | `experiments/data_quality/` and `datasets/` |
-| SI S8 | Agent execution reliability and evidence review | `ThermoAgent/` case and reliability records | `ThermoAgent/tests/` and `ThermoAgent/cases/` |
+| Methods 4.1-4.2; Fig. 1 | Task contract, source and unit checks, tools, evidence-linked reports | `Web/ThermoFormer-web/backend/paper_agent/reliability.py`, `thermo_engine/paper_reliability.py` | S8 result packages |
+| Methods 4.3; SI S2 | Multiview encoding, mixture Transformer, gE/activity derivatives, VLE inversion, LLE coexistence and TPD | `src/thermoformer/features/`, `models/`, `thermodynamics/`, `lle_tp/` | Scientific tests and registered model configurations |
+| Methods 4.3.5; SI S2.5, S5 | Thermodynamic-reference, equilibrium, and fugacity training stages | `src/thermoformer/training/direct_ge_pipeline.py`, `scripts/evaluate_staged_thermodynamic_optimization.py` | `experiments/vle/ablation/` |
+| Section 2.1; Fig. 2; SI S7.2, Fig. S4 | n-Heptane/n-nonane binary distillation | `python ThermoAgent/reproduce.py --case binary` | `ThermoAgent/cases/binary_distillation/` |
+| Section 2.1; SI S7.3, Fig. S5 | Alcohol/ester/DMF extractive distillation | `python ThermoAgent/reproduce.py --case extractive`, `ThermoAgent/solve_column.py` | `ThermoAgent/cases/extractive_distillation/` |
+| SI S7.3; Table S7 | Common-Psat sensitivity | `Web/ThermoFormer-web/backend/thermo_engine/paper_common_psat.py`, `scripts/reproduce/plot_paper_common_psat.py` | `experiments/supporting_information/s7_separation_design/results/` |
+| Section 2.1; SI S7.4, Fig. S6 | Furfural crossflow extraction | `python ThermoAgent/reproduce.py --case extraction`, `ThermoAgent/lle_inference.py` | `ThermoAgent/cases/crossflow_extraction/` |
+| Section 2.2; Fig. 3; SI S8 | Equivalent requests, paired input gates, clarification recovery, evidence decisions, token costs | `scripts/benchmarks/paper_agent/reliability_run.py`, `main_figure_experiment.py`, `agent_publication_figure.py` | `experiments/supporting_information/s8_agent_reliability/` |
+| Section 2.3; Fig. 4; SI S3, Tables S1-S3 | VLE/LLE prediction and state/composition/component generalization | `scripts/benchmarks/vle/run_prediction.py`, `run_generalization.py`; corresponding `lle/` entries | `experiments/vle/prediction/`, `generalization/`; `experiments/lle/`; `experiments/summary/` |
+| Section 2.3.1; SI S4, S6; Table S4 | Eight learned baselines and thermodynamic models | `configs/vle/comparison/`, `src/thermoformer/baselines/` | `experiments/vle/comparison/` |
+| Section 2.3.2; SI S5, Tables S5-S6 | Molecular, interaction, training-stage ablations and thermodynamic diagnostics | `configs/vle/ablation/`, `scripts/benchmarks/vle/run_ablation.py` | `experiments/vle/ablation/` |
+| Section 2.3.2; Fig. 4 | Molecular-view and composition-dependent interaction interpretation | `scripts/benchmarks/vle/generate_interpretability.py` | `experiments/vle/interpretability/` |
+| SI S1; Figs. S1-S2 | Dataset composition and subsystem coverage | `scripts/audit_dataset.py`, `scripts/data/` | `datasets/`, `experiments/data_quality/` |
 
-## Reproduction boundaries
+## Reproduction modes
 
-The three separation-design cases can be recalculated from the bundled
-equilibrium states without model weights. Fresh neural-network evaluation uses
-the registered checkpoints and Git LFS assets. The LLM orchestration layer and
-external DWSIM installation are integration components; the numerical case
-reproduction remains deterministic and does not require API credentials.
+The deterministic process demonstration uses bundled equilibrium states and needs
+no API key or model weights. Fresh neural evaluation requires materialized Git LFS
+assets and the registered checkpoints. Live agent interaction additionally requires
+the configured language-model endpoint. DWSIM exports require an external Windows
+DWSIM installation and independent recalculation in that installation.
 
-Every result directory records the dataset identity, split protocol, seed,
-configuration, and artifact hashes. A missing checkpoint or unsupported
-thermodynamic parameter is reported as unavailable and is never silently
-replaced by a different model.
+Prediction/generalization checkpoints are indexed in `models/registry.json`.
+Comparison and ablation source code and final results are included; their optional
+model weights and any third-party baseline resources must be obtained or trained
+as specified by the corresponding protocol. Finite-grid TPD screens are not proofs
+of global phase stability. A matched archived result is not a fresh inference run.

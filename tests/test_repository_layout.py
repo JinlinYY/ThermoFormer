@@ -42,7 +42,7 @@ class RepositoryLayoutTests(unittest.TestCase):
                         )
 
     def test_reference_code_is_isolated_from_active_imports(self) -> None:
-        self.assertTrue((PROJECT_ROOT / 'docs/reference_records/README.md').is_file())
+        self.assertFalse(any((PROJECT_ROOT / 'docs/reference_records').rglob("*.py")))
         for root_name in ("src", "scripts"):
             for path in (PROJECT_ROOT / root_name).rglob("*.py"):
                 source = path.read_text(encoding="utf-8-sig")

@@ -2,13 +2,12 @@
 
 VLE / Controlled ablations
 
-Status: runnable · Data: registered_vle_dataset
-
 Fixed joint split/seeds 0–4. Also supplies representation controls.
 
-## Original artifacts
+## Protocol and results
 
-- [available: experiments/vle/ablation/multiview/chemical_attention](../../../../results/multiview/chemical_attention)
+Configuration: `configs/vle/ablation/interaction_architecture.json`.
 
-New executions: executions/<run-id>/<formal|split_checks>/.
-Source artifacts remain at their registered paths. Compare only matching data identities.
+- [experiments/vle/ablation/multiview/chemical_attention](../multiview/chemical_attention)
+
+Inspect the command with `python scripts/run_experiments.py show vle.ablation.interaction_architecture`.

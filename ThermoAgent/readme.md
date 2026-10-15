@@ -8,16 +8,16 @@ deterministic scientific calculations underlying those applications.
 
 | Case | Experimental reference | Process calculation | Paper location |
 |---|---|---|---|
-| [n-Heptane / n-nonane](cases/binary_distillation/README.md) | 16 isobaric VLE states | Binary distillation; common reflux ratio; interpolation and reflux sensitivity | Fig. 2a; S7.2; Fig. S3 |
-| [sec-Butyl alcohol / sec-butyl acetate / DMF](cases/extractive_distillation/README.md) | 17 ternary VLE states | Extractive distillation; 182/183-stage boundary; common-column UNIFAC comparison | Fig. 2b; S7.3; Fig. S4 |
-| [n-Heptane / benzene / furfural](cases/crossflow_extraction/README.md) | Six tie lines at each of two temperatures | Crossflow extraction; stage count, solvent allocation, and solvent dosage | Fig. 2c; S7.4; Fig. S5 |
+| [n-Heptane / n-nonane](cases/binary_distillation/README.md) | 16 isobaric VLE states | Binary distillation; common reflux ratio; interpolation and reflux sensitivity | Fig. 2a; S7.2; Fig. S4 |
+| [sec-Butyl alcohol / sec-butyl acetate / DMF](cases/extractive_distillation/README.md) | 17 ternary VLE states | Extractive distillation; 182/183-stage boundary; common-column UNIFAC comparison | Fig. 2b; S7.3; Fig. S5 |
+| [n-Heptane / benzene / furfural](cases/crossflow_extraction/README.md) | Six tie lines at each of two temperatures | Crossflow extraction; stage count, solvent allocation, and solvent dosage | Fig. 2c; S7.4; Fig. S6 |
 
 All cases use **101.3 kPa** and a fresh nonsolvent feed of **1 mol/s**.
 Compositions are mole fractions unless explicitly reported as mol%.
 
 ## Reproduce the reported process results
 
-Run from the repository root with Python 3.10 or later:
+Run from the repository root with Python 3.9 or later:
 
 ```bash
 python -m pip install -r ThermoAgent/requirements.txt

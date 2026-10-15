@@ -5,10 +5,15 @@
   "title": "Agent-assisted separation design with ThermoFormer",
   "status": "runnable",
   "backend": "ThermoAgent/reproduce.py",
-  "args": ["--case", "{binary|extractive|extraction}"],
+  "args": [
+    "--case",
+    "all"
+  ],
   "configs": [],
   "sources": [
-    "docs/vle/separation_design/study_records/README.md"
+    "ThermoAgent/cases",
+    "experiments/supporting_information/s7_separation_design",
+    "experiments/supporting_information/s8_agent_reliability"
   ],
   "provenance": "registered_case_studies",
   "output_mode": "native",

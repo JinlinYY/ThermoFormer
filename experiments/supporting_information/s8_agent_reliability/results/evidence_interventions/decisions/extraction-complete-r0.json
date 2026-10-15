@@ -1,0 +1,86 @@
+{
+  "case": "extraction",
+  "condition": "complete",
+  "repeat": 0,
+  "packet": {
+    "case": "extraction",
+    "source": "cached validated ThermoFormer / paper solver outputs; no new numerical inference",
+    "design": {
+      "recovery": 0.7115061827550749,
+      "retention": 0.8114999237657843,
+      "stages": 3.0,
+      "solvent_total": 1.5,
+      "meets_targets": true
+    },
+    "numerical_validation": {
+      "available": true,
+      "passed": true,
+      "global_phase_stability": "not_certified"
+    },
+    "experimental_process_confirmation": false,
+    "global_optimality_proven": false,
+    "targets": {
+      "benzene_recovery": 0.7,
+      "initial_heptane_retention": 0.8
+    },
+    "target_check": {
+      "all_required_targets_met": true
+    },
+    "limitation": "Stage and allocation conclusions concern only the tested finite candidate set."
+  },
+  "llm_calls": [
+    {
+      "messages": [
+        {
+          "role": "system",
+          "content": "Choose the next engineering action from a supplied numerical tool packet.\nNever calculate or invent equilibrium values. Use the tool's unrounded target assessment.\nActions:\nreport_preliminary: numerical checks available and passed, all required targets met;\nretain the stated limitations and do not imply experimental confirmation or global optimality.\nrequest_verification: necessary numerical diagnostics are unavailable; request the tool check.\nwithhold_target_claim: a computed candidate does not meet all requirements (including any\nexplicit interpolation-robust requirement); do not claim global infeasibility.\nclaim_experimental_confirmation: only if independent experimental process confirmation exists.\nReturn JSON {action:string,evidence_ids:[string],retain_limits:bool}.\nevidence_ids name supporting top-level keys of the packet. Cite all facts essential to the\ndecision, including design, target_check, numerical_validation and limitation when reporting.\nWhen a verification tool response is supplied, decide using the updated current_packet.\nSet retain_limits=true when retaining all stated applicability limits, for every action.\n"
+        },
+        {
+          "role": "user",
+          "content": "{\"current_packet\": {\"case\": \"extraction\", \"source\": \"cached validated ThermoFormer / paper solver outputs; no new numerical inference\", \"design\": {\"recovery\": 0.7115061827550749, \"retention\": 0.8114999237657843, \"stages\": 3.0, \"solvent_total\": 1.5, \"meets_targets\": true}, \"numerical_validation\": {\"available\": true, \"passed\": true, \"global_phase_stability\": \"not_certified\"}, \"experimental_process_confirmation\": false, \"global_optimality_proven\": false, \"targets\": {\"benzene_recovery\": 0.7, \"initial_heptane_retention\": 0.8}, \"target_check\": {\"all_required_targets_met\": true}, \"limitation\": \"Stage and allocation conclusions concern only the tested finite candidate set.\"}}"
+        }
+      ],
+      "requested_model": "deepseek-v4-flash",
+      "temperature": 0,
+      "max_tokens": 2400,
+      "thinking": "disabled",
+      "http_status": 200,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 439,
+        "completion_tokens": 38,
+        "total_tokens": 477,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 439
+      },
+      "response_id": "59ea2dda-1107-4df3-a796-6a4511bbe11c",
+      "finish_reason": "stop",
+      "response": "{\"action\": \"report_preliminary\", \"evidence_ids\": [\"design\", \"target_check\", \"numerical_validation\", \"limitation\"], \"retain_limits\": true}",
+      "elapsed_s": 0.6719999999913853
+    }
+  ],
+  "outcome": "completed",
+  "passed": true,
+  "restored_passed": false,
+  "verification_requests": 0,
+  "decision": {
+    "action": "report_preliminary",
+    "evidence_ids": [
+      "design",
+      "target_check",
+      "numerical_validation",
+      "limitation"
+    ],
+    "retain_limits": true
+  },
+  "assessment": {
+    "action_correct": true,
+    "evidence_bound": true,
+    "passed": true
+  },
+  "elapsed_s": 0.6719999999913853,
+  "tokens": 477
+}

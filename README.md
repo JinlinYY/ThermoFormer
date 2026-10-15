@@ -1,6 +1,6 @@
 # ThermoFormer
 
-ThermoFormer predicts binary and ternary vapour–liquid and liquid–liquid phase equilibria from molecular representations and thermodynamic state variables. This repository is organized as a reproducible research release following the open-source conventions used by [PSMI](https://github.com/JinlinYY/PSMI).
+ThermoFormer predicts binary and ternary vapour–liquid and liquid–liquid phase equilibria from molecular representations and thermodynamic state variables. The repository provides model implementations, datasets, registered experiments, and separation-design examples.
 
 ## Scientific scope
 
@@ -21,6 +21,8 @@ The release supports VLE prediction, LLE prediction, state and composition gener
 | Run separation-design reproductions | [`ThermoAgent/`](ThermoAgent/) |
 | Run the browser workbench | [`Web/ThermoFormer-web/`](Web/ThermoFormer-web/) |
 | Run regression checks | [`tests/`](tests/) |
+| Run a CPU demonstration with expected output | [`docs/getting_started/demo.md`](docs/getting_started/demo.md) |
+| Inspect agent recovery and evidence decisions | [`experiments/supporting_information/s8_agent_reliability/`](experiments/supporting_information/s8_agent_reliability/) |
 
 ## Directory map
 
@@ -33,9 +35,9 @@ The release supports VLE prediction, LLE prediction, state and composition gener
 | `models/` | Validation-selected checkpoints and pretrained resources |
 | `experiments/` | Executable task studies plus paper-section and Supporting Information navigation |
 | `results/` | Public-facing summary tables, manifests, and result navigation |
-| `docs/` | Getting-started guides, architecture, workflows, references, results, development, and legal notes |
+| `docs/` | Getting-started guides, architecture, workflows, references, results, contribution guidelines, and legal notes |
 | `ThermoAgent/` | Deterministic separation-design case reproductions from the manuscript and SI |
-| `Web/ThermoFormer-web/` | Runnable FastAPI + Next.js engineering workbench, organized like the PSMI web release |
+| `Web/ThermoFormer-web/` | Runnable FastAPI + Next.js engineering workbench, with validated numerical tools |
 | `tests/` | Scientific, interface, and repository-quality regression tests |
 
 ## Installation
@@ -66,7 +68,7 @@ Use `--dry-run` to inspect a command, `--check-splits-only` to audit registered 
 
 ## Browser workbench
 
-The browser workbench is a real release component rather than a placeholder. Follow [`Web/ThermoFormer-web/README.md`](Web/ThermoFormer-web/README.md) to install the FastAPI and Next.js dependencies, start both services, and run the web-package checks. The backend reuses the same deterministic thermodynamic engine and validation contracts as the scientific release.
+Follow [`Web/ThermoFormer-web/README.md`](Web/ThermoFormer-web/README.md) to install the FastAPI and Next.js dependencies, start both services, and run the web-package checks. The backend reuses the same deterministic thermodynamic engine and validation contracts as the scientific release.
 
 ## Data and experiment contract
 

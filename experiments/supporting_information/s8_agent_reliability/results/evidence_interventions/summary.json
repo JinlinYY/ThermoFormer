@@ -1,0 +1,162 @@
+{
+  "routing": [
+    {
+      "kind": "equivalent",
+      "runs": 45,
+      "schema_only_correct": 45,
+      "full_contract_correct": 45
+    },
+    {
+      "kind": "missing",
+      "runs": 9,
+      "schema_only_correct": 6,
+      "full_contract_correct": 9
+    },
+    {
+      "kind": "conflict",
+      "runs": 15,
+      "schema_only_correct": 12,
+      "full_contract_correct": 15
+    },
+    {
+      "kind": "ambiguous",
+      "runs": 3,
+      "schema_only_correct": 0,
+      "full_contract_correct": 3
+    }
+  ],
+  "recovery": [
+    {
+      "case": "binary",
+      "runs": 9,
+      "input_resolved": 9,
+      "numerical_cache_retrieved": 9,
+      "result_preserved": 9,
+      "grounded_report": 9
+    },
+    {
+      "case": "extractive",
+      "runs": 9,
+      "input_resolved": 9,
+      "numerical_cache_retrieved": 9,
+      "result_preserved": 9,
+      "grounded_report": 9
+    },
+    {
+      "case": "extraction",
+      "runs": 9,
+      "input_resolved": 9,
+      "numerical_cache_retrieved": 9,
+      "result_preserved": 9,
+      "grounded_report": 9
+    }
+  ],
+  "evidence": [
+    {
+      "case": "binary",
+      "condition": "complete",
+      "runs": 3,
+      "passed": 3,
+      "actions": "{\"report_preliminary\": 3}"
+    },
+    {
+      "case": "binary",
+      "condition": "validation_withheld",
+      "runs": 3,
+      "passed": 3,
+      "actions": "{\"request_verification\": 3}"
+    },
+    {
+      "case": "binary",
+      "condition": "constraint_not_met",
+      "runs": 3,
+      "passed": 3,
+      "actions": "{\"withhold_target_claim\": 3}"
+    },
+    {
+      "case": "binary",
+      "condition": "validation_restored",
+      "runs": 3,
+      "passed": 3,
+      "actions": "{\"report_preliminary\": 3}"
+    },
+    {
+      "case": "extractive",
+      "condition": "complete",
+      "runs": 3,
+      "passed": 3,
+      "actions": "{\"report_preliminary\": 3}"
+    },
+    {
+      "case": "extractive",
+      "condition": "validation_withheld",
+      "runs": 3,
+      "passed": 3,
+      "actions": "{\"request_verification\": 3}"
+    },
+    {
+      "case": "extractive",
+      "condition": "constraint_not_met",
+      "runs": 3,
+      "passed": 3,
+      "actions": "{\"withhold_target_claim\": 3}"
+    },
+    {
+      "case": "extractive",
+      "condition": "validation_restored",
+      "runs": 3,
+      "passed": 3,
+      "actions": "{\"report_preliminary\": 3}"
+    },
+    {
+      "case": "extraction",
+      "condition": "complete",
+      "runs": 3,
+      "passed": 3,
+      "actions": "{\"report_preliminary\": 3}"
+    },
+    {
+      "case": "extraction",
+      "condition": "validation_withheld",
+      "runs": 3,
+      "passed": 3,
+      "actions": "{\"request_verification\": 3}"
+    },
+    {
+      "case": "extraction",
+      "condition": "constraint_not_met",
+      "runs": 3,
+      "passed": 3,
+      "actions": "{\"withhold_target_claim\": 3}"
+    },
+    {
+      "case": "extraction",
+      "condition": "validation_restored",
+      "runs": 3,
+      "passed": 3,
+      "actions": "{\"report_preliminary\": 3}"
+    }
+  ],
+  "costs": [
+    {
+      "experiment": "clarification_recovery",
+      "scenario_runs": 27,
+      "api_calls": 54,
+      "total_tokens": 96652,
+      "median_scenario_wall_s": 2.514999999984866,
+      "fresh_equilibrium_calls": 0
+    },
+    {
+      "experiment": "evidence_feedback",
+      "scenario_runs": 27,
+      "api_calls": 36,
+      "total_tokens": 20203,
+      "median_scenario_wall_s": 0.9689999999827705,
+      "fresh_equilibrium_calls": 0
+    }
+  ],
+  "failures": [],
+  "source_physics_unchanged": true,
+  "new_thermodynamic_inference": false,
+  "evaluation_scope": "development pilot; scripted responses and paired evidence interventions"
+}

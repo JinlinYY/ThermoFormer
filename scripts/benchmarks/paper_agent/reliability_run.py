@@ -1,6 +1,17 @@
+# ruff: noqa: E402
 """Run real LLM input/trace reliability with immutable paper-protocol calculations."""
 
 from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
+BACKEND_ROOT = REPOSITORY_ROOT / "Web/ThermoFormer-web/backend"
+for _directory in (REPOSITORY_ROOT, BACKEND_ROOT):
+    if str(_directory) not in sys.path:
+        sys.path.insert(0, str(_directory))
+
 
 import argparse
 import hashlib
@@ -13,14 +24,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from pydantic import ValidationError
-
-from benchmarks.paper_agent.reliability_tasks import reliability_tasks
 from paper_agent.policy import ProviderFailure
 from paper_agent.reliability import PLANS, ReliabilityLLM, audit_report, compile_task
 from paper_agent.runtime import configure_runtime
+from pydantic import ValidationError
 
-ROOT = Path(__file__).resolve().parents[2]
+from scripts.benchmarks.paper_agent.reliability_tasks import reliability_tasks
+
+ROOT = REPOSITORY_ROOT
 
 
 def digest(path: Path) -> str:
@@ -35,16 +46,18 @@ def save(path: Path, value: Any) -> None:
 
 
 def sources() -> dict[str, str]:
-    upstream = ROOT / "lab_models/ThermoFormer/ThermoAgent"
-    paths = list((ROOT / "paper_agent").glob("*.py"))
-    paths += list((ROOT / "benchmarks/paper_agent").glob("reliability*.py"))
-    paths += list((ROOT / "thermo_engine").glob("paper*.py"))
+    upstream = ROOT / "ThermoAgent"
+    paths = list((BACKEND_ROOT / "paper_agent").glob("*.py"))
+    paths += list((ROOT / "scripts/benchmarks/paper_agent").glob("reliability*.py"))
+    paths += list((BACKEND_ROOT / "thermo_engine").glob("paper*.py"))
     paths += list(upstream.glob("*.py")) + [upstream / "provenance.json"]
     paths += [p for p in (upstream / "cases").rglob("*") if p.suffix in {".json", ".csv"}]
     return {str(p.relative_to(ROOT)): digest(p) for p in sorted(paths)}
 
 
-def run_one(task: dict[str, Any], repeat: int, output: Path, cache: dict[str, Any]) -> dict[str, Any]:
+def run_one(
+    task: dict[str, Any], repeat: int, output: Path, cache: dict[str, Any]
+) -> dict[str, Any]:
     from thermo_engine.paper_reliability import execute_frozen_protocol
 
     llm = ReliabilityLLM()
@@ -76,20 +89,32 @@ def run_one(task: dict[str, Any], repeat: int, output: Path, cache: dict[str, An
         trace.append(dict(step="requirement", output=parsed.model_dump(), origin="live_LLM"))
         compiled = compile_task(parsed, task["prompt"])
         run["compiled"] = compiled.model_dump()
-        trace.append(dict(step="contract_gate", output=compiled.model_dump(), origin="deterministic_validation"))
+        trace.append(
+            dict(
+                step="contract_gate",
+                output=compiled.model_dump(),
+                origin="deterministic_validation",
+            )
+        )
         expected = task["expected_values"]
         if expected is not None:
             metrics["parse_correct"] = (
                 parsed.status == "ready"
                 and parsed.protocol == task["case"]
                 and set(compiled.normalized) == set(expected)
-                and all(math.isclose(compiled.normalized[k], v, rel_tol=0, abs_tol=1e-8) for k, v in expected.items())
+                and all(
+                    math.isclose(compiled.normalized[k], v, rel_tol=0, abs_tol=1e-8)
+                    for k, v in expected.items()
+                )
                 and compiled.status == "ready"
             )
-            metrics["plan_correct"] = parsed.protocol == task["case"] and parsed.plan == PLANS[task["case"]]
+            metrics["plan_correct"] = (
+                parsed.protocol == task["case"] and parsed.plan == PLANS[task["case"]]
+            )
         else:
             metrics["clarification_correct"] = parsed.status == "clarify" and any(
-                issue.field in task["expected_issue_fields"] and issue.kind == task["kind"] for issue in parsed.issues
+                issue.field in task["expected_issue_fields"] and issue.kind == task["kind"]
+                for issue in parsed.issues
             )
             metrics["gate_blocks_invalid"] = compiled.status != "ready"
         if compiled.status != "ready":
@@ -118,7 +143,9 @@ def run_one(task: dict[str, Any], repeat: int, output: Path, cache: dict[str, An
             dict(
                 step="tool",
                 action=parsed.plan[0],
-                origin="cached_frozen_protocol_result" if cache_hit else "fresh_frozen_protocol_execution",
+                origin="cached_frozen_protocol_result"
+                if cache_hit
+                else "fresh_frozen_protocol_execution",
                 artifact=run["numerical_artifact"],
                 artifact_sha256=run["numerical_sha256"],
                 elapsed_s=time.monotonic() - tick,
@@ -130,7 +157,9 @@ def run_one(task: dict[str, Any], repeat: int, output: Path, cache: dict[str, An
             and bundle["contract_id"] == key
             and all(r["status"] == "valid" for r in bundle["observations"])
         )
-        metrics["result_consistent"] = bool(metrics["parse_correct"] and bundle["paper_agreement"]["passed"])
+        metrics["result_consistent"] = bool(
+            metrics["parse_correct"] and bundle["paper_agreement"]["passed"]
+        )
         # A recorded deterministic audit operation interprets the solver evidence.
         trace.append(
             dict(
@@ -144,7 +173,9 @@ def run_one(task: dict[str, Any], repeat: int, output: Path, cache: dict[str, An
         assessed = audit_report(report, bundle["supported_claims"])
         run["raw_report"], run["report_audit"] = report.model_dump(), assessed
         metrics["report_grounded"] = assessed["fully_grounded"]
-        trace.append(dict(step="review", origin="live_LLM", output=report.model_dump(), audit=assessed))
+        trace.append(
+            dict(step="review", origin="live_LLM", output=report.model_dump(), audit=assessed)
+        )
         # Only strictly grounded reports are rendered. Raw failures remain in the record.
         run["outcome"] = "reported" if assessed["fully_grounded"] else "report_blocked"
         rendered = {k: bundle["claim_catalog"][k] for k in assessed["supported_claims"]}
@@ -187,19 +218,27 @@ def main() -> None:
         temperature=0,
         python=sys.executable,
         python_version=platform.python_version(),
-        scoring="before deterministic report gate; no hidden fallback; all attempted failures retained",
+        scoring=(
+            "before deterministic report gate; no hidden fallback; all attempted failures retained"
+        ),
         tolerance={
             "input_normalization_abs": 1e-8,
             "binary_stage_counts": "exact",
             "extractive_fraction_abs": 2e-6,
             "extraction_fraction_abs": 1e-7,
         },
-        scope="within-three-case development pilot; not held-out chemical generalization or search performance",
+        scope=(
+            "three predefined chemical systems; not held-out chemical generali"
+            "zation or search performance"
+        ),
     )
     manifest = args.output / "manifest.json"
     if manifest.exists():
         if not args.resume or json.loads(manifest.read_text(encoding="utf-8")) != identity:
-            parser.error("Existing experiment differs or resume was not requested; choose a new output directory.")
+            parser.error(
+                "Existing experiment differs or resume was not requested; choose a"
+                " new output directory."
+            )
     else:
         save(manifest, identity)
         for path in identity["sources"]:
@@ -219,10 +258,17 @@ def main() -> None:
             run = run_one(task, repeat, args.output, cache)
             save(destination, run)
             print(
-                task["task_id"], repeat, run["outcome"], "cache=" + str(run.get("cache_hit", "not_called")), flush=True
+                task["task_id"],
+                repeat,
+                run["outcome"],
+                "cache=" + str(run.get("cache_hit", "not_called")),
+                flush=True,
             )
             if run["outcome"] == "provider_error":
-                print("Provider failure retained; stopping batch without rule substitution.", flush=True)
+                print(
+                    "Provider failure retained; stopping batch without rule substitution.",
+                    flush=True,
+                )
                 return
     unchanged = identity["sources"] == sources()
     check = args.output / "source_integrity.json"

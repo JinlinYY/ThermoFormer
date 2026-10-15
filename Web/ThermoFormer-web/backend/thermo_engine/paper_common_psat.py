@@ -430,7 +430,6 @@ def main() -> None:
     if args.summarize_only:
         summarize(args.output)
         return
-    sys.path.insert(0, str(ROOT / "tmp/unifac_audit_20260928/deps"))
     sys.path.insert(0, str(LEGACY))
     files = [p for p in (CASE / "data").glob("*") if p.is_file()]
     hashes = {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in files}

@@ -1,5 +1,12 @@
-# Agent-assisted separation design
+# Separation-design protocols
 
-The article describes ThermoEqui-Agent as a ThermoFormer-based workflow that converts natural-language separation requests into preliminary column specifications. It uses predicted relative volatility, deterministic Fenske--Underwood--Gilliland calculations, and DWSIM-compatible `.dwxmz` export for the IPA--water and EA/NPA+DMSO case studies.
+The paper reports n-heptane/n-nonane binary distillation, sec-butyl alcohol/sec-butyl
+acetate/DMF extractive distillation, and n-heptane/benzene/furfural crossflow extraction.
+The deterministic stage calculations, material balances, sensitivities, and numerical
+acceptance checks are released in `ThermoAgent/`. Task contracts and evidence-linked
+reporting are in `Web/ThermoFormer-web/backend/paper_agent/` and `thermo_engine/`.
 
-The deterministic case calculations are available under `ThermoAgent/`. The optional orchestration and DWSIM export implementation is available under `Web/ThermoFormer-web/backend/`; its installation and recalculation requirements are documented in [`docs/guides/dwsim/`](../../../guides/dwsim/). A generated `.dwxmz` file is a reproducible starting point, not a claim that every DWSIM version will converge without GUI review.
+See [the paper experiment index](../../../results/article_experiment_index.md),
+[S7](../../../../experiments/supporting_information/s7_separation_design/), and
+[the DWSIM guide](../../../guides/dwsim/). DWSIM export is separate from the
+numerical evidence used for the paper's agent evaluation.

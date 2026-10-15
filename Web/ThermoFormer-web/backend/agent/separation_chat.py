@@ -89,7 +89,7 @@ def _design_from_message(
         return SeparationReport(
             status="needs_input",
             stop_reason="ambiguous_property_model",
-            missing_inputs=["本轮设计请指定一个物性模型；当前不支持在设计中混用多个模型。"],
+            missing_inputs=["本次设计请指定一个物性模型；当前不支持在设计中混用多个模型。"],
             capabilities=separation_capabilities(),
         ), values
     if requested_models:

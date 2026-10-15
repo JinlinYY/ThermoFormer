@@ -23,8 +23,7 @@ implementation belongs in `src/`; scripts expose those methods to experiments.
 
 - `run_multiview_suite.py`: molecular-representation ablations.
 - `run_chemical_attention_suite.py`: interaction-architecture ablations.
-- The exact published Figure 2 is retained under `analysis/`;
-  earlier interpretability runners are preserved under `docs/reference_records/`.
+- Interpretation figures and source data are under `experiments/vle/interpretability/`.
 
 ## Report generation
 
@@ -33,6 +32,5 @@ implementation belongs in `src/`; scripts expose those methods to experiments.
 - `build_c1_ablation_report.py`: validated `overall_binary` three-stage ablation report.
 - `build_c1_generalization_report.py`: final generalization campaign.
 
-Archived one-time data-processing, diagnostic, and early reporting commands are
-listed in `docs/reference_records/README.md`.
+Agent reliability protocols, recovery tests, and evidence interventions are under `benchmarks/paper_agent/`.
 

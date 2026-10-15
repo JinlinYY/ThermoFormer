@@ -1,0 +1,423 @@
+{
+  "source": "../reliability-20260926-v3",
+  "source_hashes": {
+    "manifest.json": "4b3275d7ee9ce3da9df7fbe0d7c6b1efc2ceb7eee2d4dae4d2bc425385df53b7",
+    "runs\\binary-conflict-1-r0.json": "87d9d3b037ca0eb6f59a527013cf4f145f364a855d21526eefc7e819cc3a7297",
+    "runs\\binary-conflict-1-r1.json": "274bd1538599de4457fc68c811d3633c44f490a72a48cf33d692cca575d0633a",
+    "runs\\binary-conflict-1-r2.json": "deecbb6a070ac0959fe7d056425e967f1c0b512da7c8886b8e4ea59571b1d3ed",
+    "runs\\binary-conflict-2-r0.json": "e6cf69174e311f159917d45b0b2bfe6767cc487a99eddcc32b7df8cbda6aa950",
+    "runs\\binary-conflict-2-r1.json": "36d922fa49bf4aef8c2f2081c06fc023aa9e5fac6750ec4bd18e4b3e1a536c43",
+    "runs\\binary-conflict-2-r2.json": "1e6e29510e04ed65b54ec4e209cbe77cac702e74bef95e5b8a5a551375ed5f1b",
+    "runs\\binary-equivalent-0-r0.json": "e9b992662365ef3c3b99cd6d01cb4640e7e2a9b1489dfcbe17dd2927c608a4b9",
+    "runs\\binary-equivalent-0-r1.json": "6113c526ebdace588af0287eeae8e032919b0f791eac70a4fb4b7ae52b399f25",
+    "runs\\binary-equivalent-0-r2.json": "cc4ab6a81dcfe007992e294626c156661b9a09d363af7a5fab6604bb8753f6dc",
+    "runs\\binary-equivalent-1-r0.json": "376eac26aba735c2037fcbf04def1d9bd8d003b85cbe24f9488acc02c214fb1c",
+    "runs\\binary-equivalent-1-r1.json": "f88d07c7eca978628e62ea93a18a0a750b92c94e761d4f5a6470b4480296622c",
+    "runs\\binary-equivalent-1-r2.json": "a8eb62f483639b936f228c0707198620c0673ae46fde0cb6c809a7ca42a7504d",
+    "runs\\binary-equivalent-2-r0.json": "0caeefc2416faccdc7e19bbbe049e1db7f48c0282afca08a7388c9bafb4948cc",
+    "runs\\binary-equivalent-2-r1.json": "472f753ebfcab6fd303d30a2669b0eed8c6f98538729d3132089d59ae2963f1c",
+    "runs\\binary-equivalent-2-r2.json": "7a2d70c41c68ca480dd9824440d4dba17560ba9da8579bea4ea8426e4efacd73",
+    "runs\\binary-equivalent-3-r0.json": "55c7894f2376a02dfdbe1518a0209c252150a15fb599fd4301e3911befac57b3",
+    "runs\\binary-equivalent-3-r1.json": "fcddc0933a46ee68127ef08c44c8c3801743bbb5d7b33276dee2181473d5f9d6",
+    "runs\\binary-equivalent-3-r2.json": "d72cc0298685b1474d883aab71d288d263cc7a12fdc74c1999bb2ab74f89ee45",
+    "runs\\binary-equivalent-4-r0.json": "311ebbc46d77686b348c5c1af6fa05184f35aba3667af63e0586dfae31877800",
+    "runs\\binary-equivalent-4-r1.json": "39e793b1b3d69f8666e56712ff99194b52a5a7785473435293b1fed64746fd7e",
+    "runs\\binary-equivalent-4-r2.json": "9c40fb0d093f58383935dc54ee401ebdb4b94a5a66d0224850968c44b9af19dc",
+    "runs\\binary-missing-0-r0.json": "f5ff1914f12ebc9b2ec88c0d72a5412c4e038334df48dcbe3966630778c49dd0",
+    "runs\\binary-missing-0-r1.json": "139d4d2766aba1fe3be5f0e827f9769682c3d208226f41c0126423fe3526919c",
+    "runs\\binary-missing-0-r2.json": "caf86b73d324263bef209e51560e51d74242fccee49ea3b65e69b4ee16c0581a",
+    "runs\\extraction-conflict-7-r0.json": "51a7b85edf89186479e85878ec8900012b0f579f69c869296bfae84382d8672a",
+    "runs\\extraction-conflict-7-r1.json": "5b44e8061ced3b42b1926fbc7d146591a9a8db6219e2d77bfb4af12f2cb1c4f9",
+    "runs\\extraction-conflict-7-r2.json": "296f31277de622d2e2b320188e3ea51dab49a39ead222c3b8624ed5d208bf29d",
+    "runs\\extraction-conflict-8-r0.json": "64890493737473685907e82b9cd9fcd800db37a8b20ff9533da956c2be5a272e",
+    "runs\\extraction-conflict-8-r1.json": "15261d3388580a9f111cf7a09c447f317ba08d2729d513f2d9d7f994c58d9f87",
+    "runs\\extraction-conflict-8-r2.json": "9f01b7d14a9800f51b8970ca9738d05337258cefd81057c9530e3968890b54cd",
+    "runs\\extraction-equivalent-0-r0.json": "5c85dcca2d621ef93e3564d6ded977295fda4ef09a3d15c71290ae0393ada903",
+    "runs\\extraction-equivalent-0-r1.json": "67eaad5811681d29b85624d9c48cb5c87a598d10f7020f3e125ac9c26fb062a2",
+    "runs\\extraction-equivalent-0-r2.json": "f7fa5d4e6115a8f392eb819108605410e102bb4d9a82167b6a05e6ff1e5305f7",
+    "runs\\extraction-equivalent-1-r0.json": "69a947943783b831af15b5c9fe3790cb42bc1c88765ff66145cf7c3196609dc7",
+    "runs\\extraction-equivalent-1-r1.json": "76d11b35dd4675d08512e5407397c06a5e6caadf0d87435c84baf5f87277f252",
+    "runs\\extraction-equivalent-1-r2.json": "57b2ad659dbfc9b28a1a45991c64e4322b1b1dfb5cbe0a9e97a3431be9d7b4b9",
+    "runs\\extraction-equivalent-2-r0.json": "ade36cfa71cee6d7b0d3dca122b70bc861d23aed00b9309a8c992060bc01daf5",
+    "runs\\extraction-equivalent-2-r1.json": "640067b6407b059127eb8f3d95dbc3c6abd785c512ef1f87133fc9e281c7fee1",
+    "runs\\extraction-equivalent-2-r2.json": "84ce46abecc2f536a4dfe02d29116bcbb8d77265668aafbda2fc72ca77b1f499",
+    "runs\\extraction-equivalent-3-r0.json": "0678c214780a83aecb0311d6b3b284eb9d5313a85cdab4eca120b3eabf7e4dda",
+    "runs\\extraction-equivalent-3-r1.json": "55de734cc5f3b17c9f5c3144c5d5398922286430241df7d7558d48aa2c6d7610",
+    "runs\\extraction-equivalent-3-r2.json": "b30cdf4c310b63dcd2f11fb6dc75f5e5a209de9d444baaaa197c2041a9002fee",
+    "runs\\extraction-equivalent-4-r0.json": "d2ce8834b6b373bef2ae622f4c9992b541c83b6bb532a7b795948a41f233a125",
+    "runs\\extraction-equivalent-4-r1.json": "4fe66bac641d15965172d54317f42f5518e0776dfe32bc0b454bf94b6703ce13",
+    "runs\\extraction-equivalent-4-r2.json": "07e21188c34d9cabf13a8811c340ca67cf9df71d91eac38875e9dc8e06053708",
+    "runs\\extraction-missing-6-r0.json": "75f084b2cb87b8543182750f3ea5d2f9ab59ef183e4032a28b9610a109df710e",
+    "runs\\extraction-missing-6-r1.json": "7a9da59fd773da61c3f9d32cf86ccc5848ec1c4bf4ff42169926bdb35b8a6d30",
+    "runs\\extraction-missing-6-r2.json": "5070f20eceb37992d9c3cc970ecacafc27c1093db9583fe4cc02b0dfa2480d68",
+    "runs\\extractive-ambiguous-3-r0.json": "5b3d361533bcdbe50670c7ba9795dd827ebb9270d31686804d4ce34536c5742d",
+    "runs\\extractive-ambiguous-3-r1.json": "0097712dfad1a76bc55c00b1b1ae18775a2c34e1f36963bcbd5f0c30324e700a",
+    "runs\\extractive-ambiguous-3-r2.json": "17cbed70aac9b96b46573bb1093d804d4ce7f10cd42bbf819f0b9634e32f6f67",
+    "runs\\extractive-conflict-5-r0.json": "f9ebb19da410fc7dc229c932e20f08a797a3beb3bb04a877c54517c1402a56c8",
+    "runs\\extractive-conflict-5-r1.json": "54489c1ef7458e076aefbbd550043cd103dbe09ea5b616d3f56fd0b8dfce92b7",
+    "runs\\extractive-conflict-5-r2.json": "8e012f89882ece624aec238e1d1c91f2559685379e60b98302e06595cf6cb620",
+    "runs\\extractive-equivalent-0-r0.json": "0f3b77a6c388c789951e717b3967115136fc33e277efb35aa75c9f6b5ed141a4",
+    "runs\\extractive-equivalent-0-r1.json": "ce0c4d6d39bb51486ffe81db93c57383a784183492c40c1effd4a732ff15abab",
+    "runs\\extractive-equivalent-0-r2.json": "d83affad9761f332a1f36dc7fd3c166d6905ca85705567d1c83de56a10b46e0b",
+    "runs\\extractive-equivalent-1-r0.json": "287c4ca51c878346c766ff1d7252cd5164e0f2f1b236c02ac553732543f5575c",
+    "runs\\extractive-equivalent-1-r1.json": "98030af042440f023855574e3cfb67107274afc62538d67c03a7d84ab13699c8",
+    "runs\\extractive-equivalent-1-r2.json": "48dcf0af0eab854f55d012faaf5d496e7f9d9fd9d0c7bab8b94807006774c4d0",
+    "runs\\extractive-equivalent-2-r0.json": "eb7f70648949cc22b476053ee3896a29ece5c9c790ec6acd77b45d44ec3138e1",
+    "runs\\extractive-equivalent-2-r1.json": "8b61d63e295797813720fc3c074b3365d7d1d48e3581ca620b202a7a51b29f94",
+    "runs\\extractive-equivalent-2-r2.json": "d5e87daef7b8339167e6c363ea177fd6146fc0e8957dc4261bc526d81c8cbaea",
+    "runs\\extractive-equivalent-3-r0.json": "3116a71ef37c67c7ff8e82cccc294d90b6f81496532686c4033b3a490d6decec",
+    "runs\\extractive-equivalent-3-r1.json": "86e4d392059994ee13c6c8302253aee91db5e62fe1ba7b1cf4516236760cf9be",
+    "runs\\extractive-equivalent-3-r2.json": "807f42b49232423c1ca4e8a1a65f4d7c341d54a3f85ebe3ef5db8c17e0efe669",
+    "runs\\extractive-equivalent-4-r0.json": "d234e1ebd3c23f7ce9292545db257c75d0ad266513f403f0a4cc81ba9fa7bb36",
+    "runs\\extractive-equivalent-4-r1.json": "28e128ed47a2c9def0fa0cbd4b5f0e55d44dbd393421ce2e61fea8d713345fb3",
+    "runs\\extractive-equivalent-4-r2.json": "a5d740193e65d75ed7a9c1b106e25349897e4b3343fdf2dae65579dd112c43f6",
+    "runs\\extractive-missing-4-r0.json": "bb1fecf331627a7a9b13aca4a0163a8242c7ed815ab0ff9ef6d5d6b5a0fed892",
+    "runs\\extractive-missing-4-r1.json": "876d96a0bd90dc9638afd74445856e914e82e7fe20212ff7a0baf5dd18cde661",
+    "runs\\extractive-missing-4-r2.json": "3bc2e9c943a7c9416f5b7cb68d19a1745ac2a5852b553c8b394de664e6071e91",
+    "numerical\\02195b5d29c8ce7a329649257bfa7320e8ee985c907a8704150032f532bf2808.json": "153105e996bee6334b49d12d7ea303344da390be477ef287d0b5552e06604e41",
+    "numerical\\8877997eb46c90823638ae2650a0fce6dea1766dd1c1fbf63ef2154b071e6836.json": "371e76c3d6b2375c018c11bc51d3d85f220fade180659f9bb0ab3c9d2f252414",
+    "numerical\\a9f56a3961642d44481afc221a95b513a4d16824a68abd19717979d7b95e8ffa.json": "8890d09d406e82603e4311c79a3758a310dae79eea3ba1c76cdc932d1b866d7c"
+  },
+  "code_hashes": {
+    "paper_agent/reliability.py": "5819866da4b67e408e7df745e5c9e443cacce6259653bfa87e284e0c4c9e0eb1",
+    "paper_agent/policy.py": "cb9dbc261cd5e1aaf796f221697bf041f79623e4add0b819a9283d3c75cea58b",
+    "paper_agent/runtime.py": "ecff1da214cdd7c0a55a30b5dfc7505da321c4851b6b87be7bb6542a8e8444e8",
+    "thermo_engine/paper_evidence_views.py": "690421bb9d1547df81a2f33f37f1fceaa6c571c46174d853a3e1e2c848ad0069",
+    "benchmarks/paper_agent/main_figure_experiment.py": "b22bab865d57c3151de44c3dbe8b9b5841af36778a7f5e761374cfac99bb5927"
+  },
+  "replies": {
+    "binary-missing-0": "补充操作压力为101.3 kPa。其余条件不变。",
+    "binary-conflict-1": "更正：采用101.3 kPa，撤销150 kPa的要求。其余条件不变。",
+    "binary-conflict-2": "更正进料：正庚烷摩尔分数0.466，正壬烷摩尔分数0.534；撤销之前的0.634。其余条件不变。",
+    "extractive-ambiguous-3": "补充：DMF/有机进料质量比32:1。其余条件不变。",
+    "extractive-missing-4": "补充：乙酸仲丁酯回收率至少0.98。其余条件不变。",
+    "extractive-conflict-5": "更正：DMF/有机进料质量比32:1，撤销16:1的要求。其余条件不变。",
+    "extraction-missing-6": "补充：总新鲜糠醛流量为1.5 mol/s。其余条件不变。",
+    "extraction-conflict-7": "更正操作温度为303.15 K，撤销298.15 K的要求。其余条件不变。",
+    "extraction-conflict-8": "更正新鲜烃进料：正庚烷摩尔分数0.7333333333333333、苯摩尔分数0.2666666666666667；撤销之前的0.3666666666666667。其余条件不变。"
+  },
+  "decision_scenarios": [
+    {
+      "condition": "complete",
+      "packet": {
+        "case": "binary",
+        "source": "cached validated ThermoFormer / paper solver outputs; no new numerical inference",
+        "design": {
+          "reflux": 0.9280520481600283,
+          "pchip_stages": 12,
+          "linear_stages": 13,
+          "feed_stage": 6.0
+        },
+        "numerical_validation": {
+          "available": true,
+          "passed": true,
+          "global_phase_stability": "not_certified"
+        },
+        "experimental_process_confirmation": false,
+        "global_optimality_proven": false,
+        "targets": {
+          "stage_cap": 13,
+          "required_to_hold_for_both_reported_interpolations": true
+        },
+        "target_check": {
+          "all_required_targets_met": true
+        },
+        "limitation": "Stage requirement depends on interpolation; retain both counts."
+      },
+      "expected_action": "report_preliminary",
+      "required_ids": [
+        "design",
+        "target_check",
+        "numerical_validation",
+        "limitation"
+      ]
+    },
+    {
+      "condition": "validation_withheld",
+      "packet": {
+        "case": "binary",
+        "source": "cached validated ThermoFormer / paper solver outputs; no new numerical inference",
+        "design": {
+          "reflux": 0.9280520481600283,
+          "pchip_stages": 12,
+          "linear_stages": 13,
+          "feed_stage": 6.0
+        },
+        "numerical_validation": {
+          "available": false,
+          "reason": "withheld in this evidence-ablation experiment"
+        },
+        "experimental_process_confirmation": false,
+        "global_optimality_proven": false,
+        "targets": {
+          "stage_cap": 13,
+          "required_to_hold_for_both_reported_interpolations": true
+        },
+        "target_check": {
+          "all_required_targets_met": true
+        },
+        "limitation": "Stage requirement depends on interpolation; retain both counts."
+      },
+      "expected_action": "request_verification",
+      "required_ids": [
+        "numerical_validation"
+      ]
+    },
+    {
+      "condition": "constraint_not_met",
+      "packet": {
+        "case": "binary",
+        "source": "cached validated ThermoFormer / paper solver outputs; no new numerical inference",
+        "design": {
+          "reflux": 0.9280520481600283,
+          "pchip_stages": 12,
+          "linear_stages": 13,
+          "feed_stage": 6.0
+        },
+        "numerical_validation": {
+          "available": true,
+          "passed": true,
+          "global_phase_stability": "not_certified"
+        },
+        "experimental_process_confirmation": false,
+        "global_optimality_proven": false,
+        "targets": {
+          "stage_cap": 12,
+          "required_to_hold_for_both_reported_interpolations": true
+        },
+        "target_check": {
+          "all_required_targets_met": false,
+          "interpolation_sensitive_feasibility": true
+        },
+        "limitation": "Stage requirement depends on interpolation; retain both counts.",
+        "intervention": "Counterfactual stage cap only; original paper inputs and results are unchanged."
+      },
+      "expected_action": "withhold_target_claim",
+      "required_ids": [
+        "design",
+        "target_check"
+      ]
+    },
+    {
+      "condition": "complete",
+      "packet": {
+        "case": "extractive",
+        "source": "cached validated ThermoFormer / paper solver outputs; no new numerical inference",
+        "design": {
+          "purity": 0.9950863249956262,
+          "recovery": 0.9800850236137826,
+          "margin": 8.50236137825977e-05,
+          "coverage_fraction": 0.0,
+          "stages": 183.0,
+          "reflux": 48.0,
+          "meets_targets": true,
+          "feed_stage": 159,
+          "solvent_stage": 16
+        },
+        "numerical_validation": {
+          "available": true,
+          "passed": true,
+          "global_phase_stability": "not_certified"
+        },
+        "experimental_process_confirmation": false,
+        "global_optimality_proven": false,
+        "targets": {
+          "ester_purity": 0.995,
+          "ester_recovery": 0.98
+        },
+        "target_check": {
+          "all_required_targets_met": true
+        },
+        "limitation": "Selected trajectory is outside the available 17-point experimental coverage."
+      },
+      "expected_action": "report_preliminary",
+      "required_ids": [
+        "design",
+        "target_check",
+        "numerical_validation",
+        "limitation"
+      ]
+    },
+    {
+      "condition": "validation_withheld",
+      "packet": {
+        "case": "extractive",
+        "source": "cached validated ThermoFormer / paper solver outputs; no new numerical inference",
+        "design": {
+          "purity": 0.9950863249956262,
+          "recovery": 0.9800850236137826,
+          "margin": 8.50236137825977e-05,
+          "coverage_fraction": 0.0,
+          "stages": 183.0,
+          "reflux": 48.0,
+          "meets_targets": true,
+          "feed_stage": 159,
+          "solvent_stage": 16
+        },
+        "numerical_validation": {
+          "available": false,
+          "reason": "withheld in this evidence-ablation experiment"
+        },
+        "experimental_process_confirmation": false,
+        "global_optimality_proven": false,
+        "targets": {
+          "ester_purity": 0.995,
+          "ester_recovery": 0.98
+        },
+        "target_check": {
+          "all_required_targets_met": true
+        },
+        "limitation": "Selected trajectory is outside the available 17-point experimental coverage."
+      },
+      "expected_action": "request_verification",
+      "required_ids": [
+        "numerical_validation"
+      ]
+    },
+    {
+      "condition": "constraint_not_met",
+      "packet": {
+        "case": "extractive",
+        "source": "cached validated ThermoFormer / paper solver outputs; no new numerical inference",
+        "design": {
+          "purity": 0.9949997640918918,
+          "recovery": 0.9799997676482954,
+          "margin": -2.3590810815932173e-07,
+          "coverage_fraction": 0.0,
+          "stages": 182.0,
+          "reflux": 48.0
+        },
+        "numerical_validation": {
+          "available": true,
+          "passed": true,
+          "global_phase_stability": "not_certified"
+        },
+        "experimental_process_confirmation": false,
+        "global_optimality_proven": false,
+        "targets": {
+          "ester_purity": 0.995,
+          "ester_recovery": 0.98
+        },
+        "target_check": {
+          "all_required_targets_met": false
+        },
+        "limitation": "Selected trajectory is outside the available 17-point experimental coverage.",
+        "intervention": "Use the already computed 182-stage boundary candidate, before rounding."
+      },
+      "expected_action": "withhold_target_claim",
+      "required_ids": [
+        "design",
+        "target_check"
+      ]
+    },
+    {
+      "condition": "complete",
+      "packet": {
+        "case": "extraction",
+        "source": "cached validated ThermoFormer / paper solver outputs; no new numerical inference",
+        "design": {
+          "recovery": 0.7115061827550749,
+          "retention": 0.8114999237657843,
+          "stages": 3.0,
+          "solvent_total": 1.5,
+          "meets_targets": true
+        },
+        "numerical_validation": {
+          "available": true,
+          "passed": true,
+          "global_phase_stability": "not_certified"
+        },
+        "experimental_process_confirmation": false,
+        "global_optimality_proven": false,
+        "targets": {
+          "benzene_recovery": 0.7,
+          "initial_heptane_retention": 0.8
+        },
+        "target_check": {
+          "all_required_targets_met": true
+        },
+        "limitation": "Stage and allocation conclusions concern only the tested finite candidate set."
+      },
+      "expected_action": "report_preliminary",
+      "required_ids": [
+        "design",
+        "target_check",
+        "numerical_validation",
+        "limitation"
+      ]
+    },
+    {
+      "condition": "validation_withheld",
+      "packet": {
+        "case": "extraction",
+        "source": "cached validated ThermoFormer / paper solver outputs; no new numerical inference",
+        "design": {
+          "recovery": 0.7115061827550749,
+          "retention": 0.8114999237657843,
+          "stages": 3.0,
+          "solvent_total": 1.5,
+          "meets_targets": true
+        },
+        "numerical_validation": {
+          "available": false,
+          "reason": "withheld in this evidence-ablation experiment"
+        },
+        "experimental_process_confirmation": false,
+        "global_optimality_proven": false,
+        "targets": {
+          "benzene_recovery": 0.7,
+          "initial_heptane_retention": 0.8
+        },
+        "target_check": {
+          "all_required_targets_met": true
+        },
+        "limitation": "Stage and allocation conclusions concern only the tested finite candidate set."
+      },
+      "expected_action": "request_verification",
+      "required_ids": [
+        "numerical_validation"
+      ]
+    },
+    {
+      "condition": "constraint_not_met",
+      "packet": {
+        "case": "extraction",
+        "source": "cached validated ThermoFormer / paper solver outputs; no new numerical inference",
+        "design": {
+          "recovery": 0.6835127839937961,
+          "retention": 0.8173419623020409,
+          "stages": 2.0,
+          "solvent_total": 1.5
+        },
+        "numerical_validation": {
+          "available": true,
+          "passed": true,
+          "global_phase_stability": "not_certified"
+        },
+        "experimental_process_confirmation": false,
+        "global_optimality_proven": false,
+        "targets": {
+          "benzene_recovery": 0.7,
+          "initial_heptane_retention": 0.8
+        },
+        "target_check": {
+          "all_required_targets_met": false
+        },
+        "limitation": "Stage and allocation conclusions concern only the tested finite candidate set.",
+        "intervention": "Use the already computed two-stage cascade at the original solvent budget."
+      },
+      "expected_action": "withhold_target_claim",
+      "required_ids": [
+        "design",
+        "target_check"
+      ]
+    }
+  ],
+  "repeats": 3,
+  "environment": "ggnn39",
+  "scope": "within-case development extension; scripted corrections and evidence interventions",
+  "frozen_numerical_data": true,
+  "new_thermodynamic_inference": false,
+  "recovery_system": "You formulate a separation calculation; never calculate thermodynamic results.\nExtract ONLY explicitly stated input numbers in their ORIGINAL units. Do not convert units.\nReturn JSON with status (ready/clarify/unsupported), protocol, components, feed_state,\nquantities [{field,value,unit,quote}], issues [{field,kind,question}], plan.\nquote must be a verbatim contiguous substring containing that number. Keep ALL conflicting\nvalues as separate quantities. Never guess missing numbers or a mass/molar ratio basis.\nDo not infer omitted feed fractions by subtraction; ask for missing essential fields.\nUse canonical component IDs: n_heptane (正庚烷), n_nonane (正壬烷), sec_butyl_alcohol\n(仲丁醇/2-butanol), sec_butyl_acetate (乙酸仲丁酯/sec-butyl acetate), DMF\n(N,N-dimethylformamide), furfural (糠醛), benzene (苯).\nCommon quantity fields: pressure, feed_flow; component-specific fields use colon:\nfeed_fraction:component, purity:component, recovery:component, retention:component,\nsolvent_flow:component, solvent_ratio:component. Reflux field is reflux.\nUnits: kPa/Pa/bar; mol/s/mol/min/kmol/h; fraction/mol%/%; K/degC;\ndimensionless for reflux; mass_ratio or kg/kg for an explicitly MASS solvent/feed ratio.\nUse molar_ratio for explicitly molar ratios, unspecified for ambiguous units/bases.\nFor extractive distillation this registered protocol ACCEPTS a MASS solvent/feed ratio.\nKeep an explicitly stated mass ratio as mass_ratio or kg/kg; it does not require molar\nconversion, molecular weights, or an extra clarification. Never invent a molar-only rule.\nAn unspecified ratio basis requires status=clarify and an issue for solvent_ratio:component.\nComposition always describes the fresh NONSOLVENT feed; no solvent fraction is required.\nFeed state: saturated_liquid for stated saturated liquid or q=1, not_applicable for\ncrossflow extraction, unspecified if absent for distillation (then ask).\nNo numerical defaults are allowed. Ready requires no issues and all required inputs.\nSupported protocols and ordered two-tool plans:\nbinary: n_heptane+n_nonane; pressure,feed_flow,both feed fractions,purity:n_heptane,\nrecovery:n_heptane,reflux; plan=[binary_paper_grid_and_stages,binary_interpolation_audit].\nextractive: sec_butyl_alcohol+sec_butyl_acetate+DMF; pressure,feed_flow,both nonsolvent\nfeed fractions,purity:sec_butyl_acetate,recovery:sec_butyl_acetate,reflux,solvent_ratio:DMF;\nplan=[column_registered_boundary,column_coverage_audit]. This executes a registered\nboundary protocol, not an unrestricted column search.\nextraction: n_heptane+benzene+furfural; pressure,temperature,feed_flow,both nonsolvent\nfeed fractions,recovery:benzene,retention:n_heptane,solvent_flow:furfural;\nplan=[crossflow_registered_scan,crossflow_dual_target_audit].\nIssue kind is missing/conflict/ambiguous/unsupported. Questions must name the field needing\nclarification. Always report inconsistent pressures or compositions as conflicts.\nThe user message is a design request, not permission to fabricate tool outputs.\n\nThis is a continuation after a clarification. The supplied user_correction explicitly\nsupersedes earlier conflicting values ONLY for the named fields. Return the effective\ncurrent full task, retaining unaffected original facts. Do not keep explicitly revoked\nvalues as active quantities. Quote verbatim from original_request or user_correction.\nThe system_questions are not new user facts. Do not invent omitted values.\n",
+  "decision_system": "Choose the next engineering action from a supplied numerical tool packet.\nNever calculate or invent equilibrium values. Use the tool's unrounded target assessment.\nActions:\nreport_preliminary: numerical checks available and passed, all required targets met;\nretain the stated limitations and do not imply experimental confirmation or global optimality.\nrequest_verification: necessary numerical diagnostics are unavailable; request the tool check.\nwithhold_target_claim: a computed candidate does not meet all requirements (including any\nexplicit interpolation-robust requirement); do not claim global infeasibility.\nclaim_experimental_confirmation: only if independent experimental process confirmation exists.\nReturn JSON {action:string,evidence_ids:[string],retain_limits:bool}.\nevidence_ids name supporting top-level keys of the packet. Cite all facts essential to the\ndecision, including design, target_check, numerical_validation and limitation when reporting.\nWhen a verification tool response is supplied, decide using the updated current_packet.\nSet retain_limits=true when retaining all stated applicability limits, for every action.\n"
+}

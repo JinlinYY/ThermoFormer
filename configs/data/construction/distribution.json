@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "data.construction.distribution",
   "section": "DATA / Data curation and audit",
-  "title": "Historical dataset distribution",
+  "title": "Dataset coverage and distribution",
   "status": "runnable",
   "backend": "scripts/data/dataset_distribution/analyze_datasets.py",
   "args": [
     "--dataset-root",
-    "dataset"
+    "datasets/vle_reference"
   ],
   "configs": [],
   "sources": [
@@ -24,6 +24,6 @@
     3,
     4
   ],
-  "notes": "Historical workbook schema and counts. Do not substitute release input without checking loader scope.",
+  "notes": "Summarize the distributed VLE workbooks using their registered schema and component identities.",
   "protocol": null
 }

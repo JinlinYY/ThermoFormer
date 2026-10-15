@@ -1,6 +1,17 @@
+# ruff: noqa: E402
 """Frozen, manually specified within-case language pilot; not a held-out benchmark."""
 
 from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
+BACKEND_ROOT = REPOSITORY_ROOT / "Web/ThermoFormer-web/backend"
+for _directory in (REPOSITORY_ROOT, BACKEND_ROOT):
+    if str(_directory) not in sys.path:
+        sys.path.insert(0, str(_directory))
+
 
 from typing import Any
 
@@ -63,7 +74,7 @@ def reliability_tasks() -> list[dict[str, Any]]:
             "新鲜烃进料60 mol/min，正庚烷73.33333333333333 mol%，苯26.66666666666667 mol%；"
             "总新鲜糠醛90 mol/min。苯回收率至少70%，初始正庚烷保留率至少80%。",
             "请执行苯/正庚烷/糠醛错流萃取论文协议。苯回收率至少70%，初始正庚烷保留率至少80%。"
-            "新鲜烃进料1 mol/s，其中苯摩尔分数0.2666666666666667、正庚烷摩尔分数0.7333333333333333。"
+            "新鲜烃进料1 mol/s，其中苯摩尔分数0.2666666666666667、正庚烷摩尔分数0.7333333333333333。"  # noqa: E501 -- fixed report text or request text
             "总新鲜糠醛1.5 mol/s；压力101.3 kPa，温度303.15 K。",
             "For the paper crossflow protocol require >=80% retention of initial n-heptane "
             "and >=70% benzene recovery. Fresh hydrocarbon feed: 3.6 kmol/h, benzene "
@@ -87,7 +98,12 @@ def reliability_tasks() -> list[dict[str, Any]]:
             )
     bad = [
         ("binary", "missing", prompts["binary"][0].replace("压力101.3 kPa，", ""), ["pressure"]),
-        ("binary", "conflict", prompts["binary"][0] + "同一操作压力另指定为150 kPa；两项均要求生效。", ["pressure"]),
+        (
+            "binary",
+            "conflict",
+            prompts["binary"][0] + "同一操作压力另指定为150 kPa；两项均要求生效。",
+            ["pressure"],
+        ),
         (
             "binary",
             "conflict",
@@ -127,7 +143,9 @@ def reliability_tasks() -> list[dict[str, Any]]:
         (
             "extraction",
             "conflict",
-            prompts["extraction"][0].replace("苯摩尔分数0.2666666666666667", "苯摩尔分数0.3666666666666667"),
+            prompts["extraction"][0].replace(
+                "苯摩尔分数0.2666666666666667", "苯摩尔分数0.3666666666666667"
+            ),
             ["feed_composition", "feed_fraction:n_heptane", "feed_fraction:benzene"],
         ),
     ]

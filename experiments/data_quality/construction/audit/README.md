@@ -2,16 +2,15 @@
 
 DATA / Data curation and audit
 
-Status: artifact_only · Data: nist_thermoml
-
 Source records, registered dataset records, training-filtered records, and independent conditions must be reported separately.
 
-## Original artifacts
+## Protocol and results
 
-- [available: datasets/vle/manifest.json](../../../../datasets/vle/manifest.json)
-- [available: datasets/vle/validation.json](../../../../datasets/vle/validation.json)
-- [available: datasets/lle/manifest.json](../../../../datasets/lle/manifest.json)
-- [available: experiments/vle/interpretability/molecular_interactions/figures/dataset_distribution/reports](../../../../analysis/dataset_distribution/reports)
+Configuration: `configs/data/construction/audit.json`.
 
-New executions: executions/<run-id>/<formal|split_checks>/.
-Source artifacts remain at their registered paths. Compare only matching data identities.
+- [datasets/vle/manifest.json](../../../../datasets/vle/manifest.json)
+- [datasets/vle/validation.json](../../../../datasets/vle/validation.json)
+- [datasets/lle/manifest.json](../../../../datasets/lle/manifest.json)
+- [experiments/data_quality/construction/dataset_distribution/reports](../dataset_distribution/reports)
+
+Inspect the command with `python scripts/run_experiments.py show data.construction.audit`.

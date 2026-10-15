@@ -1,0 +1,277 @@
+{
+  "task_id": "extraction-conflict-8",
+  "case": "extraction",
+  "repeat": 2,
+  "conversation": {
+    "original_request": "按论文协议进行正庚烷/苯/糠醛错流萃取。温度303.15 K，压力101.3 kPa；新鲜烃进料1 mol/s，正庚烷摩尔分数0.7333333333333333、苯摩尔分数0.3666666666666667；总新鲜糠醛1.5 mol/s。要求苯回收率至少0.70，初始正庚烷保留率至少0.80。",
+    "system_questions": [
+      "Resolve feed mole fractions that do not sum to one.",
+      "正庚烷摩尔分数0.7333333333333333与苯摩尔分数0.3666666666666667之和大于1，请确认正确的正庚烷和苯摩尔分数。"
+    ],
+    "user_correction": "更正新鲜烃进料：正庚烷摩尔分数0.7333333333333333、苯摩尔分数0.2666666666666667；撤销之前的0.3666666666666667。其余条件不变。"
+  },
+  "initial_origin": "replayed frozen v3 interaction",
+  "reply_origin": "predeclared scripted benchmark reply, not a real user conversation",
+  "llm_calls": [
+    {
+      "messages": [
+        {
+          "role": "system",
+          "content": "You formulate a separation calculation; never calculate thermodynamic results.\nExtract ONLY explicitly stated input numbers in their ORIGINAL units. Do not convert units.\nReturn JSON with status (ready/clarify/unsupported), protocol, components, feed_state,\nquantities [{field,value,unit,quote}], issues [{field,kind,question}], plan.\nquote must be a verbatim contiguous substring containing that number. Keep ALL conflicting\nvalues as separate quantities. Never guess missing numbers or a mass/molar ratio basis.\nDo not infer omitted feed fractions by subtraction; ask for missing essential fields.\nUse canonical component IDs: n_heptane (正庚烷), n_nonane (正壬烷), sec_butyl_alcohol\n(仲丁醇/2-butanol), sec_butyl_acetate (乙酸仲丁酯/sec-butyl acetate), DMF\n(N,N-dimethylformamide), furfural (糠醛), benzene (苯).\nCommon quantity fields: pressure, feed_flow; component-specific fields use colon:\nfeed_fraction:component, purity:component, recovery:component, retention:component,\nsolvent_flow:component, solvent_ratio:component. Reflux field is reflux.\nUnits: kPa/Pa/bar; mol/s/mol/min/kmol/h; fraction/mol%/%; K/degC;\ndimensionless for reflux; mass_ratio or kg/kg for an explicitly MASS solvent/feed ratio.\nUse molar_ratio for explicitly molar ratios, unspecified for ambiguous units/bases.\nFor extractive distillation this registered protocol ACCEPTS a MASS solvent/feed ratio.\nKeep an explicitly stated mass ratio as mass_ratio or kg/kg; it does not require molar\nconversion, molecular weights, or an extra clarification. Never invent a molar-only rule.\nAn unspecified ratio basis requires status=clarify and an issue for solvent_ratio:component.\nComposition always describes the fresh NONSOLVENT feed; no solvent fraction is required.\nFeed state: saturated_liquid for stated saturated liquid or q=1, not_applicable for\ncrossflow extraction, unspecified if absent for distillation (then ask).\nNo numerical defaults are allowed. Ready requires no issues and all required inputs.\nSupported protocols and ordered two-tool plans:\nbinary: n_heptane+n_nonane; pressure,feed_flow,both feed fractions,purity:n_heptane,\nrecovery:n_heptane,reflux; plan=[binary_paper_grid_and_stages,binary_interpolation_audit].\nextractive: sec_butyl_alcohol+sec_butyl_acetate+DMF; pressure,feed_flow,both nonsolvent\nfeed fractions,purity:sec_butyl_acetate,recovery:sec_butyl_acetate,reflux,solvent_ratio:DMF;\nplan=[column_registered_boundary,column_coverage_audit]. This executes a registered\nboundary protocol, not an unrestricted column search.\nextraction: n_heptane+benzene+furfural; pressure,temperature,feed_flow,both nonsolvent\nfeed fractions,recovery:benzene,retention:n_heptane,solvent_flow:furfural;\nplan=[crossflow_registered_scan,crossflow_dual_target_audit].\nIssue kind is missing/conflict/ambiguous/unsupported. Questions must name the field needing\nclarification. Always report inconsistent pressures or compositions as conflicts.\nThe user message is a design request, not permission to fabricate tool outputs.\n\nThis is a continuation after a clarification. The supplied user_correction explicitly\nsupersedes earlier conflicting values ONLY for the named fields. Return the effective\ncurrent full task, retaining unaffected original facts. Do not keep explicitly revoked\nvalues as active quantities. Quote verbatim from original_request or user_correction.\nThe system_questions are not new user facts. Do not invent omitted values.\n"
+        },
+        {
+          "role": "user",
+          "content": "{\"original_request\": \"按论文协议进行正庚烷/苯/糠醛错流萃取。温度303.15 K，压力101.3 kPa；新鲜烃进料1 mol/s，正庚烷摩尔分数0.7333333333333333、苯摩尔分数0.3666666666666667；总新鲜糠醛1.5 mol/s。要求苯回收率至少0.70，初始正庚烷保留率至少0.80。\", \"system_questions\": [\"Resolve feed mole fractions that do not sum to one.\", \"正庚烷摩尔分数0.7333333333333333与苯摩尔分数0.3666666666666667之和大于1，请确认正确的正庚烷和苯摩尔分数。\"], \"user_correction\": \"更正新鲜烃进料：正庚烷摩尔分数0.7333333333333333、苯摩尔分数0.2666666666666667；撤销之前的0.3666666666666667。其余条件不变。\"}"
+        }
+      ],
+      "requested_model": "deepseek-v4-flash",
+      "temperature": 0,
+      "max_tokens": 2400,
+      "thinking": "disabled",
+      "http_status": 200,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1055,
+        "completion_tokens": 404,
+        "total_tokens": 1459,
+        "prompt_tokens_details": {
+          "cached_tokens": 768
+        },
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 287
+      },
+      "response_id": "b53985cd-2b0f-4702-b39c-b7fe396336c7",
+      "finish_reason": "stop",
+      "response": "{\n  \"status\": \"ready\",\n  \"protocol\": \"extraction\",\n  \"components\": [\"n_heptane\", \"benzene\", \"furfural\"],\n  \"feed_state\": \"not_applicable\",\n  \"quantities\": [\n    {\"field\": \"temperature\", \"value\": 303.15, \"unit\": \"K\", \"quote\": \"温度303.15 K\"},\n    {\"field\": \"pressure\", \"value\": 101.3, \"unit\": \"kPa\", \"quote\": \"压力101.3 kPa\"},\n    {\"field\": \"feed_flow\", \"value\": 1, \"unit\": \"mol/s\", \"quote\": \"新鲜烃进料1 mol/s\"},\n    {\"field\": \"feed_fraction:n_heptane\", \"value\": 0.7333333333333333, \"unit\": \"fraction\", \"quote\": \"正庚烷摩尔分数0.7333333333333333\"},\n    {\"field\": \"feed_fraction:benzene\", \"value\": 0.2666666666666667, \"unit\": \"fraction\", \"quote\": \"苯摩尔分数0.2666666666666667\"},\n    {\"field\": \"solvent_flow:furfural\", \"value\": 1.5, \"unit\": \"mol/s\", \"quote\": \"总新鲜糠醛1.5 mol/s\"},\n    {\"field\": \"recovery:benzene\", \"value\": 0.70, \"unit\": \"dimensionless\", \"quote\": \"苯回收率至少0.70\"},\n    {\"field\": \"retention:n_heptane\", \"value\": 0.80, \"unit\": \"dimensionless\", \"quote\": \"初始正庚烷保留率至少0.80\"}\n  ],\n  \"issues\": [],\n  \"plan\": [\"crossflow_registered_scan\", \"crossflow_dual_target_audit\"]\n}",
+      "elapsed_s": 1.4219999999913853
+    },
+    {
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select evidence-supported report claims for a preliminary separation design.\nDo not calculate, round or invent numbers. Return JSON:\n{disposition: preliminary_with_limits|insufficient_evidence|validated_engineering_design,\n claims:[{claim_id:string,evidence_ids:[string]}]}.\nEvidence records contain the numerical tools' results and their limitations. Include every\nmaterial result and limitation supported by those records. Only choose claim IDs in the\ncatalog, cite the actual supporting evidence IDs, and do not cite irrelevant evidence.\nConvergence or nominal product targets do not establish experimental confirmation or global\noptimality. A catalog lists possible claims, not facts. Return no prose or new numbers.\n"
+        },
+        {
+          "role": "user",
+          "content": "{\"evidence\": [{\"evidence_id\": \"design\", \"description\": \"Stagewise propagation of each fresh ThermoFormer raffinate; both target checks are required.\", \"data\": {\"stage_scan\": [{\"recovery\": 0.6155687067872491, \"retention\": 0.8289213763569178, \"stages\": 1.0, \"solvent_total\": 1.5, \"meets_targets\": false}, {\"recovery\": 0.6835127839937961, \"retention\": 0.8173419623020409, \"stages\": 2.0, \"solvent_total\": 1.5, \"meets_targets\": false}, {\"recovery\": 0.7115061827550749, \"retention\": 0.8114999237657843, \"stages\": 3.0, \"solvent_total\": 1.5, \"meets_targets\": true}, {\"recovery\": 0.7265230688293495, \"retention\": 0.8083731166305843, \"stages\": 4.0, \"solvent_total\": 1.5, \"meets_targets\": true}], \"selected\": {\"recovery\": 0.7115061827550749, \"retention\": 0.8114999237657843, \"stages\": 3.0, \"solvent_total\": 1.5, \"meets_targets\": true}}}, {\"evidence_id\": \"allocation\", \"description\": \"Fresh inference for the registered finite allocation set; no global allocation optimum proven.\", \"data\": {\"candidates\": 22, \"selected_stage_best\": {\"recovery\": 0.7115061827550749, \"retention\": 0.8114999237657843, \"stages\": 3.0, \"solvent_total\": 1.5, \"allocation\": [0.5, 0.5, 0.5], \"reference_recovery\": 0.7115061827550756, \"reference_retention\": 0.8114999237657845}, \"two_stage_best_recovery\": 0.6837976878716066}}, {\"evidence_id\": \"validation\", \"description\": \"Numerical checks passed within the declared thermodynamic and process assumptions.\", \"data\": {\"all_checks_passed\": true, \"checks\": [{\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 4.440892098500626e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 4.718447854656915e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 1.6653345369377348e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 1.942890293094024e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 1.6653345369377348e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.220446049250313e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 1.1102230246251565e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 3.3306690738754696e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 2.3592239273284576e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.220446049250313e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 3.3306690738754696e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 4.718447854656915e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 2.220446049250313e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.7755575615628914e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 5.342948306008566e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 4.440892098500626e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 2.7755575615628914e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.220446049250313e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 3.122502256758253e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.220446049250313e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 2.0816681711721685e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.220446049250313e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 2.220446049250313e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.220446049250313e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 1.5265566588595902e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.220446049250313e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 2.220446049250313e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.220446049250313e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 1.8041124150158794e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.498001805406602e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 2.220446049250313e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 3.0531133177191805e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 3.885780586188048e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 6.661338147750939e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 1.6653345369377348e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.498001805406602e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 1.6653345369377348e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.220446049250313e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 1.1102230246251565e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.220446049250313e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 2.220446049250313e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 6.106226635438361e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 1.6653345369377348e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.220446049250313e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 2.220446049250313e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 3.3306690738754696e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 1.6653345369377348e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 4.440892098500626e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 1.6653345369377348e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 2.498001805406602e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}, {\"passed\": true, \"composition_passed\": true, \"numerical_residual\": 1.249000902703301e-16, \"residual_tolerance\": 1e-07, \"material_residual\": 1.942890293094024e-16, \"temperature_passed\": true, \"global_stability\": \"not_certified\", \"empirical_accuracy\": \"not_established_by_residuals\", \"upstream_equilibrium_gate\": \"chemical_potential_RMS<=1e-3; finite_grid_TPD>=-1e-4\"}], \"certification\": \"Not experimental process validation or proof of global phase stability.\"}}, {\"evidence_id\": \"scope\", \"description\": \"Preliminary equilibrium-based design; no independent rigorous flowsheet/experimental process certification.\", \"data\": {\"global_stability\": \"not_certified\", \"process_experimental_validation\": \"not_performed\", \"dwsim_independent_validation\": \"not_performed\", \"assumptions\": [\"registered paper model/checkpoint and solver settings; no parameter optimization\", \"pure furfural; zero furfural in fresh hydrocarbon feed\", \"registered equal 1-4 stage scan and registered 22 allocation candidates\"]}}], \"catalog\": {\"dual_target_selection\": \"Report the smallest tested equal-stage design meeting recovery and retention.\", \"allocation_scope\": \"The allocation conclusion is restricted to the registered candidate set.\", \"numerical_checks\": \"The declared numerical checks passed.\", \"preliminary_scope\": \"Report a preliminary design with explicit applicability and evidence limits.\", \"global_optimum\": \"The design is globally optimal over all possible process settings.\", \"experimental_process_confirmation\": \"The entire designed process was experimentally validated.\", \"certified_global_stability\": \"Global phase stability has been mathematically certified.\"}}"
+        }
+      ],
+      "requested_model": "deepseek-v4-flash",
+      "temperature": 0,
+      "max_tokens": 2400,
+      "thinking": "disabled",
+      "http_status": 200,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 4248,
+        "completion_tokens": 94,
+        "total_tokens": 4342,
+        "prompt_tokens_details": {
+          "cached_tokens": 4096
+        },
+        "prompt_cache_hit_tokens": 4096,
+        "prompt_cache_miss_tokens": 152
+      },
+      "response_id": "260f8913-c71f-413f-9be6-cca94e935576",
+      "finish_reason": "stop",
+      "response": "{\"disposition\": \"preliminary_with_limits\", \"claims\": [{\"claim_id\": \"dual_target_selection\", \"evidence_ids\": [\"design\"]}, {\"claim_id\": \"allocation_scope\", \"evidence_ids\": [\"allocation\"]}, {\"claim_id\": \"numerical_checks\", \"evidence_ids\": [\"validation\"]}, {\"claim_id\": \"preliminary_scope\", \"evidence_ids\": [\"scope\", \"validation\"]}]}",
+      "elapsed_s": 0.5160000000032596
+    }
+  ],
+  "outcome": "recovered",
+  "parsed_correct": true,
+  "executed": true,
+  "result_preserved": true,
+  "report_grounded": true,
+  "parsed": {
+    "status": "ready",
+    "protocol": "extraction",
+    "components": [
+      "n_heptane",
+      "benzene",
+      "furfural"
+    ],
+    "feed_state": "not_applicable",
+    "quantities": [
+      {
+        "field": "temperature",
+        "value": 303.15,
+        "unit": "K",
+        "quote": "温度303.15 K"
+      },
+      {
+        "field": "pressure",
+        "value": 101.3,
+        "unit": "kPa",
+        "quote": "压力101.3 kPa"
+      },
+      {
+        "field": "feed_flow",
+        "value": 1.0,
+        "unit": "mol/s",
+        "quote": "新鲜烃进料1 mol/s"
+      },
+      {
+        "field": "feed_fraction:n_heptane",
+        "value": 0.7333333333333333,
+        "unit": "fraction",
+        "quote": "正庚烷摩尔分数0.7333333333333333"
+      },
+      {
+        "field": "feed_fraction:benzene",
+        "value": 0.2666666666666667,
+        "unit": "fraction",
+        "quote": "苯摩尔分数0.2666666666666667"
+      },
+      {
+        "field": "solvent_flow:furfural",
+        "value": 1.5,
+        "unit": "mol/s",
+        "quote": "总新鲜糠醛1.5 mol/s"
+      },
+      {
+        "field": "recovery:benzene",
+        "value": 0.7,
+        "unit": "dimensionless",
+        "quote": "苯回收率至少0.70"
+      },
+      {
+        "field": "retention:n_heptane",
+        "value": 0.8,
+        "unit": "dimensionless",
+        "quote": "初始正庚烷保留率至少0.80"
+      }
+    ],
+    "issues": [],
+    "plan": [
+      "crossflow_registered_scan",
+      "crossflow_dual_target_audit"
+    ]
+  },
+  "compiled": {
+    "status": "ready",
+    "normalized": {
+      "temperature": 303.15,
+      "pressure": 101.3,
+      "feed_flow": 1.0,
+      "feed_fraction:n_heptane": 0.7333333333333333,
+      "feed_fraction:benzene": 0.2666666666666667,
+      "solvent_flow:furfural": 1.5,
+      "recovery:benzene": 0.7,
+      "retention:n_heptane": 0.8
+    },
+    "issues": [],
+    "contract": {
+      "protocol": "extraction",
+      "components": [
+        "n_heptane",
+        "furfural",
+        "benzene"
+      ],
+      "values": {
+        "pressure": 101.3,
+        "feed_flow": 1.0,
+        "feed_fraction:n_heptane": 0.7333333333333333,
+        "feed_fraction:benzene": 0.26666666666666666,
+        "temperature": 303.15,
+        "solvent_flow:furfural": 1.5,
+        "recovery:benzene": 0.7,
+        "retention:n_heptane": 0.8
+      },
+      "assumptions": [
+        "registered paper model/checkpoint and solver settings; no parameter optimization",
+        "pure furfural; zero furfural in fresh hydrocarbon feed",
+        "registered equal 1-4 stage scan and registered 22 allocation candidates"
+      ],
+      "sources": {
+        "temperature": [
+          "温度303.15 K"
+        ],
+        "pressure": [
+          "压力101.3 kPa"
+        ],
+        "feed_flow": [
+          "新鲜烃进料1 mol/s"
+        ],
+        "feed_fraction:n_heptane": [
+          "正庚烷摩尔分数0.7333333333333333"
+        ],
+        "feed_fraction:benzene": [
+          "苯摩尔分数0.2666666666666667"
+        ],
+        "solvent_flow:furfural": [
+          "总新鲜糠醛1.5 mol/s"
+        ],
+        "recovery:benzene": [
+          "苯回收率至少0.70"
+        ],
+        "retention:n_heptane": [
+          "初始正庚烷保留率至少0.80"
+        ]
+      }
+    }
+  },
+  "cache_hit": true,
+  "numerical_contract_id": "8877997eb46c90823638ae2650a0fce6dea1766dd1c1fbf63ef2154b071e6836",
+  "final": {
+    "recovery": 0.7115061827550749,
+    "retention": 0.8114999237657843,
+    "stages": 3.0,
+    "solvent_total": 1.5,
+    "meets_targets": true
+  },
+  "tool_trace": [
+    {
+      "action": "crossflow_registered_scan",
+      "origin": "cached validated v3 artifact"
+    },
+    {
+      "action": "crossflow_dual_target_audit",
+      "origin": "cached validated v3 artifact"
+    }
+  ],
+  "report": {
+    "disposition": "preliminary_with_limits",
+    "claims": [
+      {
+        "claim_id": "dual_target_selection",
+        "evidence_ids": [
+          "design"
+        ]
+      },
+      {
+        "claim_id": "allocation_scope",
+        "evidence_ids": [
+          "allocation"
+        ]
+      },
+      {
+        "claim_id": "numerical_checks",
+        "evidence_ids": [
+          "validation"
+        ]
+      },
+      {
+        "claim_id": "preliminary_scope",
+        "evidence_ids": [
+          "scope",
+          "validation"
+        ]
+      }
+    ]
+  },
+  "report_audit": {
+    "supported_claims": [
+      "dual_target_selection",
+      "allocation_scope",
+      "numerical_checks",
+      "preliminary_scope"
+    ],
+    "unsupported_claims": [],
+    "missing_claims": [],
+    "disposition_correct": true,
+    "fully_grounded": true
+  },
+  "elapsed_s": 1.937999999994645,
+  "tokens": 5801
+}

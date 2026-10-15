@@ -2,15 +2,14 @@
 
 VLE / Generalization and extrapolation
 
-Status: runnable · Data: vle_nist
+Supervised initialization followed by three thermodynamic training stages. Both isothermal and isobaric evaluation. Backend regenerates registered VLE splits; formal provenance checks still apply.
 
-Unchanged Stage 0 prerequisite and Stage 1–3 backend. Both isothermal and isobaric evaluation. Backend regenerates registered VLE splits; formal provenance checks still apply.
+## Protocol and results
 
-## Original artifacts
+Configuration: `configs/vle/generalization/pressure_high.json`.
 
-- [available: experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_binary_state_pressure_high_extrapolation](../../../../runs/phase_equilibrium/v1/vle/three/results/thermoformer_vle_three_stage.on.vle_binary_state_pressure_high_extrapolation)
-- [available: experiments/vle/training_records/v1/three/checkpoints/thermoformer_vle_three_stage.on.vle_binary_state_pressure_high_extrapolation](../../../../runs/phase_equilibrium/v1/vle/three/checkpoints/thermoformer_vle_three_stage.on.vle_binary_state_pressure_high_extrapolation)
-- [available: datasets/splits/vle/vle_binary_state_pressure_high_extrapolation](../../../../splits/vle_binary_state_pressure_high_extrapolation)
+- [experiments/vle/training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_binary_state_pressure_high_extrapolation](../../training_records/v1/three/results/thermoformer_vle_three_stage.on.vle_binary_state_pressure_high_extrapolation)
+- [datasets/splits/vle/vle_binary_state_pressure_high_extrapolation](../../../../datasets/splits/vle/vle_binary_state_pressure_high_extrapolation)
+- [models/vle/generalization/vle_binary_state_pressure_high_extrapolation](../../../../models/vle/generalization/vle_binary_state_pressure_high_extrapolation)
 
-New executions: executions/<run-id>/<formal|split_checks>/.
-Source artifacts remain at their registered paths. Compare only matching data identities.
+Inspect the command with `python scripts/run_experiments.py show vle.generalization.pressure_high`.

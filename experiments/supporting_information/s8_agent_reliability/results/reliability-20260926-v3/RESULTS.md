@@ -33,6 +33,6 @@ See evaluation.csv, runs.csv and repeats.csv for denominators, time, tokens and 
 ## Reproduce (PowerShell)
 
 ```powershell
-python scripts/benchmarks/paper_agent/reliability_run.py --output <output-directory> --repeats 3
-python scripts/benchmarks/paper_agent/reliability_report.py --input <output-directory>
+python -m scripts.benchmarks.paper_agent.reliability_run --output outputs/paper_agent/reliability-new --repeats 3
+python -m scripts.benchmarks.paper_agent.reliability_report --input outputs/paper_agent/reliability-new
 ```

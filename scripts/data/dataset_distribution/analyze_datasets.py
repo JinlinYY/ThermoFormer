@@ -830,14 +830,6 @@ def write_outputs(dataset_root: Path, analysis_root: Path) -> dict[str, Any]:
         ),
         encoding="utf-8",
     )
-    archived_reports_dir = reports_dir / "archive"
-    archived_reports_dir.mkdir(parents=True, exist_ok=True)
-    (archived_reports_dir / "Figure_dataset_overview_v1_caption.md").write_text(
-        _caption(), encoding="utf-8"
-    )
-    (archived_reports_dir / "Figure_dataset_overview_v2_caption.md").write_text(
-        _caption_v2(), encoding="utf-8"
-    )
     return {
         "summary": summary.to_dict(orient="records"),
         "unique_components": len(components),
@@ -858,7 +850,7 @@ def main() -> None:
     parser.add_argument(
         "--analysis-root",
         type=Path,
-        default=Path(__file__).resolve().parents[1],
+        default=project_root / "experiments/data_quality/construction/dataset_distribution",
     )
     args = parser.parse_args()
     outputs = write_outputs(args.dataset_root.resolve(), args.analysis_root.resolve())

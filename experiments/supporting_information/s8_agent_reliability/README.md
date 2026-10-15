@@ -1,28 +1,35 @@
-# S8 agent reliability artifacts
+# S8 agent reliability
 
-This directory releases the final reliability protocol and records used for the ThermoFormer agent
-evaluation described in the paper/SI. The complete result package is
-[`results/reliability-20260926-v3/`](results/reliability-20260926-v3/).
+Final experiment records and source data for manuscript Section 2.2, Fig. 3, and SI S8.
 
-The v3 batch contains 72 real DeepSeek requests: 15 equivalent requests and 9 challenge requests
-for each of binary distillation, extractive distillation, and crossflow extraction, with three
-repeats. It records 45/45 complete valid-task pipelines, 27/27 invalid-task blocks, and 12/27
-LLM clarification decisions. The structured reports contain the raw runs, numerical evidence,
-source snapshots, hashes, and audit files; they do not constitute an open-ended guarantee about
-unseen prompts.
+| Test | Final records | Scope |
+|---|---|---|
+| Equivalent requests and invalid inputs | `results/reliability-20260926-v3/` | 45 valid and 27 challenged interactions; 3 fresh numerical executions, 42 cache reuses |
+| Paired schema/contract replay | `results/evidence_interventions/paired_routing_replay.json` | Same LLM outputs; 18/27 schema blocks and 27/27 full-contract blocks |
+| Clarification recovery | `results/evidence_interventions/recovery/` | 27/27 task reconstructions, cached-result retrievals, evidence-linked reports |
+| Evidence decisions | `results/evidence_interventions/decisions/` | 27 initial decisions and 9 follow-up decisions after restored evidence |
+| Figure and per-panel source tables | `figures/` and `figures/source_data/` | Final six-panel agent figure and source CSVs |
 
-The source runners and task definitions are collected in
-[`scripts/benchmarks/paper_agent/`](../../../scripts/benchmarks/paper_agent/). The production
-agent and deterministic thermodynamic boundary remain under
-[`Web/ThermoFormer-web/backend/paper_agent/`](../../../Web/ThermoFormer-web/backend/paper_agent/)
-and [`Web/ThermoFormer-web/backend/thermo_engine/`](../../../Web/ThermoFormer-web/backend/thermo_engine/).
+The three systems and scripted corrections are predefined. Repeats do not increase
+the number of independent chemical systems, and these tests do not establish
+held-out molecular generalization. The report catalog constrains claims to registered
+evidence. Numerical validation, experimental support, and global phase stability are
+separate evidence levels.
 
-## Reproduction notes
+## Inspect or reproduce
 
-Re-running the benchmark requires the corresponding API configuration and dependencies; credentials
-must remain in the local environment and must never be committed. Use the release runner after
-checking its local paths and environment, then audit the resulting batch with `audit_reliability.py`.
+Install the scientific environment and `pydantic>=2.10,<3`, `httpx>=0.28,<1`,
+and `python-dotenv>=1,<2` for the agent command-line tools. Live reruns require the
+`DEEPSEEK_API_KEY` environment variable and the endpoint/model configuration in
+`Web/ThermoFormer-web/backend/paper_agent/policy.py`.
 
-The final result report explicitly separates fresh protocol executions from cached, hash-bound
-replays. Numerical values must continue to come from `thermo_engine` and pass its validation
-boundary.
+```powershell
+python scripts/benchmarks/paper_agent/audit_reliability.py --input experiments/supporting_information/s8_agent_reliability/results/reliability-20260926-v3
+python scripts/benchmarks/paper_agent/reliability_run.py --output outputs/reliability --repeats 3
+python scripts/benchmarks/paper_agent/main_figure_experiment.py --source outputs/reliability --output outputs/evidence_interventions
+python scripts/benchmarks/paper_agent/agent_publication_figure.py --reliability experiments/supporting_information/s8_agent_reliability/results/reliability-20260926-v3 --experiment experiments/supporting_information/s8_agent_reliability/results/evidence_interventions --output outputs/agent_figure
+```
+
+The audit reads existing records without API calls. New runs must use new output
+directories. Exact LLM outputs and costs may vary with provider implementation;
+the released final records remain available for offline inspection.

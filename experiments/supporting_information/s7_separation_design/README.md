@@ -18,12 +18,12 @@ with provenance JSON and a SHA-256 entry in `checksums.json`.
 
 The common-Psat audit preserves the 17-state protocol, the 183-stage column comparison, the Li
 2013 reference correlation, and the Huang 2015 sensitivity correlation quoted in the SI. Its
-`RESULTS.zh-CN.md` records the numerical outputs and the extrapolation limitations; those values
+`RESULTS.md` records the numerical outputs and the extrapolation limitations; those values
 are archived evidence, not newly generated claims.
 
 The DWSIM archive contains the paper-aligned n-heptane/n-nonane binary flow sheet. No exact
 sec-butyl alcohol/sec-butyl acetate/DMF or n-heptane/benzene/furfural DWSIM project was present in
-the supplied `D:\VLE` source tree, so the release does not fabricate one. Their deterministic
+the distributed examples. See the deterministic protocols and numerical evidence for these cases. Their deterministic
 ThermoFormer protocols remain reproducible from `ThermoAgent/` and the common-Psat outputs.
 
 Run DWSIM exports only on a machine with the external DWSIM Automation API. Recalculate every

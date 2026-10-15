@@ -1,6 +1,6 @@
 # Constituent binary-pair coverage and ternary VLE prediction
 
-This study provides the results and reproducibility resources for **Fig. 3h-m and Supplementary Table S2** of the ThermoFormer manuscript. It tests whether increasing the coverage of constituent binary subsystems improves ternary vapor-liquid equilibrium (VLE) prediction under mixed binary-ternary training.
+This study provides the results and reproducibility resources for **Fig. 4h-m and Supplementary Table S2** of the ThermoFormer manuscript. It tests whether increasing the coverage of constituent binary subsystems improves ternary vapor-liquid equilibrium (VLE) prediction under mixed binary-ternary training.
 
 ## Results: Supplementary Table S2
 
@@ -15,9 +15,9 @@ Values are the mean and **sample standard deviation** of R² over five paired ra
 
 Full coverage outperforms zero coverage for every target in every seed. The largest mean improvement is in isobaric temperature. Isobaric vapor-composition R² is nonmonotonic at intermediate coverage levels. These results support a benefit of constituent-pair coverage **under mixed training**, rather than a claim that binary-only training is sufficient for ternary prediction or that every added pair must improve every prediction.
 
-![Constituent-pair coverage and ternary VLE prediction](figures/controlled_R2_preview.png)
+![Constituent-pair coverage and ternary VLE prediction](figures/controlled_R2.png)
 
-[Table S2 data](results/R2_summary.csv) · [Seed-resolved R²](results/per_seed_R2.csv) · [Paired differences](results/paired_changes.csv) · [Full Fig. 3](figures/figure_3.pdf)
+[Table S2 data](results/R2_summary.csv) · [Seed-resolved R²](results/per_seed_R2.csv) · [Paired differences](results/paired_changes.csv) · [Composite figure](figures/figure_3.pdf)
 
 ## Controlled comparison
 

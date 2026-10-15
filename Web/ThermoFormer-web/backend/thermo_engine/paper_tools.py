@@ -1,7 +1,7 @@
-"""Paper-case numerical adapter, run only inside an isolated ggnn39 worker.
+"""Paper-case numerical adapter with isolated solver instances.
 
-Upstream files are preserved. Each adapter loads private solver modules so
-parameterizing a case never changes process-global upstream constants.
+Each adapter loads private solver modules so parameterizing a case does not
+change another calculation's process-global constants.
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ from paper_agent.contracts import Candidate, PaperTask, ToolObservation
 from thermo_engine.paper_validation import validate_equilibrium_result
 
 ROOT = Path(__file__).resolve().parents[1]
-REPOSITORY = ROOT / "lab_models/ThermoFormer"
+REPOSITORY = Path(__file__).resolve().parents[4]
 SCIENTIFIC = REPOSITORY / "ThermoAgent"
 
 

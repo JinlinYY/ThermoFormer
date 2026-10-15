@@ -2,13 +2,14 @@
 
 SEPARATION_DESIGN / Agent-assisted separation design
 
-Status: artifact_only · Data: registered_case_studies
+The bundled ThermoAgent reproduces the three reported deterministic numerical case studies from archived equilibrium states. Fresh model evaluation is available through the registered checkpoints. LLM orchestration and external DWSIM integration remain optional integration layers.
 
-The ThermoEqui-Agent orchestration, Fenske-Underwood-Gilliland workflow, .dwxmz export, and the IPA-water and EA/NPA+DMSO case artifacts described in the article are required for complete reproduction but are not available in this repository snapshot.
+## Protocol and results
 
-## Original artifacts
+Configuration: `configs/separation_design/autonomous/thermoequi_agent.json`.
 
-- [available: docs/vle/separation_design/study_records/README.md](../../../../separation_design/README.md)
+- [ThermoAgent/cases](../../../../../ThermoAgent/cases)
+- [experiments/supporting_information/s7_separation_design](../../../../supporting_information/s7_separation_design)
+- [experiments/supporting_information/s8_agent_reliability](../../../../supporting_information/s8_agent_reliability)
 
-New executions: executions/<run-id>/<formal|split_checks>/.
-Source artifacts remain at their registered paths. Compare only matching data identities.
+Inspect the command with `python scripts/run_experiments.py show separation_design.thermoequi_agent.case_studies`.

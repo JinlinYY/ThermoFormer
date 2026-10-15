@@ -1,13 +1,15 @@
-# Molecular interactions
+# Molecular-view attribution and composition-dependent interactions
 
-Molecular-view attribution and composition-dependent interactions for VLE.
+VLE / Interpretability and analysis
 
-- [Combined interpretability figure](figures/vle_interpretability_complete.png)
-- [Analysis report](reports/interpretability_report.md)
-- [Analysis manifest](reports/analysis_manifest.json)
+Five-seed grouped Shapley, named-feature occlusion, pair attribution, held-out composition paths, and SMARTS-view molecular structure heatmaps using the validation-selected formal checkpoints.
 
-Run from the repository root:
+## Protocol and results
 
-```console
-python scripts/run_experiments.py run vle.interpretability.molecular_interactions
-```
+Configuration: `configs/vle/interpretability/molecular_interactions.json`.
+
+- [experiments/vle/interpretability/molecular_interactions/reports/analysis_manifest.json](reports/analysis_manifest.json)
+- [experiments/vle/interpretability/molecular_interactions/figures/vle_interpretability_complete.png](figures/vle_interpretability_complete.png)
+- [models/vle/prediction/vle_overall_binary](../../../../models/vle/prediction/vle_overall_binary)
+
+Inspect the command with `python scripts/run_experiments.py show vle.interpretability.molecular_interactions`.
